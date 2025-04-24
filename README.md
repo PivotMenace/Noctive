@@ -3,6 +3,7 @@
 **Lunive** is a cozy, night-coded social platform for gamers inspired by the old Moot app.
 
 🧩 Features:
+
 🔑 Core Features
 Game-Based Profiles
 Tag which games you play so people find you by titles (R6S, Valorant, Minecraft, etc.).
