@@ -31,7 +31,7 @@ Earn “Moon Streak” badges for daily activity, contributor flair, or top-meme
 
 ---
 
-🚧 *This is a front-end prototype. Interactions are visual only — no database or backend yet.*
+🚧 *This is a front-end prototype. Interactions are visual only. no database or backend yet.*
 
 I met my two best friends on Moot back in the day.
 
