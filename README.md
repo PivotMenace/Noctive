@@ -1,5 +1,7 @@
 # 🎮 Lunive
 
+THIS IS JUST A MOCKUP!  
+
 **Lunive** is a cozy, night-coded social platform for gamers inspired by the old Moot app.
 
 🧩 Features:
