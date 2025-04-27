@@ -95,6 +95,7 @@
 
     .main {
       width: 100%;
+      padding: 2rem 0; /* ADD padding to make posts show */
     }
 
     .card, .lfg-card, .comment-card, .shop-card {
@@ -102,6 +103,7 @@
       border-radius: 1rem;
       padding: 2rem;
       margin-bottom: 2rem;
+      margin-top: 1rem; /* EXTRA margin so posts don't stick */
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
@@ -173,43 +175,44 @@
     <main class="main">
       <button class="sidebar-button">New Post</button>
       <button class="sidebar-button">Start Chat</button>
-      <section class="card">
-  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-    <img src="https://via.placeholder.com/40" alt="Venus Avatar" style="border-radius: 50%; width: 40px; height: 40px;">
-    <div>
-      <strong>Venus</strong> <span style="font-size: 0.8rem; color: #aaa;">LV 21 • 1 hour ago</span>
-    </div>
-  </div>
-  <div style="margin-bottom: 1rem;">
-    <span style="background: #ff4e50; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">R6S</span>
-    <p style="margin-top: 0.5rem;">Anyone else feel like defense has gotten way too aggressive lately? I'm getting spawn-peeked 24/7 🔥</p>
-  </div>
-  <div style="display: flex; gap: 1rem; align-items: center; color: #aaa; font-size: 0.9rem;">
-    <button style="background: none; border: none; color: #9aaff9; cursor: pointer;">⬆️</button>
-    <span>298</span>
-    <button style="background: none; border: none; color: #ff4e50; cursor: pointer;">⬇️</button>
-    <span>💬 47</span>
-  </div>
-</section>
 
-<section class="card">
-  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-    <img src="https://via.placeholder.com/40" alt="Hijinxx Avatar" style="border-radius: 50%; width: 40px; height: 40px;">
-    <div>
-      <strong>Hijinxx</strong> <span style="font-size: 0.8rem; color: #aaa;">LV 18 • 2 hours ago</span>
-    </div>
-  </div>
-  <div style="margin-bottom: 1rem;">
-    <span style="background: #6a5acd; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">Off-Topic</span>
-    <p style="margin-top: 0.5rem;">What's everyone's favorite late night snack while gaming? I need new ideas because chips are ruining my keyboard 😭</p>
-  </div>
-  <div style="display: flex; gap: 1rem; align-items: center; color: #aaa; font-size: 0.9rem;">
-    <button style="background: none; border: none; color: #9aaff9; cursor: pointer;">⬆️</button>
-    <span>184</span>
-    <button style="background: none; border: none; color: #ff4e50; cursor: pointer;">⬇️</button>
-    <span>💬 23</span>
-  </div>
-</section>
+      <section class="card">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+          <img src="https://via.placeholder.com/40" alt="Venus Avatar" style="border-radius: 50%; width: 40px; height: 40px;">
+          <div>
+            <strong>Venus</strong> <span style="font-size: 0.8rem; color: #aaa;">LV 21 • 1 hour ago</span>
+          </div>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <span style="background: #ff4e50; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">R6S</span>
+          <p style="margin-top: 0.5rem;">Anyone else feel like defense has gotten way too aggressive lately? I'm getting spawn-peeked 24/7 🔥</p>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center; color: #aaa; font-size: 0.9rem;">
+          <button style="background: none; border: none; color: #9aaff9; cursor: pointer;">⬆️</button>
+          <span>298</span>
+          <button style="background: none; border: none; color: #ff4e50; cursor: pointer;">⬇️</button>
+          <span>💬 47</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+          <img src="https://via.placeholder.com/40" alt="Hijinxx Avatar" style="border-radius: 50%; width: 40px; height: 40px;">
+          <div>
+            <strong>Hijinxx</strong> <span style="font-size: 0.8rem; color: #aaa;">LV 18 • 2 hours ago</span>
+          </div>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <span style="background: #6a5acd; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">Off-Topic</span>
+          <p style="margin-top: 0.5rem;">What's everyone's favorite late night snack while gaming? I need new ideas because chips are ruining my keyboard 😭</p>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center; color: #aaa; font-size: 0.9rem;">
+          <button style="background: none; border: none; color: #9aaff9; cursor: pointer;">⬆️</button>
+          <span>184</span>
+          <button style="background: none; border: none; color: #ff4e50; cursor: pointer;">⬇️</button>
+          <span>💬 23</span>
+        </div>
+      </section>
 
     </main>
   </div>
