@@ -1,4 +1,4 @@
-<!-- Final version for GitHub Pages -->
+<!-- Final Lunive Website with Posts + R6S Tracker Sidebar -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,14 +91,37 @@
       max-width: 1200px;
       margin: 2rem auto;
       padding: 0 1rem;
+      display: flex;
+      gap: 2rem;
     }
 
     .main {
-      width: 100%;
+      flex: 2;
       padding: 2rem 0;
     }
 
-    .card, .lfg-card, .comment-card, .shop-card {
+    .stats-panel {
+      flex: 1;
+      background: #2d3046;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      height: fit-content;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .stats-panel h2 {
+      color: #9aaff9;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .stat-box p {
+      margin: 0.5rem 0;
+      color: #f0f0f0;
+      font-size: 1rem;
+    }
+
+    .card {
       background-color: #2d3046;
       border-radius: 1rem;
       padding: 2rem;
@@ -135,23 +158,12 @@
       border-radius: 1rem;
       cursor: pointer;
       transition: background 0.3s, transform 0.2s;
+      margin-top: 2rem;
     }
 
     .load-more-button:hover {
       background: linear-gradient(135deg, #b22222, #ff4e50);
       transform: translateY(-3px);
-    }
-
-    h2, h3 {
-      color: #9aaff9;
-    }
-
-    ul {
-      padding-left: 1.5rem;
-    }
-
-    li {
-      margin-bottom: 0.75rem;
     }
 
     footer {
@@ -164,6 +176,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <h1>Lunive</h1>
@@ -204,6 +217,7 @@
         <div style="margin-bottom: 1rem;">
           <span style="background: #ff4e50; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">R6S</span>
           <p style="margin-top: 0.5rem;">Anyone else feel like defense has gotten way too aggressive lately? I'm getting spawn-peeked 24/7 🔥</p>
+          <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/359550/header.jpg" alt="Rainbow Six Siege" style="width: 100%; border-radius: 0.5rem; margin-top: 1rem;">
         </div>
         <div style="display: flex; gap: 0.5rem; align-items: center; font-size: 0.9rem;">
           <button style="background: none; border: none; color: red; font-size: 1rem; cursor: pointer;">▲</button>
@@ -253,12 +267,20 @@
         </div>
       </section>
 
-      <!-- Load More Button -->
-      <div style="text-align: center; margin-top: 2rem;">
-        <button class="load-more-button">Load More Posts</button>
-      </div>
+      <button class="load-more-button">Load More Posts</button>
 
     </main>
+
+    <aside class="stats-panel">
+      <h2>R6S Tracker</h2>
+      <div class="stat-box">
+        <p><strong>Wins:</strong> 12</p>
+        <p><strong>Kills:</strong> 67</p>
+        <p><strong>K/D Ratio:</strong> 0.4</p>
+        <p><strong>Matches:</strong> 3</p>
+      </div>
+    </aside>
+
   </div>
 
   <footer>
