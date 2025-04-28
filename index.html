@@ -1,4 +1,4 @@
-<!-- Final Lunive Website with Posts + R6S Tracker Sidebar (with Venus, Hijinxx, and Space Navis posts) -->
+<!-- Final Lunive Website with Posts + R6S Tracker Sidebar (with Venus, Hijinxx, Space Navis posts, Belt181 LFG post, and comment boxes) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -107,18 +107,6 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
-    .stats-panel h2 {
-      color: #9aaff9;
-      margin-bottom: 1rem;
-      font-size: 1.5rem;
-    }
-
-    .stat-box p {
-      margin: 0.5rem 0;
-      color: #f0f0f0;
-      font-size: 1rem;
-    }
-
     .card {
       background-color: #2d3046;
       border-radius: 1rem;
@@ -144,6 +132,34 @@
     .sidebar-button:hover {
       background: linear-gradient(135deg, #b22222, #ff3c38);
       transform: translateY(-2px);
+    }
+
+    .comment-box {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .comment-box input {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: none;
+    }
+
+    .comment-box button {
+      background: #8b0000;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .comment-box button:hover {
+      background: #b22222;
     }
 
     .load-more-button {
@@ -205,6 +221,7 @@
     <button class="sidebar-button">New Post</button>
     <button class="sidebar-button">Start Chat</button>
 
+    <!-- Venus, Hijinxx, Space Navis, Belt181 posts will be here -->
     <!-- Venus Post -->
     <section class="card">
       <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
@@ -265,6 +282,23 @@
         <span style="color: #aaa;">💬 15</span>
       </div>
     </section>
+    
+    <section class="card">
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+        <img src="https://ui-avatars.com/api/?name=Belt181&background=8b0000&color=ffffff&rounded=true&size=40" alt="Belt181 Avatar" style="border-radius: 50%; width: 40px; height: 40px;">
+        <div>
+          <strong>Belt181</strong> <span style="font-size: 0.8rem; color: #aaa;">LV 12 • 5 hours ago</span>
+        </div>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <span style="background: #8b0000; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">LFG</span>
+        <p style="margin-top: 0.5rem;">Anyone looking for a group?</p>
+      </div>
+      <div class="comment-box">
+        <input type="text" id="comment-belt" placeholder="Write a comment...">
+        <button onclick="postComment('belt')">Post</button>
+      </div>
+    </section>
 
     <button class="load-more-button">Load More Posts</button>
   </main>
@@ -283,6 +317,16 @@
 <footer>
   &copy; 2025 Lunive. All rights reserved.
 </footer>
+
+<script>
+function postComment(user) {
+  const input = document.getElementById('comment-' + user);
+  if (input.value.trim()) {
+    alert('Comment posted: ' + input.value);
+    input.value = '';
+  }
+}
+</script>
 
 </body>
 </html>
