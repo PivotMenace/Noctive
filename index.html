@@ -1,17 +1,16 @@
-<!-- Final Lunive Website with Posts + R6S Tracker Sidebar (with Venus, Hijinxx, Space Navis posts, Belt181 LFG post, and comment boxes) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lunive - Gaming Social Platform</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noctive - Night-First Gaming Platform</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
 
     body {
       margin: 0;
       font-family: 'Rubik', sans-serif;
-      background: linear-gradient(135deg, #1e1e2f, #2a2a4d);
+      background: linear-gradient(160deg, #0a0a1a, #1c1a2f, #281517);
       color: #f0f0f0;
     }
 
@@ -19,7 +18,8 @@
       background: #23263a;
       padding: 1rem 2rem;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
       justify-content: space-between;
       box-shadow: 0 2px 4px rgba(0,0,0,0.5);
       position: sticky;
@@ -28,12 +28,12 @@
     }
 
     header h1 {
-      font-size: 1.8rem;
-      background: linear-gradient(90deg, #ff4e50, #ff3c38, #b22222);
+      font-size: 2rem;
+      background: linear-gradient(90deg, #800000, #ff3c38);
       background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: gradientText 3s ease infinite;
+      animation: gradientText 6s ease-in-out infinite;
     }
 
     @keyframes gradientText {
@@ -45,10 +45,11 @@
     nav {
       display: flex;
       gap: 1rem;
+      margin-top: 0.5rem;
     }
 
     nav a {
-      color: #800000;
+      color: #b22222;
       text-decoration: none;
       font-weight: bold;
       padding: 0.5rem 1rem;
@@ -61,123 +62,56 @@
       color: #ffffff;
     }
 
-    .tab-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 1rem;
-      background-color: #23263a;
-    }
-
-    .tab-container a {
-      color: #f8d0d0;
-      text-decoration: none;
-      padding: 0.6rem 1.2rem;
-      margin: 0.3rem;
-      background: linear-gradient(135deg, #600000, #8b0000);
-      border-radius: 0.5rem;
-      font-weight: 500;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    .tab-container a:hover {
-      background: linear-gradient(135deg, #8b0000, #b22222);
-      transform: scale(1.05);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      display: flex;
-      gap: 2rem;
-    }
-
-    .main {
-      flex: 2;
-      padding: 2rem 0;
-    }
-
-    .stats-panel {
-      flex: 1;
-      background: #2d3046;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      height: fit-content;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-
-    .card {
-      background-color: #2d3046;
-      border-radius: 1rem;
+    section.intro {
       padding: 2rem;
-      margin-bottom: 2rem;
-      margin-top: 1rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      text-align: center;
+      border-top: 1px solid #333;
+      border-bottom: 1px solid #333;
+      background: #101322;
     }
 
-    .sidebar-button {
-      display: inline-block;
-      background: linear-gradient(135deg, #8b0000, #b22222);
-      color: #fff;
-      padding: 0.75rem 1.5rem;
-      margin: 0.5rem 0;
-      border: none;
-      border-radius: 0.5rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
+    .xp-bar {
+      background: #333;
+      border-radius: 1rem;
+      height: 1rem;
+      width: 80%;
+      margin: 1rem auto;
+      overflow: hidden;
     }
 
-    .sidebar-button:hover {
-      background: linear-gradient(135deg, #b22222, #ff3c38);
-      transform: translateY(-2px);
+    .xp-fill {
+      width: 45%;
+      background: #b22222;
+      height: 100%;
     }
 
-    .comment-box {
-      margin-top: 1rem;
+    .feed {
+      padding: 2rem;
+    }
+
+    .post {
+      background: #1a1d2e;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 5px rgba(255, 60, 56, 0.1);
+    }
+
+    .user {
       display: flex;
+      align-items: center;
       gap: 0.5rem;
     }
 
-    .comment-box input {
-      flex: 1;
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-      border: none;
+    .user img {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
     }
 
-    .comment-box button {
-      background: #8b0000;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .comment-box button:hover {
-      background: #b22222;
-    }
-
-    .load-more-button {
-      background: linear-gradient(135deg, #8b0000, #b22222);
-      color: white;
-      font-weight: bold;
-      padding: 0.8rem 2rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 1rem;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-      margin-top: 2rem;
-    }
-
-    .load-more-button:hover {
-      background: linear-gradient(135deg, #b22222, #ff4e50);
-      transform: translateY(-3px);
+    .user-info {
+      display: flex;
+      flex-direction: column;
     }
 
     footer {
@@ -193,174 +127,45 @@
 <body>
 
 <header>
-  <h1>Lunive 🌙</h1>
+  <h1>Noctive</h1>
+  <p style="font-size: 0.9rem; color: #aaa; margin-top: -1rem;">“Built for the ones who never log off.”</p>
   <nav>
-    <a href="#home">Home</a>
+    <a href="#home">Hub Feed</a>
+    <a href="#creators">Creator Hub</a>
     <a href="#highlights">Highlights</a>
-    <a href="#find-teammates">Find Teammates</a>
-    <a href="#store">Moon Store</a>
+    <a href="#find-teammates">Squad Hub</a>
+    <a href="#store">Support Hub</a>
+    <a href="#dev">Dev Hub</a>
   </nav>
 </header>
 
-<div class="tab-container">
-  <a href="#off-topic">Off-Topic</a>
-  <a href="#r6s">Rainbow Six Siege</a>
-  <a href="#fortnite">Fortnite</a>
-  <a href="#valorant">Valorant</a>
-  <a href="#apex">Apex Legends</a>
-  <a href="#warzone">Call of Duty: Warzone</a>
-  <a href="#minecraft">Minecraft</a>
-  <a href="#roblox">Roblox</a>
-  <a href="#league">League of Legends</a>
-  <a href="#gta">GTA Online</a>
-  <a href="#more">More...</a>
-</div>
+<section class="intro">
+  <h2 style="margin-bottom: 0.5rem; font-size: 1.2rem; color: #cfcfcf;">The platform after hours.</h2>
+  <p style="font-size: 0.95rem; color: #999;">
+    Noctive is your night-first platform to create, connect, and hang out.<br>
+    Built for gamers and creators who thrive after dark — this is where the scroll doesn’t sleep.
+  </p>
 
-<div class="container">
-  <main class="main">
-    <button class="sidebar-button">New Post</button>
-    <button class="sidebar-button">Start Chat</button>
+  <div class="xp-bar"><div class="xp-fill"></div></div>
+  <p style="font-size: 0.8rem; color: #777;">Level 3 – 450 XP</p>
+</section>
 
-    <!-- Venus, Hijinxx, Space Navis, Belt181 posts will be here -->
-    <!-- Venus Post -->
-    <section class="card">
-      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-        <img src="https://ui-avatars.com/api/?name=Venus&background=8b0000&color=ffffff&rounded=true&size=40" alt="Venus Avatar" style="border-radius: 50%; width: 40px; height: 40px;">
-        <div>
-          <strong>Venus</strong> <span style="font-size: 0.8rem; color: #aaa;">• Nomad • LV 21 • 1 hour ago</span>
-        </div>
+<section class="feed">
+  <div class="post">
+    <div class="user">
+      <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar">
+      <div class="user-info">
+        <strong>@Venus</strong>
+        <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Rainbow Six Siege</span>
       </div>
-      <div style="margin-bottom: 1rem;">
-        <span style="background: #ff4e50; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">R6S</span>
-        <p style="margin-top: 0.5rem;">Anyone else feel like defense has gotten way too aggressive lately? I'm getting spawn-peeked 24/7 🔥</p>
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/359550/header.jpg" alt="Rainbow Six Siege" style="width: 100%; border-radius: 0.5rem; margin-top: 1rem;">
-      </div>
-      <div style="display: flex; gap: 0.5rem; align-items: center; font-size: 0.9rem;">
-        <button style="background: none; border: none; color: red; font-size: 1rem; cursor: pointer;">▲</button>
-        <span style="color: #f0f0f0;">298</span>
-        <button style="background: none; border: none; color: red; font-size: 1rem; cursor: pointer;">▼</button>
-        <span style="color: #aaa;">💬 47</span>
-      </div>
-    </section>
-
-    <!-- Hijinxx Post -->
-    <section class="card">
-      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-        <img src="https://ui-avatars.com/api/?name=Hijinxx&background=8b0000&color=ffffff&rounded=true&size=40" alt="Hijinxx Avatar" style="border-radius: 50%; width: 40px; height: 40px;">
-        <div>
-          <strong>Hijinxx</strong> <span style="font-size: 0.8rem; color: #aaa;">• Trickster • LV 18 • 2 hours ago</span>
-        </div>
-      </div>
-      <div style="margin-bottom: 1rem;">
-        <span style="background: #6a5acd; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">Off-Topic</span>
-        <p style="margin-top: 0.5rem;">What's everyone's favorite late night snack while gaming? I need new ideas because chips are ruining my keyboard 😭</p>
-      </div>
-      <div style="display: flex; gap: 0.5rem; align-items: center; font-size: 0.9rem;">
-        <button style="background: none; border: none; color: red; font-size: 1rem; cursor: pointer;">▲</button>
-        <span style="color: #f0f0f0;">184</span>
-        <button style="background: none; border: none; color: red; font-size: 1rem; cursor: pointer;">▼</button>
-        <span style="color: #aaa;">💬 23</span>
-      </div>
-    </section>
-
-    <!-- Space Navis Post -->
-    <section class="card">
-      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-        <img src="https://ui-avatars.com/api/?name=Space+Navis&background=8b0000&color=ffffff&rounded=true&size=40" alt="Space Navis Avatar" style="border-radius: 50%; width: 40px; height: 40px;">
-        <div>
-          <strong>Space Navis</strong> <span style="font-size: 0.8rem; color: #aaa;">• Pathfinder • LV 15 • 3 hours ago</span>
-        </div>
-      </div>
-      <div style="margin-bottom: 1rem;">
-        <span style="background: #6a5acd; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">Off-Topic</span>
-        <p style="margin-top: 0.5rem;">Why don't skeletons fight each other? They don't have the guts. 😎</p>
-      </div>
-      <div style="display: flex; gap: 0.5rem; align-items: center; font-size: 0.9rem;">
-        <button style="background: none; border: none; color: red; font-size: 1rem; cursor: pointer;">▲</button>
-        <span style="color: #f0f0f0;">112</span>
-        <button style="background: none; border: none; color: red; font-size: 1rem; cursor: pointer;">▼</button>
-        <span style="color: #aaa;">💬 15</span>
-      </div>
-    </section>
-
-     <!-- Belt181 Post -->
-  <!-- Belt181 LFG Post - Updated Version -->
-<section class="card">
-  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-    <img src="https://ui-avatars.com/api/?name=Belt181&background=8b0000&color=ffffff&rounded=true&size=40" alt="Belt181 Avatar" style="border-radius: 50%; width: 40px; height: 40px;">
-    <div style="background: linear-gradient(135deg, #8b0000, #b22222); padding: 0.3rem 0.8rem; border-radius: 1rem;">
-      <strong>Belt181</strong> <span style="font-size: 0.8rem; color: #aaa;">• Slayer • LV 12 • 5 hours ago</span>
     </div>
-    <div style="display: flex; gap: 0.5rem; margin-left: auto;">
-      <span style="background: #ff4e50; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">R6S</span>
-      <span style="background: #8b0000; color: white; padding: 0.2rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem;">LFG</span>
-    </div>
+    <p style="margin-top: 1rem;">Need 2 for ranked. Gold+ only. DM fast. 🧠🔥</p>
   </div>
-
-  <h3>Looking for Teammates!</h3>
-
-  <div style="background: linear-gradient(135deg, #8b0000, #b22222); padding: 1rem; border-radius: 1rem; margin-top: 1rem;">
-    <div style="display: flex; align-items: center; gap: 1rem;">
-      <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="Xbox Logo" style="width: 24px; height: 24px; background: white; border-radius: 50%; padding: 0.2rem;">
-      <div>
-        <strong style="font-size: 1.1rem;">Game ID: Belt181_Main</strong><br>
-        <button style="margin-top:0.5rem; background:none; border:1px solid white; padding:0.3rem 0.8rem; border-radius:1rem; color:white;">Message</button>
-      </div>
-    </div>
-
-    <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
-      <span style="border: 1px solid white; padding: 0.3rem 0.8rem; border-radius: 1rem; font-size: 0.8rem;">XBOX</span>
-      <span style="border: 1px solid white; padding: 0.3rem 0.8rem; border-radius: 1rem; font-size: 0.8rem;">BR - SQUAD</span>
-      <span style="border: 1px solid white; padding: 0.3rem 0.8rem; border-radius: 1rem; font-size: 0.8rem;">MIC</span>
-      <span style="border: 1px solid white; padding: 0.3rem 0.8rem; border-radius: 1rem; font-size: 0.8rem;">ASAP</span>
-    </div>
-  </div>
-
-  <p style="margin-top: 1rem;">⏰ ASAP<br>👤 1 more needed</p>
-
-  <div style="margin-top: 1rem;">
-    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-      <img src="https://ui-avatars.com/api/?name=NewPlayer1&background=8b0000&color=ffffff&rounded=true&size=32" alt="NewPlayer1 Avatar">
-      <div><strong>NewPlayer1</strong> | Game ID: player_one_x</div>
-    </div>
-    <div style="display: flex; align-items: center; gap: 0.5rem;">
-      <img src="https://ui-avatars.com/api/?name=NewPlayer2&background=8b0000&color=ffffff&rounded=true&size=32" alt="NewPlayer2 Avatar">
-      <div><strong>NewPlayer2</strong> | Game ID: quickscopez</div>
-    </div>
-  </div>
-
-<div style="display: flex; gap: 1rem; margin-top: 1rem;">
-  <button style="flex: 1; padding: 0.8rem; background: #8b0000; border: none; border-radius: 0.75rem; color: white; font-weight: bold; cursor: pointer; font-size: 1rem;">Invite</button>
-  <button style="flex: 1; padding: 0.8rem; background: #b22222; border: none; border-radius: 0.75rem; color: white; font-weight: bold; cursor: pointer; font-size: 1rem;">Join</button>
-</div>
-    </section>
-    <button class="load-more-button">Load More Posts</button>
-  </main>
-
-  <aside class="stats-panel">
-    <h2>R6S Tracker</h2>
-    <div class="stat-box">
-      <p><strong>Wins:</strong> 12</p>
-      <p><strong>Kills:</strong> 67</p>
-      <p><strong>K/D Ratio:</strong> 0.4</p>
-      <p><strong>Matches:</strong> 3</p>
-    </div>
-  </aside>
-</div>
+</section>
 
 <footer>
-  &copy; 2025 Lunive. All rights reserved.
+  &copy; 2025 Noctive. Built on Hubs. Powered by night.  For Venus friendly friends. ;P
 </footer>
-
-<script>
-function postComment(user) {
-  const input = document.getElementById('comment-' + user);
-  if (input.value.trim()) {
-    alert('Comment posted: ' + input.value);
-    input.value = '';
-  }
-}
-</script>
 
 </body>
 </html>
