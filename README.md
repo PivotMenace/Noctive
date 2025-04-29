@@ -1,36 +1,40 @@
-# 🎮 Lunive
+👁️ Noctive
+Not just a platform. A late-night movement.
 
-THIS IS JUST A MOCKUP!  
+Noctive is a night-first digital space for gamers, creators, and communities that thrive after dark.
+We’re building the next-gen hangout where you can stream, clip, post, squad up, or simply exist without the noise.
 
-**Lunive** is a cozy, night-coded social platform for gamers inspired by the old Moot app.
+✨ What makes Noctive different?
+🧿 Tag-Based Profiles
+Add your favorite games, roles, or interests. Whether you’re grinding ranked or vibing in Minecraft, people can find you through what you play.
 
-🧩 Features:
+🕳️ Subspaces (called “Void Circles”)
+Game-specific threads, fandom zones, off-topic chaos, or deep night advice convos. Find your people.
 
-🔑 Core Features
-Game-Based Profiles
-Tag which games you play so people find you by titles (R6S, Valorant, Minecraft, etc.).
+🔍 Smart Duo Finder
+Filter teammates by vibe, skill, mic/no mic, game type, or pure energy. No more shouting into the void.
 
-Joinable “Moon Circles”
-Sub-communities for every vibe:
+📣 Post Feed + Upvotes
+Drop clips, memes, screenshots, or raw rants. Get noticed. Get followed. Get loud.
 
-🎮 Specific games (Fortnite, Apex, Warzone…)
+📊 (Future) Game Stat Sync
+Flex your stats with real-time pulls from your accounts. Prove it, don't say it.
 
-💬 Off-Topic / Memes / Fan Art / Advice
+🔥 Badges + Streaks
+Earn "Night Pulse" badges for daily drops, top-rated posts, or just being chronically online in the coolest way.
 
-🔍 Duo/Team Finder with filters (region, mic/no-mic, casual vs. comp)
+🦉 Meet Steve
+He's our unblinking, always-watching night bird mascot.
+He’s a little weird, a little tired, and always on — just like you.
 
-Post Feed & Upvotes
-Share memes, screenshots, match highlights or rants—others can upvote, comment, and follow.
+🚧 Status: In Progress
+This is a passion-fueled mockup project.
+We're shaping it live, late at night, with snacks in hand.
 
-Stats Integration (Future)
-Auto-pull your game stats (wins/KD) for bragging rights and searching teammates by skill.
+Want to help? Drop a pull request or reach out.
 
-Community Badges & Streaks
-Earn “Moon Streak” badges for daily activity, contributor flair, or top-memer status.
-
-🌐 **Live Demo**  
-[https://pivotmenace.github.io/lunive](https://pivotmenace.github.io/lunive)
-
+🔗 Live Preview
+Click to enter Noctive
 ---
 
 🚧 *This is a front-end prototype. Interactions are visual only. no database or backend yet.*
