@@ -1,40 +1,32 @@
-👁️ Noctive
-Not just a platform. A late-night movement.
+<h1>👁️ Noctive</h1>
+<p><strong>Not just a platform. A late-night movement.</strong></p>
+<p><strong>Noctive</strong> is a night-first digital space for gamers, creators, and communities that thrive after dark.
+We’re building the next-gen hangout where you can stream, clip, post, squad up, or just be real without the noise.</p>
 
-Noctive is a night-first digital space for gamers, creators, and communities that thrive after dark.
-We’re building the next-gen hangout where you can stream, clip, post, squad up, or simply exist without the noise.
+<h2>✨ What makes Noctive different?</h2>
+<ul>
+  <li><strong>🧿 Tag-Based Profiles</strong><br>
+  Add your favorite games, roles, or interests. Whether you’re grinding ranked or chilling in Minecraft, people can find you through what you play.</li>
 
-✨ What makes Noctive different?
-🧿 Tag-Based Profiles
-Add your favorite games, roles, or interests. Whether you’re grinding ranked or vibing in Minecraft, people can find you through what you play.
+  <li><strong>🕳️ Subspaces (called “Void Circles”)</strong><br>
+  Game-specific threads, fan zones, off-topic chaos, or deep night conversations. Find your people.</li>
 
-🕳️ Subspaces (called “Void Circles”)
-Game-specific threads, fandom zones, off-topic chaos, or deep night advice convos. Find your people.
+  <li><strong>🔍 Smart Duo Finder</strong><br>
+  Filter teammates by skill, mic/no mic, region, or playstyle. Get matched with people who actually play like you.</li>
 
-🔍 Smart Duo Finder
-Filter teammates by vibe, skill, mic/no mic, game type, or pure energy. No more shouting into the void.
+  <li><strong>📣 Post Feed + Upvotes</strong><br>
+  Drop clips, memes, screenshots, or rants. Get noticed. Get followed. Get loud.</li>
 
-📣 Post Feed + Upvotes
-Drop clips, memes, screenshots, or raw rants. Get noticed. Get followed. Get loud.
+  <li><strong>📊 (Future) Game Stat Sync</strong><br>
+  Flex your stats with real-time pulls from your accounts. Prove it without having to say it.</li>
 
-📊 (Future) Game Stat Sync
-Flex your stats with real-time pulls from your accounts. Prove it, don't say it.
+  <li><strong>🔥 Badges + Streaks</strong><br>
+  Earn "Night Pulse" badges for daily drops, top-rated posts, or showing up when everyone else is offline.</li>
+</ul>
 
-🔥 Badges + Streaks
-Earn "Night Pulse" badges for daily drops, top-rated posts, or just being chronically online in the coolest way.
-
-🦉 Meet Steve
-He's our unblinking, always-watching night bird mascot.
-He’s a little weird, a little tired, and always on — just like you.
-
-🚧 Status: In Progress
-This is a passion-fueled mockup project.
-We're shaping it live, late at night, with snacks in hand.
-
-Want to help? Drop a pull request or reach out.
-
-🔗 Live Preview
-Click to enter Noctive
+<h2>🦉 Meet Steve</h2>
+<p>He's our unblinking, always-watching night bird mascot.<br>
+He’s a little weird, a little tired, and always on — just like you.</p>
 ---
 
 🚧 *This is a front-end prototype. Interactions are visual only. no database or backend yet.*
