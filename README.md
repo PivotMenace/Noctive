@@ -27,6 +27,9 @@ We’re building the next-gen hangout where you can stream, clip, post, squad up
 <h2>🦉 Meet Steve</h2>
 <p>He's our unblinking, always-watching night bird mascot.<br>
 He’s a little weird, a little tired, and always on... like you.</p>
+
+<h2>🔗 Live Preview</h2>
+<p><a href="https://pivotmenace.github.io/Noctive/" target="_blank">Click to enter Noctive</a></p>
 ---
 
 🚧 *This is a front-end prototype. Interactions are visual only. no database or backend yet.*
