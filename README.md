@@ -1,4 +1,4 @@
-<h1> Noctive</h1>
+<h1>Noctive</h1>
 <p><strong>Not just a platform. A late-night movement.</strong></p>
 <p><strong>Noctive</strong> is a night-first digital space for gamers, creators, and communities that thrive after dark.
 We’re building the next-gen hangout where you can stream, clip, post, squad up, or just be real without the noise.</p>
