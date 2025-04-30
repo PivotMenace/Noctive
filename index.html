@@ -251,13 +251,20 @@
 </div>
 
 <!-- POST: Venus -->
-<div class="post">
+<div class="post" style="border: 2px dashed #555;">
   <div class="user">
     <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" />
     <div class="user-info">
       <strong>@Venus</strong>
       <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Rainbow Six Siege</span>
     </div>
+  </div>
+     <textarea id="newPostInput" placeholder="What's on your mind?" rows="3" maxlength="200"
+    style="width: 100%; margin-top: 1rem; padding: 0.75rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.9rem;"
+    oninput="updateCharCount(); updatePreview();"></textarea>
+
+  <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #aaa;">
+    <span id="charCount">0</span>/200 characters
   </div>
   <p style="margin-top: 1rem;">Need 2 for ranked. Gold+ only. DM fast. 🧠🔥</p>
   <img src="https://media.giphy.com/media/3og0IPxMM0erATueVW/giphy.gif" alt="siege gif" style="width: 250px; height: auto; border-radius: 0.75rem; margin-top: 1rem;" />
@@ -266,7 +273,6 @@
   </div>
 </div>
 
-  </section>
   </section>
 
   <footer>
