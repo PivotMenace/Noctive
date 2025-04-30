@@ -18,17 +18,17 @@
     }
 
     header {
-      background: #23263a;
-      padding: 1rem 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: space-between;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+  background: #23263a;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
     header h1 {
       font-size: 2rem;
@@ -45,11 +45,12 @@
       100% { background-position: 0% 50%; }
     }
 
-    nav {
-      display: flex;
-      gap: 1rem;
-      margin-top: 0.5rem;
-    }
+   nav {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  align-self: flex-end; /* This moves it to the right */
+}
 
     nav a {
       color: #b22222;
@@ -92,13 +93,25 @@
       padding: 2rem;
     }
 
-    .post {
-      background: #1a1d2e;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 5px rgba(255, 60, 56, 0.1);
-    }
+.post {
+  background: linear-gradient(to bottom right, #1d2133, #292e44);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.03), 
+    0 0 20px rgba(255, 60, 56, 0.12), 
+    0 0 60px rgba(255, 60, 56, 0.04);
+  transition: all 0.3s ease;
+}
+    
+    .post:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 0 12px rgba(255, 255, 255, 0.05), 
+    0 0 28px rgba(255, 60, 56, 0.2);
+}
 
     .user {
       display: flex;
@@ -184,11 +197,11 @@
   </style>
 
   <nav>
-    <a href="#home">Hub Feed</a>
+    <a href="#home">Home</a>
     <a href="#creators">Creator Hub</a>
     <a href="#highlights">Highlights</a>
-    <a href="#find-teammates">Squad Hub</a>
-    <a href="#store">Support Hub</a>
+    <a href="#find-teammates">Find Teammates</a>
+    <a href="#store">Store Hub</a>
     <a href="#dev">Dev Hub</a>
   </nav>
 </header>
