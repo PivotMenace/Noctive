@@ -6,6 +6,7 @@
   <title>Noctive - Night-First Gaming Platform</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+
     body {
       margin: 0;
       font-family: 'Rubik', sans-serif;
@@ -14,18 +15,19 @@
       background-size: cover;
       color: #f0f0f0;
     }
+
     header {
       background: #23263a;
       padding: 1rem 2rem;
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
+      align-items: center;
+      justify-content: space-between;
       box-shadow: 0 2px 4px rgba(0,0,0,0.5);
       position: sticky;
       top: 0;
       z-index: 1000;
     }
+
     header h1 {
       font-size: 2rem;
       background: linear-gradient(90deg, #800000, #ff3c38);
@@ -33,18 +35,14 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: gradientText 6s ease-in-out infinite;
+      margin: 0;
     }
-    @keyframes gradientText {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+
     nav {
       display: flex;
       gap: 1rem;
-      margin-top: 0.5rem;
-      align-self: flex-end;
     }
+
     nav a {
       color: #b22222;
       text-decoration: none;
@@ -53,12 +51,14 @@
       border-radius: 0.5rem;
       transition: background 0.3s, color 0.3s;
     }
+
     nav a:hover {
       background: #3a1f1f;
       color: #ffffff;
     }
+
     .slogan-blink {
-      margin-top: 1.5rem;
+      margin: 1rem auto 0;
       font-size: 1rem;
       font-style: italic;
       color: #facc15;
@@ -66,6 +66,13 @@
       text-shadow: 0 0 5px #facc15, 0 0 10px #facc15, 0 0 15px #fbbf24;
       animation: yellowFlicker 2.8s infinite;
     }
+
+    @keyframes gradientText {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     @keyframes yellowFlicker {
       0%, 19%, 22%, 25%, 53%, 57%, 100% {
         opacity: 1;
@@ -76,9 +83,11 @@
         text-shadow: 0 0 3px #facc15;
       }
     }
+
     .feed {
       padding: 2rem;
     }
+
     .post {
       background: linear-gradient(to bottom right, #1d2133, #292e44);
       padding: 1.25rem;
@@ -88,24 +97,29 @@
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.03), 0 0 20px rgba(255, 60, 56, 0.12);
       transition: all 0.3s ease;
     }
+
     .post:hover {
       transform: translateY(-3px);
       box-shadow: 0 0 12px rgba(255, 255, 255, 0.05), 0 0 28px rgba(255, 60, 56, 0.2);
     }
+
     .user {
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
+
     .user img {
       border-radius: 50%;
       width: 40px;
       height: 40px;
     }
+
     .user-info {
       display: flex;
       flex-direction: column;
     }
+
     .sidebar-widget {
       position: fixed;
       top: 8rem;
@@ -120,6 +134,7 @@
       font-size: 0.85rem;
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
+
     .sidebar-widget h3 {
       margin-top: 0;
       margin-bottom: 0.75rem;
@@ -127,16 +142,19 @@
       color: #facc15;
       text-shadow: 0 0 4px #facc15;
     }
+
     .sidebar-widget ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
+
     .sidebar-widget li {
       margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
     }
+
     .status-dot {
       display: inline-block;
       width: 8px;
@@ -144,6 +162,7 @@
       margin-right: 8px;
       border-radius: 50%;
     }
+
     .status-dot.online { background-color: #22c55e; box-shadow: 0 0 6px #22c55e; }
     .status-dot.idle { background-color: #facc15; box-shadow: 0 0 6px #facc15; }
     .status-dot.offline { background-color: #6b7280; }
@@ -152,98 +171,93 @@
 
 <body>
 
-<header>
-  <h1>Noctive</h1>
+  <header>
+    <h1>Noctive</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Creator Hub</a>
+      <a href="#">Highlights</a>
+      <a href="#">Find Teammates</a>
+      <a href="#">Store Hub</a>
+      <a href="#">Dev Hub</a>
+    </nav>
+  </header>
+
   <p class="slogan-blink">“Built for the ones who never log off.”</p>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Creator Hub</a>
-    <a href="#">Highlights</a>
-    <a href="#">Find Teammates</a>
-    <a href="#">Store Hub</a>
-    <a href="#">Dev Hub</a>
-  </nav>
-</header>
 
-<!-- SIDEBAR -->
-<div class="sidebar-widget">
-  <h3>🌙 Night Crew</h3>
-  <ul>
-    <li><span class="status-dot online"></span> @Venus</li>
-    <li><span class="status-dot online"></span> @Hijinxx</li>
-    <li><span class="status-dot idle"></span> @Belt181</li>
-    <li><span class="status-dot offline"></span> @WispEcho</li>
-  </ul>
-</div>
-
-<!-- FEED SECTION -->
-<section class="feed">
-
-  <!-- POST: Hijinxx -->
-  <div class="post">
-    <div class="user">
-      <img src="https://ui-avatars.com/api/?name=Hijinxx&background=4b0082&color=fff&rounded=true" alt="User Avatar" />
-      <div class="user-info">
-        <strong>@Hijinxx</strong>
-        <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Dead by Daylight</span>
-      </div>
-    </div>
-    <p style="margin-top: 1rem;">solo queue horror. please... someone save me 😩</p>
-    <div style="margin-top: 1rem;">
-      <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
-    </div>
+  <div class="sidebar-widget">
+    <h3>🌙 Night Crew</h3>
+    <ul>
+      <li><span class="status-dot online"></span> @Venus</li>
+      <li><span class="status-dot online"></span> @Hijinxx</li>
+      <li><span class="status-dot idle"></span> @Belt181</li>
+      <li><span class="status-dot offline"></span> @WispEcho</li>
+    </ul>
   </div>
 
-  <!-- POST: Belt181 -->
-  <div class="post">
-    <div class="user">
-      <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" />
-      <div class="user-info">
-        <strong>@Belt181</strong>
-        <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Apex Legends</span>
+  <section class="feed">
+
+    <div class="post">
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=Hijinxx&background=4b0082&color=fff&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong>@Hijinxx</strong>
+          <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Dead by Daylight</span>
+        </div>
+      </div>
+      <p style="margin-top: 1rem;">solo queue horror. please... someone save me 😩</p>
+      <div style="margin-top: 1rem;">
+        <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
       </div>
     </div>
-    <p style="margin-top: 1rem;">cracked movement. trash aim. balance restored. 💀</p>
-    <div style="margin-top: 1rem;">
-      <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
-    </div>
-  </div>
 
-  <!-- POST: WispEcho -->
-  <div class="post">
-    <div class="user">
-      <img src="https://ui-avatars.com/api/?name=WispEcho&background=222244&color=fff&rounded=true" alt="User Avatar" />
-      <div class="user-info">
-        <strong>@WispEcho</strong>
-        <span style="font-size: 0.75rem; color: #aaa;">Just vibing...</span>
+    <div class="post">
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong>@Belt181</strong>
+          <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Apex Legends</span>
+        </div>
+      </div>
+      <p style="margin-top: 1rem;">cracked movement. trash aim. balance restored. 💀</p>
+      <div style="margin-top: 1rem;">
+        <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
       </div>
     </div>
-    <p style="margin-top: 1rem;">made a new Lo-fi playlist for late-night grinding 🌒</p>
-    <div style="margin-top: 1rem;">
-      <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
-    </div>
-  </div>
 
-  <!-- POST: Venus -->
-  <div class="post">
-    <div class="user">
-      <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" />
-      <div class="user-info">
-        <strong>@Venus</strong>
-        <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Rainbow Six Siege</span>
+    <div class="post">
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=WispEcho&background=222244&color=fff&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong>@WispEcho</strong>
+          <span style="font-size: 0.75rem; color: #aaa;">Just vibing...</span>
+        </div>
+      </div>
+      <p style="margin-top: 1rem;">made a new Lo-fi playlist for late-night grinding 🌒</p>
+      <div style="margin-top: 1rem;">
+        <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
       </div>
     </div>
-    <p style="margin-top: 1rem;">Need 2 for ranked. Gold+ only. DM fast. 🧠🔥</p>
-    <div style="margin-top: 1rem;">
-      <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
+
+    <div class="post">
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong>@Venus</strong>
+          <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Rainbow Six Siege</span>
+        </div>
+      </div>
+      <p style="margin-top: 1rem;">Need 2 for ranked. Gold+ only. DM fast. 🧠🔥</p>
+      <div style="margin-top: 1rem;">
+        <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
+      </div>
     </div>
-  </div>
 
-</section>
+  </section>
 
-<footer>
-  &copy; 2025 Noctive. Built on Hubs. Powered by night. For Venus friendly friends. ;P
-</footer>
+  <footer>
+    &copy; 2025 Noctive. Built on Hubs. Powered by night. For Venus friendly friends. ;P
+  </footer>
 
 </body>
 </html>
