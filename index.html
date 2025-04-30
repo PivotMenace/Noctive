@@ -128,7 +128,29 @@
 
 <header>
   <h1>Noctive</h1>
-  <p style="font-size: 0.9rem; color: #aaa; margin-top: -1rem;">“Built for the ones who never log off.”</p>
+<p style="
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #caa6ff;
+  text-shadow: 0 0 4px #a855f7, 0 0 8px #7c3aed;
+  margin-top: -1rem;
+  animation: flicker 2.5s infinite;
+">
+  “Built for the ones who never log off.”
+</p>
+
+<style>
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    text-shadow: 0 0 4px #a855f7, 0 0 8px #7c3aed;
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    text-shadow: 0 0 2px #a855f7;
+    opacity: 0.8;
+  }
+}
+</style>
   <nav>
     <a href="#home">Hub Feed</a>
     <a href="#creators">Creator Hub</a>
