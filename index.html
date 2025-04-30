@@ -202,6 +202,29 @@
   </div>
 
   <section class="feed">
+<!-- POST: Venus -->
+<div class="post" style="border: 2px dashed #555;">
+  <div class="user">
+    <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" />
+    <div class="user-info">
+      <strong>@Venus</strong>
+      <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Rainbow Six Siege</span>
+    </div>
+  </div>
+     <textarea id="newPostInput" placeholder="What's on your mind lil dude?" rows="3" maxlength="200"
+    style="width: 100%; margin-top: 1rem; padding: 0.75rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.9rem;"
+    oninput="updateCharCount(); updatePreview();"></textarea>
+
+  <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #aaa;">
+    <span id="charCount">0</span>/200 characters
+  </div>
+  <button style="margin-top: 1rem; padding: 0.5rem 1rem; background: #b22222; border: none; border-radius: 0.5rem; color: white; font-weight: bold; cursor: pointer;">Post</button>
+  <div id="previewBox" style="margin-top: 1rem; background: #1e1e2e; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #333; color: #aaa;">
+    <strong>Preview:</strong>
+    <p id="previewText" style="margin: 0.5rem 0 0 0; color: #f0f0f0;"></p>
+  </div>
+</div>
+    
      <!-- POST: Hijinxx -->
 <div class="post">
   <div class="user">
@@ -249,35 +272,50 @@
     <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
   </div>
 </div>
-
-<!-- POST: Venus -->
-<div class="post" style="border: 2px dashed #555;">
-  <div class="user">
-    <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" />
-    <div class="user-info">
-      <strong>@Venus</strong>
-      <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Rainbow Six Siege</span>
-    </div>
-  </div>
-     <textarea id="newPostInput" placeholder="What's on your mind?" rows="3" maxlength="200"
-    style="width: 100%; margin-top: 1rem; padding: 0.75rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.9rem;"
-    oninput="updateCharCount(); updatePreview();"></textarea>
-
-  <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #aaa;">
-    <span id="charCount">0</span>/200 characters
-  </div>
-  <p style="margin-top: 1rem;">Need 2 for ranked. Gold+ only. DM fast. 🧠🔥</p>
-  <img src="https://media.giphy.com/media/3og0IPxMM0erATueVW/giphy.gif" alt="siege gif" style="width: 250px; height: auto; border-radius: 0.75rem; margin-top: 1rem;" />
-  <div style="margin-top: 1rem;">
-    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
-  </div>
-</div>
-
   </section>
 
   <footer>
     &copy; 2025 Noctive. Built on Hubs. Powered by night. For Venus friendly friends. ;P
   </footer>
+<script>
+  function updateCharCount() {
+    const input = document.getElementById("newPostInput");
+    document.getElementById("charCount").innerText = input.value.length;
+  }
 
+  function updatePreview() {
+    const input = document.getElementById("newPostInput");
+    document.getElementById("previewText").innerText = input.value;
+  }
+
+  document.querySelector('button').addEventListener('click', function () {
+    const text = document.getElementById("newPostInput").value.trim();
+    if (text === "") return;
+
+    const post = document.createElement("div");
+    post.className = "post";
+    post.innerHTML = `
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=You&background=444&color=fff&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong>@You</strong>
+          <span style="font-size: 0.75rem; color: #aaa;">Just posted</span>
+        </div>
+      </div>
+      <p style="margin-top: 1rem;">${text}</p>
+      <div style="margin-top: 1rem;">
+        <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
+      </div>
+    `;
+
+    // Add the new post to the top of the feed
+    document.querySelector(".feed").insertBefore(post, document.querySelector(".feed").children[1]);
+
+    // Clear form
+    document.getElementById("newPostInput").value = "";
+    updateCharCount();
+    updatePreview();
+  });
+</script>
 </body>
 </html>
