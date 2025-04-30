@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,9 @@
     body {
       margin: 0;
       font-family: 'Rubik', sans-serif;
-      background: linear-gradient(160deg, #0a0a1a, #1c1a2f, #281517);
+      background: linear-gradient(to bottom right, #0a0a1a, #1f1a2f, #1e1e3f, #132842);
+      background-attachment: fixed;
+      background-size: cover;
       color: #f0f0f0;
     }
 
@@ -126,31 +129,60 @@
 </head>
 <body>
 
+<!-- Neon gradient overlay -->
+<div style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.2),
+    rgba(20, 10, 40, 0.4)
+  );
+  z-index: 0;
+"></div>
+
+<!-- Optional noise texture overlay -->
+<div style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background-image: url('https://www.transparenttextures.com/patterns/dark-mosaic.png');
+  opacity: 0.05;
+  z-index: 0;
+"></div>
+
 <header>
   <h1>Noctive</h1>
-<p style="
-  font-size: 0.9rem;
-  font-style: italic;
-  color: #caa6ff;
-  text-shadow: 0 0 4px #a855f7, 0 0 8px #7c3aed;
-  margin-top: -1rem;
-  animation: flicker 2.5s infinite;
-">
-  “Built for the ones who never log off.”
-</p>
-
-<style>
-@keyframes flicker {
-  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+  <p style="
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #caa6ff;
     text-shadow: 0 0 4px #a855f7, 0 0 8px #7c3aed;
-    opacity: 1;
+    margin-top: -1rem;
+    animation: flicker 2.5s infinite;
+  ">
+    “Built for the ones who never log off.”
+  </p>
+
+  <style>
+  @keyframes flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+      text-shadow: 0 0 4px #a855f7, 0 0 8px #7c3aed;
+      opacity: 1;
+    }
+    20%, 24%, 55% {
+      text-shadow: 0 0 2px #a855f7;
+      opacity: 0.8;
+    }
   }
-  20%, 24%, 55% {
-    text-shadow: 0 0 2px #a855f7;
-    opacity: 0.8;
-  }
-}
-</style>
+  </style>
+
   <nav>
     <a href="#home">Hub Feed</a>
     <a href="#creators">Creator Hub</a>
@@ -161,16 +193,39 @@
   </nav>
 </header>
 
-<section class="intro">
-  <h2 style="margin-bottom: 0.5rem; font-size: 1.2rem; color: #cfcfcf;">The platform after hours.</h2>
-  <p style="font-size: 0.95rem; color: #999;">
-    Noctive is your night-first platform to create, connect, and hang out.<br>
-    Built for gamers and creators who thrive after dark — this is where the scroll doesn’t sleep.
-  </p>
+<p class="slogan-blink">
+  “You’re online when others are asleep, making memories, running raids, dropping wild convos, building bonds.”
+</p>
 
-  <div class="xp-bar"><div class="xp-fill"></div></div>
-  <p style="font-size: 0.8rem; color: #777;">Level 3 – 450 XP</p>
-</section>
+<style>
+  .slogan-blink {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    color: #facc15; /* neon golden yellow */
+    text-align: center;
+    text-shadow: 
+      0 0 5px #facc15, 
+      0 0 10px #facc15, 
+      0 0 15px #fbbf24;
+    animation: yellowFlicker 2.8s infinite;
+  }
+
+  @keyframes yellowFlicker {
+    0%, 19%, 22%, 25%, 53%, 57%, 100% {
+      opacity: 1;
+      text-shadow:
+        0 0 5px #facc15,
+        0 0 10px #facc15,
+        0 0 15px #fbbf24;
+    }
+    20%, 24%, 55% {
+      opacity: 0.7;
+      text-shadow:
+        0 0 3px #facc15;
+    }
+  }
+</style>
 
 <section class="feed">
   <div class="post">
@@ -186,7 +241,7 @@
 </section>
 
 <footer>
-  &copy; 2025 Noctive. Built on Hubs. Powered by night.  For Venus friendly friends. ;P
+  &copy; 2025 Noctive. Built on Hubs. Powered by night. For Venus friendly friends. ;P
 </footer>
 
 </body>
