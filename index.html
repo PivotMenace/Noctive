@@ -6,7 +6,6 @@
   <title>Noctive - Night-First Gaming Platform</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
-
     body {
       margin: 0;
       font-family: 'Rubik', sans-serif;
@@ -451,6 +450,88 @@
     setTimeout(() => confetti.remove(), 1000);
   }
 }
+
+  <script>
+  function updateCharCount() {
+    const input = document.getElementById("newPostInput");
+    document.getElementById("charCount").innerText = input.value.length;
+  }
+
+  function updatePreview() {
+    const input = document.getElementById("newPostInput");
+    document.getElementById("previewText").innerText = input.value;
+  }
+
+  function launchConfetti(target) {
+    const container = target.closest('.post');
+    for (let i = 0; i < 12; i++) {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.left = `${Math.random() * 90 + 5}%`;
+      confetti.style.top = `0`;
+      confetti.style.backgroundColor = ['#facc15', '#ff3c38', '#22c55e'][Math.floor(Math.random() * 3)];
+      confetti.style.animationDelay = `${Math.random() * 0.3}s`;
+      container.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 1000);
+    }
+  }
+
+  function vote(button, type) {
+    const container = button.parentElement;
+    const countElem = container.querySelector('.vote-count');
+    const upBtn = container.querySelector('.vote-btn:nth-child(1)');
+    const downBtn = container.querySelector('.vote-btn:nth-child(3)');
+
+    if (button.classList.contains('voted-up') || button.classList.contains('voted-down')) return;
+
+    let count = parseInt(countElem.textContent);
+    if (type === 'up') {
+      count++;
+      upBtn.classList.add('voted-up');
+      downBtn.disabled = true;
+      launchConfetti(button);
+    } else if (type === 'down') {
+      count--;
+      downBtn.classList.add('voted-down');
+      upBtn.disabled = true;
+    }
+
+    countElem.textContent = count;
+    countElem.classList.add('animate');
+    setTimeout(() => countElem.classList.remove('animate'), 200);
+  }
+
+  document.querySelector('button').addEventListener('click', function () {
+    const text = document.getElementById("newPostInput").value.trim();
+    if (text === "") return;
+
+    const post = document.createElement("div");
+    post.className = "post";
+    post.innerHTML = `
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=You&background=444&color=fff&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong>@You</strong>
+          <span style="font-size: 0.75rem; color: #aaa;">Just posted</span>
+        </div>
+      </div>
+      <p style="margin-top: 1rem;">${text}</p>
+      <div style="margin-top: 1rem;">
+        <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
+      </div>
+      <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <button class="vote-btn" onclick="vote(this, 'up')">🔺</button>
+        <span class="vote-count">0</span>
+        <button class="vote-btn" onclick="vote(this, 'down')">🔻</button>
+      </div>
+    `;
+
+    document.querySelector(".feed").insertBefore(post, document.querySelector(".feed").children[1]);
+    document.getElementById("newPostInput").value = "";
+    updateCharCount();
+    updatePreview();
+  });
+</script>
 
   </script>
 </body>
