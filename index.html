@@ -173,6 +173,143 @@
       font-size: 0.85rem;
       color: #888;
     }
+
+    .confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #facc15;
+  opacity: 0.9;
+  animation: confettiFall 1s ease-out forwards;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 9999;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) rotate(720deg);
+    opacity: 0;
+  }
+}
+    .vote-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #facc15;
+  transition: transform 0.2s ease, text-shadow 0.3s ease;
+}
+
+.vote-btn.voted-up {
+  color: #22c55e;
+  text-shadow: 0 0 6px #22c55e;
+}
+
+.vote-btn.voted-down {
+  color: #ef4444;
+  text-shadow: 0 0 6px #ef4444;
+}
+
+.vote-btn:hover {
+  transform: scale(1.2);
+}
+
+.vote-count {
+  font-weight: bold;
+  color: #facc15;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.vote-count.animate {
+  transform: scale(1.5);
+  opacity: 0.7;
+}
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #facc15;
+  opacity: 0.9;
+  animation: confettiFall 1s ease-out forwards;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 9999;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+    .vote-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #facc15;
+  transition: transform 0.2s ease, text-shadow 0.3s ease;
+}
+
+.vote-btn.voted-up {
+  color: #22c55e;
+  text-shadow: 0 0 6px #22c55e;
+}
+
+.vote-btn.voted-down {
+  color: #ef4444;
+  text-shadow: 0 0 6px #ef4444;
+}
+
+.vote-btn:hover {
+  transform: scale(1.2);
+}
+
+.vote-count {
+  font-weight: bold;
+  color: #facc15;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.vote-count.animate {
+  transform: scale(1.5);
+  opacity: 0.7;
+}
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #facc15;
+  opacity: 0.9;
+  animation: confettiFall 1s ease-out forwards;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 9999;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -193,16 +330,19 @@
 
   <div class="sidebar-widget">
     <h3>🌙 Night Crew</h3>
-    <ul>
+    <ul style="list-style: none; padding: 0; margin: 0;">
       <li><span class="status-dot online"></span> @Venus</li>
       <li><span class="status-dot online"></span> @Hijinxx</li>
       <li><span class="status-dot idle"></span> @Belt181</li>
       <li><span class="status-dot offline"></span> @WispEcho</li>
+      <li><span class="status-dot online"></span> @CrybbyV</li>
+      <li><span class="status-dot idle"></span> @SleepyStitch</li>
+      <li><span class="status-dot offline"></span> @MoonDaze</li>
     </ul>
   </div>
 
   <section class="feed">
-<!-- POST: Venus -->
+ <!-- POST: Venus -->
 <div class="post" style="border: 2px dashed #555;">
   <div class="user">
     <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" />
@@ -239,6 +379,11 @@
   <div style="margin-top: 1rem;">
     <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
   </div>
+  <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+  <button class="vote-btn" onclick="vote(this, 'up')">🔺</button>
+  <span class="vote-count">0</span>
+  <button class="vote-btn" onclick="vote(this, 'down')">🔻</button>
+</div>
 </div>
 
 <!-- POST: Belt181 -->
@@ -255,6 +400,11 @@
   <div style="margin-top: 1rem;">
     <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
   </div>
+  <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+  <button class="vote-btn" onclick="vote(this, 'up')">🔺</button>
+  <span class="vote-count">0</span>
+  <button class="vote-btn" onclick="vote(this, 'down')">🔻</button>
+</div>
 </div>
 
 <!-- POST: WispEcho -->
@@ -271,51 +421,37 @@
   <div style="margin-top: 1rem;">
     <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
   </div>
+  <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+  <button class="vote-btn" onclick="vote(this, 'up')">🔺</button>
+  <span class="vote-count">0</span>
+  <button class="vote-btn" onclick="vote(this, 'down')">🔻</button>
+</div>
 </div>
   </section>
 
   <footer>
-    &copy; 2025 Noctive. Built on Hubs. Powered by night. For Venus friendly friends. ;P
+    &copy; 2025 Noctive. Powered by night. For Venus friendly friends. ;P
   </footer>
-<script>
-  function updateCharCount() {
-    const input = document.getElementById("newPostInput");
-    document.getElementById("charCount").innerText = input.value.length;
+
+  <script>
+    // Example of JS for dynamic status or future features
+    console.log("Welcome to Noctive. You are online.");
+
+    function launchConfetti(target) {
+  const container = target.closest('.post');
+  for (let i = 0; i < 12; i++) {
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.left = `${Math.random() * 100}%`;
+    confetti.style.top = `0`;
+    confetti.style.backgroundColor = ['#facc15', '#ff3c38', '#22c55e'][Math.floor(Math.random() * 3)];
+    confetti.style.animationDelay = `${Math.random() * 0.3}s`;
+    confetti.style.transform = `translateX(${Math.random() * 20 - 10}px)`;
+    container.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 1000);
   }
+}
 
-  function updatePreview() {
-    const input = document.getElementById("newPostInput");
-    document.getElementById("previewText").innerText = input.value;
-  }
-
-  document.querySelector('button').addEventListener('click', function () {
-    const text = document.getElementById("newPostInput").value.trim();
-    if (text === "") return;
-
-    const post = document.createElement("div");
-    post.className = "post";
-    post.innerHTML = `
-      <div class="user">
-        <img src="https://ui-avatars.com/api/?name=You&background=444&color=fff&rounded=true" alt="User Avatar" />
-        <div class="user-info">
-          <strong>@You</strong>
-          <span style="font-size: 0.75rem; color: #aaa;">Just posted</span>
-        </div>
-      </div>
-      <p style="margin-top: 1rem;">${text}</p>
-      <div style="margin-top: 1rem;">
-        <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
-      </div>
-    `;
-
-    // Add the new post to the top of the feed
-    document.querySelector(".feed").insertBefore(post, document.querySelector(".feed").children[1]);
-
-    // Clear form
-    document.getElementById("newPostInput").value = "";
-    updateCharCount();
-    updatePreview();
-  });
-</script>
+  </script>
 </body>
 </html>
