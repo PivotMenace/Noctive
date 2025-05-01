@@ -406,12 +406,12 @@
 </div>
 </div>
 
-<!-- POST: WispEcho -->
+<!-- POST: Remko -->
 <div class="post">
   <div class="user">
     <img src="https://ui-avatars.com/api/?name=WispEcho&background=222244&color=fff&rounded=true" alt="User Avatar" />
     <div class="user-info">
-      <strong>@WispEcho</strong>
+      <strong>@Remko</strong>
       <span style="font-size: 0.75rem; color: #aaa;">Just vibing...</span>
     </div>
   </div>
@@ -451,7 +451,6 @@
   }
 }
 
-  <script>
   function updateCharCount() {
     const input = document.getElementById("newPostInput");
     document.getElementById("charCount").innerText = input.value.length;
@@ -460,20 +459,6 @@
   function updatePreview() {
     const input = document.getElementById("newPostInput");
     document.getElementById("previewText").innerText = input.value;
-  }
-
-  function launchConfetti(target) {
-    const container = target.closest('.post');
-    for (let i = 0; i < 12; i++) {
-      const confetti = document.createElement('div');
-      confetti.classList.add('confetti');
-      confetti.style.left = `${Math.random() * 90 + 5}%`;
-      confetti.style.top = `0`;
-      confetti.style.backgroundColor = ['#facc15', '#ff3c38', '#22c55e'][Math.floor(Math.random() * 3)];
-      confetti.style.animationDelay = `${Math.random() * 0.3}s`;
-      container.appendChild(confetti);
-      setTimeout(() => confetti.remove(), 1000);
-    }
   }
 
   function vote(button, type) {
@@ -532,7 +517,5 @@
     updatePreview();
   });
 </script>
-
-  </script>
 </body>
 </html>
