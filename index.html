@@ -4,7 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Noctive - Night-First Gaming Platform</title>
+
+   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
+<style>
+  .ticker-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: black;
+    color: #facc15;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    padding: 0.75rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    z-index: 1001;
+    border-top: 1px solid #facc15;
+    box-shadow: 0 -2px 12px rgba(250, 204, 21, 0.2);
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 4px #facc15, 0 0 10px #facc15;
+  }
+
+  .ticker-text {
+    display: inline-block;
+    padding-left: 100%;
+    animation: tickerScroll 25s linear infinite;
+  }
+
+  @keyframes tickerScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
     @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
     body {
       margin: 0;
@@ -517,5 +549,73 @@
     updatePreview();
   });
 </script>
+
+  <html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noctive - Ticker Enhanced</title>
+  
+ <!-- ✅ Include Orbitron just for ticker -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  .ticker-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #0a0a1a;
+    padding: 0.5rem 0;
+    overflow: hidden;
+    z-index: 9999;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .ticker-text {
+    white-space: nowrap;
+    display: inline-block;
+    padding-left: 100%;
+    animation: tickerScroll 50s linear infinite, neonPulse 3s ease-in-out infinite;
+    font-family: 'Orbitron', sans-serif; /* ✅ Only applied here */
+    font-size: 0.85rem;
+    color: #facc15;
+    text-shadow: 0 0 8px #facc15, 0 0 15px #fbbf24;
+  }
+
+  .ticker-bar:hover .ticker-text {
+    animation-play-state: paused;
+  }
+
+  @keyframes tickerScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  @keyframes neonPulse {
+    0%, 100% {
+      text-shadow: 0 0 6px #facc15, 0 0 12px #fbbf24;
+    }
+    50% {
+      text-shadow: 0 0 10px #facc15, 0 0 20px #fbbf24;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="content">
+    <h1>Welcome to Noctive</h1>
+    <p>The night isn't for everyone — it's for us.</p>
+    <p>Post late. Stream weird. Stay real.</p>
+  </div>
+  
+  <div class="ticker-bar">
+    <div class="ticker-text">
+      Noctive doesn’t chase trends. &nbsp;&nbsp;&nbsp;
+      Stream what you love. Not what’s trending. &nbsp;&nbsp;&nbsp;
+      This is your space, not the algorithm’s. &nbsp;&nbsp;&nbsp;
+      Unfollow the algorithm. &nbsp;&nbsp;&nbsp;
+      Noctive follows passion. Not popularity. &nbsp;&nbsp;&nbsp;
+    </div>
+  </div>
 </body>
 </html>
