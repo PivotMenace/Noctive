@@ -1,208 +1,359 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Noctive - Night-First Gaming Platform</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noctive – Night‑First Gaming Platform</title>
 
-   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-<style>
-  .ticker-bar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: black;
-    color: #facc15;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
-    padding: 0.75rem 0;
-    overflow: hidden;
-    white-space: nowrap;
-    z-index: 1001;
-    border-top: 1px solid #facc15;
-    box-shadow: 0 -2px 12px rgba(250, 204, 21, 0.2);
-    letter-spacing: 0.05em;
-    text-shadow: 0 0 4px #facc15, 0 0 10px #facc15;
-  }
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
-  .ticker-text {
-    display: inline-block;
-    padding-left: 100%;
-    animation: tickerScroll 25s linear infinite;
-  }
-
-  @keyframes tickerScroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-  }
-
-    @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
-    body {
-      margin: 0;
-      font-family: 'Rubik', sans-serif;
-      background: linear-gradient(to bottom right, #0a0a1a, #1f1a2f, #1e1e3f, #132842);
-      background-attachment: fixed;
-      background-size: cover;
-      color: #f0f0f0;
-    }
-
-    header {
-      background: #23263a;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    header h1 {
-      font-size: 2rem;
-      background: linear-gradient(90deg, #800000, #ff3c38);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: gradientText 6s ease-in-out infinite;
-      margin: 0;
-    }
-
-    nav {
-      display: flex;
-      gap: 1rem;
-    }
-
-    nav a {
-      color: #b22222;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    nav a:hover {
-      background: #3a1f1f;
-      color: #ffffff;
-    }
-
-    .slogan-blink {
-      margin: 1rem auto 0;
-      font-size: 1rem;
-      font-style: italic;
-      color: #facc15;
-      text-align: center;
-      text-shadow: 0 0 5px #facc15, 0 0 10px #facc15, 0 0 15px #fbbf24;
-      animation: yellowFlicker 2.8s infinite;
-    }
-
-    @keyframes gradientText {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    @keyframes yellowFlicker {
-      0%, 19%, 22%, 25%, 53%, 57%, 100% {
-        opacity: 1;
-        text-shadow: 0 0 5px #facc15, 0 0 10px #facc15, 0 0 15px #fbbf24;
+    <style>
+      
+   /* ─── GLOBAL & LAYOUT ─── */
+      body {
+        margin: 0;
+        font-family: "Rubik", sans-serif;
+        background: linear-gradient(
+          to bottom right,
+          #0a0a1a,
+          #1f1a2f,
+          #1e1e3f,
+          #132842
+        );
+        background-attachment: fixed;
+        color: #f0f0f0;
       }
-      20%, 24%, 55% {
+      header {
+        background: #23263a;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      header h1 {
+        font-size: 2rem;
+        background: linear-gradient(90deg, #800000, #ff3c38);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientText 6s ease-in-out infinite;
+        margin: 0;
+      }
+      nav {
+        display: flex;
+        gap: 1rem;
+      }
+      nav a {
+        color: #b22222;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition:
+          background 0.3s,
+          color 0.3s;
+      }
+      nav a:hover {
+        background: #3a1f1f;
+        color: #fff;
+      }
+
+      /* ─── SLOGAN ─── */
+      .slogan-blink {
+        text-align: center;
+        margin: 1rem 0;
+        font-size: 1rem;
+        font-style: italic;
+        color: #facc15;
+        animation: yellowFlicker 2.8s infinite;
+        text-shadow:
+          0 0 5px #facc15,
+          0 0 10px #facc15;
+      }
+
+      /* ─── SIDEBAR WIDGET ─── */
+      .sidebar-widget {
+        position: fixed;
+        top: 8rem;
+        right: 2rem;
+        width: 200px;
+        background: #1a1d2e;
+        border-radius: 0.75rem;
+        box-shadow: 0 0 10px rgba(250, 204, 21, 0.05);
+        padding: 1rem;
+        color: #f0f0f0;
+        z-index: 999;
+        font-size: 0.85rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease;
+      }
+      .sidebar-widget.hidden {
+        transform: translateX(250px);
+        opacity: 0;
+        pointer-events: none;
+      }
+      .sidebar-widget h3 {
+        animation: yellowFlicker 2.8s infinite;
+        margin: 0 0 0.75rem;
+        font-size: 1rem;
+        color: #facc15;
+        text-shadow: 0 0 4px #facc15;
+      }
+      .sidebar-widget ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .sidebar-widget li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .status-dot.online {
+        background-color: #22c55e;
+        box-shadow: 0 0 6px #22c55e;
+      }
+      .status-dot.idle {
+        background-color: #facc15;
+        box-shadow: 0 0 6px #facc15;
+      }
+      .status-dot.offline {
+        background-color: #6b7280;
+        box-shadow: 0 0 6px #6b7280;
+      }
+
+      .sidebar-toggle-button {
+        position: fixed;
+        top: 5rem;
+        right: 1rem;
+        background: #1f1f2f;
+        color: #facc15;
+        border: 1px solid #444;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 10000;
+        box-shadow: 0 0 10px #facc15;
+      }
+
+      /* ─── FEED & POSTS ─── */
+      .feed {
+        padding: 2rem;
+        max-width: 800px;
+        margin: auto;
+      }
+      .post {
+        background: linear-gradient(to bottom right, #1d2133, #292e44);
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow:
+          0 0 10px rgba(255, 255, 255, 0.03),
+          0 0 20px rgba(255, 60, 56, 0.12);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .post:hover {
+        transform: translateY(-3px);
+        box-shadow:
+          0 0 12px rgba(255, 255, 255, 0.05),
+          0 0 28px rgba(255, 60, 56, 0.2);
+      }
+      .user {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .user img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+      .user-info {
+        display: flex;
+        flex-direction: column;
+      }
+      .user-info strong {
+        font-size: 0.9rem;
+      }
+      .user-info .currently-playing {
+        font-size: 0.65rem;
+        color: #aaa;
+      }
+      .post textarea,
+      .post input[type="text"] {
+        width: 100%;
+        padding: 0.75rem;
+        margin-top: 1rem;
+        background: #1e1e2e;
+        border: 1px solid #333;
+        border-radius: 0.5rem;
+        color: #eee;
+        font-size: 0.9rem;
+      }
+
+      /* ─── VOTES & CONFETTI ─── */
+      .vote-section {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .vote-btn {
+        background: none;
+        border: none;
+        font-size: 1.25rem;
+        cursor: pointer;
+        color: #facc15;
+        transition:
+          transform 0.2s,
+          text-shadow 0.3s;
+      }
+      .vote-btn:hover {
+        transform: scale(1.2);
+      }
+      .vote-btn.voted-up {
+        color: #22c55e;
+        text-shadow: 0 0 6px #22c55e;
+      }
+      .vote-btn.voted-down {
+        color: #ef4444;
+        text-shadow: 0 0 6px #ef4444;
+      }
+      .vote-count {
+        font-weight: bold;
+        color: #facc15;
+        transition:
+          transform 0.2s,
+          opacity 0.2s;
+      }
+      .vote-count.animate {
+        transform: scale(1.5);
         opacity: 0.7;
-        text-shadow: 0 0 3px #facc15;
       }
-    }
+      .confetti {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: #facc15;
+        opacity: 0.9;
+        animation: confettiFall 1s ease-out forwards;
+        pointer-events: none;
+        border-radius: 50%;
+        z-index: 9999;
+      }
+      @keyframes confettiFall {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100px) rotate(720deg);
+          opacity: 0;
+        }
+      }
 
-    .feed {
-      padding: 2rem;
-    }
-
-    .post {
-      background: linear-gradient(to bottom right, #1d2133, #292e44);
-      padding: 1.25rem;
-      margin-bottom: 1.5rem;
-      border-radius: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.03), 0 0 20px rgba(255, 60, 56, 0.12);
-      transition: all 0.3s ease;
-    }
-
-    .post:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.05), 0 0 28px rgba(255, 60, 56, 0.2);
-    }
-
-    .user {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .user img {
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-    }
-
-    .user-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .user-info span {
-    font-size: 0.65rem;
-    color: #aaa;
-    line-height: 1.2;
-  }
-    .sidebar-widget {
-      position: fixed;
-      top: 8rem;
-      right: 2rem;
-      width: 200px;
-      background: #1a1d2e;
-      border-radius: 0.75rem;
-      box-shadow: 0 0 10px rgba(250, 204, 21, 0.05);
-      padding: 1rem;
-      color: #f0f0f0;
-      z-index: 999;
-      font-size: 0.85rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .sidebar-widget h3 {
-      margin-top: 0;
-      margin-bottom: 0.75rem;
-      font-size: 1rem;
-      color: #facc15;
-      text-shadow: 0 0 4px #facc15;
-    }
-
-    .sidebar-widget ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .sidebar-widget li {
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-    }
-
-    .status-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      margin-right: 8px;
-      border-radius: 50%;
-    }
-
-    .status-dot.online { background-color: #22c55e; box-shadow: 0 0 6px #22c55e; }
-    .status-dot.idle { background-color: #facc15; box-shadow: 0 0 6px #facc15; }
-    .status-dot.offline { background-color: #6b7280; }
-
+ /* ─── TICKER ─── */
+      .ticker-bar {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #0a0a1a;
+        padding: 0.5rem 0;
+        overflow: hidden;
+        z-index: 9999;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .ticker-text {
+        white-space: nowrap;
+        display: inline-block;
+        padding-left: 100%;
+        animation:
+          tickerScroll 50s linear infinite,
+          neonPulse 3s ease-in-out infinite;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.85rem;
+        color: #facc15;
+        text-shadow:
+          0 0 8px #facc15,
+          0 0 15px #facc15;
+      }
+      .ticker-bar:hover .ticker-text {
+        animation-play-state: paused;
+      }
+      @keyframes tickerScroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+      @keyframes neonPulse {
+        0%,
+        100% {
+          text-shadow:
+            0 0 6px #facc15,
+            0 0 12px #facc15;
+        }
+        50% {
+          text-shadow:
+            0 0 10px #facc15,
+            0 0 20px #facc15;
+        }
+      }
+      @keyframes gradientText {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      @keyframes yellowFlicker {
+        0%,
+        19%,
+        22%,
+        25%,
+        53%,
+        57%,
+        100% {
+          opacity: 1;
+        }
+        20%,
+        24%,
+        55% {
+          opacity: 0.7;
+        }
+      }
+      
     footer {
       text-align: center;
       padding: 2rem;
@@ -210,126 +361,12 @@
       color: #888;
     }
 
-    .vote-btn {
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  cursor: pointer;
-  color: #facc15;
-  transition: transform 0.2s ease, text-shadow 0.3s ease;
-}
-
-.vote-btn.voted-up {
-  color: #22c55e;
-  text-shadow: 0 0 6px #22c55e;
-}
-
-.vote-btn.voted-down {
-  color: #ef4444;
-  text-shadow: 0 0 6px #ef4444;
-}
-
-.vote-btn:hover {
-  transform: scale(1.2);
-}
-
-.vote-count {
-  font-weight: bold;
-  color: #facc15;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.vote-count.animate {
-  transform: scale(1.5);
-  opacity: 0.7;
-}
-
-.confetti {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background-color: #facc15;
-  opacity: 0.9;
-  animation: confettiFall 1s ease-out forwards;
-  pointer-events: none;
-  border-radius: 50%;
-  z-index: 9999;
-}
-
-@keyframes confettiFall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100px) rotate(720deg);
-    opacity: 0;
-  }
-}
-
-    .vote-btn {
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  cursor: pointer;
-  color: #facc15;
-  transition: transform 0.2s ease, text-shadow 0.3s ease;
-}
-
-.vote-btn.voted-up {
-  color: #22c55e;
-  text-shadow: 0 0 6px #22c55e;
-}
-
-.vote-btn.voted-down {
-  color: #ef4444;
-  text-shadow: 0 0 6px #ef4444;
-}
-
-.vote-btn:hover {
-  transform: scale(1.2);
-}
-
-.vote-count {
-  font-weight: bold;
-  color: #facc15;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.vote-count.animate {
-  transform: scale(1.5);
-  opacity: 0.7;
-}
-
-.confetti {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background-color: #facc15;
-  opacity: 0.9;
-  animation: confettiFall 1s ease-out forwards;
-  pointer-events: none;
-  border-radius: 50%;
-  z-index: 9999;
-}
-
 .currently-playing {
   font-size: 0.65rem;
   color: #aaa;
   line-height: 1.2;
 }
-    
-@keyframes confettiFall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100px) rotate(720deg);
-    opacity: 0;
-  }
-}
-
+      
   </style>
 </head>
 <body>
@@ -348,7 +385,14 @@
 
   <p class="slogan-blink">“Built for the ones who never log off.”</p>
 
-  <div class="sidebar-widget">
+  <button
+      class="sidebar-toggle-button"
+      onclick="toggleSidebar()"
+      title="Toggle Night Crew"
+    >
+      🌙
+    </button>
+   <div class="sidebar-widget hidden" id="nightCrewWidget">
     <h3>🌙 Night Crew</h3>
     <ul style="list-style: none; padding: 0; margin: 0;">
       <li><span class="status-dot online"></span> @Venus</li>
@@ -450,92 +494,69 @@
 </div>
   </section>
 
-  <footer>
-    &copy; 2025 Noctive. Powered by night. For Venus friendly friends. ;P
-  </footer>
-
-  <script>
-
-    <script>
-  const titles = ["Nomad", "Rook", "Noob", "Ghost", "Ace", "Lurker", "Clutch God"];
-  const userTitleElements = document.querySelectorAll(".user-title");
-
-  userTitleElements.forEach(el => {
-    const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-    el.textContent = ` • ${randomTitle}`;
-    el.style.fontSize = "0.65rem";
-    el.style.color = "#999";
-  });
-  </script>
-
-
-  <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Noctive - Ticker Enhanced</title>
-  
- <!-- ✅ Include Orbitron just for ticker -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-
-<style>
- .ticker-bar {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #0a0a1a;
-  padding: 0.5rem 0;
-  overflow: hidden;
-  z-index: 9999;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.ticker-text {
-  white-space: nowrap;
-  display: inline-block;
-  padding-left: 100%;
-  animation: tickerScroll 50s linear infinite, neonPulse 3s ease-in-out infinite;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.85rem;
-  color: #facc15;
-  text-shadow: 0 0 8px #facc15, 0 0 15px #facc15;
-}
-
-.ticker-bar:hover .ticker-text {
-  animation-play-state: paused;
-}
-
-@keyframes tickerScroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
-
-@keyframes neonPulse {
-  0%, 100% {
-    text-shadow: 0 0 6px #facc15, 0 0 12px #facc15;
-  }
-  50% {
-    text-shadow: 0 0 10px #facc15, 0 0 20px #facc15;
-  }
-}
-
-</style>
-</head>
-<body>
-
+<!-- TICKER BAR -->
   <div class="ticker-bar">
-  <div class="ticker-text">
+    <div class="ticker-text">
       Noctive doesn’t chase trends. &nbsp;&nbsp;&nbsp;
       Stream what you love. Not what’s trending. &nbsp;&nbsp;&nbsp;
-      This is your space, not the algorithm’s. &nbsp;&nbsp;&nbsp;
       Unfollow the algorithm. &nbsp;&nbsp;&nbsp;
-      Noctive follows passion. Not popularity. &nbsp;&nbsp;&nbsp
-      If you are reading this, you a real one. &nbsp;&nbsp;&nbsp
-      My favorite song is 'if i could i would feel nothing'by bear &nbsp;&nbsp;&nbsp
-      all credits goes to me and my besties with the ideas &nbsp;&nbsp;&nbsp
-    
+      This is your space. &nbsp;&nbsp;&nbsp;
+      If you see this, you’re a real one.
+    </div>
   </div>
-</div>
+
+  <footer>&copy; 2025 Noctive. Powered by night. ;P</footer>
   
+  <script>
+    function toggleSidebar() {
+      document.getElementById('nightCrewWidget').classList.toggle('hidden');
+    }
+
+     function vote(btn, type) {
+      const countEl = btn.parentElement.querySelector('.vote-count');
+      let count = parseInt(countEl.textContent);
+      if (type === 'up') {
+        btn.classList.add('voted-up');
+        count++;
+        for (let i = 0; i < 10; i++) {
+          const c = document.createElement('div');
+          c.className = 'confetti';
+          c.style.left = (btn.getBoundingClientRect().left + btn.offsetWidth/2) + 'px';
+          document.body.appendChild(c);
+          c.addEventListener('animationend', () => c.remove());
+        }
+      } else {
+        btn.classList.add('voted-down');
+        count--;
+      }
+      countEl.textContent = count;
+      countEl.classList.add('animate');
+      setTimeout(() => countEl.classList.remove('animate'), 300);
+    }
+
+    // Random titles
+    const titles = ["Nomad","Rook","Noob","Ghost","Ace","Lurker","Clutch God"];
+    document.querySelectorAll('.title').forEach(el => {
+      el.textContent = ` • ${titles[Math.floor(Math.random()*titles.length)]}`;
+    });
+
+    // Post textarea preview & char count
+    const newPostInput = document.getElementById('newPostInput');
+    const charCount = document.getElementById('charCount');
+    const previewText = document.getElementById('previewText');
+    function updateCharCount() {
+      charCount.textContent = newPostInput.value.length;
+    }
+    function updatePreview() {
+      previewText.textContent = newPostInput.value;
+    }
+
+    // (Optional) hook up actual posting
+    function postMessage() {
+      // implement as needed
+      updateCharCount();
+      updatePreview();
+    }
+  </script>
 </body>
 </html>
