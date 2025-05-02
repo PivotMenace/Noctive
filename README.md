@@ -1,7 +1,7 @@
 <h1>Noctive</h1>
 
 <p><strong>Noctive</strong> is more than just a platform. It’s a digital space designed for gamers, creators, and communities who thrive after dark.</p>
-<p>We’re creating the next-generation hub where you can stream, post, clip, squad up, or simply be yourself — without the noise.</p>
+<p>We’re creating the next-generation hub where you can stream, post, clip, squad up, or simply be yourself ... without the noise.</p>
 
 <h2>🌟 What Makes Noctive Different?</h2>
 <ul>
