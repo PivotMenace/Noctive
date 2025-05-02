@@ -151,6 +151,11 @@
       flex-direction: column;
     }
 
+    .user-info span {
+    font-size: 0.65rem;
+    color: #aaa;
+    line-height: 1.2;
+  }
     .sidebar-widget {
       position: fixed;
       top: 8rem;
@@ -330,6 +335,12 @@
   z-index: 9999;
 }
 
+.currently-playing {
+  font-size: 0.65rem;
+  color: #aaa;
+  line-height: 1.2;
+}
+    
 @keyframes confettiFall {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -373,13 +384,14 @@
   </div>
 
   <section class="feed">
+    
  <!-- POST: Venus -->
 <div class="post" style="border: 2px dashed #555;">
   <div class="user">
     <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" />
     <div class="user-info">
-      <strong>@Venus</strong>
-      <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Rainbow Six Siege</span>
+  <strong>@Venus <span class="title">(Nomad)</span></strong>
+<span class="currently-playing">🎮 Currently playing: Rainbow Six Siege</span>
     </div>
   </div>
      <textarea id="newPostInput" placeholder="What's on your mind lil dude?" rows="3" maxlength="200"
@@ -401,7 +413,7 @@
   <div class="user">
     <img src="https://ui-avatars.com/api/?name=Hijinxx&background=4b0082&color=fff&rounded=true" alt="User Avatar" />
     <div class="user-info">
-      <strong>@Hijinxx</strong>
+       <strong>@Hijinxx <span class="title">(Noob)</span></strong>
       <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Dead by Daylight</span>
     </div>
   </div>
@@ -422,7 +434,7 @@
   <div class="user">
     <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" />
     <div class="user-info">
-      <strong>@Belt181</strong>
+      <strong>@Belt181 <span class="title">(Rookie)</span></strong>
       <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Apex Legends</span>
     </div>
   </div>
@@ -443,7 +455,7 @@
   <div class="user">
     <img src="https://ui-avatars.com/api/?name=WispEcho&background=222244&color=fff&rounded=true" alt="User Avatar" />
     <div class="user-info">
-      <strong>@Remko</strong>
+       <strong>@Remko <span class="title">(my fav bestie)</span></strong>
       <span style="font-size: 0.75rem; color: #aaa;">Just vibing...</span>
     </div>
   </div>
@@ -465,6 +477,18 @@
   </footer>
 
   <script>
+
+    <script>
+  const titles = ["Nomad", "Rook", "Noob", "Ghost", "Ace", "Lurker", "Clutch God"];
+  const userTitleElements = document.querySelectorAll(".user-title");
+
+  userTitleElements.forEach(el => {
+    const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+    el.textContent = ` • ${randomTitle}`;
+    el.style.fontSize = "0.65rem";
+    el.style.color = "#999";
+  });
+  
     // Example of JS for dynamic status or future features
     console.log("Welcome to Noctive. You are online.");
 
@@ -534,7 +558,7 @@
       </div>
       <p style="margin-top: 1rem;">${text}</p>
       <div style="margin-top: 1rem;">
-        <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
+        <input type="text" placeholder="Leave a comment or not..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
       </div>
       <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
         <button class="vote-btn" onclick="vote(this, 'up')">🔺</button>
@@ -602,12 +626,7 @@
 </style>
 </head>
 <body>
-  <div class="content">
-    <h1>Welcome to Noctive</h1>
-    <p>The night isn't for everyone — it's for us.</p>
-    <p>Post late. Stream weird. Stay real.</p>
-  </div>
-  
+
   <div class="ticker-bar">
     <div class="ticker-text">
       Noctive doesn’t chase trends. &nbsp;&nbsp;&nbsp;
@@ -617,5 +636,6 @@
       Noctive follows passion. Not popularity. &nbsp;&nbsp;&nbsp;
     </div>
   </div>
+  
 </body>
 </html>
