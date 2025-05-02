@@ -210,28 +210,6 @@
       color: #888;
     }
 
-    .confetti {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background-color: #facc15;
-  opacity: 0.9;
-  animation: confettiFall 1s ease-out forwards;
-  pointer-events: none;
-  border-radius: 50%;
-  z-index: 9999;
-}
-
-@keyframes confettiFall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100px) rotate(720deg);
-    opacity: 0;
-  }
-}
     .vote-btn {
   background: none;
   border: none;
@@ -488,91 +466,8 @@
     el.style.fontSize = "0.65rem";
     el.style.color = "#999";
   });
-  
-    // Example of JS for dynamic status or future features
-    console.log("Welcome to Noctive. You are online.");
+  </script>
 
-    function launchConfetti(target) {
-  const container = target.closest('.post');
-  for (let i = 0; i < 12; i++) {
-    const confetti = document.createElement('div');
-    confetti.classList.add('confetti');
-    confetti.style.left = `${Math.random() * 100}%`;
-    confetti.style.top = `0`;
-    confetti.style.backgroundColor = ['#facc15', '#ff3c38', '#22c55e'][Math.floor(Math.random() * 3)];
-    confetti.style.animationDelay = `${Math.random() * 0.3}s`;
-    confetti.style.transform = `translateX(${Math.random() * 20 - 10}px)`;
-    container.appendChild(confetti);
-    setTimeout(() => confetti.remove(), 1000);
-  }
-}
-
-  function updateCharCount() {
-    const input = document.getElementById("newPostInput");
-    document.getElementById("charCount").innerText = input.value.length;
-  }
-
-  function updatePreview() {
-    const input = document.getElementById("newPostInput");
-    document.getElementById("previewText").innerText = input.value;
-  }
-
-  function vote(button, type) {
-    const container = button.parentElement;
-    const countElem = container.querySelector('.vote-count');
-    const upBtn = container.querySelector('.vote-btn:nth-child(1)');
-    const downBtn = container.querySelector('.vote-btn:nth-child(3)');
-
-    if (button.classList.contains('voted-up') || button.classList.contains('voted-down')) return;
-
-    let count = parseInt(countElem.textContent);
-    if (type === 'up') {
-      count++;
-      upBtn.classList.add('voted-up');
-      downBtn.disabled = true;
-      launchConfetti(button);
-    } else if (type === 'down') {
-      count--;
-      downBtn.classList.add('voted-down');
-      upBtn.disabled = true;
-    }
-
-    countElem.textContent = count;
-    countElem.classList.add('animate');
-    setTimeout(() => countElem.classList.remove('animate'), 200);
-  }
-
-  document.querySelector('button').addEventListener('click', function () {
-    const text = document.getElementById("newPostInput").value.trim();
-    if (text === "") return;
-
-    const post = document.createElement("div");
-    post.className = "post";
-    post.innerHTML = `
-      <div class="user">
-        <img src="https://ui-avatars.com/api/?name=You&background=444&color=fff&rounded=true" alt="User Avatar" />
-        <div class="user-info">
-          <strong>@You</strong>
-          <span style="font-size: 0.75rem; color: #aaa;">Just posted</span>
-        </div>
-      </div>
-      <p style="margin-top: 1rem;">${text}</p>
-      <div style="margin-top: 1rem;">
-        <input type="text" placeholder="Leave a comment or not..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
-      </div>
-      <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-        <button class="vote-btn" onclick="vote(this, 'up')">🔺</button>
-        <span class="vote-count">0</span>
-        <button class="vote-btn" onclick="vote(this, 'down')">🔻</button>
-      </div>
-    `;
-
-    document.querySelector(".feed").insertBefore(post, document.querySelector(".feed").children[1]);
-    document.getElementById("newPostInput").value = "";
-    updateCharCount();
-    updatePreview();
-  });
-</script>
 
   <html lang="en">
 <head>
@@ -584,58 +479,63 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-  .ticker-bar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #0a0a1a;
-    padding: 0.5rem 0;
-    overflow: hidden;
-    z-index: 9999;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
+ .ticker-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #0a0a1a;
+  padding: 0.5rem 0;
+  overflow: hidden;
+  z-index: 9999;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-  .ticker-text {
-    white-space: nowrap;
-    display: inline-block;
-    padding-left: 100%;
-    animation: tickerScroll 50s linear infinite, neonPulse 3s ease-in-out infinite;
-    font-family: 'Orbitron', sans-serif; /* ✅ Only applied here */
-    font-size: 0.85rem;
-    color: #facc15;
-    text-shadow: 0 0 8px #facc15, 0 0 15px #fbbf24;
-  }
+.ticker-text {
+  white-space: nowrap;
+  display: inline-block;
+  padding-left: 100%;
+  animation: tickerScroll 50s linear infinite, neonPulse 3s ease-in-out infinite;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  color: #facc15;
+  text-shadow: 0 0 8px #facc15, 0 0 15px #facc15;
+}
 
-  .ticker-bar:hover .ticker-text {
-    animation-play-state: paused;
-  }
+.ticker-bar:hover .ticker-text {
+  animation-play-state: paused;
+}
 
-  @keyframes tickerScroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-  }
+@keyframes tickerScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
 
-  @keyframes neonPulse {
-    0%, 100% {
-      text-shadow: 0 0 6px #facc15, 0 0 12px #fbbf24;
-    }
-    50% {
-      text-shadow: 0 0 10px #facc15, 0 0 20px #fbbf24;
-    }
+@keyframes neonPulse {
+  0%, 100% {
+    text-shadow: 0 0 6px #facc15, 0 0 12px #facc15;
   }
+  50% {
+    text-shadow: 0 0 10px #facc15, 0 0 20px #facc15;
+  }
+}
+
 </style>
 </head>
 <body>
 
   <div class="ticker-bar">
-    <div class="ticker-text">
+  <div class="ticker-text">
       Noctive doesn’t chase trends. &nbsp;&nbsp;&nbsp;
       Stream what you love. Not what’s trending. &nbsp;&nbsp;&nbsp;
       This is your space, not the algorithm’s. &nbsp;&nbsp;&nbsp;
       Unfollow the algorithm. &nbsp;&nbsp;&nbsp;
-      Noctive follows passion. Not popularity. &nbsp;&nbsp;&nbsp;
-    </div>
+      Noctive follows passion. Not popularity. &nbsp;&nbsp;&nbsp
+      If you are reading this, you a real one. &nbsp;&nbsp;&nbsp
+      My favorite song is 'if i could i would feel nothing'by bear &nbsp;&nbsp;&nbsp
+      all credits goes to me and my besties with the ideas &nbsp;&nbsp;&nbsp
+    
   </div>
+</div>
   
 </body>
 </html>
