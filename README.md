@@ -6,7 +6,7 @@
 <h2>🌟 What Makes Noctive Different?</h2>
 <ul>
   <li><strong>Tag-Based Profiles</strong><br>Customize your profile with your favorite games, roles, or interests. Whether you’re grinding ranked or casually playing Minecraft, others can find you through your gaming preferences.</li>
-  <li><strong>Subspaces (called “Void Circles”)</strong><br>Join game-specific threads, fan zones, off-topic areas, or deep night conversations. It’s where you can connect with people who enjoy the same games and topics.</li>
+  <li><strong>Subspaces (called “Boards”)</strong><br>Join game-specific threads, fan zones, off-topic areas, or deep night conversations. It’s where you can connect with people who enjoy the same games and topics.</li>
   <li><strong>Smart Duo Finder</strong><br>Filter teammates by skill, mic/no mic, region, or playstyle. Get matched with people who share your gaming habits, making every session more fun and productive.</li>
   <li><strong>Post Feed + Upvotes</strong><br>Share clips, memes, screenshots, or rants. Gain attention, get followed, and make your voice heard across the community.</li>
   <li><strong>(Future) Game Stat Sync</strong><br>Sync your game stats with Noctive to show your progress in real-time. Prove your skills without needing to say a word.</li>
