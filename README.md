@@ -1,7 +1,8 @@
 <h1>Noctive</h1>
 
-<p><strong>Noctive</strong> is more than just a platform. It’s a digital space designed for gamers, creators, and communities who thrive after dark.</p>
-<p>We’re creating the next-generation hub where you can stream, post, clip, squad up, or simply be yourself ... without the noise.</p>
+<h2>💬 About Noctive</h2>
+<p>On other platforms, creators feel like they have to chase what’s trending just to be seen. On Noctive, we flip that. Here, your late-night stream of a weird old game matters just as much as the biggest title. Whether you’re streaming, posting, or just chilling, Noctive is about you being you, not gaming for the algorithm.</p>
+<p><strong>Unfollow the algorithm. Noctive follows you.</strong></p>
 
 <h2>🌟 What Makes Noctive Different?</h2>
 <ul>
