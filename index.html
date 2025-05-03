@@ -162,7 +162,7 @@
       .feed {
   		
   		padding: 2rem;
-  		max-width: 800px;
+  		max-width: calc(100% - 480px);
   		margin: auto;
 	}
       .post {
@@ -370,8 +370,8 @@
 /* ─── TRENDING SIDEBAR ─── */
 .trending-sidebar {
   position: fixed;
-  top: 8rem;           /* same vertical start as your Night Crew widget */
-  left: 2rem;          /* push it in from the left edge */
+  top: 5rem;           /* same vertical start as your Night Crew widget */
+  left: 1rem;          /* push it in from the left edge */
   width: 200px;
   background: #1a1d2e;
   padding: 1rem;
@@ -406,7 +406,52 @@
   left: 0;
   top: 0;
 }
+/* layout for the heading + close icon */
+.trending-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
 
+/* style the “✖” button */
+.trending-close-button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #facc15;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* hide state */
+.trending-sidebar.hidden {
+  transform: translateX(-220px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .3s ease, opacity .3s ease;
+}
+
+.trending-open-button {
+  position: fixed;
+  top: 5rem;            /* same vertical as 🌙 button */
+  left: 1rem;           /* sit over on the left */
+  background: #1f1f2f;
+  color: #facc15;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #facc15, 0 0 20px rgba(250,204,21,0.3);
+  z-index: 10000;
+  transition: box-shadow 0.2s;
+}
+.trending-open-button:hover {
+  box-shadow: 0 0 15px #facc15, 0 0 30px rgba(250,204,21,0.5);
+}
+
+<aside class="trending-sidebar hidden"> … </aside>
       
   </style>
 </head>
@@ -425,6 +470,14 @@
   </header>
 
   <p class="slogan-blink">“Built for the ones who never log off.”</p>
+	
+    <button
+  class="trending-open-button"
+  onclick="document.querySelector('.trending-sidebar').classList.remove('hidden')"
+  title="What’s Trending"
+>
+  What’s Trending
+	</button>
 
   <button
       class="sidebar-toggle-button"
@@ -433,6 +486,7 @@
     >
       🌙
     </button>
+    
    <div class="sidebar-widget hidden" id="nightCrewWidget">
     <h3>🌙 Night Crew</h3>
     <ul style="list-style: none; padding: 0; margin: 0;">
@@ -538,6 +592,8 @@
 <!-- 👉 Trending Now Sidebar -->
 <aside class="trending-sidebar">
   <h3>🔥 Trending Now</h3>
+   <button class="trending-close-button" aria-label="Close Trending">✖</button>
+  </div>
   <ul>
     <li>Valorant Clutch Clips</li>
     <li>Minecraft Build-off</li>
@@ -613,6 +669,13 @@
       updateCharCount();
       updatePreview();
     }
+    
+    // close button inside the trending panel
+document
+  .querySelector('.trending-close-button')
+  .addEventListener('click', () => {
+    document.querySelector('.trending-sidebar').classList.add('hidden');
+  });
   </script>
 </body>
 </html>
