@@ -366,6 +366,34 @@
   color: #aaa;
   line-height: 1.2;
 }
+/* ─── TRENDING SIDEBAR ─── */
+.trending-sidebar {
+  position: fixed;
+  top: 8rem;           /* same vertical start as your Night Crew widget */
+  left: 2rem;          /* push it in from the left edge */
+  width: 200px;
+  background: #1a1d2e;
+  padding: 1rem;
+  border-radius: .75rem;
+  border: 1px solid rgba(255,255,255,.05);
+  box-shadow: 0 0 10px rgba(255,60,56,.2);
+  color: #f0f0f0;
+  font-size: .85rem;
+}
+.trending-sidebar h3 {
+  margin: 0 0 .5rem;
+  font-size: 1rem;
+  color: #ff3c38;
+}
+.trending-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.trending-sidebar li {
+  margin-bottom: .5rem;
+}
+
       
   </style>
 </head>
@@ -493,6 +521,17 @@
 </div>
 </div>
   </section>
+  
+<!-- 👉 Trending Now Sidebar -->
+<aside class="trending-sidebar">
+  <h3>🔥 Trending Now</h3>
+  <ul>
+    <li>#Valorant Clutch Clips</li>
+    <li>#Minecraft Build-off</li>
+    <li>#Apex Legend’s New Map</li>
+    <li>#R6Siege Pro Tips</li>
+  </ul>
+</aside>
 
 <!-- TICKER BAR -->
   <div class="ticker-bar">
