@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noctive – Night‑First Gaming Platform</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      
+   /* ─── GLOBAL & LAYOUT ─── */
+      body {
+        margin: 0;
+        font-family: "Rubik", sans-serif;
+        background: linear-gradient(
+          to bottom right,
+          #0a0a1a,
+          #1f1a2f,
+          #1e1e3f,
+          #132842
+        );
+        background-attachment: fixed;
+        color: #f0f0f0;
+      }
+      header {
+        background: #23263a;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      header h1 {
+        font-size: 2rem;
+        background: linear-gradient(90deg, #800000, #ff3c38);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientText 6s ease-in-out infinite;
+        margin: 0;
+      }
+      nav {
+        display: flex;
+        gap: 1rem;
+      }
+      nav a {
+        color: #b22222;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition:
+          background 0.3s,
+          color 0.3s;
+      }
+      nav a:hover {
+        background: #3a1f1f;
+        color: #fff;
+      }
+
+      /* ─── SLOGAN ─── */
+      .slogan-blink {
+        text-align: center;
+        margin: 1rem 0;
+        font-size: 1rem;
+        font-style: italic;
+        color: #facc15;
+        animation: yellowFlicker 2.8s infinite;
+        text-shadow:
+          0 0 5px #facc15,
+          0 0 10px #facc15;
+      }
+
+      /* ─── SIDEBAR WIDGET ─── */
+      .sidebar-widget {
+        position: fixed;
+        top: 8rem;
+        right: 2rem;
+        width: 200px;
+        background: #1a1d2e;
+        border-radius: 0.75rem;
+        box-shadow: 0 0 10px rgba(250, 204, 21, 0.05);
+        padding: 1rem;
+        color: #f0f0f0;
+        z-index: 999;
+        font-size: 0.85rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease;
+      }
+      .sidebar-widget.hidden {
+        transform: translateX(250px);
+        opacity: 0;
+        pointer-events: none;
+      }
+      .sidebar-widget h3 {
+        animation: yellowFlicker 2.8s infinite;
+        margin: 0 0 0.75rem;
+        font-size: 1rem;
+        color: #facc15;
+        text-shadow: 0 0 4px #facc15;
+      }
+      .sidebar-widget ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .sidebar-widget li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .status-dot.online {
+        background-color: #22c55e;
+        box-shadow: 0 0 6px #22c55e;
+      }
+      .status-dot.idle {
+        background-color: #facc15;
+        box-shadow: 0 0 6px #facc15;
+      }
+      .status-dot.offline {
+        background-color: #6b7280;
+        box-shadow: 0 0 6px #6b7280;
+      }
+
+      .sidebar-toggle-button {
+        position: fixed;
+        top: 5rem;
+        right: 1rem;
+        background: #1f1f2f;
+        color: #facc15;
+        border: 1px solid #444;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 10000;
+        box-shadow: 0 0 10px #facc15;
+      }
+
+      /* ─── FEED & POSTS ─── */
+      .feed {
+  		
+  		padding: 2rem;
+  		max-width: calc(100% - 480px);
+  		margin: auto;
+	}
+      .post {
+        background: linear-gradient(to bottom right, #1d2133, #292e44);
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow:
+          0 0 10px rgba(255, 255, 255, 0.03),
+          0 0 20px rgba(255, 60, 56, 0.12);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .post:hover {
+        transform: translateY(-3px);
+        box-shadow:
+          0 0 12px rgba(255, 255, 255, 0.05),
+          0 0 28px rgba(255, 60, 56, 0.2);
+      }
+      .user {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .user img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+      .user-info {
+        display: flex;
+        flex-direction: column;
+      }
+      .user-info strong {
+        font-size: 0.9rem;
+      }
+      .user-info .currently-playing {
+        font-size: 0.65rem;
+        color: #aaa;
+      }
+      .post textarea,
+      .post input[type="text"] {
+        width: 100%;
+        padding: 0.75rem;
+        margin-top: 1rem;
+        background: #1e1e2e;
+        border: 1px solid #333;
+        border-radius: 0.5rem;
+        color: #eee;
+        font-size: 0.9rem;
+      }
+
+      /* ─── VOTES & CONFETTI ─── */
+      .vote-section {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .vote-btn {
+        background: none;
+        border: none;
+        font-size: 1.25rem;
+        cursor: pointer;
+        color: #facc15;
+        transition:
+          transform 0.2s,
+          text-shadow 0.3s;
+      }
+      .vote-btn:hover {
+        transform: scale(1.2);
+      }
+      .vote-btn.voted-up {
+        color: #22c55e;
+        text-shadow: 0 0 6px #22c55e;
+      }
+      .vote-btn.voted-down {
+        color: #ef4444;
+        text-shadow: 0 0 6px #ef4444;
+      }
+      .vote-count {
+        font-weight: bold;
+        color: #facc15;
+        transition:
+          transform 0.2s,
+          opacity 0.2s;
+      }
+      .vote-count.animate {
+        transform: scale(1.5);
+        opacity: 0.7;
+      }
+      .confetti {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: #facc15;
+        opacity: 0.9;
+        animation: confettiFall 1s ease-out forwards;
+        pointer-events: none;
+        border-radius: 50%;
+        z-index: 9999;
+      }
+      @keyframes confettiFall {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100px) rotate(720deg);
+          opacity: 0;
+        }
+      }
+
+ /* ─── TICKER ─── */
+      .ticker-bar {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #0a0a1a;
+        padding: 0.5rem 0;
+        overflow: hidden;
+        z-index: 9999;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .ticker-text {
+        white-space: nowrap;
+        display: inline-block;
+        padding-left: 100%;
+        animation:
+          tickerScroll 50s linear infinite,
+          neonPulse 3s ease-in-out infinite;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.85rem;
+        color: #facc15;
+        text-shadow:
+          0 0 8px #facc15,
+          0 0 15px #facc15;
+      }
+      .ticker-bar:hover .ticker-text {
+        animation-play-state: paused;
+      }
+      @keyframes tickerScroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+      @keyframes neonPulse {
+        0%,
+        100% {
+          text-shadow:
+            0 0 6px #facc15,
+            0 0 12px #facc15;
+        }
+        50% {
+          text-shadow:
+            0 0 10px #facc15,
+            0 0 20px #facc15;
+        }
+      }
+      @keyframes gradientText {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      @keyframes yellowFlicker {
+        0%,
+        19%,
+        22%,
+        25%,
+        53%,
+        57%,
+        100% {
+          opacity: 1;
+        }
+        20%,
+        24%,
+        55% {
+          opacity: 0.7;
+        }
+      }
+      
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+.currently-playing {
+  font-size: 0.65rem;
+  color: #aaa;
+  line-height: 1.2;
+}
+/* ─── TRENDING SIDEBAR ─── */
+.trending-sidebar {
+  position: fixed;
+  top: 5rem;           /* same vertical start as your Night Crew widget */
+  left: 1rem;          /* push it in from the left edge */
+  width: 200px;
+  background: #1a1d2e;
+  padding: 1rem;
+  border-radius: .75rem;
+  border: 1px solid rgba(255,255,255,.05);
+  box-shadow: 0 0 10px rgba(255,60,56,.2);
+  color: #f0f0f0;
+  font-size: .85rem;
+}
+.trending-sidebar h3 {
+  margin: 0 0 .5rem;
+  font-size: 1rem;
+  color: #ff3c38;
+}
+.trending-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.trending-sidebar li {
+  margin-bottom: .5rem;
+}
+
+.trending-sidebar li {
+  list-style: none;
+  position: relative;
+  padding-left: 1.2em;
+}
+.trending-sidebar li::before {
+  content: "🔥";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+/* layout for the heading + close icon */
+.trending-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+/* style the “✖” button */
+.trending-close-button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #facc15;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* hide state */
+.trending-sidebar.hidden {
+  transform: translateX(-220px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .3s ease, opacity .3s ease;
+}
+
+.trending-open-button {
+  position: fixed;
+  top: 5rem;            /* same vertical as 🌙 button */
+  left: 1rem;           /* sit over on the left */
+  background: #1f1f2f;
+  color: #facc15;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #facc15, 0 0 20px rgba(250,204,21,0.3);
+  z-index: 10000;
+  transition: box-shadow 0.2s;
+}
+.trending-open-button:hover {
+  box-shadow: 0 0 15px #facc15, 0 0 30px rgba(250,204,21,0.5);
+}
+   
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Noctive</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Creator Hub</a>
+      <a href="#">Highlights</a>
+      <a href="#">Find Teammates</a>
+      <a href="#">Store Hub</a>
+      <a href="#">Dev Hub</a>
+    </nav>
+    <button id="toggleTrending">What’s Trending</button>
+  </header>
+
+  <p class="slogan-blink">“Built for the ones who never log off.”</p>
+	
+    <button
+  class="trending-open-button"
+  onclick="document.querySelector('.trending-sidebar').classList.remove('hidden')"
+  <button class="trending-open-button"
+  onclick="openTrending()"
+  title="What’s Trending"
+>
+  What’s Trending
+	</button>
+
+  <button
+      class="sidebar-toggle-button"
+      onclick="toggleSidebar()"
+      title="Toggle Night Crew"
+    >
+      🌙
+    </button>
+    
+   <div class="sidebar-widget hidden" id="nightCrewWidget">
+    <h3>🌙 Night Crew</h3>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      <li><span class="status-dot online"></span> @Venus</li>
+      <li><span class="status-dot online"></span> @Hijinxx</li>
+      <li><span class="status-dot idle"></span> @Belt181</li>
+      <li><span class="status-dot offline"></span> @WispEcho</li>
+      <li><span class="status-dot online"></span> @CrybbyV</li>
+      <li><span class="status-dot idle"></span> @Remko</li>
+      <li><span class="status-dot offline"></span> @MoonDaze</li>
+    </ul>
+  </div>
+
+  <section class="feed">
+    
+ <!-- POST: Venus -->
+<div class="post" style="border: 2px dashed #555;">
+  <div class="user">
+    <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" />
+    <div class="user-info">
+  <strong>@Venus <span class="title">(Nomad)</span></strong>
+<span class="currently-playing">🎮 Currently playing: Rainbow Six Siege</span>
+    </div>
+  </div>
+     <textarea id="newPostInput" placeholder="What's on your mind lil dude?" rows="3" maxlength="200"
+    style="width: 100%; margin-top: 1rem; padding: 0.75rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.9rem;"
+    oninput="updateCharCount(); updatePreview();"></textarea>
+
+  <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #aaa;">
+    <span id="charCount">0</span>/200 characters
+  </div>
+  <button style="margin-top: 1rem; padding: 0.5rem 1rem; background: #b22222; border: none; border-radius: 0.5rem; color: white; font-weight: bold; cursor: pointer;">Post</button>
+  <div id="previewBox" style="margin-top: 1rem; background: #1e1e2e; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #333; color: #aaa;">
+    <strong>Preview:</strong>
+    <p id="previewText" style="margin: 0.5rem 0 0 0; color: #f0f0f0;"></p>
+  </div>
+</div>
+    
+     <!-- POST: Hijinxx -->
+<div class="post">
+  <div class="user">
+    <img src="https://ui-avatars.com/api/?name=Hijinxx&background=4b0082&color=fff&rounded=true" alt="User Avatar" />
+    <div class="user-info">
+       <strong>@Hijinxx <span class="title">(Noob)</span></strong>
+      <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Dead by Daylight</span>
+    </div>
+  </div>
+  <p style="margin-top: 1rem;">solo queue horror. please... someone save me 😩</p>
+  <img src="https://media.giphy.com/media/xT1XGNBGXLY00GxBOY/giphy.gif" alt="scary gif" style="width: 250px; height: auto; border-radius: 0.75rem; margin-top: 1rem;" />
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
+  </div>
+  <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+  <button class="vote-btn" onclick="vote(this, 'up')">🔺</button>
+  <span class="vote-count">0</span>
+  <button class="vote-btn" onclick="vote(this, 'down')">🔻</button>
+</div>
+</div>
+
+<!-- POST: Belt181 -->
+<div class="post">
+  <div class="user">
+    <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" />
+    <div class="user-info">
+      <strong>@Belt181 <span class="title">(Rookie)</span></strong>
+      <span style="font-size: 0.75rem; color: #aaa;">Currently playing: Apex Legends</span>
+    </div>
+  </div>
+  <p style="margin-top: 1rem;">cracked movement. trash aim. balance restored. 💀</p>
+  <img src="https://media.giphy.com/media/j2mej8CwznYwjbjdzT/giphy.gif" alt="Apex gif" style="width: 250px; height: auto; border-radius: 0.75rem; margin-top: 1rem;" />
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
+  </div>
+  <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+  <button class="vote-btn" onclick="vote(this, 'up')">🔺</button>
+  <span class="vote-count">0</span>
+  <button class="vote-btn" onclick="vote(this, 'down')">🔻</button>
+</div>
+</div>
+
+<!-- POST: Remko -->
+<div class="post">
+  <div class="user">
+    <img src="https://ui-avatars.com/api/?name=Remko&background=222244&color=fff&rounded=true" alt="User Avatar" />
+    <div class="user-info">
+       <strong>@Remko <span class="title">(my fav bestie)</span></strong>
+      <span style="font-size: 0.75rem; color: #aaa;">Just vibing...</span>
+    </div>
+  </div>
+  <p style="margin-top: 1rem;">made a new Lo-fi playlist for late-night grinding 🌒</p>
+  <img src="https://media.giphy.com/media/YTbZzCkRQCEJa/giphy.gif" alt="lofi gif" style="width: 250px; height: auto; border-radius: 0.75rem; margin-top: 1rem;" />
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #1e1e2e; border: 1px solid #333; color: #eee; font-size: 0.85rem;" />
+  </div>
+  <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+  <button class="vote-btn" onclick="vote(this, 'up')">🔺</button>
+  <span class="vote-count">0</span>
+  <button class="vote-btn" onclick="vote(this, 'down')">🔻</button>
+</div>
+</div>
+  </section>
+  
+  <!-- 👉 Trending Now Sidebar -->
+  <aside class="trending-sidebar hidden" id="trendingSidebar">
+    <div class="trending-header">
+      <h3>🔥 What’s Trending</h3>
+      <button class="trending-close-button" aria-label="Close Trending">✖</button>
+      <button class="trending-close-button"
+      onclick="closeTrending()"
+      aria-label="Close Trending">
+    </button>
+    </div>
+    <ul>
+      <li>Valorant Clutch Clips</li>
+      <li>Minecraft Build-off</li>
+      <li>Apex Legend’s New Map</li>
+      <li>R6 Siege Pro Tips</li>
+      <li>you're a lil goofy</li>
+    </ul>
+    <button id="closeTrending">Close</button>
+  </aside>
+
+<!-- TICKER BAR -->
+  <div class="ticker-bar">
+    <div class="ticker-text">
+      Noctive doesn’t chase trends. &nbsp;&nbsp;&nbsp;
+      Stream what you love. Not what’s trending. &nbsp;&nbsp;&nbsp;
+      Unfollow the algorithm. &nbsp;&nbsp;&nbsp;
+      This is your space, Stream that weird game. &nbsp;&nbsp;&nbsp;
+      If you see this, you're one of my besties. &nbsp;&nbsp;&nbsp;
+      My favorite song is 'if i could i would feel nothing' by bear. &nbsp;&nbsp;&nbsp;
+      and if you're not one of my besties, you're on the wrong page. &nbsp;&nbsp;&nbsp;
+      
+    </div>
+  </div>
+
+  <footer>&copy; 2025 Noctive. Powered by silliness. ;P</footer>
+  
+  <script>
+    function toggleSidebar() {
+      document.getElementById('nightCrewWidget').classList.toggle('hidden');
+    }
+
+     function vote(btn, type) {
+      const countEl = btn.parentElement.querySelector('.vote-count');
+      let count = parseInt(countEl.textContent);
+      if (type === 'up') {
+        btn.classList.add('voted-up');
+        count++;
+        for (let i = 0; i < 10; i++) {
+          const c = document.createElement('div');
+          c.className = 'confetti';
+          c.style.left = (btn.getBoundingClientRect().left + btn.offsetWidth/2) + 'px';
+          document.body.appendChild(c);
+        }
+      } else {
+        btn.classList.add('voted-down');
+        count--;
+      }
+      countEl.textContent = count;
+      countEl.classList.add('animate');
+      setTimeout(() => countEl.classList.remove('animate'), 300);
+    }
+
+    // auto‑hide Trending sidebar
+let autoHide;
+const openBtn  = document.querySelector('.trending-open-button');
+const panel    = document.querySelector('.trending-sidebar');
+const closeBtn = document.querySelector('.trending-close-button');
+
+
+  panel.classList.remove('hidden');
+  openBtn.classList.add('hidden');
+  clearTimeout(autoHide);
+  autoHide = setTimeout(() => {
+    panel.classList.add('hidden');
+    openBtn.classList.remove('hidden');
+  }, 5000);
+
+panel.classList.add('hidden');
+openBtn.classList.remove('hidden');
+clearTimeout(autoHide);
+
+    // Random titles
+    const titles = ["Nomad","Rook","Noob","Ghost","Ace","Lurker","Clutch God","Goofy","Leo Skepi"];
+    document.querySelectorAll('.title').forEach(el => {
+      el.textContent = ` • ${titles[Math.floor(Math.random()*titles.length)]}`;
+    });
+
+    // Post textarea preview & char count
+    const newPostInput = document.getElementById('newPostInput');
+    const charCount = document.getElementById('charCount');
+    const previewText = document.getElementById('previewText');
+    function updateCharCount() {
+      charCount.textContent = newPostInput.value.length;
+    }
+    function updatePreview() {
+      previewText.textContent = newPostInput.value;
+    }
+
+    // (Optional) hook up actual posting
+    function postMessage() {
+      // implement as needed
+      updateCharCount();
+      updatePreview();
+    }
+    
+    // manual close also cancels the timer
+    panel.classList.add('hidden');
+    clearTimeout(autoHide);
+
+  function openTrending() {
+  document.querySelector('.trending-sidebar').classList.remove('hidden');
+  document.querySelector('.trending-open-button').classList.add('hidden');
+}
+
+function closeTrending() {
+  document.querySelector('.trending-sidebar').classList.add('hidden');
+  document.querySelector('.trending-open-button').classList.remove('hidden');
+}
+  </script>
+</body>
+</html>
