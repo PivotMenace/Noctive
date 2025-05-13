@@ -66,10 +66,35 @@
         transition:
           background 0.3s,
           color 0.3s;
+        position: relative;
       }
       nav a:hover {
         background: #3a1f1f;
         color: #fff;
+      }
+
+      /* Tooltip Text */
+      nav a::after {
+        content: attr(title);
+        position: absolute;
+        bottom: 120%; /* Position above the link */
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      /* Show Tooltip on Hover */
+      nav a:hover::after {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-5px);
       }
 
       /* ─── SLOGAN ─── */
@@ -448,6 +473,90 @@
     .trending-open-button:hover {
       box-shadow: 0 0 15px #facc15, 0 0 30px rgba(250, 204, 21, 0.5);
     }
+
+  /* Star Background */
+  .star-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #1a1d2e, #0a0a1a);
+    overflow: hidden;
+    z-index: -1; /* Ensure it stays behind all content */
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #facc15;
+    border-radius: 50%;
+    animation: moveStar 10s linear infinite;
+  }
+
+  @keyframes moveStar {
+    0% {
+      transform: translateY(0) translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) translateX(50px);
+      opacity: 0;
+    }
+  }
+
+/* Neon Glow Effect for User Avatars */
+.user-avatar {
+  width: 80px; /* Adjust size as needed */
+  height: 80px;
+  border-radius: 50%; /* Makes the avatar circular */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  box-shadow: 0 0 10px rgba(255, 60, 56, 0.8), 0 0 20px rgba(255, 60, 56, 0.6), 0 0 30px rgba(255, 60, 56, 0.4);
+  animation: pulseGlow 2s infinite;
+  overflow: hidden; /* Ensures the image stays inside the container */
+}
+
+/* Ensure the image fits perfectly inside the glowing container */
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; /* Ensures the image is circular */
+  object-fit: cover; /* Ensures the image scales properly */
+}
+
+/* Pulsing Animation */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 60, 56, 0.8), 0 0 20px rgba(255, 60, 56, 0.6), 0 0 30px rgba(255, 60, 56, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 60, 56, 1), 0 0 25px rgba(255, 60, 56, 0.8), 0 0 35px rgba(255, 60, 56, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 60, 56, 0.8), 0 0 20px rgba(255, 60, 56, 0.6), 0 0 30px rgba(255, 60, 56, 0.4);
+  }
+}
+
+/* Night Crew Widget with Soft Glowing Border */
+#nightCrewWidget {
+  position: fixed;
+  top: 8rem;
+  right: 2rem;
+  width: 250px;
+  background: linear-gradient(to bottom right, #1a1d2e, #23263a);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  color: #f0f0f0;
+  z-index: 999;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(250, 204, 21, 0.5), 0 0 30px rgba(250, 204, 21, 0.3);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
    
   </style>
 </head>
@@ -456,18 +565,19 @@
   <header>
     <h1>Noctive</h1>
     <nav>
-      <a href="#">Home</a>
-      <a href="#">Creator Hub</a>
-      <a href="#">Highlights</a>
-      <a href="#">Find Teammates</a>
-      <a href="#">Store Hub</a>
-      <a href="#">Dev Hub</a>
+      <a href="#" title="Why don’t skeletons fight each other? They don’t have the guts.">Home</a>
+      <a href="#" title="I’m reading a book on anti-gravity. It’s impossible to put down!">Creator Hub</a>
+      <a href="#" title="Why did the scarecrow win an award? He was outstanding in his field!">Highlights</a>
+      <a href="#" title="I told my wife she should embrace her mistakes. She gave me a hug.">Find Teammates</a>
+      <a href="#" title="I’m on a seafood diet. I see food, and I eat it.">Store Hub</a>
+      <a href="#" title="I used to play piano by ear, but now I use my hands.">Dev Hub</a>
     </nav>
   
   </header>
 
   <p class="slogan-blink">“Built for the ones who never log off.”</p>
 	
+  <div class="star-background"></div>
 
   <button
       class="sidebar-toggle-button"
@@ -477,25 +587,32 @@
       🌙
     </button>
     
-   <div class="sidebar-widget hidden" id="nightCrewWidget">
-    <h3>🌙 Night Crew</h3>
-    <ul style="list-style: none; padding: 0; margin: 0;">
-      <li><span class="status-dot online"></span> @Venus</li>
-      <li><span class="status-dot online"></span> @Hijinxx</li>
-      <li><span class="status-dot idle"></span> @Belt181</li>
-      <li><span class="status-dot offline"></span> @WispEcho</li>
-      <li><span class="status-dot online"></span> @CrybbyV</li>
-      <li><span class="status-dot idle"></span> @Remko</li>
-      <li><span class="status-dot offline"></span> @MoonDaze</li>
-    </ul>
-  </div>
+  <div class="sidebar-widget hidden" id="nightCrewWidget" title="Why don’t eggs tell jokes? They’d crack each other up.">
+  <h3>🌙 Night Crew</h3>
+  <ul style="list-style: none; padding: 0; margin: 0;">
+    <li title="I’m friends with all electricians. We have great current connections.">
+      <span class="status-dot online"></span> @Venus
+    </li>
+    <li title="I used to hate facial hair, but then it grew on me.">
+      <span class="status-dot online"></span> @Hijinxx
+    </li>
+    <li title="I’m on a roll! Literally, I’m eating a sandwich.">
+      <span class="status-dot idle"></span> @Belt181
+    </li>
+    <li title="I told my computer I needed a break. Now it won’t stop sending me KitKats.">
+      <span class="status-dot offline"></span> @WispEcho
+    </li>
+  </ul>
+</div>
 
   <section class="feed">
     
  <!-- POST: Venus -->
 <div class="post" style="border: 2px dashed #555;">
   <div class="user">
-    <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" />
+    <div class="user-avatar">
+      <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" />
+    </div>
     <div class="user-info">
   <strong>@Venus <span class="title">(Nomad)</span></strong>
 <span class="currently-playing">🎮 Currently playing: Rainbow Six Siege</span>
@@ -735,6 +852,46 @@ function toggleTrending() {
   const openButton = document.querySelector('.trending-open-button');
   openButton.classList.toggle('hidden');
 }
-  </script>
+
+  function createStars() {
+    const starBackground = document.querySelector('.star-background');
+    const starCount = 100; // Number of stars
+
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
+      star.style.top = Math.random() * 100 + 'vh'; // Random vertical position
+      star.style.animationDuration = Math.random() * 5 + 5 + 's'; // Random speed
+      star.style.animationDelay = Math.random() * 5 + 's'; // Random delay
+      starBackground.appendChild(star);
+    }
+  }
+
+  // Call the function to create stars
+  createStars();
+  
+  // Array of puns
+  const puns = [
+    "Why don’t skeletons fight each other? They don’t have the guts.",
+    "I’m reading a book on anti-gravity. It’s impossible to put down!",
+    "Why did the scarecrow win an award? He was outstanding in his field!",
+    "I told my wife she should embrace her mistakes. She gave me a hug.",
+    "I’m on a seafood diet. I see food, and I eat it.",
+    "I used to play piano by ear, but now I use my hands.",
+    "Why don’t eggs tell jokes? They’d crack each other up.",
+    "I’m friends with all electricians. We have great current connections.",
+    "I used to hate facial hair, but then it grew on me.",
+    "I told my computer I needed a break. Now it won’t stop sending me KitKats."
+  ];
+
+  // Add hover event to elements
+  document.querySelectorAll(".easter-egg").forEach((element) => {
+    element.addEventListener("mouseenter", () => {
+      const randomPun = puns[Math.floor(Math.random() * puns.length)];
+      element.setAttribute("title", randomPun);
+    });
+  });
+</script>
 </body>
 </html>
