@@ -47,7 +47,9 @@
         background: linear-gradient(90deg, #800000, #ff3c38);
         background-size: 200% auto;
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
+        color: #ff3c38; /* Fallback color */
         animation: gradientText 6s ease-in-out infinite;
         margin: 0;
       }
@@ -367,89 +369,85 @@
   color: #aaa;
   line-height: 1.2;
 }
-/* ─── TRENDING SIDEBAR ─── */
-.trending-sidebar {
-  position: fixed;
-  top: 5rem;           /* same vertical start as your Night Crew widget */
-  left: 1rem;          /* push it in from the left edge */
-  width: 200px;
-  background: #1a1d2e;
-  padding: 1rem;
-  border-radius: .75rem;
-  border: 1px solid rgba(255,255,255,.05);
-  box-shadow: 0 0 10px rgba(255,60,56,.2);
-  color: #f0f0f0;
-  font-size: .85rem;
-}
-.trending-sidebar h3 {
-  margin: 0 0 .5rem;
-  font-size: 1rem;
-  color: #ff3c38;
-}
-.trending-sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.trending-sidebar li {
-  margin-bottom: .5rem;
-}
+    /* TRENDING SIDEBAR */
+    .trending-sidebar {
+      position: fixed; /* Keep it fixed for scrolling behavior */
+      top: 8rem; /* Match the top position of the Night Crew box */
+      left: 2rem; /* Move it to the left side */
+      width: 250px;
+      background: linear-gradient(to bottom right, #1a1d2e, #23263a);
+      padding: 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      color: #f0f0f0;
+      font-size: 0.9rem;
+      z-index: 1000;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
 
-.trending-sidebar li {
-  list-style: none;
-  position: relative;
-  padding-left: 1.2em;
-}
-.trending-sidebar li::before {
-  content: "🔥";
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-/* layout for the heading + close icon */
-.trending-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
+    .trending-sidebar h3 {
+      margin: 0 0 1rem;
+      font-size: 1.2rem;
+      color: #ff3c38;
+      text-shadow: 0 0 5px rgba(255, 60, 56, 0.5);
+    }
 
-/* style the “✖” button */
-.trending-close-button {
-  background: none;
-  border: none;
-  font-size: 1rem;
-  color: #facc15;
-  cursor: pointer;
-  padding: 0;
-}
+    .trending-sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
 
-/* hide state */
-.trending-sidebar.hidden {
-  transform: translateX(-220px);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform .3s ease, opacity .3s ease;
-}
+    .trending-sidebar li {
+      margin-bottom: 0.75rem;
+      padding-left: 1.5rem;
+      position: relative;
+      font-size: 0.95rem;
+    }
 
-.trending-open-button {
-  position: fixed;
-  top: 5rem;            /* same vertical as 🌙 button */
-  left: 1rem;           /* sit over on the left */
-  background: #1f1f2f;
-  color: #facc15;
-  border: 1px solid #444;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 10px #facc15, 0 0 20px rgba(250,204,21,0.3);
-  z-index: 10000;
-  transition: box-shadow 0.2s;
-}
-.trending-open-button:hover {
-  box-shadow: 0 0 15px #facc15, 0 0 30px rgba(250,204,21,0.5);
-}
+    .trending-sidebar li::before {
+      content: "🔥";
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .trending-close-button {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: #facc15;
+      cursor: pointer;
+      padding: 0;
+      float: right;
+    }
+
+    .trending-sidebar.hidden {
+      transform: translateX(-300px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .trending-open-button {
+      position: fixed;
+      top: 5rem; /* Align with the Night Crew toggle button */
+      left: 2rem; /* Move the button to the left side */
+      background: #1f1f2f;
+      color: #facc15;
+      border: 1px solid #444;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #facc15, 0 0 20px rgba(250, 204, 21, 0.3);
+      z-index: 10000;
+      transition: box-shadow 0.2s;
+    }
+
+    .trending-open-button:hover {
+      box-shadow: 0 0 15px #facc15, 0 0 30px rgba(250, 204, 21, 0.5);
+    }
    
   </style>
 </head>
@@ -465,20 +463,11 @@
       <a href="#">Store Hub</a>
       <a href="#">Dev Hub</a>
     </nav>
-    <button id="toggleTrending">What’s Trending</button>
+  
   </header>
 
   <p class="slogan-blink">“Built for the ones who never log off.”</p>
 	
-    <button
-  class="trending-open-button"
-  onclick="document.querySelector('.trending-sidebar').classList.remove('hidden')"
-  <button class="trending-open-button"
-  onclick="openTrending()"
-  title="What’s Trending"
->
-  What’s Trending
-	</button>
 
   <button
       class="sidebar-toggle-button"
@@ -590,25 +579,29 @@
 </div>
   </section>
   
-  <!-- 👉 Trending Now Sidebar -->
-  <aside class="trending-sidebar hidden" id="trendingSidebar">
-    <div class="trending-header">
-      <h3>🔥 What’s Trending</h3>
-      <button class="trending-close-button" aria-label="Close Trending">✖</button>
-      <button class="trending-close-button"
-      onclick="closeTrending()"
-      aria-label="Close Trending">
-    </button>
-    </div>
-    <ul>
-      <li>Valorant Clutch Clips</li>
-      <li>Minecraft Build-off</li>
-      <li>Apex Legend’s New Map</li>
-      <li>R6 Siege Pro Tips</li>
-      <li>you're a lil goofy</li>
-    </ul>
-    <button id="closeTrending">Close</button>
-  </aside>
+<!-- 👉 Trending Now Sidebar -->
+<aside class="trending-sidebar hidden">
+  <div class="trending-header">
+    <h3>🔥 What’s Trending</h3>
+  </div>
+  <ul>
+    <li>Valorant Clutch Clips</li>
+    <li>Minecraft Build-off</li>
+    <li>Apex Legend’s New Map</li>
+    <li>R6 Siege Pro Tips</li>
+    <li>you're a lil goofy</li>
+  </ul>
+</aside>
+
+<!-- Button to Toggle Sidebar -->
+<button
+  class="trending-open-button"
+  id="toggleTrendingButton"
+  title="Toggle What's Trending"
+  onclick="toggleTrending()"
+>
+  🔥 What's Trending
+</button>
 
 <!-- TICKER BAR -->
   <div class="ticker-bar">
@@ -652,30 +645,51 @@
       setTimeout(() => countEl.classList.remove('animate'), 300);
     }
 
-    // auto‑hide Trending sidebar
-let autoHide;
-const openBtn  = document.querySelector('.trending-open-button');
-const panel    = document.querySelector('.trending-sidebar');
-const closeBtn = document.querySelector('.trending-close-button');
+  function toggleSidebar() {
+    document.getElementById('nightCrewWidget').classList.toggle('hidden');
+  }
 
+  function vote(btn, type) {
+    const countEl = btn.parentElement.querySelector('.vote-count');
+    let count = parseInt(countEl.textContent);
+    if (type === 'up') {
+      btn.classList.add('voted-up');
+      count++;
+      for (let i = 0; i < 10; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = (btn.getBoundingClientRect().left + btn.offsetWidth / 2) + 'px';
+        document.body.appendChild(c);
+      }
+    } else {
+      btn.classList.add('voted-down');
+      count--;
+    }
+    countEl.textContent = count;
+    countEl.classList.add('animate');
+    setTimeout(() => countEl.classList.remove('animate'), 300);
+  }
 
-  panel.classList.remove('hidden');
-  openBtn.classList.add('hidden');
-  clearTimeout(autoHide);
-  autoHide = setTimeout(() => {
-    panel.classList.add('hidden');
-    openBtn.classList.remove('hidden');
-  }, 5000);
+  // Random titles
+  document.querySelectorAll('.title').forEach(el => {
+    el.textContent = ` • ${titles[Math.floor(Math.random() * titles.length)]}`;
+  });
 
-panel.classList.add('hidden');
-openBtn.classList.remove('hidden');
-clearTimeout(autoHide);
+  // Post textarea preview & char count
+  // Removed duplicate declaration of previewText
+  function updateCharCount() {
+    charCount.textContent = newPostInput.value.length;
+  }
+  function updatePreview() {
+    previewText.textContent = newPostInput.value;
+  }
 
     // Random titles
-    const titles = ["Nomad","Rook","Noob","Ghost","Ace","Lurker","Clutch God","Goofy","Leo Skepi"];
-    document.querySelectorAll('.title').forEach(el => {
-      el.textContent = ` • ${titles[Math.floor(Math.random()*titles.length)]}`;
-    });
+    // Kept only one declaration of titles
+        const titles = ["Nomad", "Rook", "Noob", "Ghost", "Ace", "Lurker", "Clutch God", "Goofy", "Leo Skepi"];
+        document.querySelectorAll('.title').forEach(el => {
+          el.textContent = ` • ${titles[Math.floor(Math.random() * titles.length)]}`;
+        });
 
     // Post textarea preview & char count
     const newPostInput = document.getElementById('newPostInput');
@@ -700,13 +714,26 @@ clearTimeout(autoHide);
     clearTimeout(autoHide);
 
   function openTrending() {
-  document.querySelector('.trending-sidebar').classList.remove('hidden');
-  document.querySelector('.trending-open-button').classList.add('hidden');
+  const trendingSidebar = document.querySelector('.trending-sidebar');
+  const openButton = document.querySelector('.trending-open-button');
+  
+  trendingSidebar.classList.remove('hidden');
+  openButton.classList.add('hidden');
 }
 
 function closeTrending() {
-  document.querySelector('.trending-sidebar').classList.add('hidden');
-  document.querySelector('.trending-open-button').classList.remove('hidden');
+  const trendingSidebar = document.querySelector('.trending-sidebar');
+  const openButton = document.querySelector('.trending-open-button');
+  
+  trendingSidebar.classList.add('hidden');
+  openButton.classList.remove('hidden');
+}
+
+function toggleTrending() {
+  const trendingSidebar = document.querySelector('.trending-sidebar');
+  trendingSidebar.classList.toggle('hidden');
+  const openButton = document.querySelector('.trending-open-button');
+  openButton.classList.toggle('hidden');
 }
   </script>
 </body>
