@@ -35,12 +35,16 @@
         background: #23263a;
         padding: 1rem 2rem;
         display: flex;
+        flex-wrap: wrap; /* Allow wrapping of content */
         justify-content: space-between;
         align-items: center;
-        position: sticky;
+        position: fixed; /* Fix the header in place */
         top: 0;
+        left: 0;
+        width: 100%; /* Ensure it spans the full width */
         z-index: 1000;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        overflow: hidden; /* Prevent horizontal scrolling */
       }
       header h1 {
         font-size: 2rem;
@@ -55,7 +59,10 @@
       }
       nav {
         display: flex;
+        flex-wrap: wrap; /* Allow navigation links to wrap */
         gap: 1rem;
+        justify-content: center; /* Center the links */
+        width: 100%; /* Ensure the nav spans the full width */
       }
       nav a {
         color: #b22222;
@@ -67,6 +74,7 @@
           background 0.3s,
           color 0.3s;
         position: relative;
+        white-space: nowrap; /* Prevent text wrapping within links */
       }
       nav a:hover {
         background: #3a1f1f;
@@ -192,6 +200,9 @@
   		max-width: calc(100% - 480px);
   		margin: auto;
 	}
+      .feed {
+  margin-top: 4rem; /* Adjust this value to match the height of your header */
+}
       .post {
         background: linear-gradient(to bottom right, #1d2133, #292e44);
         padding: 1.25rem;
@@ -667,6 +678,53 @@ button:hover {
 .create-post button:hover {
   background: linear-gradient(90deg, #240101, #8b0000); /* Reverse darker red gradient */
   box-shadow: 0 0 5px rgba(139, 0, 0, 0.4), 0 0 8px rgba(139, 0, 0, 0.3); /* Slightly brighter on hover */
+}
+
+/* Responsive Styles for Mobile Users */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column; /* Stack the header content vertically */
+    align-items: center; /* Center align the content */
+    padding: 1rem; /* Adjust padding for smaller screens */
+  }
+
+  nav {
+    flex-direction: column; /* Stack navigation links vertically */
+    gap: 0.5rem; /* Reduce the gap between links */
+    align-items: center; /* Center align the links */
+  }
+
+  nav a {
+    padding: 0.5rem; /* Adjust padding for smaller links */
+    font-size: 0.9rem; /* Reduce font size for better fit */
+  }
+
+  .feed {
+    padding: 1rem; /* Reduce padding for smaller screens */
+    max-width: 100%; /* Allow the feed to take full width */
+  }
+
+  .post {
+    padding: 1rem; /* Adjust padding for posts */
+    margin-bottom: 1rem; /* Reduce spacing between posts */
+  }
+
+  .sidebar-widget,
+  .trending-sidebar {
+    width: 90%; /* Reduce sidebar width for smaller screens */
+    left: 5%; /* Center the sidebar */
+    top: 10rem; /* Adjust top position */
+  }
+
+  .sidebar-toggle-button,
+  .trending-open-button {
+    top: 1rem; /* Adjust button position */
+    right: 1rem; /* Keep it within the viewport */
+  }
+
+  .ticker-bar {
+    font-size: 0.75rem; /* Reduce font size for the ticker */
+  }
 }
    
   </style>
