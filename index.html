@@ -98,6 +98,32 @@ header .header-icon {
 header .header-icon img {
   width: 48px !important;
   height: 48px !important;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(1000%) hue-rotate(235deg) brightness(95%) contrast(90%) drop-shadow(0 0 4px rgba(50, 50, 50, 0.8));
+  animation: breatheGlow 3s ease-in-out infinite;
+}
+
+@keyframes breatheGlow {
+  0%, 100% {
+    filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(1000%) hue-rotate(235deg) brightness(95%) contrast(90%) drop-shadow(0 0 4px rgba(50, 50, 50, 0.8));
+    opacity: 0.9;
+  }
+  50% {
+    filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(1000%) hue-rotate(235deg) brightness(95%) contrast(90%) drop-shadow(0 0 12px rgba(50, 50, 50, 0.9));
+    opacity: 1;
+  }
+}
+
+.header-icon {
+  animation: breatheScale 3s ease-in-out infinite;
+}
+
+@keyframes breatheScale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 .brand-title {
@@ -185,22 +211,25 @@ nav {
   padding: 0;
   margin: 0 2px;
   border-radius: 50%;
-  transition: background 0.15s;
+  transition: box-shadow 0.18s, background 0.18s, transform 0.18s;
+  cursor: pointer;
 }
 
-.account-icon,
-.settings-icon {
-  width: 32px;
-  height: 32px;
-  display: block;
-  margin: 0;
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
-  object-fit: contain;
+.account-link:hover,
+.settings-link:hover {
+  box-shadow: 0 0 12px 2px #facc15, 0 0 24px 6px #facc1580;
+  background: #fffbe8;
+  transform: scale(1.08) rotate(-3deg);
 }
 
-      /* ─── SLOGAN ─── */
+.account-link:hover .account-icon,
+.settings-link:hover .settings-icon {
+  filter: drop-shadow(0 0 0px #facc15) drop-shadow(0 0 12px #facc15);
+  transform: scale(1.15) rotate(-4deg);
+  transition: filter 0.18s, transform 0.18s;
+}
+
+/* ─── SLOGAN ─── */
       .slogan-blink {
         text-align: center;
         margin: 1rem 0;
@@ -377,6 +406,7 @@ nav {
         align-items: center;
         gap: 0.5rem;
         margin-top: 1rem;
+        justify-content: flex-end; /* Align to the right */
       }
       .vote-btn {
         background: #f4f4f4;
@@ -1251,34 +1281,27 @@ button:focus,
 }
 
 @media (max-width: 700px) {
+  .trending-open-button,
+  .sidebar-toggle-button {
+    z-index: 3000 !important; /* Higher than any sidebar/widget */
+    position: fixed;
+    /* Optionally, make them a bit wider for easier tapping */
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 1.1rem;
+  }
   .trending-sidebar,
   #nightCrewWidget,
   .sidebar-widget {
-    left: 0 !important;
-    right: 0 !important;
-    width: 98vw !important;
-    min-width: 0 !important;
-    max-width: 100vw !important;
-    border-radius: 0.5rem !important;
-    top: calc(var(--header-height) + 3.5rem) !important;
-    margin: 0 auto !important;
-    z-index: 1001;
-    transition: transform 0.18s cubic-bezier(.4,1.2,.6,1), opacity 0.18s;
+    z-index: 2000 !important; /* Lower than the buttons */
   }
-  .trending-sidebar,
-  .sidebar-widget,
-  #nightCrewWidget {
-    transform: translateY(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
-  .trending-sidebar.hidden,
-  .sidebar-widget.hidden,
-  #nightCrewWidget.hidden {
-    transform: translateY(-120%) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
+}
+
+.nav-link,
+.nav-link:visited,
+.nav-link:hover,
+.nav-link:focus {
+  text-decoration: none !important;
 }
     </style>
   </head>
@@ -1411,7 +1434,7 @@ button:focus,
 </div>
     
      <!-- POST: Hijinxx -->
-<div class="post">
+<div class="post" data-post-id="post1">
   <div class="post-header">
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Hijinxx&background=4b0082&color=fff&rounded=true" alt="User Avatar" />
@@ -1428,16 +1451,15 @@ button:focus,
   <div style="margin-top: 1rem;">
     <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
   </div>
-  <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-  <!-- Example for one post, repeat for all vote buttons -->
-<button class="vote-btn" onclick="vote(this, 'up')">
-  <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
-</button>
-<span class="vote-count">0</span>
-<button class="vote-btn" onclick="vote(this, 'down')">
-  <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
-</button>
-</div>
+  <div class="vote-section">
+    <span class="vote-count">0</span>
+    <button class="vote-btn" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
+  </div>
 </div>
 
 <!-- POST: Belt181 -->
@@ -1458,16 +1480,15 @@ button:focus,
   <div style="margin-top: 1rem;">
     <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
   </div>
-  <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-  <!-- Example for one post, repeat for all vote buttons -->
-<button class="vote-btn" onclick="vote(this, 'up')">
-  <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
-</button>
-<span class="vote-count">0</span>
-<button class="vote-btn" onclick="vote(this, 'down')">
-  <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
-</button>
-</div>
+  <div class="vote-section">
+    <span class="vote-count">0</span>
+    <button class="vote-btn" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
+  </div>
 </div>
 
 <!-- POST: Remko -->
@@ -1488,16 +1509,15 @@ button:focus,
   <div style="margin-top: 1rem;">
     <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
   </div>
-  <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-  <!-- Example for one post, repeat for all vote buttons -->
-<button class="vote-btn" onclick="vote(this, 'up')">
-  <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
-</button>
-<span class="vote-count">0</span>
-<button class="vote-btn" onclick="vote(this, 'down')">
-  <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
-</button>
-</div>
+  <div class="vote-section">
+    <span class="vote-count">0</span>
+    <button class="vote-btn" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
+  </div>
 </div>
 
     </section>
@@ -1512,78 +1532,16 @@ button:focus,
       <p>&copy; 2023 Noctive. All rights reserved.</p>
     </footer>
 
-    <script>
-      // JavaScript for interactive elements like toggling sidebar, voting, etc.
-      function toggleSidebar() {
-        const sidebar = document.getElementById('nightCrewWidget');
-        const trending = document.getElementById('trendingSidebar');
-        sidebar.classList.toggle('hidden');
-        // Hide the other sidebar if opening this one
-        if (!sidebar.classList.contains('hidden')) {
-          trending.classList.add('hidden');
-        }
-      }
+    <!-- REMOVE the entire inline <script>...</script> block here -->
 
-      function toggleTrending() {
-        const trending = document.getElementById('trendingSidebar');
-        const sidebar = document.getElementById('nightCrewWidget');
-        trending.classList.toggle('hidden');
-        if (!trending.classList.contains('hidden')) {
-          sidebar.classList.add('hidden');
-        }
-      }
+    <!-- Add your compiled JavaScript file from TypeScript -->
+    <script src="../backend/index.js"></script>
 
-      function vote(button, direction) {
-        const voteCount = button.nextElementSibling;
-        let count = parseInt(voteCount.innerText);
-        if (direction === 'up') {
-          count++;
-          button.classList.add('voted-up');
-          voteCount.classList.add('animate');
-        } else {
-          count--;
-          button.classList.add('voted-down');
-          voteCount.classList.add('animate');
-        }
-        voteCount.innerText = count;
-        setTimeout(() => {
-          voteCount.classList.remove('animate');
-        }, 500);
-      }
-
-        // Character counter for the post input
-        const newPostInput = document.getElementById('newPostInput');
-        const charCount = document.getElementById('charCount');
-        newPostInput.addEventListener('input', () => {
-          const length = newPostInput.value.length;
-          charCount.innerText = length;
-          if (length > 200) {
-            newPostInput.value = newPostInput.value.substring(0, 200);
-          }
-        });
-  
-        // Simulate window close: hide all content except header
-        function windowClose() {
-          document.body.querySelectorAll('header ~ *').forEach(el => el.style.display = 'none');
-          document.querySelector('header').style.opacity = '0.7';
-        }
-      // Animated starfield: create and animate stars
-            (function createStars() {
-              const starBg = document.getElementById('starBg');
-              if (!starBg) return;
-              const STAR_COUNT = 60;
-              for (let i = 0; i < STAR_COUNT; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                // Randomize initial position and animation duration
-                star.style.left = Math.random() * 100 + 'vw';
-                star.style.top = Math.random() * 100 + 'vh';
-                star.style.opacity = 0.5 + Math.random() * 0.5;
-                star.style.animationDuration = (8 + Math.random() * 8) + 's';
-                star.style.animationDelay = (-Math.random() * 10) + 's';
-                starBg.appendChild(star);
-              }
-            })();
-          </script>
-        </body>
-      </html>
+    <!-- Add this inside your <body> -->
+<form id="loginForm">
+  <input type="text" id="username" placeholder="Username" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <button type="submit">Login</button>
+</form>
+  </body>
+</html>
