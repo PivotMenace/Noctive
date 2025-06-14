@@ -1,82 +1,84 @@
-// index.ts
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+const toggleSidebar = () => {
+  const sidebar = document.getElementById('nightCrewWidget');
+  sidebar.classList.toggle('hidden');
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
+
+const toggleTrending = () => {
+  const trendingSidebar = document.getElementById('trendingSidebar');
+  trendingSidebar.classList.toggle('hidden');
 };
-var _this = this;
-function login(username, password) {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, data;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch('/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username: username, password: password })
-                    })];
-                case 1:
-                    response = _a.sent();
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    if (data.success) {
-                        alert('Login successful!');
-                    }
-                    else {
-                        alert('Login failed: ' + data.message);
-                    }
-                    return [2 /*return*/];
-            }
-        });
-    });
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('nightCrewWidget');
+  sidebar.classList.toggle('hidden');
 }
-var loginForm = document.getElementById('loginForm');
-if (loginForm) {
-    loginForm.addEventListener('submit', function (e) { return __awaiter(_this, void 0, void 0, function () {
-        var username, password;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    e.preventDefault();
-                    username = document.getElementById('username').value;
-                    password = document.getElementById('password').value;
-                    return [4 /*yield*/, login(username, password)];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
+
+function toggleTrending() {
+  const trendingSidebar = document.getElementById('trendingSidebar');
+  trendingSidebar.classList.toggle('hidden');
 }
+
+// Track votes per user for each post
+const userVotes = {}; // Example: { postId: { userId: 'up' } }
+
+// Function to handle voting
+function vote(button, direction) {
+  const postElement = button.closest('.post');
+  const postId = postElement.getAttribute('data-post-id');
+  const userId = 'currentUser'; // Replace with actual user ID
+
+  // Initialize votes for the post if not already set
+  if (!userVotes[postId]) userVotes[postId] = {};
+
+  const voteCountElement = postElement.querySelector('.vote-count');
+  let currentVotes = parseInt(voteCountElement.textContent, 10) || 0;
+
+  // Check the user's current vote
+  const currentVote = userVotes[postId][userId];
+
+  if (currentVote === direction) {
+    // If the user clicks the same vote again, remove their vote
+    currentVotes += direction === 'up' ? -1 : 1;
+    delete userVotes[postId][userId]; // Remove the vote
+  } else {
+    // If the user switches their vote
+    if (currentVote === 'up') currentVotes -= 1; // Remove previous upvote
+    if (currentVote === 'down') currentVotes += 1; // Remove previous downvote
+    currentVotes += direction === 'up' ? 1 : -1; // Apply the new vote
+    userVotes[postId][userId] = direction; // Register the new vote
+  }
+
+  // Update the UI
+  voteCountElement.textContent = currentVotes.toString();
+  console.log(`Post ID: ${postId}, Updated vote count: ${currentVotes}`);
+}
+
+vote(document.querySelector('.vote-btn'), 'up');
+
+const App = () => (
+  <>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Noctive – Night‑First Gaming Platform</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script src="index.js" defer></script>
+      </head>
+      <body>
+        <header>
+          <div className="header-content">
+            <div className="brand-title">Noctive</div>
+            <nav className="header-nav">
+              <a href="#" className="nav-link">Home</a>
+              <a href="#" className="nav-link">Trending</a>
+            </nav>
+          </div>
+        </header>
+        {/* Scripts moved to external functions */}
+      </body>
+    </html>
+  </>
+);
+
+export default App;

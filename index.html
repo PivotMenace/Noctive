@@ -7,7 +7,7 @@
 
     <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -128,12 +128,12 @@ header .header-icon img {
 }
 
 .brand-title {
-  color: #000 !important;
-  text-shadow: none !important;
-  font-size: 2rem;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  margin-right: 1.5rem;
+  font-family: 'Rubik', 'Roboto Condensed', 'Segoe UI Bold', sans-serif !important;
+  font-weight: 700; /* Bold for emphasis */
+  font-size: 2rem; /* Adjust size as needed */
+  color: #000; /* Ensure visibility */
+  text-shadow: none; /* Remove any text shadow */
+  letter-spacing: 0.5px; /* Optional: Add spacing for style */
 }
 
 /* Navigation styling */
@@ -1455,9 +1455,6 @@ body.dark-mode .star-background {
       <div class="dialog-titlebar">
         <span>Night Crew</span>
         <button class="dialog-close-btn" onclick="toggleSidebar()" title="Close">×</button>
-        <a href="/profile" class="account-link" title="Your Profile">
-          <img src="pngs/account.png" alt="Account" class="account-icon">
-        </a>
       </div>
       <ul>
         <li><span class="status-dot online"></span> @Venus</li>
@@ -1472,7 +1469,7 @@ body.dark-mode .star-background {
         <span>What's Trending</span>
         <button class="dialog-close-btn" onclick="toggleTrending()" title="Close">×</button>
       </div>
-      <ul style="list-style: none; padding: 1rem; margin: 0;">
+      <ul>
         <li>Valorant Night Tournament</li>
         <li>New Apex Patch Notes</li>
         <li>Overwatch 2 Memes</li>
@@ -1516,9 +1513,30 @@ body.dark-mode .star-background {
     
      <!-- POST: Hijinxx -->
 <div class="post" data-post-id="post1">
+  <div class="post-header">
+    <div class="user">
+      <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" />
+      <div class="user-info">
+        <strong style="font-size: 1rem; color: #111;">
+          @Hijinxx <span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span>
+        </strong>
+        <span style="font-size: 0.75rem; color: #444;">🎮 Currently playing: Valorant</span>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top: 1rem;">"Clutch or kick. Always clutch. 🦉"</p>
+  <img src="https://media.giphy.com/media/3o7TKPZ8eQw8Z9U1Sg/giphy.gif" alt="Valorant gif" style="width: 250px; height: auto; border-radius: 0.75rem; margin-top: 1rem;" />
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+  </div>
   <div class="vote-section">
     <span class="vote-count">0</span>
-    <!-- Upvote and Downvote buttons -->
+    <button class="vote-btn" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
   </div>
 </div>
 
@@ -1531,7 +1549,7 @@ body.dark-mode .star-background {
         <strong style="font-size: 1rem; color: #111;">
           @Belt181 <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span>
         </strong>
-        <span style="font-size: 0.75rem; color: #444;">Currently playing: Apex Legends</span>
+        <span style="font-size: 0.75rem; color: #444;">🎮 Currently playing: Apex Legends</span>
       </div>
     </div>
   </div>
@@ -1560,7 +1578,7 @@ body.dark-mode .star-background {
         <strong style="font-size: 1rem; color: #111;">
           @Remko <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span>
         </strong>
-        <span style="font-size: 0.75rem; color: #444;">Currently: Just vibing</span>
+        <span style="font-size: 0.75rem; color: #444;">🌙 Currently: Just vibing</span>
       </div>
     </div>
   </div>
@@ -1641,6 +1659,18 @@ async function vote(button, direction) {
   } else {
     alert(data.message || 'Failed to register vote.');
   }
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('nightCrewWidget');
+  console.log('Toggling Night Crew Widget:', sidebar);
+  sidebar.classList.toggle('hidden');
+}
+
+function toggleTrending() {
+  const trendingSidebar = document.getElementById('trendingSidebar');
+  console.log('Toggling Trending Sidebar:', trendingSidebar);
+  trendingSidebar.classList.toggle('hidden');
 }
 </script>
   </body>
