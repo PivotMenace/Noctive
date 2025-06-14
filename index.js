@@ -21,7 +21,6 @@ function toggleTrending() {
 // Track votes per user for each post
 const userVotes = {}; // Example: { postId: { userId: 'up' } }
 
-// Function to handle voting
 function vote(button, direction) {
   const postElement = button.closest('.post');
   const postId = postElement.getAttribute('data-post-id');
@@ -31,6 +30,8 @@ function vote(button, direction) {
   if (!userVotes[postId]) userVotes[postId] = {};
 
   const voteCountElement = postElement.querySelector('.vote-count');
+  const upvoteButton = postElement.querySelector('.vote-btn.upvote');
+  const downvoteButton = postElement.querySelector('.vote-btn.downvote');
   let currentVotes = parseInt(voteCountElement.textContent, 10) || 0;
 
   // Check the user's current vote
@@ -38,14 +39,30 @@ function vote(button, direction) {
 
   if (currentVote === direction) {
     // If the user clicks the same vote again, remove their vote
-    currentVotes += direction === 'up' ? -1 : 1;
+    currentVotes = 0; // Reset vote count to 0
     delete userVotes[postId][userId]; // Remove the vote
+
+    // Remove active class from both buttons
+    upvoteButton.classList.remove('active');
+    downvoteButton.classList.remove('active');
   } else {
-    // If the user switches their vote
-    if (currentVote === 'up') currentVotes -= 1; // Remove previous upvote
-    if (currentVote === 'down') currentVotes += 1; // Remove previous downvote
+    // If the user switches their vote or votes for the first time
+    if (currentVote === 'up') {
+      currentVotes -= 1; // Remove previous upvote
+    } else if (currentVote === 'down') {
+      currentVotes += 1; // Remove previous downvote
+    }
     currentVotes += direction === 'up' ? 1 : -1; // Apply the new vote
     userVotes[postId][userId] = direction; // Register the new vote
+
+    // Update active class based on the direction
+    if (direction === 'up') {
+      upvoteButton.classList.add('active');
+      downvoteButton.classList.remove('active');
+    } else {
+      downvoteButton.classList.add('active');
+      upvoteButton.classList.remove('active');
+    }
   }
 
   // Update the UI
