@@ -19,288 +19,1733 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
-
       /* ─── GLOBAL & LAYOUT ─── */
       body {
-        background: linear-gradient(to bottom right, #0a0a1a, #1f1a2f, #1e1e3f, #132842) !important;
-        background-attachment: fixed;
-        background-size: cover;
-        color: #f0f0f0 !important;
-        margin: 0;
-        font-family: 'Nunito', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif !important;
-      }
+  margin: 0;
+  font-family: 'Nunito', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif !important;
+  background: #bdbdbd !important; /* Lighter background */
+  background-attachment: fixed;
+  color: #222;
+}
 
-      header {
-        background: #23263a;
-        padding: 1rem 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-      }
+/* Make sure header, nav, and all text use Nunito */
+header,
+.brand-title,
+nav,
+nav a,
+.nav-link,
+.header-main,
+.header-account-link,
+.account-link,
+.settings-link,
+.sidebar-widget,
+.trending-sidebar,
+button,
+input,
+textarea,
+select,
+.feed,
+.post,
+.create-post,
+.slogan-blink,
+.ticker-bar,
+.ticker-text,
+footer {
+  font-family: 'Nunito', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif !important;
+}
 
-      .header-main {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
+.feed {
+  background: transparent !important;
+}
+.star-background {
+  background: #e9e9e944 !important;
+}
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: auto;
+  background: #e5e5e5 !important;
+  color: #000 !important;
+  border-bottom: 2px solid #000 !important;
+  box-shadow: none !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 0 0 0.5rem 0;
+  justify-content: flex-start;
+}
 
-      .header-account-link {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
+.header-main {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 0 0.25rem 1.5rem;
+}
 
-      .header-account-link a img {
-        width: 32px;
-        height: 32px;
-      }
+header .header-icon {
+  width: 54px !important;
+  height: 54px !important;
+  margin-left: 0;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
 
-      .header-icon img {
-        width: 48px;
-        height: 48px;
-      }
+header .header-icon img {
+  width: 48px !important;
+  height: 48px !important;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(1000%) hue-rotate(235deg) brightness(95%) contrast(90%) drop-shadow(0 0 4px rgba(50, 50, 50, 0.8));
+  animation: breatheGlow 3s ease-in-out infinite;
+}
 
-      .brand-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #f0f0f0;
-      }
+@keyframes breatheGlow {
+  0%, 100% {
+    filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(1000%) hue-rotate(235deg) brightness(95%) contrast(90%) drop-shadow(0 0 4px rgba(50, 50, 50, 0.8));
+    opacity: 0.9;
+  }
+  50% {
+    filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(1000%) hue-rotate(235deg) brightness(95%) contrast(90%) drop-shadow(0 0 12px rgba(50, 50, 50, 0.9));
+    opacity: 1;
+  }
+}
 
-      .hub-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        padding: 2rem;
-        justify-content: center;
-      }
+.header-icon {
+  animation: breatheScale 3s ease-in-out infinite;
+}
 
-      .hub-box {
-        width: 250px;
-        padding: 1rem;
-        border: 2px dashed #888;
-        border-radius: 0.75rem;
-        background: #1a1a3a;
-        color: #f0f0f0;
+@keyframes breatheScale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.brand-title {
+  font-family: 'Rubik', 'Roboto Condensed', 'Segoe UI Bold', sans-serif !important;
+  font-weight: 700; /* Bold for emphasis */
+  font-size: 2rem; /* Adjust size as needed */
+  color: #000; /* Ensure visibility */
+  text-shadow: none; /* Remove any text shadow */
+  letter-spacing: 0.5px; /* Optional: Add spacing for style */
+}
+
+/* Navigation styling */
+nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0 0 0 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 110px;
+  padding: 0.3rem 1.2rem 0.3rem 1rem;
+  background: #d4d4d4;
+  border: 2px solid #222;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #111;
+  box-shadow: none;
+  margin: 0;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  height: 2.1rem;
+  letter-spacing: 0.01em;
+  position: relative;
+}
+
+.nav-link .arrow {
+  font-size: 1.1em;
+  margin-left: 0.7em;
+  color: #222;
+  font-family: inherit;
+  transition: color 0.15s;
+  line-height: 1;
+  user-select: none;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  background: #e5e5e5;
+  color: #000;
+  box-shadow: 0 2px 0 #888;
+}
+
+.nav-link:hover .arrow,
+.nav-link:focus .arrow {
+  color: #ff3c38;
+}
+
+.header-account-link {
+  position: absolute;
+  top: 0.75rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-right: 0;
+  height: 40px;
+}
+
+.account-link,
+.settings-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0 2px;
+  border-radius: 50%;
+  transition: box-shadow 0.18s, background 0.18s, transform 0.18s;
+  cursor: pointer;
+}
+
+.account-link:hover,
+.settings-link:hover {
+  box-shadow: 0 0 12px 2px #facc15, 0 0 24px 6px #facc1580;
+  background: #fffbe8;
+  transform: scale(1.08) rotate(-3deg);
+}
+
+.account-link:hover .account-icon,
+.settings-link:hover .settings-icon {
+  filter: drop-shadow(0 0 0px #facc15) drop-shadow(0 0 12px #facc15);
+  transform: scale(1.15) rotate(-4deg);
+  transition: filter 0.18s, transform 0.18s;
+}
+
+/* ─── SLOGAN ─── */
+      .slogan-blink {
         text-align: center;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin: 1rem 0;
+        font-size: 1rem;
+        font-style: italic;
+        color: #facc15;
+        animation: yellowFlicker 2.8s infinite;
+        text-shadow:
+          0 0 5px #facc15,
+          0 0 10px #facc15;
       }
 
-      .hub-box:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 0 12px rgba(255, 255, 255, 0.05), 0 0 28px rgba(255, 60, 56, 0.2);
+      /* ─── SIDEBAR WIDGET ─── */
+      .sidebar-widget {
+  /* Match Trending Sidebar style exactly */
+  position: fixed;
+  top: 8rem;
+  right: 2rem;
+  width: 250px;
+  background: #e0e0e0;
+  color: #222e3a;
+  border-radius: 0.75rem;
+  border: 2px solid #888;
+  box-shadow: 4px 4px 0 #888, 8px 8px 0 #b0b0b0, 0 0 0 2px #fff inset;
+  font-size: 0.9rem;
+  z-index: 1000;
+  padding: 0;
+  font-family: "System", "Segoe UI", "Tahoma", "Geneva", "Verdana", sans-serif;
+  min-width: 250px;
+  max-width: 300px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.sidebar-widget.hidden {
+        transform: translateX(250px);
+        opacity: 0;
+        pointer-events: none;
+      }
+      .sidebar-widget h3 {
+        animation: yellowFlicker 2.8s infinite;
+        margin: 0 0 0.75rem;
+        font-size: 1rem;
+        color: #facc15;
+        text-shadow: 0 0 4px #facc15;
+      }
+      .sidebar-widget ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+      .sidebar-widget li {
+        margin-bottom: 0.75rem;
+        padding-left: 1.5rem;
+        position: relative;
+        font-size: 0.95rem;
+        color: #f0f0f0; /* Match Trending Sidebar */
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: none;
+        background: transparent;
+      }
+      .sidebar-widget .status-dot {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        margin-right: 0.25rem;
+      }
+      .sidebar-widget .status-dot.online {
+        background-color: #22c55e;
+        box-shadow: 0 0 6px #22c55e;
+      }
+      .sidebar-widget .status-dot.idle {
+        background-color: #facc15;
+        box-shadow: 0 0 6px #facc15;
+      }
+      .sidebar-widget .status-dot.offline {
+        background-color: #6b7280;
+        box-shadow: 0 0 6px #6b7280;
       }
 
-      .hub-box a {
-        color: #f0f0f0;
-        text-decoration: none;
+      .sidebar-toggle-button {
+        position: fixed;
+        top: 5rem;
+        right: 1rem;
+        background: #2c2c2c;
+        color: #facc15;
+        border: 1px solid #444;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
         font-weight: bold;
-        font-size: 1.1rem;
+        cursor: pointer;
+        z-index: 10000;
+        box-shadow: 0 0 10px #facc15;
       }
 
-      .hub-box a:hover {
-        color: #ff3c38;
-      }
-
-      .post-container {
-        padding: 2rem;
-      }
-
+      /* ─── FEED & POSTS ─── */
+      .feed {
+  		
+  	 padding: 2rem 0.5rem;
+  	 max-width: 100%;
+  	 margin: auto;
+	}
+      .feed {
+  margin-top: 4rem; /* Adjust this value to match the height of your header */
+}
       .post {
-        background: linear-gradient(to bottom right, #1d2133, #292e44);
+        background: linear-gradient(to bottom right, #cccaca, #a8a8a8) !important;
         padding: 1.25rem;
         margin-bottom: 1.5rem;
         border-radius: 1rem;
         border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.03), 0 0 20px rgba(255, 60, 56, 0.12);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow:
+          0 0 10px rgba(255, 255, 255, 0.03),
+          0 0 20px rgba(255, 60, 56, 0.12);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
       }
-
       .post:hover {
         transform: translateY(-3px);
-        box-shadow: 0 0 12px rgba(255, 255, 255, 0.05), 0 0 28px rgba(255, 60, 56, 0.2);
+        box-shadow:
+          0 0 12px rgba(255, 255, 255, 0.05),
+          0 0 28px rgba(255, 60, 56, 0.2);
       }
-
       .user {
         display: flex;
         align-items: center;
         gap: 0.5rem;
       }
-
       .user img {
-        border-radius: 50%;
         width: 40px;
         height: 40px;
+        border-radius: 50%;
       }
-
       .user-info {
         display: flex;
         flex-direction: column;
       }
+      .user-info strong {
+        font-size: 0.9rem;
+      }
+      .user-info .currently-playing {
+        font-size: 0.65rem;
+        color: #aaa;
+      }
+      .post textarea,
+      .post input[type="text"] {
+        width: 100%;
+        padding: 1rem 1.25rem;      /* More vertical & horizontal padding */
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;      /* Optional: space below */
+        background: #fff;
+        border: 1.5px solid #8f0000;
+        border-radius: 0.65rem;
+        color: #222;
+        font-size: 1rem;            /* Slightly larger text */
+        box-sizing: border-box;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+.post textarea:focus,
+.post input[type="text"]:focus {
+  border-color: #ff3c38;
+  box-shadow: 0 0 0 2px #ff3c3822;
+  outline: none;
+}
 
-      .slogan-blink {
-        margin: 1rem auto 0;
-        font-size: 1rem;
-        font-style: italic;
+      /* ─── VOTES & CONFETTI ─── */
+      .vote-section {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        justify-content: flex-end; /* Align to the right */
+      }
+      .vote-btn {
+        background: #f4f4f4;
+        border: 2px solid #b0b0b0;
+        border-radius: 50%;
+        box-shadow:
+          2px 2px 0 #b0b0b0,
+          0 2px 8px #8882;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition:
+          box-shadow 0.18s cubic-bezier(.4,1.2,.6,1),
+          background 0.18s,
+          border-color 0.18s;
+        margin: 0 2px;
+      }
+      .vote-btn:hover,
+      .vote-btn:focus {
+        background: #fffbe8;
+        border-color: #47100f;
+        box-shadow:
+          0 0 0 2px #ff3c3822,
+          2px 4px 12px #ff3c3840;
+        outline: none;
+      }
+      .vote-btn img {
+        width: 18px;
+        height: 18px;
+        pointer-events: none;
+        filter: drop-shadow(0 1px 0 #fff) drop-shadow(0 2px 2px #8884);
+      }
+      .vote-count {
+        font-weight: bold;
         color: #facc15;
-        text-align: center;
-        text-shadow: 0 0 5px #facc15, 0 0 10px #facc15, 0 0 15px #fbbf24;
-        animation: yellowFlicker 2.8s infinite;
+        transition:
+          transform 0.2s,
+          opacity 0.2s;
+      }
+      .vote-count.animate {
+        /* Reduce scale animation for less jumpiness */
+        transform: scale(1.1);
+        opacity: 0.85;
+      }
+      .confetti {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: #facc15;
+        opacity: 0.9;
+        animation: confettiFall 1s ease-out forwards;
+        pointer-events: none;
+        border-radius: 50%;
+        z-index: 9999;
+      }
+      @keyframes confettiFall {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100px) rotate(720deg);
+          opacity: 0;
+        }
       }
 
-      @keyframes yellowFlicker {
-        0%, 19%, 22%, 25%, 53%, 57%, 100% {
-          opacity: 1;
-          text-shadow: 0 0 5px #facc15, 0 0 10px #facc15, 0 0 15px #fbbf24;
+ /* ─── TICKER ─── */
+      .ticker-bar {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #0a0a1a;
+        padding: 0.5rem 0;
+        overflow: hidden;
+        z-index: 9999;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .ticker-text {
+        white-space: nowrap;
+        display: inline-block;
+        padding-left: 100%;
+        animation:
+          tickerScroll 50s linear infinite,
+          neonPulse 3s ease-in-out infinite;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.95rem;
+        color: #ffe066 !important;
+        text-shadow:
+          0 0 8px #facc15,
+          0 0 15px #facc15,
+          0 0 24px #fff,
+          0 0 32px #facc15;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+      .ticker-bar:hover .ticker-text {
+        animation-play-state: paused;
+      }
+      @keyframes tickerScroll {
+        0% {
+          transform: translateX(0);
         }
-        20%, 24%, 55% {
-          opacity: 0.7;
-          text-shadow: 0 0 3px #facc15;
+        100% {
+          transform: translateX(-100%);
         }
       }
+      @keyframes neonPulse {
+        0%,
+        100% {
+          text-shadow:
+            0 0 6px #facc15,
+            0 0 12px #facc15;
+        }
+        50% {
+          text-shadow:
+            0 0 10px #facc15,
+            0 0 20px #facc15;
+        }
+      }
+      @keyframes gradientText {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      @keyframes yellowFlicker {
+        0%,
+        19%,
+        22%,
+        25%,
+        53%,
+        57%,
+        100% {
+          opacity: 1;
+        }
+        20%,
+        24%,
+        55% {
+          opacity: 0.7;
+        }
+      }
+      
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+.currently-playing {
+  font-size: 0.65rem;
+  color: #aaa;
+  line-height: 1.2;
+}
+    /* TRENDING SIDEBAR */
+    .trending-sidebar {
+      position: fixed; /* Keep it fixed for scrolling behavior */
+      top: 10rem !important;   /* Align both widgets further down, matching the buttons */
+      left: 2rem; /* Move it to the left side */
+      width: 250px;
+      background: linear-gradient(to bottom right, #1a1d2e, #23263a);
+      padding: 0;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      color: #f0f0f0;
+      font-size: 0.9rem;
+      z-index: 1000;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .trending-sidebar h3 {
+      margin: 0 0 1rem;
+      font-size: 1.2rem;
+      color: #ff3c38;
+      text-shadow: 0 0 5px rgba(255, 60, 56, 0.5);
+    }
+
+    .trending-sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .trending-sidebar li {
+      margin-bottom: 0.75rem;
+      padding-left: 1.5rem;
+      position: relative;
+      font-size: 0.95rem;
+    }
+
+    .trending-sidebar li::before {
+      content: "🔥";
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .trending-close-button {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: #facc15;
+      cursor: pointer;
+      padding: 0;
+      float: right;
+    }
+
+    .trending-sidebar.hidden {
+      transform: translateX(-300px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .trending-sidebar {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+      transition: transform 0.18s cubic-bezier(.4,1.2,.6,1), opacity 0.18s;
+    }
+
+    .trending-open-button {
+      position: fixed;
+      top: 9rem; /* Move both buttons further down from the header */
+      z-index: 10000;
+      left: 2rem;
+      background: #1f1f2f;
+      color: #facc15;
+      border: 1px solid #444;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #facc15, 0 0 20px rgba(250, 204, 21, 0.3);
+      transition: box-shadow 0.2s;
+    }
+
+    .trending-open-button:hover {
+      box-shadow: 0 0 15px #facc15, 0 0 30px rgba(250, 204, 21, 0.5);
+    }
+
+  /* Star Background */
+  .star-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, #1a1d2e, #0a0a1a);
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+    /* Animate the background diagonally */
+    animation: starfieldMove 60s linear infinite;
+  }
+
+  @keyframes starfieldMove {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 200px 200px;
+    }
+  }
+
+/* Animated stars */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #facc15;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: moveStar 10s linear infinite;
+}
+
+@keyframes moveStar {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(50vw);
+    opacity: 0;
+  }
+}
+
+/* Neon Glow Effect for User Avatars */
+.user-avatar {
+  width: 80px; /* Adjust size as needed */
+  height: 80px;
+  border-radius: 50%; /* Makes the avatar circular */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  box-shadow: 0 0 10px rgba(255, 60, 56, 0.8), 0 0 20px rgba(255, 60, 56, 0.6), 0 0 30px rgba(255, 60, 56, 0.4);
+  animation: pulseGlow 2s infinite;
+  overflow: hidden; /* Ensures the image stays inside the container */
+}
+
+/* Ensure the image fits perfectly inside the glowing container */
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; /* Ensures the image is circular */
+  object-fit: cover; /* Ensures the image scales properly */
+}
+
+/* Pulsing Animation */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 60, 56, 0.8), 0 0 20px rgba(255, 60, 56, 0.6), 0 0 30px rgba(255, 60, 56, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 60, 56, 1), 0 0 25px rgba(255, 60, 56, 0.8), 0 0 35px rgba(255, 60, 56, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 60, 56, 0.8), 0 0 20px rgba(255, 60, 56, 0.6), 0 0 30px rgba(255, 60, 56, 0.4);
+  }
+}
+
+/* Night Crew Widget with Soft Glowing Border */
+#nightCrewWidget {
+  position: fixed;
+  top: 10rem !important;   /* Align both widgets further down, matching the buttons */
+  right: 2rem;
+  width: 250px;
+  background: #b1b1b1 !important;   /* Dark grey background */
+  color: #f0f0f0 !important;        /* Light text for contrast */
+  border-radius: 0.75rem;
+  padding: 1rem;
+  color: #464646;
+  z-index: 999;
+  font-size: 0.85rem;
+  border: 1px solid rgba(184, 184, 184, 0.1);
+  /* REMOVE GLOW */
+  /* box-shadow: 0 0 15px rgba(250, 204, 21, 0.5), 0 0 30px rgba(250, 204, 21, 0.3); */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#nightCrewWidget ul,
+#nightCrewWidget li {
+  background: transparent !important;
+  color: #f0f0f0 !important;
+}
+
+#nightCrewWidget .dialog-titlebar {
+  background: #000000 !important;   /* Match Trending Sidebar */
+  color: #facc15 !important;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  margin: -1rem -1rem 1rem -1rem; /* Remove the gap and align with widget edges */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2.5rem;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.trending-sidebar .dialog-titlebar {
+  background: #000080 !important;
+  color: #facc15 !important;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  /* Remove negative margins so it aligns with the sidebar */
+  margin: 0; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2.5rem;
+  user-select: none;
+  box-sizing: border-box;
+  /* Make sure width is 100% of the sidebar */
+  width: 100%;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 15px #270201, 0 0 30px #500403; }
+  50% { box-shadow: 0 0 30px #640705, 0 0 60px #420100; }
+}
+
+.media-btn:hover {
+  background: #4601014d;
+}
+
+.post,
+.sidebar-widget,
+.trending-sidebar {
+  /* Classic Windows 3D window frame effect */
+  border: 2px solid #fff;
+  border-radius: 7px;
+  background: #e0e0e0;
+  color: #222e3a;
+  margin-bottom: 2rem;
+  box-shadow:
+    2px 2px 0 #b0b0b0,
+    4px 4px 0 #888,
+    0 0 0 2px #888 inset,
+    -2px -2px 0 #fff inset;
+}
+
+/* For the create-post box, keep the dashed border but add window shadow */
+.create-post {
+  border: 2px dashed #888 !important;
+  border-radius: 7px !important;
+  box-shadow:
+    2px 2px 0 #b0b0b0,
+    4px 4px 0 #888,
+    0 0 0 2px #fff inset,
+    -2px -2px 0 #fff inset;
+  background: #e0e0e0 !important;
+  color: #222e3a !important;
+}
+
+/* Button color palette: lighter blue for retro contrast */
+button,
+.header-close-btn,
+.media-btn,
+.trending-open-button,
+.sidebar-toggle-button,
+.dialog-close-btn {
+  background: #e0e0e0;
+  color: #181818;
+  border: 2px solid #fff;
+  border-bottom-color: #888;
+  border-right-color: #888;
+  box-shadow: 2px 2px 0 #b0b0b0;
+  transition:
+    transform 0.13s cubic-bezier(.4,2,.6,1),
+    box-shadow 0.13s cubic-bezier(.4,2,.6,1),
+    background 0.15s;
+}
+
+button:hover,
+.header-close-btn:hover,
+.media-btn:hover,
+.trending-open-button:hover,
+.sidebar-toggle-button:hover,
+.dialog-close-btn:hover {
+  /* Remove translateY and scale for less jumpiness */
+  transform: none;
+  /* Soften the shadow */
+  box-shadow:
+    2px 4px 8px #b0b0b055,
+    2px 2px 0 #b0b0b0;
+  background: #f8f8f8;
+  z-index: 2;
+  transition:
+    box-shadow 0.18s cubic-bezier(.4,1.2,.6,1),
+    background 0.18s;
+}
+
+/* If you want the media buttons to have a slightly different background on hover, add: */
+.media-btn:hover {
+  background: #f8eaea !important;
+  color: #b42c2a !important;
+  border-color: #ff3c38 !important;
+}
+
+.trending-open-button,
+.sidebar-toggle-button {
+  position: fixed;
+  top: var(--button-top-offset);
+  z-index: 2000; /* Make sure this is higher than the sidebar's z-index */
+  height: 2.5rem;
+}
+
+.trending-open-button {
+  left: 2rem;
+}
+
+.sidebar-toggle-button {
+  right: 2rem;
+}
+
+.sidebar-widget h3,
+.trending-sidebar h3,
+.dialog-titlebar {
+  background: #d4d4d4 !important;
+  color: #222 !important;
+  text-shadow: none;
+}
+
+.vote-btn {
+  text-shadow: none;
+  color: #222;
+}
+
+.vote-count {
+  color: #222;
+}
+
+.ticker-text {
+  color: #222;
+  text-shadow: none;
+}
+
+.slogan-blink {
+  color: #222;
+  text-shadow: none;
+  animation: none;
+}
+
+.create-post button,
+.create-post button:hover {
+  text-shadow: none;
+  color: #222 !important;
+  background: #e0e0e0 !important;
+  border: 2px solid #fff !important;
+  box-shadow: 2px 2px 0 #b0b0b0;
+}
+
+/* Titlebars and headings: neon accent */
+.dialog-titlebar,
+.sidebar-widget h3,
+.trending-sidebar h3 {
+  background: #000080 !important;
+  height: 2.5rem;
+  user-select: none;
+}
+
+.dialog-titlebar span {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dialog-close-btn {
+  background: #e0e0e0;
+  color: #222;
+  border: 1px solid #888;
+  border-top-color: #fff;
+  border-left-color: #fff;
+  border-bottom-color: #888;
+  border-right-color: #888;
+  border-radius: 2px;
+  width: 18px;
+  height: 18px;
+  font-size: 0.9rem;
+  font-family: "System", "Segoe UI", "Tahoma", "Geneva", "Verdana", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  margin-right: -0.25rem;
+  transition: background 0.15s;
+  box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #888 inset;
+  padding: 0;
+}
+.dialog-close-btn:hover {
+  background: #ff0000;
+  color: #fff;
+  border-top-color: #888;
+  border-left-color: #888;
+  border-bottom-color: #fff;
+  border-right-color: #fff;
+}
+
+/* ...existing code... */
+.post-header {
+  background: #f1f1f1;
+  border-bottom: 1.5px solid #8b8b8b;
+  border-top-left-radius: 1rem;    /* Match .post border-radius */
+  border-top-right-radius: 1rem;
+  padding: 0.75rem 1rem 0.75rem 1rem;
+  margin: 0;                       /* Remove negative margin */
+  display: flex;
+  align-items: center;
+}
+.post textarea,
+.post input[type="text"] {
+  width: 100%;
+  padding: 1rem 1.25rem;      /* More vertical & horizontal padding */
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;      /* Optional: space below */
+  background: #fff;
+  border: 1.5px solid #8f0000;
+  border-radius: 0.65rem;
+  color: #222;
+  font-size: 1rem;            /* Slightly larger text */
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.post textarea:focus,
+.post input[type="text"]:focus {
+  border-color: #ff3c38;
+  box-shadow: 0 0 0 2px #ff3c3822;
+  outline: none;
+}
+/* ...existing code... */@media (min-width: 1100px) {
+  .feed {
+    max-width: 750px !important;
+    margin: var(--button-top-offset) auto 0 auto !important; /* Align with button widgets */
+    padding: 2rem 0 !important;
+    display: block;
+  }
+  .post,
+  .create-post {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box;
+  }
+}
+
+/* Add this near the end of your <style> block */
+
+/* Red glow on Post button hover - only for the main Post button */
+.create-post > button:hover {
+  box-shadow: 0 0 12px 2px #ff3c38, 0 0 24px 6px #ff3c3880;
+  background: linear-gradient(90deg, #b42c2a, #c24b4b) !important;
+  border-color: #ff3c38 !important;
+  color: #fff !important;
+}
+
+/* Very subtle bounce animation for all buttons on hover/focus */
+@keyframes slightBounce {
+  0%   { transform: none; }
+  20%  { transform: translateY(-0.7px); }
+  40%  { transform: none; }
+  60%  { transform: translateY(-0.4px); }
+  80%  { transform: none; }
+  100% { transform: none; }
+}
+
+button:hover,
+button:focus,
+.header-close-btn:hover,
+.header-close-btn:focus,
+.media-btn:hover,
+.media-btn:focus,
+.trending-open-button:hover,
+.trending-open-button:focus,
+.sidebar-toggle-button:hover,
+.sidebar-toggle-button:focus,
+.dialog-close-btn:hover,
+.dialog-close-btn:focus,
+.vote-btn:hover,
+.vote-btn:focus {
+  animation: slightBounce 0.32s cubic-bezier(.4,1.2,.6,1);
+  /* Keep other hover styles as is */
+}
+
+.vote-btn img {
+  display: inline-block;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+.account-link {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  margin-right: -0.25rem;
+  height: 100%;
+}
+.account-icon,
+.settings-icon {
+  width: 32px;
+  height: 32px;
+  display: block;
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  object-fit: contain;
+}
+
+/* Only outline the actual PNG (not a circle) on hover */
+.settings-link:hover .settings-icon {
+  filter: drop-shadow(0 0 0px #facc15) drop-shadow(0 0 12px #facc15);
+  transform: scale(1.15) rotate(-4deg);
+  transition: filter 0.18s, transform 0.18s;
+  box-shadow: none;
+}
+
+/* Responsive feed and post sizing */
+.feed {
+  max-width: 500px;    /* Reduce from 600px to 500px */
+  margin: calc(var(--header-height) + 2rem) auto 0 auto;
+  padding: 2rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.post,
+.create-post {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+}
+
+/* On very large screens, add more side space */
+@media (min-width: 1200px) {
+  .feed {    max-width: 550px;  /* Keep consistent max-width */
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* On medium screens, slightly reduce max-width */
+@media (max-width: 900px) {
+  .feed {
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .feed {
+    max-width: 95vw;
+  }
+}
+
+:root {
+  --header-height: 8rem;
+  --button-top-offset: calc(var(--header-height) + 1rem);
+  --widget-top-offset: calc(var(--button-top-offset) + 3rem);
+}
+
+/* Position the toggle buttons first */
+.trending-open-button,
+.sidebar-toggle-button {
+  position: fixed;
+  top: var(--button-top-offset);
+  z-index: 2000; /* Make sure this is higher than the sidebar's z-index */
+  height: 2.5rem;
+}
+
+.trending-open-button {
+  left: 2rem;
+}
+
+.sidebar-toggle-button {
+  right: 2rem;
+}
+
+/* Position the widgets below the buttons */
+.trending-sidebar,
+#nightCrewWidget {
+  position: fixed;
+  top: var(--widget-top-offset) !important;
+  width: 250px;
+  z-index: 999;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.trending-sidebar {
+  left: 2rem;
+}
+
+#nightCrewWidget {
+  right: 2rem;
+}
+
+/* Ensure widgets are properly hidden when closed */
+.trending-sidebar.hidden {
+  transform: translateX(-300px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-widget.hidden {
+  transform: translateX(300px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Update feed positioning and responsive sizing */
+.feed {
+  max-width: 600px;    /* Wider base width */
+  margin: calc(var(--header-height) + 4rem) auto 0 auto; /* Increased top margin */
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 998;
+}
+
+/* Update responsive breakpoints to maintain consistent spacing */
+@media (min-width: 1200px) {
+  .feed {
+    max-width: 600px;  /* Keep consistent max-width */
+    margin-top: calc(var(--header-height) + 4rem); /* Keep increased spacing */
+  }
+}
+
+/* Update slogan position to not overlap with feed */
+.slogan-blink {
+  position: fixed;
+  top: calc(var(--header-height) + 0.2rem);
+  width: 100%;
+  text-align: center;
+  z-index: 997;
+  margin-bottom: 2rem;
+}
+
+.nav-icon {
+  display: none;
+}
+.nav-text {
+  display: inline;
+}
+
+@media (max-width: 700px) {
+  .nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-text {
+    display: none;
+  }
+  .nav-link {
+    justify-content: center;
+    min-width: 44px;
+    padding: 0.3rem 0.7rem;
+  }
+  .nav-icon img {
+    margin: 0 auto;
+    display: block;
+  }
+}
+
+@media (max-width: 700px) {
+  nav {
+    gap: 0.2rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+  }
+  .nav-link {
+    min-width: 44px;
+    padding: 0.3rem 0.5rem;
+    font-size: 1.1rem;
+    border-width: 1.5px;
+    height: 2.2rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .post,
+  .create-post {
+    padding: 0.7rem !important;
+    font-size: 0.97rem !important;
+  }
+  .post textarea,
+  .post input[type="text"] {
+    font-size: 0.97rem !important;
+    padding: 0.7rem 0.7rem !important;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    padding-bottom: 3.5rem !important;
+    overflow-x: hidden;
+  }
+  header {
+    padding-left: 0.2rem !important;
+    padding-right: 0.2rem !important;
+  }
+}
+
+/* Add this to your CSS */
+.sidebar-widget,
+.trending-sidebar {
+  z-index: 999;
+  transition: z-index 0s, transform 0.3s, opacity 0.3s;
+}
+.sidebar-widget:not(.hidden),
+.trending-sidebar:not(.hidden) {
+  z-index: 1001;
+}
+
+@media (max-width: 700px) {
+  .trending-open-button,
+  .sidebar-toggle-button {
+    z-index: 3000 !important; /* Higher than any sidebar/widget */
+    position: fixed;
+    /* Optionally, make them a bit wider for easier tapping */
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 1.1rem;
+  }
+  .trending-sidebar,
+  #nightCrewWidget,
+  .sidebar-widget {
+    z-index: 2000 !important; /* Lower than the buttons */
+  }
+}
+
+.nav-link,
+.nav-link:visited,
+.nav-link:hover,
+.nav-link:focus {
+  text-decoration: none !important;
+}
+
+#trendingSidebar {
+  color: #fff; /* Make all text in the sidebar white */
+}
+
+#trendingSidebar .sidebar-header {
+  color: #fff;           /* Make text white */
+  background: #001a66;   /* Optional: a deeper blue for style */
+  padding: 6px 12px;
+  font-weight: bold;
+  border-radius: 4px 4px 0 0;
+}
+
+body.dark-mode {
+  background: #181a20 !important;
+  color: #f0f0f0 !important;
+}
+body.dark-mode header,
+body.dark-mode .sidebar-widget,
+body.dark-mode .trending-sidebar,
+body.dark-mode .post,
+body.dark-mode .create-post {
+  background: #23263a !important;
+  color: #f0f0f0 !important;
+  border-color: #333 !important;
+  box-shadow: 2px 2px 0 #222, 4px 4px 0 #111, 0 0 0 2px #333 inset, -2px -2px 0 #444 inset;
+}
+body.dark-mode .dialog-titlebar,
+body.dark-mode .sidebar-widget h3,
+body.dark-mode .trending-sidebar h3 {
+  background: #111a2f !important;
+  color: #ffe066 !important;
+}
+body.dark-mode .trending-sidebar li,
+body.dark-mode .sidebar-widget li {
+  color: #ffe066 !important;
+}
+body.dark-mode .vote-btn,
+body.dark-mode .dialog-close-btn,
+body.dark-mode button,
+body.dark-mode .media-btn {
+  background: #23263a !important;
+  color: #ffe066 !important;
+  border-color: #333 !important;
+}
+body.dark-mode .vote-btn:hover,
+body.dark-mode .dialog-close-btn:hover,
+body.dark-mode button:hover,
+body.dark-mode .media-btn:hover {
+  background: #181a20 !important;
+  color: #fff !important;
+}
+body.dark-mode .star-background {
+  background: radial-gradient(circle, #23263a, #181a20) !important;
+}
     </style>
   </head>
   <body>
+
     <header>
       <div class="header-main">
-        <div class="header-icon">
-          <img src="pngs/logo.png" alt="Noctive Logo">
+        <div class="header-icon" style="position: relative;">
+          <img src="pngs/logo.png" alt="Noctive Logo" style="width:48px;height:48px;">
+          <button id="darkModeToggle" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #888; background: #222; color: #fff; cursor: pointer; z-index: 10;">
+    🌙 Dark Mode
+  </button>
         </div>
         <span class="brand-title">Noctive</span>
       </div>
+      <nav>
+  <a href="#" class="nav-link nav-home">
+    <span class="nav-icon"><img src="pngs/home.png" alt="Home" width="22" height="22"></span>
+    <span class="nav-text">Home</span>
+  </a>
+  <a href="#" class="nav-link nav-creator">
+    <span class="nav-icon"><img src="pngs/creator.png" alt="Creator Hub" width="22" height="22"></span>
+    <span class="nav-text">Creator Hub</span>
+  </a>
+  <a href="#" class="nav-link nav-highlights">
+    <span class="nav-icon"><img src="pngs/highlights.png" alt="Highlights" width="22" height="22"></span>
+    <span class="nav-text">Highlights</span>
+  </a>
+  <a href="#" class="nav-link nav-findteammates">
+    <span class="nav-icon"><img src="pngs/findteammates.png" alt="Find Teammates" width="22" height="22"></span>
+    <span class="nav-text">Find Teammates</span>
+  </a>
+  <a href="#" class="nav-link nav-store">
+    <span class="nav-icon"><img src="pngs/store.png" alt="Store Hub" width="22" height="22"></span>
+    <span class="nav-text">Store Hub</span>
+  </a>
+  <a href="#" class="nav-link nav-dev">
+    <span class="nav-icon"><img src="pngs/dev.png" alt="Dev Hub" width="22" height="22"></span>
+    <span class="nav-text">Dev Hub</span>
+  </a>
+</nav>
       <div class="header-account-link">
-        <a href="/profile" title="Your Profile">
-          <img src="pngs/account.png" alt="Account">
+        <a href="/profile" class="account-link" title="Your Profile">
+          <img src="pngs/account.png" alt="Account" class="account-icon">
         </a>
-        <a href="/settings" title="Settings">
-          <img src="pngs/settings.png" alt="Settings">
+        <a href="/settings" class="settings-link" title="Settings">
+          <img src="pngs/settings.png" alt="Settings" class="settings-icon">
         </a>
       </div>
     </header>
 
     <p class="slogan-blink">“Built for the ones who never log off.”</p>
+	
+    <div class="star-background" id="starBg"></div>
 
-    <div class="hub-container">
-      <div class="hub-box">
-        <a href="#home">Home</a>
+    <button
+      class="trending-open-button"
+      id="toggleTrendingButton"
+      title="Toggle What's Trending"
+      onclick="toggleTrending()"
+    >
+      <img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_full-2.png" alt="Trending" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">What's Trending
+    </button>
+    <button
+      class="sidebar-toggle-button"
+      onclick="toggleSidebar()"
+      title="Toggle Night Crew"
+    >
+      <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-5.png" alt="Night Crew" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">Night Crew
+    </button>
+    <button id="darkModeToggle" style="margin-left:1rem; padding:0.5rem 1rem; border-radius:6px; border:1px solid #888; background:#222; color:#fff; cursor:pointer;">
+  🌙 Dark Mode
+</button>
+
+    <div class="sidebar-widget hidden" id="nightCrewWidget">
+      <div class="dialog-titlebar">
+        <span>Night Crew</span>
+        <button class="dialog-close-btn" onclick="toggleSidebar()" title="Close">×</button>
       </div>
-      <div class="hub-box">
-        <a href="#creator-hub">Creator Hub</a>
-      </div>
-      <div class="hub-box">
-        <a href="#highlights">Highlights</a>
-      </div>
-      <div class="hub-box">
-        <a href="#find-teammates">Find Teammates</a>
-      </div>
-      <div class="hub-box">
-        <a href="#store">Store Hub</a>
-      </div>
-      <div class="hub-box">
-        <a href="#dev-hub">Dev Hub</a>
-      </div>
+      <ul>
+        <li><span class="status-dot online"></span> @Venus</li>
+        <li><span class="status-dot online"></span> @Hijinxx</li>
+        <li><span class="status-dot idle"></span> @Belt181</li>
+        <li><span class="status-dot offline"></span> @WispEcho</li>
+      </ul>
     </div>
 
-    <div class="post-container">
-      <!-- Venus's Post -->
-      <div class="post">
-        <div class="user">
-          <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar">
-          <div class="user-info">
-            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@Venus</strong>
-            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Nomad)</span>
-            <span>🎮 Currently playing: Rainbow Six Siege</span>
-          </div>
-        </div>
-        <p>“Built for the ones who never log off.”</p>
+    <div class="trending-sidebar hidden" id="trendingSidebar">
+      <div class="dialog-titlebar">
+        <span>What's Trending</span>
+        <button class="dialog-close-btn" onclick="toggleTrending()" title="Close">×</button>
       </div>
+      <ul>
+        <li>Valorant Night Tournament</li>
+        <li>New Apex Patch Notes</li>
+        <li>Overwatch 2 Memes</li>
+        <li>Looking for Teammates</li>
+      </ul>
+    </div>
 
-      <!-- Hijinxx's Post -->
-      <div class="post">
-        <div class="user">
-          <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar">
-          <div class="user-info">
-            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@Hijinxx</strong>
-            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span>
-            <span>🎮 Currently playing: Valorant</span>
-          </div>
-        </div>
-        <p>“Night Owl vibes.”</p>
+    <section class="feed">
+      
+ <!-- Slimmed Down and Enhanced POST: Venus -->
+<div class="post-status create-post" style="padding: 1rem; border-radius: 0.75rem; background: linear-gradient(to bottom right, #1d2133, #292e44); border: 2px dashed rgba(255, 60, 56, 0.5); margin-bottom: 2rem;">
+  <div class="user" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+    <div class="user-avatar" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 5px rgba(255, 60, 56, 0.5);">
+      <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;" />
+    </div>
+    <div class="user-info" style="flex-grow: 1;">
+      <span style="font-size: 1rem; color: #222; font-weight: 500;">
+        @Venus <span class="title" style="font-size: 0.8rem; color: #aaa;">(Nomad)</span>
+      </span>
+      <span class="currently-playing" style="display: block; font-size: 0.75rem; color: #444; margin-top: 0.25rem;">
+        🎮 Currently playing: Rainbow Six Siege
+      </span>
+    </div>
+  </div>
+
+  <textarea id="newPostInput" placeholder="What's on your mind, lil dude?" rows="2" maxlength="200"
+    style="width: 100%; margin-top: 1rem; margin-bottom: 0.5rem; padding: 1rem 1.25rem; border-radius: 0.65rem; background: #fff; border: 1.5px solid #8f0000; color: #222; font-size: 1rem; resize: none; box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s;"></textarea>
+
+  <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #aaa; text-align: right;">
+    <span id="charCount">0</span>/200 characters
+  </div>
+
+  <div class="media-buttons" style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+    <button class="media-btn" style="flex: 1; padding: 0.4rem; background: #292e44; border: 1px solid #444; border-radius: 0.5rem; color: #f0f0f0; font-size: 0.75rem; cursor: pointer;">📷 Photo</button>
+    <button class="media-btn" style="flex: 1; padding: 0.4rem; background: #292e44; border: 1px solid #444; border-radius: 0.5rem; color: #f0f0f0; font-size: 0.75rem; cursor: pointer;">🎥 Video</button>
+    <button class="media-btn" style="flex: 1; padding: 0.4rem; background: #292e44; border: 1px solid #444; border-radius: 0.5rem; color: #f0f0f0; font-size: 0.75rem; cursor: pointer;">😎 GIF</button>
+  </div>
+
+  <button style="margin-top: 0.75rem; padding: 0.5rem 1rem; background: linear-gradient(90deg, #ff3c38, #ff6565); border: none; border-radius: 0.5rem; color: white; font-weight: bold; font-size: 0.9rem; cursor: pointer; width: 100%; box-shadow: 0 0 5px rgba(255, 60, 56, 0.5);">Post</button>
+</div>
+    
+     <!-- POST: Hijinxx -->
+<div class="post" data-post-id="hijinxx">
+  <div class="post-header">
+    <div class="user">
+      <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" />
+      <div class="user-info">
+        <strong style="font-size: 1rem; color: #111;">
+          @Hijinxx <span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span>
+        </strong>
+        <span style="font-size: 0.75rem; color: #444;">🎮 Currently playing: Valorant</span>
       </div>
+    </div>
+  </div>
+  <div class="vote-section">
+    <span class="vote-count">0</span>
+    <button class="vote-btn upvote" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn downvote" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
+  </div>
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+  </div>
+</div>
 
-      <!-- Belt's Post -->
-      <div class="post">
-        <div class="user">
-          <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar">
-          <div class="user-info">
-            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@Belt181</strong>
-            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span>
-            <span>🎮 Currently playing: Apex Legends</span>
-          </div>
-        </div>
-        <p>“Rookie moves in Apex!”</p>
+<!-- POST: Belt181 -->
+<div class="post" data-post-id="belt181">
+  <div class="post-header">
+    <div class="user">
+      <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" />
+      <div class="user-info">
+        <strong style="font-size: 1rem; color: #111;">
+          @Belt181 <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span>
+        </strong>
+        <span style="font-size: 0.75rem; color: #444;">🎮 Currently playing: Apex Legends</span>
       </div>
+    </div>
+  </div>
+  <div class="vote-section">
+    <span class="vote-count">0</span>
+    <button class="vote-btn upvote" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn downvote" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
+  </div>
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+  </div>
+</div>
 
-      <!-- Remko's Post -->
-      <div class="post">
-        <div class="user">
-          <img src="https://ui-avatars.com/api/?name=Remko&background=222244&color=fff&rounded=true" alt="User Avatar">
-          <div class="user-info">
-            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@Remko</strong>
-            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Leo Skepi)</span>
-            <span>🌙 Currently: Just vibing</span>
-          </div>
-        </div>
-        <p>“Best vibes with my fav bestie!”</p>
+<!-- POST: Remko -->
+<div class="post" data-post-id="remko">
+  <div class="post-header">
+    <div class="user">
+      <img src="https://ui-avatars.com/api/?name=Remko&background=222244&color=fff&rounded=true" alt="User Avatar" />
+      <div class="user-info">
+        <strong style="font-size: 1rem; color: #111;">
+          @Remko <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span>
+        </strong>
+        <span style="font-size: 0.75rem; color: #444;">🌙 Currently: Just vibing</span>
       </div>
+    </div>
+  </div>
+  <div class="vote-section">
+    <span class="vote-count">0</span>
+    <button class="vote-btn upvote" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn downvote" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
+  </div>
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+  </div>
+</div>
 
-      <!-- SpaceNavis's Post -->
-      <div class="post">
-        <div class="user">
-          <img src="https://ui-avatars.com/api/?name=SpaceNavis&background=004080&color=fff&rounded=true" alt="User Avatar">
-          <div class="user-info">
-            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@SpaceNavis</strong>
-            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span>
-            <span>🎮 Currently playing: The Sims</span>
-          </div>
-        </div>
-        <p>“Dreaming big in The Sims!”</p>
+<!-- POST: SpaceNavis -->
+<div class="post" data-post-id="spacenavis">
+  <div class="post-header">
+    <div class="user">
+      <img src="https://ui-avatars.com/api/?name=SpaceNavis&background=004080&color=fff&rounded=true" alt="User Avatar" />
+      <div class="user-info">
+        <strong style="font-size: 1rem; color: #111;">
+          @SpaceNavis <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span>
+        </strong>
+        <span style="font-size: 0.75rem; color: #444;">🎮 Currently playing: The Sims</span>
       </div>
+    </div>
+  </div>
+  <div class="vote-section">
+    <span class="vote-count">0</span>
+    <button class="vote-btn upvote" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn downvote" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
+  </div>
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+  </div>
+</div>
 
-      <!-- JuJu's Post -->
-      <div class="post">
-        <div class="user">
-          <img src="https://ui-avatars.com/api/?name=JuJu&background=660066&color=fff&rounded=true" alt="User Avatar">
-          <div class="user-info">
-            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@JuJu</strong>
-            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span>
-            <span>🌙 Currently: Just vibing</span>
-          </div>
-        </div>
-        <p>“Chill vibes all day.”</p>
+<!-- POST: JuJu -->
+<div class="post" data-post-id="juju">
+  <div class="post-header">
+    <div class="user">
+      <img src="https://ui-avatars.com/api/?name=JuJu&background=660066&color=fff&rounded=true" alt="User Avatar" />
+      <div class="user-info">
+        <strong style="font-size: 1rem; color: #111;">
+          @JuJu <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span>
+        </strong>
+        <span style="font-size: 0.75rem; color: #444;">🌙 Currently: Just vibing</span>
       </div>
+    </div>
+  </div>
+  <div class="vote-section">
+    <span class="vote-count">0</span>
+    <button class="vote-btn upvote" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn downvote" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
+  </div>
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+  </div>
+</div>
 
-      <!-- LoriPie’s Post -->
-      <div class="post">
-        <div class="user">
-          <img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar">
-          <div class="user-info">
-            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@LoriPie</strong>
-            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span>
-            <span>🎮 Currently playing: Stardew Valley</span>
-          </div>
-        </div>
-        <p>“Sweet moments in Stardew Valley!”</p>
+<!-- POST: LoriPie -->
+<div class="post" data-post-id="loripie">
+  <div class="post-header">
+    <div class="user">
+      <img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar" />
+      <div class="user-info">
+        <strong style="font-size: 1rem; color: #111;">
+          @LoriPie <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span>
+        </strong>
+        <span style="font-size: 0.75rem; color: #444;">🎮 Currently playing: Stardew Valley</span>
+      </div>
+    </div>
+  </div>
+  <div class="vote-section">
+    <span class="vote-count">0</span>
+    <button class="vote-btn upvote" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn downvote" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
+  </div>
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+  </div>
+</div>
+
+    </section>
+
+    <div class="ticker-bar">
+      <div class="ticker-text">
+        Welcome to Noctive - The night-first gaming platform! Join the Night Crew and start your adventure.
       </div>
     </div>
 
     <footer>
-      <p>&copy; 2025 Noctive. All rights reserved.</p>
+      <p>&copy; 2023 Noctive. All rights reserved.</p>
     </footer>
+
+    <!-- REMOVE the entire inline <script>...</script> block here -->
+
+    <!-- Add your compiled JavaScript file from TypeScript -->
+    <script src="index.js"></script>
+
+    <!-- Add this inside your <body> -->
+<form id="loginForm">
+  <input type="text" id="username" placeholder="Username" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <button type="submit">Login</button>
+</form>
+<script>
+// Track votes per user for each post
+const userVotes = {}; // Example: { postId: { userId: 'up' } }
+
+async function vote(button, direction) {
+  const postElement = button.closest('.post');
+  const postId = postElement.getAttribute('data-post-id');
+  const userId = 'currentUser'; // Replace with actual user ID
+
+  console.log('Post ID:', postId);
+  console.log('Direction:', direction);
+
+  // Check if the user has already voted
+  if (userVotes[postId]?.[userId]) {
+    return; // Skip further processing if the user has already voted
+  }
+
+  // Simulate server response for testing
+  const data = { success: true };
+
+  if (data.success) {
+    // Update the UI
+    const voteCountElement = postElement.querySelector('.vote-count');
+    let currentVotes = parseInt(voteCountElement.textContent, 10) || 0;
+    currentVotes += direction === 'up' ? 1 : -1;
+    voteCountElement.textContent = currentVotes.toString();
+
+    console.log('Updated vote count:', currentVotes);
+
+    // Register the user's vote locally
+    if (!userVotes[postId]) {
+      userVotes[postId] = {};
+    }
+    userVotes[postId][userId] = direction;
+  } else {
+    alert(data.message || 'Failed to register vote.');
+  }
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('nightCrewWidget');
+  console.log('Toggling Night Crew Widget:', sidebar);
+  sidebar.classList.toggle('hidden');
+}
+
+function toggleTrending() {
+  const trendingSidebar = document.getElementById('trendingSidebar');
+  console.log('Toggling Trending Sidebar:', trendingSidebar);
+  trendingSidebar.classList.toggle('hidden');
+}
+</script>
   </body>
 </html>
