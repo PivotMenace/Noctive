@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noctive – Night‑First Gaming Platform</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Rounded:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+
+      /* ─── GLOBAL & LAYOUT ─── */
+      body {
+        background: linear-gradient(to bottom right, #0a0a1a, #1f1a2f, #1e1e3f, #132842) !important;
+        background-attachment: fixed;
+        background-size: cover;
+        color: #f0f0f0 !important;
+        margin: 0;
+        font-family: 'Nunito', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif !important;
+      }
+
+      header {
+        background: #23263a;
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .header-main {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .header-account-link {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .header-account-link a img {
+        width: 32px;
+        height: 32px;
+      }
+
+      .header-icon img {
+        width: 48px;
+        height: 48px;
+      }
+
+      .brand-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #f0f0f0;
+      }
+
+      .hub-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 2rem;
+        justify-content: center;
+      }
+
+      .hub-box {
+        width: 250px;
+        padding: 1rem;
+        border: 2px dashed #888;
+        border-radius: 0.75rem;
+        background: #1a1a3a;
+        color: #f0f0f0;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .hub-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.05), 0 0 28px rgba(255, 60, 56, 0.2);
+      }
+
+      .hub-box a {
+        color: #f0f0f0;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      .hub-box a:hover {
+        color: #ff3c38;
+      }
+
+      .post-container {
+        padding: 2rem;
+      }
+
+      .post {
+        background: linear-gradient(to bottom right, #1d2133, #292e44);
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.03), 0 0 20px rgba(255, 60, 56, 0.12);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .post:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.05), 0 0 28px rgba(255, 60, 56, 0.2);
+      }
+
+      .user {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .user img {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+      }
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .slogan-blink {
+        margin: 1rem auto 0;
+        font-size: 1rem;
+        font-style: italic;
+        color: #facc15;
+        text-align: center;
+        text-shadow: 0 0 5px #facc15, 0 0 10px #facc15, 0 0 15px #fbbf24;
+        animation: yellowFlicker 2.8s infinite;
+      }
+
+      @keyframes yellowFlicker {
+        0%, 19%, 22%, 25%, 53%, 57%, 100% {
+          opacity: 1;
+          text-shadow: 0 0 5px #facc15, 0 0 10px #facc15, 0 0 15px #fbbf24;
+        }
+        20%, 24%, 55% {
+          opacity: 0.7;
+          text-shadow: 0 0 3px #facc15;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-main">
+        <div class="header-icon">
+          <img src="pngs/logo.png" alt="Noctive Logo">
+        </div>
+        <span class="brand-title">Noctive</span>
+      </div>
+      <div class="header-account-link">
+        <a href="/profile" title="Your Profile">
+          <img src="pngs/account.png" alt="Account">
+        </a>
+        <a href="/settings" title="Settings">
+          <img src="pngs/settings.png" alt="Settings">
+        </a>
+      </div>
+    </header>
+
+    <p class="slogan-blink">“Built for the ones who never log off.”</p>
+
+    <div class="hub-container">
+      <div class="hub-box">
+        <a href="#home">Home</a>
+      </div>
+      <div class="hub-box">
+        <a href="#creator-hub">Creator Hub</a>
+      </div>
+      <div class="hub-box">
+        <a href="#highlights">Highlights</a>
+      </div>
+      <div class="hub-box">
+        <a href="#find-teammates">Find Teammates</a>
+      </div>
+      <div class="hub-box">
+        <a href="#store">Store Hub</a>
+      </div>
+      <div class="hub-box">
+        <a href="#dev-hub">Dev Hub</a>
+      </div>
+    </div>
+
+    <div class="post-container">
+      <!-- Venus's Post -->
+      <div class="post">
+        <div class="user">
+          <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar">
+          <div class="user-info">
+            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@Venus</strong>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Nomad)</span>
+            <span>🎮 Currently playing: Rainbow Six Siege</span>
+          </div>
+        </div>
+        <p>“Built for the ones who never log off.”</p>
+      </div>
+
+      <!-- Hijinxx's Post -->
+      <div class="post">
+        <div class="user">
+          <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar">
+          <div class="user-info">
+            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@Hijinxx</strong>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span>
+            <span>🎮 Currently playing: Valorant</span>
+          </div>
+        </div>
+        <p>“Night Owl vibes.”</p>
+      </div>
+
+      <!-- Belt's Post -->
+      <div class="post">
+        <div class="user">
+          <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar">
+          <div class="user-info">
+            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@Belt181</strong>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span>
+            <span>🎮 Currently playing: Apex Legends</span>
+          </div>
+        </div>
+        <p>“Rookie moves in Apex!”</p>
+      </div>
+
+      <!-- Remko's Post -->
+      <div class="post">
+        <div class="user">
+          <img src="https://ui-avatars.com/api/?name=Remko&background=222244&color=fff&rounded=true" alt="User Avatar">
+          <div class="user-info">
+            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@Remko</strong>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Leo Skepi)</span>
+            <span>🌙 Currently: Just vibing</span>
+          </div>
+        </div>
+        <p>“Best vibes with my fav bestie!”</p>
+      </div>
+
+      <!-- SpaceNavis's Post -->
+      <div class="post">
+        <div class="user">
+          <img src="https://ui-avatars.com/api/?name=SpaceNavis&background=004080&color=fff&rounded=true" alt="User Avatar">
+          <div class="user-info">
+            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@SpaceNavis</strong>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span>
+            <span>🎮 Currently playing: The Sims</span>
+          </div>
+        </div>
+        <p>“Dreaming big in The Sims!”</p>
+      </div>
+
+      <!-- JuJu's Post -->
+      <div class="post">
+        <div class="user">
+          <img src="https://ui-avatars.com/api/?name=JuJu&background=660066&color=fff&rounded=true" alt="User Avatar">
+          <div class="user-info">
+            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@JuJu</strong>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span>
+            <span>🌙 Currently: Just vibing</span>
+          </div>
+        </div>
+        <p>“Chill vibes all day.”</p>
+      </div>
+
+      <!-- LoriPie’s Post -->
+      <div class="post">
+        <div class="user">
+          <img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar">
+          <div class="user-info">
+            <strong style="font-size: 1.2rem; font-weight: bold; color: #fff;">@LoriPie</strong>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span>
+            <span>🎮 Currently playing: Stardew Valley</span>
+          </div>
+        </div>
+        <p>“Sweet moments in Stardew Valley!”</p>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Noctive. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
