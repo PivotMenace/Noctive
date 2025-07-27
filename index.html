@@ -32,117 +32,56 @@
   );
   background-attachment: fixed;
   color: #f0f0f0;
+  min-height: 100vh;
 }
 
-/* Make sure header, nav, and all text use Nunito */
-header,
-.brand-title,
-nav,
-nav a,
-.nav-link,
-.header-main,
-.header-account-link,
-.account-link,
-.settings-link,
-.sidebar-widget,
-.trending-sidebar,
-button,
-input,
-textarea,
-select,
-.feed,
-.post,
-.create-post,
-.slogan-blink,
-.ticker-bar,
-.ticker-text,
-footer {
-  font-family: 'Nunito', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif !important;
-}
-
-.feed {
-  background: transparent !important;
-}
-.star-background {
-  background: radial-gradient(circle, #1a1d2e, #0a0a1a) !important;
-}
+/* Header with midnight theme */
 header {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row; /* Changed from column to row */
+  align-items: center; /* Center items vertically */
   height: auto;
-  background: #e5e5e5 !important;
-  color: #000 !important;
-  border-bottom: 2px solid #000 !important;
-  box-shadow: none !important;
+  background: #23263a !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 0 0 0.5rem 0;
-  justify-content: flex-start;
+  padding: 1rem 1.5rem; /* Adjusted padding */
+  justify-content: space-between; /* Space between brand and account links */
 }
 
 .header-main {
   display: flex;
   align-items: center;
-  width: 100%;
-  padding: 0.5rem 0 0.25rem 1.5rem;
-}
-
-header .header-icon {
-  width: 54px !important;
-  height: 54px !important;
-  margin-left: 0;
-  margin-right: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-header .header-icon img {
-  width: 48px !important;
-  height: 48px !important;
-  filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(1000%) hue-rotate(235deg) brightness(95%) contrast(90%) drop-shadow(0 0 4px rgba(50, 50, 50, 0.8));
-  animation: breatheGlow 3s ease-in-out infinite;
-}
-
-@keyframes breatheGlow {
-  0%, 100% {
-    filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(1000%) hue-rotate(235deg) brightness(95%) contrast(90%) drop-shadow(0 0 4px rgba(50, 50, 50, 0.8));
-    opacity: 0.9;
-  }
-  50% {
-    filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(1000%) hue-rotate(235deg) brightness(95%) contrast(90%) drop-shadow(0 0 12px rgba(50, 50, 50, 0.9));
-    opacity: 1;
-  }
+  gap: 2rem; /* Space between logo/title and navigation */
 }
 
 .header-icon {
-  animation: breatheScale 3s ease-in-out infinite;
-}
-
-@keyframes breatheScale {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .brand-title {
   font-family: 'Rubik', 'Roboto Condensed', 'Segoe UI Bold', sans-serif !important;
-  font-weight: 700; /* Bold for emphasis */
-  font-size: 2rem; /* Adjust size as needed */
-  color: #000; /* Ensure visibility */
-  text-shadow: none; /* Remove any text shadow */
-  letter-spacing: 0.5px; /* Optional: Add spacing for style */
+  font-weight: 700;
+  font-size: 2rem;
+  background: linear-gradient(90deg, #800000, #ff3c38);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientText 6s ease-in-out infinite;
+  letter-spacing: 0.5px;
+  margin-right: 2rem; /* Space before navigation */
 }
 
-/* Navigation styling */
+/* Navigation with midnight glass effect - now inline */
 nav {
   display: flex;
   justify-content: flex-start;
@@ -151,8 +90,8 @@ nav {
   background: none;
   border: none;
   box-shadow: none;
-  padding: 0 0 0 1.5rem;
-  margin-bottom: 0.5rem;
+  padding: 0; /* Removed left padding */
+  margin: 0; /* Removed bottom margin */
 }
 
 .nav-link {
@@ -161,15 +100,16 @@ nav {
   justify-content: space-between;
   min-width: 110px;
   padding: 0.3rem 1.2rem 0.3rem 1rem;
-  background: #d4d4d4;
-  border: 2px solid #222;
-  border-radius: 0;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 12px;
   font-size: 1rem;
   font-weight: 500;
-  color: #111;
-  box-shadow: none;
+  color: #f0f0f0 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   margin: 0;
-  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   height: 2.1rem;
   letter-spacing: 0.01em;
   position: relative;
@@ -178,7 +118,7 @@ nav {
 .nav-link .arrow {
   font-size: 1.1em;
   margin-left: 0.7em;
-  color: #222;
+  color: #f0f0f0;
   font-family: inherit;
   transition: color 0.15s;
   line-height: 1;
@@ -187,53 +127,30 @@ nav {
 
 .nav-link:hover,
 .nav-link:focus {
-  background: #e5e5e5;
-  color: #000;
-  box-shadow: 0 2px 0 #888;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
 }
 
 .nav-link:hover .arrow,
 .nav-link:focus .arrow {
-  color: #ff3c38;
+  color: #ff3c38 !important;
 }
 
 .header-account-link {
-  position: absolute;
-  top: 0.75rem;
-  right: 1.5rem;
+  position: static; /* Changed from absolute */
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  margin-right: 0;
   height: 40px;
 }
 
-.account-link,
-.settings-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  margin: 0 2px;
-  border-radius: 50%;
-  transition: box-shadow 0.18s, background 0.18s, transform 0.18s;
-  cursor: pointer;
-}
-
-.account-link:hover,
-.settings-link:hover {
-  box-shadow: 0 0 12px 2px #facc15, 0 0 24px 6px #facc1580;
-  background: #fffbe8;
-  transform: scale(1.08) rotate(-3deg);
-}
-
-.account-link:hover .account-icon,
-.settings-link:hover .settings-icon {
-  filter: drop-shadow(0 0 0px #facc15) drop-shadow(0 0 12px #facc15);
-  transform: scale(1.15) rotate(-4deg);
-  transition: filter 0.18s, transform 0.18s;
+/* Update root variables for new header height */
+:root {
+  --header-height: 5rem; /* Reduced from 8rem */
+  --button-top-offset: calc(var(--header-height) + 1rem);
+  --widget-top-offset: calc(var(--button-top-offset) + 3rem);
 }
 
 /* ─── SLOGAN ─── */
@@ -242,25 +159,26 @@ nav {
         margin: 1rem 0;
         font-size: 1rem;
         font-style: italic;
-        color: #facc15;
+        color: #facc15 !important;
+        text-shadow: 
+          0 0 8px #facc15,
+          0 0 15px #facc15;
         animation: yellowFlicker 2.8s infinite;
-        text-shadow:
-          0 0 5px #facc15,
-          0 0 10px #facc15;
       }
 
       /* ─── SIDEBAR WIDGET ─── */
       .sidebar-widget {
-  /* Match Trending Sidebar style exactly */
   position: fixed;
   top: 8rem;
   right: 2rem;
   width: 250px;
-  background: #e0e0e0;
-  color: #222e3a;
+  background: linear-gradient(to bottom right, #1a1d2e, #23263a) !important;
+  color: #f0f0f0 !important;
   border-radius: 0.75rem;
-  border: 2px solid #888;
-  box-shadow: 4px 4px 0 #888, 8px 8px 0 #b0b0b0, 0 0 0 2px #fff inset;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
   font-size: 0.9rem;
   z-index: 1000;
   padding: 0;
@@ -278,8 +196,8 @@ nav {
         animation: yellowFlicker 2.8s infinite;
         margin: 0 0 0.75rem;
         font-size: 1rem;
-        color: #facc15;
-        text-shadow: 0 0 4px #facc15;
+        color: #facc15 !important;
+        text-shadow: 0 0 8px #facc15;
       }
       .sidebar-widget ul {
         list-style: none;
@@ -294,7 +212,7 @@ nav {
         padding-left: 1.5rem;
         position: relative;
         font-size: 0.95rem;
-        color: #f0f0f0; /* Match Trending Sidebar */
+        color: #f0f0f0 !important;
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -310,60 +228,61 @@ nav {
       }
       .sidebar-widget .status-dot.online {
         background-color: #22c55e;
-        box-shadow: 0 0 6px #22c55e;
+        box-shadow: 0 0 10px #22c55e;
       }
       .sidebar-widget .status-dot.idle {
         background-color: #facc15;
-        box-shadow: 0 0 6px #facc15;
+        box-shadow: 0 0 10px #facc15;
       }
       .sidebar-widget .status-dot.offline {
         background-color: #6b7280;
-        box-shadow: 0 0 6px #6b7280;
+        box-shadow: 0 0 8px #6b7280;
       }
 
       .sidebar-toggle-button {
         position: fixed;
         top: 5rem;
         right: 1rem;
-        background: #2c2c2c;
-        color: #facc15;
-        border: 1px solid #444;
+        background: #1f1f2f !important;
+        color: #facc15 !important;
+        border: 1px solid #444 !important;
         border-radius: 0.5rem;
         padding: 0.5rem 1rem;
         font-weight: bold;
         cursor: pointer;
         z-index: 10000;
-        box-shadow: 0 0 10px #facc15;
+        box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
       }
 
       /* ─── FEED & POSTS ─── */
       .feed {
-  		
-  	 padding: 2rem 0.5rem;
-  	 max-width: 100%;
-  	 margin: auto;
-	}
+        
+     padding: 2rem 0.5rem;
+     max-width: 100%;
+     margin: auto;
+    }
       .feed {
   margin-top: 4rem; /* Adjust this value to match the height of your header */
 }
       .post {
-        background: linear-gradient(to bottom right, #cccaca, #a8a8a8) !important;
+        background: linear-gradient(to bottom right, #1d2133, #292e44) !important;
         padding: 1.25rem;
         margin-bottom: 1.5rem;
         border-radius: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow:
-          0 0 10px rgba(255, 255, 255, 0.03),
-          0 0 20px rgba(255, 60, 56, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 
+          0 8px 32px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        color: #f0f0f0 !important;
         transition:
           transform 0.3s ease,
           box-shadow 0.3s ease;
       }
       .post:hover {
         transform: translateY(-3px);
-        box-shadow:
-          0 0 12px rgba(255, 255, 255, 0.05),
-          0 0 28px rgba(255, 60, 56, 0.2);
+        box-shadow: 
+          0 20px 40px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
       }
       .user {
         display: flex;
@@ -381,29 +300,33 @@ nav {
       }
       .user-info strong {
         font-size: 0.9rem;
+        color: #f0f0f0 !important;
       }
       .user-info .currently-playing {
         font-size: 0.65rem;
-        color: #aaa;
+        color: #aaa !important;
       }
       .post textarea,
       .post input[type="text"] {
         width: 100%;
-        padding: 1rem 1.25rem;      /* More vertical & horizontal padding */
+        padding: 1rem 1.25rem;
         margin-top: 1rem;
-        margin-bottom: 0.5rem;      /* Optional: space below */
-        background: #fff;
-        border: 1.5px solid #8f0000;
+        margin-bottom: 0.5rem;
+        background: #1e1e2e !important;
+        border: 1px solid #333 !important;
         border-radius: 0.65rem;
-        color: #222;
-        font-size: 1rem;            /* Slightly larger text */
+        color: #eee !important;
+        font-size: 1rem;
         box-sizing: border-box;
         transition: border-color 0.2s, box-shadow 0.2s;
       }
 .post textarea:focus,
 .post input[type="text"]:focus {
-  border-color: #ff3c38;
-  box-shadow: 0 0 0 2px #ff3c3822;
+  background: #252538 !important;
+  border-color: #ff3c38 !important;
+  box-shadow: 
+    0 0 0 3px rgba(255, 60, 56, 0.2),
+    0 4px 15px rgba(0, 0, 0, 0.2);
   outline: none;
 }
 
@@ -416,12 +339,10 @@ nav {
         justify-content: flex-end; /* Align to the right */
       }
       .vote-btn {
-        background: #f4f4f4;
-        border: 2px solid #b0b0b0;
+        background: #1f1f2f !important;
+        border: 1px solid #444 !important;
         border-radius: 50%;
-        box-shadow:
-          2px 2px 0 #b0b0b0,
-          0 2px 8px #8882;
+        box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
         width: 32px;
         height: 32px;
         display: flex;
@@ -436,28 +357,28 @@ nav {
       }
       .vote-btn:hover,
       .vote-btn:focus {
-        background: #fffbe8;
-        border-color: #47100f;
-        box-shadow:
-          0 0 0 2px #ff3c3822,
-          2px 4px 12px #ff3c3840;
+        background: #23263a !important;
+        border-color: #facc15 !important;
+        box-shadow: 
+          0 0 15px #facc15,
+          0 0 30px rgba(250, 204, 21, 0.5);
         outline: none;
       }
       .vote-btn img {
         width: 18px;
         height: 18px;
         pointer-events: none;
-        filter: drop-shadow(0 1px 0 #fff) drop-shadow(0 2px 2px #8884);
+        filter: brightness(0) invert(1) drop-shadow(0 0 3px #facc15);
       }
       .vote-count {
         font-weight: bold;
-        color: #facc15;
+        color: #facc15 !important;
+        text-shadow: 0 0 5px #facc15;
         transition:
           transform 0.2s,
           opacity 0.2s;
       }
       .vote-count.animate {
-        /* Reduce scale animation for less jumpiness */
         transform: scale(1.1);
         opacity: 0.85;
       }
@@ -488,7 +409,7 @@ nav {
         position: fixed;
         bottom: 0;
         width: 100%;
-        background: #0a0a1a;
+        background: #0a0a1a !important;
         padding: 0.5rem 0;
         overflow: hidden;
         z-index: 9999;
@@ -503,12 +424,10 @@ nav {
           neonPulse 3s ease-in-out infinite;
         font-family: "Orbitron", sans-serif;
         font-size: 0.95rem;
-        color: #ffe066 !important;
-        text-shadow:
+        color: #facc15 !important;
+        text-shadow: 
           0 0 8px #facc15,
-          0 0 15px #facc15,
-          0 0 24px #fff,
-          0 0 32px #facc15;
+          0 0 15px #facc15;
         font-weight: bold;
         letter-spacing: 1px;
       }
@@ -569,25 +488,29 @@ nav {
       padding: 2rem;
       font-size: 0.85rem;
       color: #888;
+      background: rgba(0, 0, 0, 0.3);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
 .currently-playing {
   font-size: 0.65rem;
-  color: #aaa;
+  color: #aaa !important;
   line-height: 1.2;
 }
     /* TRENDING SIDEBAR */
     .trending-sidebar {
-      position: fixed; /* Keep it fixed for scrolling behavior */
-      top: 10rem !important;   /* Align both widgets further down, matching the buttons */
-      left: 2rem; /* Move it to the left side */
+      position: fixed;
+      top: 10rem !important;
+      left: 2rem;
       width: 250px;
-      background: linear-gradient(to bottom right, #1a1d2e, #23263a);
+      background: linear-gradient(to bottom right, #1a1d2e, #23263a) !important;
       padding: 0;
       border-radius: 0.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      color: #f0f0f0;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      color: #f0f0f0 !important;
       font-size: 0.9rem;
       z-index: 1000;
       transition: transform 0.3s ease, opacity 0.3s ease;
@@ -596,8 +519,9 @@ nav {
     .trending-sidebar h3 {
       margin: 0 0 1rem;
       font-size: 1.2rem;
-      color: #ff3c38;
-      text-shadow: 0 0 5px rgba(255, 60, 56, 0.5);
+      color: #facc15 !important;
+      text-shadow: 0 0 8px #facc15;
+      animation: yellowFlicker 2.8s infinite;
     }
 
     .trending-sidebar ul {
@@ -611,6 +535,7 @@ nav {
       padding-left: 1.5rem;
       position: relative;
       font-size: 0.95rem;
+      color: #f0f0f0 !important;
     }
 
     .trending-sidebar li::before {
@@ -645,22 +570,25 @@ nav {
 
     .trending-open-button {
       position: fixed;
-      top: 9rem; /* Move both buttons further down from the header */
+      top: 9rem;
       z-index: 10000;
       left: 2rem;
-      background: #1f1f2f;
-      color: #facc15;
-      border: 1px solid #444;
+      background: #1f1f2f !important;
+      color: #facc15 !important;
+      border: 1px solid #444 !important;
       border-radius: 0.5rem;
       padding: 0.5rem 1rem;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 0 10px #facc15, 0 0 20px rgba(250, 204, 21, 0.3);
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
       transition: box-shadow 0.2s;
     }
 
     .trending-open-button:hover {
-      box-shadow: 0 0 15px #facc15, 0 0 30px rgba(250, 204, 21, 0.5);
+      background: #23263a !important;
+      box-shadow: 
+        0 0 15px #facc15,
+        0 0 30px rgba(250, 204, 21, 0.5);
     }
 
   /* Star Background */
@@ -670,11 +598,10 @@ nav {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: radial-gradient(circle, #1a1d2e, #0a0a1a);
+    background: radial-gradient(circle, #1a1d2e, #0a0a1a) !important;
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
-    /* Animate the background diagonally */
     animation: starfieldMove 60s linear infinite;
   }
 
@@ -687,7 +614,6 @@ nav {
     }
   }
 
-/* Animated stars */
 .star {
   position: absolute;
   width: 2px;
@@ -709,29 +635,26 @@ nav {
   }
 }
 
-/* Neon Glow Effect for User Avatars */
 .user-avatar {
-  width: 80px; /* Adjust size as needed */
+  width: 80px;
   height: 80px;
-  border-radius: 50%; /* Makes the avatar circular */
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   background: transparent;
   box-shadow: 0 0 10px rgba(255, 60, 56, 0.8), 0 0 20px rgba(255, 60, 56, 0.6), 0 0 30px rgba(255, 60, 56, 0.4);
   animation: pulseGlow 2s infinite;
-  overflow: hidden; /* Ensures the image stays inside the container */
+  overflow: hidden;
 }
 
-/* Ensure the image fits perfectly inside the glowing container */
 .user-avatar img {
   width: 100%;
   height: 100%;
-  border-radius: 50%; /* Ensures the image is circular */
-  object-fit: cover; /* Ensures the image scales properly */
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-/* Pulsing Animation */
 @keyframes pulseGlow {
   0% {
     box-shadow: 0 0 10px rgba(255, 60, 56, 0.8), 0 0 20px rgba(255, 60, 56, 0.6), 0 0 30px rgba(255, 60, 56, 0.4);
@@ -744,22 +667,21 @@ nav {
   }
 }
 
-/* Night Crew Widget with Soft Glowing Border */
 #nightCrewWidget {
   position: fixed;
-  top: 10rem !important;   /* Align both widgets further down, matching the buttons */
+  top: 10rem !important;
   right: 2rem;
   width: 250px;
-  background: #b1b1b1 !important;   /* Dark grey background */
-  color: #f0f0f0 !important;        /* Light text for contrast */
+  background: linear-gradient(to bottom right, #1a1d2e, #23263a) !important;
+  color: #f0f0f0 !important;
   border-radius: 0.75rem;
   padding: 1rem;
-  color: #464646;
   z-index: 999;
   font-size: 0.85rem;
-  border: 1px solid rgba(184, 184, 184, 0.1);
-  /* REMOVE GLOW */
-  /* box-shadow: 0 0 15px rgba(250, 204, 21, 0.5), 0 0 30px rgba(250, 204, 21, 0.3); */
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -770,29 +692,29 @@ nav {
 }
 
 #nightCrewWidget .dialog-titlebar {
-  background: #000000 !important;   /* Match Trending Sidebar */
+  background: #1a1d2e !important;
   color: #facc15 !important;
   border: none;
   padding: 0.5rem 1rem;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
-  margin: -1rem -1rem 1rem -1rem; /* Remove the gap and align with widget edges */
+  margin: -1rem -1rem 1rem -1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 2.5rem;
   user-select: none;
   box-sizing: border-box;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .trending-sidebar .dialog-titlebar {
-  background: #000080 !important;
+  background: #1a1d2e !important;
   color: #facc15 !important;
   border: none;
   padding: 0.5rem 1rem;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
-  /* Remove negative margins so it aligns with the sidebar */
   margin: 0; 
   display: flex;
   align-items: center;
@@ -800,61 +722,41 @@ nav {
   height: 2.5rem;
   user-select: none;
   box-sizing: border-box;
-  /* Make sure width is 100% of the sidebar */
   width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 15px #270201, 0 0 30px #500403; }
-  50% { box-shadow: 0 0 30px #640705, 0 0 60px #420100; }
+.media-btn {
+  background: #292e44 !important;
+  border: 1px solid #444 !important;
+  color: #f0f0f0 !important;
 }
 
 .media-btn:hover {
-  background: #4601014d;
+  background: #23263a !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.post,
-.sidebar-widget,
-.trending-sidebar {
-  /* Classic Windows 3D window frame effect */
-  border: 2px solid #fff;
-  border-radius: 7px;
-  background: #e0e0e0;
-  color: #222e3a;
-  margin-bottom: 2rem;
-  box-shadow:
-    2px 2px 0 #b0b0b0,
-    4px 4px 0 #888,
-    0 0 0 2px #888 inset,
-    -2px -2px 0 #fff inset;
-}
-
-/* For the create-post box, keep the dashed border but add window shadow */
 .create-post {
-  border: 2px dashed #888 !important;
-  border-radius: 7px !important;
-  box-shadow:
-    2px 2px 0 #b0b0b0,
-    4px 4px 0 #888,
-    0 0 0 2px #fff inset,
-    -2px -2px 0 #fff inset;
-  background: #e0e0e0 !important;
-  color: #222e3a !important;
+  background: linear-gradient(to bottom right, #1d2133, #292e44) !important;
+  border: 2px dashed rgba(255, 60, 56, 0.5) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  color: #f0f0f0 !important;
 }
 
-/* Button color palette: lighter blue for retro contrast */
 button,
 .header-close-btn,
 .media-btn,
 .trending-open-button,
 .sidebar-toggle-button,
 .dialog-close-btn {
-  background: #e0e0e0;
-  color: #181818;
-  border: 2px solid #fff;
-  border-bottom-color: #888;
-  border-right-color: #888;
-  box-shadow: 2px 2px 0 #b0b0b0;
+  background: #1f1f2f !important;
+  color: #facc15 !important;
+  border: 1px solid #444 !important;
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
   transition:
     transform 0.13s cubic-bezier(.4,2,.6,1),
     box-shadow 0.13s cubic-bezier(.4,2,.6,1),
@@ -867,31 +769,22 @@ button:hover,
 .trending-open-button:hover,
 .sidebar-toggle-button:hover,
 .dialog-close-btn:hover {
-  /* Remove translateY and scale for less jumpiness */
   transform: none;
-  /* Soften the shadow */
-  box-shadow:
-    2px 4px 8px #b0b0b055,
-    2px 2px 0 #b0b0b0;
-  background: #f8f8f8;
+  box-shadow: 
+    0 0 15px #facc15,
+    0 0 30px rgba(250, 204, 21, 0.5);
+  background: #23263a !important;
   z-index: 2;
   transition:
     box-shadow 0.18s cubic-bezier(.4,1.2,.6,1),
     background 0.18s;
 }
 
-/* If you want the media buttons to have a slightly different background on hover, add: */
-.media-btn:hover {
-  background: #f8eaea !important;
-  color: #b42c2a !important;
-  border-color: #ff3c38 !important;
-}
-
 .trending-open-button,
 .sidebar-toggle-button {
   position: fixed;
   top: var(--button-top-offset);
-  z-index: 2000; /* Make sure this is higher than the sidebar's z-index */
+  z-index: 2000;
   height: 2.5rem;
 }
 
@@ -903,52 +796,6 @@ button:hover,
   right: 2rem;
 }
 
-.sidebar-widget h3,
-.trending-sidebar h3,
-.dialog-titlebar {
-  background: #d4d4d4 !important;
-  color: #222 !important;
-  text-shadow: none;
-}
-
-.vote-btn {
-  text-shadow: none;
-  color: #222;
-}
-
-.vote-count {
-  color: #222;
-}
-
-.ticker-text {
-  color: #222;
-  text-shadow: none;
-}
-
-.slogan-blink {
-  color: #222;
-  text-shadow: none;
-  animation: none;
-}
-
-.create-post button,
-.create-post button:hover {
-  text-shadow: none;
-  color: #222 !important;
-  background: #e0e0e0 !important;
-  border: 2px solid #fff !important;
-  box-shadow: 2px 2px 0 #b0b0b0;
-}
-
-/* Titlebars and headings: neon accent */
-.dialog-titlebar,
-.sidebar-widget h3,
-.trending-sidebar h3 {
-  background: #000080 !important;
-  height: 2.5rem;
-  user-select: none;
-}
-
 .dialog-titlebar span {
   flex: 1 1 auto;
   white-space: nowrap;
@@ -957,13 +804,9 @@ button:hover,
 }
 
 .dialog-close-btn {
-  background: #e0e0e0;
-  color: #222;
-  border: 1px solid #888;
-  border-top-color: #fff;
-  border-left-color: #fff;
-  border-bottom-color: #888;
-  border-right-color: #888;
+  background: #1f1f2f !important;
+  color: #facc15 !important;
+  border: 1px solid #444 !important;
   border-radius: 2px;
   width: 18px;
   height: 18px;
@@ -977,53 +820,31 @@ button:hover,
   margin-left: 0.5rem;
   margin-right: -0.25rem;
   transition: background 0.15s;
-  box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #888 inset;
+  box-shadow: 0 0 5px rgba(250, 204, 21, 0.3);
   padding: 0;
 }
 .dialog-close-btn:hover {
-  background: #ff0000;
-  color: #fff;
-  border-top-color: #888;
-  border-left-color: #888;
-  border-bottom-color: #fff;
-  border-right-color: #fff;
+  background: #ff0000 !important;
+  color: #fff !important;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
 
-/* ...existing code... */
 .post-header {
-  background: #f1f1f1;
-  border-bottom: 1.5px solid #8b8b8b;
-  border-top-left-radius: 1rem;    /* Match .post border-radius */
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   padding: 0.75rem 1rem 0.75rem 1rem;
-  margin: 0;                       /* Remove negative margin */
+  margin: 0;
   display: flex;
   align-items: center;
+  color: #f0f0f0 !important;
 }
-.post textarea,
-.post input[type="text"] {
-  width: 100%;
-  padding: 1rem 1.25rem;      /* More vertical & horizontal padding */
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;      /* Optional: space below */
-  background: #fff;
-  border: 1.5px solid #8f0000;
-  border-radius: 0.65rem;
-  color: #222;
-  font-size: 1rem;            /* Slightly larger text */
-  box-sizing: border-box;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.post textarea:focus,
-.post input[type="text"]:focus {
-  border-color: #ff3c38;
-  box-shadow: 0 0 0 2px #ff3c3822;
-  outline: none;
-}
-/* ...existing code... */@media (min-width: 1100px) {
+
+@media (min-width: 1100px) {
   .feed {
     max-width: 750px !important;
-    margin: var(--button-top-offset) auto 0 auto !important; /* Align with button widgets */
+    margin: var(--button-top-offset) auto 0 auto !important;
     padding: 2rem 0 !important;
     display: block;
   }
@@ -1036,17 +857,13 @@ button:hover,
   }
 }
 
-/* Add this near the end of your <style> block */
-
-/* Red glow on Post button hover - only for the main Post button */
 .create-post > button:hover {
-  box-shadow: 0 0 12px 2px #ff3c38, 0 0 24px 6px #ff3c3880;
-  background: linear-gradient(90deg, #b42c2a, #c24b4b) !important;
+  box-shadow: 0 0 12px 2px #ff3c38, 0 0 24px 6px rgba(255, 60, 56, 0.5);
+  background: linear-gradient(90deg, #b22222, #ff3c38) !important;
   border-color: #ff3c38 !important;
   color: #fff !important;
 }
 
-/* Very subtle bounce animation for all buttons on hover/focus */
 @keyframes slightBounce {
   0%   { transform: none; }
   20%  { transform: translateY(-0.7px); }
@@ -1071,7 +888,6 @@ button:focus,
 .vote-btn:hover,
 .vote-btn:focus {
   animation: slightBounce 0.32s cubic-bezier(.4,1.2,.6,1);
-  /* Keep other hover styles as is */
 }
 
 .vote-btn img {
@@ -1100,7 +916,6 @@ button:focus,
   object-fit: contain;
 }
 
-/* Only outline the actual PNG (not a circle) on hover */
 .settings-link:hover .settings-icon {
   filter: drop-shadow(0 0 0px #facc15) drop-shadow(0 0 12px #facc15);
   transform: scale(1.15) rotate(-4deg);
@@ -1108,9 +923,8 @@ button:focus,
   box-shadow: none;
 }
 
-/* Responsive feed and post sizing */
 .feed {
-  max-width: 500px;    /* Reduce from 600px to 500px */
+  max-width: 500px;
   margin: calc(var(--header-height) + 2rem) auto 0 auto;
   padding: 2rem 1rem;
   width: 100%;
@@ -1125,15 +939,14 @@ button:focus,
   box-sizing: border-box;
 }
 
-/* On very large screens, add more side space */
 @media (min-width: 1200px) {
-  .feed {    max-width: 550px;  /* Keep consistent max-width */
+  .feed {
+    max-width: 550px;
     margin-left: auto;
     margin-right: auto;
   }
 }
 
-/* On medium screens, slightly reduce max-width */
 @media (max-width: 900px) {
   .feed {
     max-width: 90vw;
@@ -1146,97 +959,60 @@ button:focus,
   }
 }
 
-:root {
-  --header-height: 8rem;
-  --button-top-offset: calc(var(--header-height) + 1rem);
-  --widget-top-offset: calc(var(--button-top-offset) + 3rem);
-}
-
-/* Position the toggle buttons first */
-.trending-open-button,
-.sidebar-toggle-button {
-  position: fixed;
-  top: var(--button-top-offset);
-  z-index: 2000; /* Make sure this is higher than the sidebar's z-index */
-  height: 2.5rem;
-}
-
-.trending-open-button {
-  left: 2rem;
-}
-
-.sidebar-toggle-button {
-  right: 2rem;
-}
-
-/* Position the widgets below the buttons */
-.trending-sidebar,
-#nightCrewWidget {
-  position: fixed;
-  top: var(--widget-top-offset) !important;
-  width: 250px;
-  z-index: 999;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.trending-sidebar {
-  left: 2rem;
-}
-
-#nightCrewWidget {
-  right: 2rem;
-}
-
-/* Ensure widgets are properly hidden when closed */
-.trending-sidebar.hidden {
-  transform: translateX(-300px);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.sidebar-widget.hidden {
-  transform: translateX(300px);
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Update feed positioning and responsive sizing */
-.feed {
-  max-width: 600px;    /* Wider base width */
-  margin: calc(var(--header-height) + 4rem) auto 0 auto; /* Increased top margin */
-  padding: 1rem;
-  width: 100%;
-  box-sizing: border-box;
-  position: relative;
-  z-index: 998;
-}
-
-/* Update responsive breakpoints to maintain consistent spacing */
-@media (min-width: 1200px) {
-  .feed {
-    max-width: 600px;  /* Keep consistent max-width */
-    margin-top: calc(var(--header-height) + 4rem); /* Keep increased spacing */
+@media (max-width: 1000px) {
+  .header-main {
+    gap: 1rem; /* Reduce gap on smaller screens */
+  }
+  
+  .brand-title {
+    font-size: 1.5rem; /* Smaller title on mobile */
+    margin-right: 1rem;
+  }
+  
+  nav {
+    gap: 0.3rem; /* Reduce gap between nav items */
+  }
+  
+  .nav-link {
+    min-width: 90px; /* Smaller nav links */
+    padding: 0.2rem 0.8rem;
+    font-size: 0.9rem;
   }
 }
 
-/* Update slogan position to not overlap with feed */
-.slogan-blink {
-  position: fixed;
-  top: calc(var(--header-height) + 0.2rem);
-  width: 100%;
-  text-align: center;
-  z-index: 997;
-  margin-bottom: 2rem;
+/* Only show icons when screen is very small */
+@media (max-width: 900px) {
+  .nav-link {
+    min-width: 80px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.8rem;
+  }
 }
 
-.nav-icon {
-  display: none;
-}
-.nav-text {
-  display: inline;
+@media (max-width: 800px) {
+  .nav-link {
+    min-width: 70px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+  }
 }
 
+/* Switch to icon-only mode when text can't fit */
 @media (max-width: 700px) {
+  header {
+    padding: 0.5rem 1rem; /* Reduce header padding */
+  }
+  
+  .header-main {
+    gap: 0.5rem;
+  }
+  
+  .brand-title {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+  }
+  
+  /* Show icons only on very small screens */
   .nav-icon {
     display: inline-flex;
     align-items: center;
@@ -1248,22 +1024,6 @@ button:focus,
   .nav-link {
     justify-content: center;
     min-width: 44px;
-    padding: 0.3rem 0.7rem;
-  }
-  .nav-icon img {
-    margin: 0 auto;
-    display: block;
-  }
-}
-
-@media (max-width: 700px) {
-  nav {
-    gap: 0.2rem;
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
-  }
-  .nav-link {
-    min-width: 44px;
     padding: 0.3rem 0.5rem;
     font-size: 1.1rem;
     border-width: 1.5px;
@@ -1271,16 +1031,16 @@ button:focus,
   }
 }
 
-@media (max-width: 700px) {
-  .post,
-  .create-post {
-    padding: 0.7rem !important;
-    font-size: 0.97rem !important;
+/* Default behavior - show both icons and text */
+@media (min-width: 701px) {
+  .nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
   }
-  .post textarea,
-  .post input[type="text"] {
-    font-size: 0.97rem !important;
-    padding: 0.7rem 0.7rem !important;
+  .nav-text {
+    display: inline;
   }
 }
 
@@ -1295,7 +1055,6 @@ button:focus,
   }
 }
 
-/* Add this to your CSS */
 .sidebar-widget,
 .trending-sidebar {
   z-index: 999;
@@ -1309,9 +1068,8 @@ button:focus,
 @media (max-width: 700px) {
   .trending-open-button,
   .sidebar-toggle-button {
-    z-index: 3000 !important; /* Higher than any sidebar/widget */
+    z-index: 3000 !important;
     position: fixed;
-    /* Optionally, make them a bit wider for easier tapping */
     min-width: 44px;
     min-height: 44px;
     font-size: 1.1rem;
@@ -1319,7 +1077,7 @@ button:focus,
   .trending-sidebar,
   #nightCrewWidget,
   .sidebar-widget {
-    z-index: 2000 !important; /* Lower than the buttons */
+    z-index: 2000 !important;
   }
 }
 
@@ -1331,58 +1089,15 @@ button:focus,
 }
 
 #trendingSidebar {
-  color: #fff; /* Make all text in the sidebar white */
+  color: #f0f0f0 !important;
 }
 
 #trendingSidebar .sidebar-header {
-  color: #fff;           /* Make text white */
-  background: #001a66;   /* Optional: a deeper blue for style */
+  color: #facc15 !important;
+  background: #1a1d2e !important;
   padding: 6px 12px;
   font-weight: bold;
   border-radius: 4px 4px 0 0;
-}
-
-body.dark-mode {
-  background: #181a20 !important;
-  color: #f0f0f0 !important;
-}
-body.dark-mode header,
-body.dark-mode .sidebar-widget,
-body.dark-mode .trending-sidebar,
-body.dark-mode .post,
-body.dark-mode .create-post {
-  background: #23263a !important;
-  color: #f0f0f0 !important;
-  border-color: #333 !important;
-  box-shadow: 2px 2px 0 #222, 4px 4px 0 #111, 0 0 0 2px #333 inset, -2px -2px 0 #444 inset;
-}
-body.dark-mode .dialog-titlebar,
-body.dark-mode .sidebar-widget h3,
-body.dark-mode .trending-sidebar h3 {
-  background: #111a2f !important;
-  color: #ffe066 !important;
-}
-body.dark-mode .trending-sidebar li,
-body.dark-mode .sidebar-widget li {
-  color: #ffe066 !important;
-}
-body.dark-mode .vote-btn,
-body.dark-mode .dialog-close-btn,
-body.dark-mode button,
-body.dark-mode .media-btn {
-  background: #23263a !important;
-  color: #ffe066 !important;
-  border-color: #333 !important;
-}
-body.dark-mode .vote-btn:hover,
-body.dark-mode .dialog-close-btn:hover,
-body.dark-mode button:hover,
-body.dark-mode .media-btn:hover {
-  background: #181a20 !important;
-  color: #fff !important;
-}
-body.dark-mode .star-background {
-  background: radial-gradient(circle, #23263a, #181a20) !important;
 }
     </style>
   </head>
@@ -1392,9 +1107,6 @@ body.dark-mode .star-background {
       <div class="header-main">
         <div class="header-icon" style="position: relative;">
           <img src="pngs/logo.png" alt="Noctive Logo" style="width:48px;height:48px;">
-          <button id="darkModeToggle" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #888; background: #222; color: #fff; cursor: pointer; z-index: 10;">
-    🌙 Dark Mode
-  </button>
         </div>
         <span class="brand-title">Noctive</span>
       </div>
@@ -1434,8 +1146,8 @@ body.dark-mode .star-background {
       </div>
     </header>
 
-    <p class="slogan-blink">“Built for the ones who never log off.”</p>
-	
+    <p class="slogan-blink">"Built for the ones who never log off."</p>
+    
     <div class="star-background" id="starBg"></div>
 
     <button
@@ -1453,9 +1165,6 @@ body.dark-mode .star-background {
     >
       <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-5.png" alt="Night Crew" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">Night Crew
     </button>
-    <button id="darkModeToggle" style="margin-left:1rem; padding:0.5rem 1rem; border-radius:6px; border:1px solid #888; background:#222; color:#fff; cursor:pointer;">
-  🌙 Dark Mode
-</button>
 
     <div class="sidebar-widget hidden" id="nightCrewWidget">
       <div class="dialog-titlebar">
@@ -1485,48 +1194,46 @@ body.dark-mode .star-background {
 
     <section class="feed">
       
- <!-- Slimmed Down and Enhanced POST: Venus -->
-<div class="post-status create-post" style="padding: 1rem; border-radius: 0.75rem; background: linear-gradient(to bottom right, #1d2133, #292e44); border: 2px dashed rgba(255, 60, 56, 0.5); margin-bottom: 2rem;">
+<div class="post-status create-post" style="padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem;">
   <div class="user" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-    <div class="user-avatar" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 5px rgba(255, 60, 56, 0.5);">
+    <div class="user-avatar" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
       <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;" />
     </div>
     <div class="user-info" style="flex-grow: 1;">
-      <span style="font-size: 1rem; color: #222; font-weight: 500;">
+      <span style="font-size: 1rem; font-weight: 500;">
         @Venus <span class="title" style="font-size: 0.8rem; color: #aaa;">(Nomad)</span>
       </span>
-      <span class="currently-playing" style="display: block; font-size: 0.75rem; color: #444; margin-top: 0.25rem;">
+      <span class="currently-playing" style="display: block; font-size: 0.75rem; margin-top: 0.25rem;">
         🎮 Currently playing: Rainbow Six Siege
       </span>
     </div>
   </div>
 
   <textarea id="newPostInput" placeholder="What's on your mind, lil dude?" rows="2" maxlength="200"
-    style="width: 100%; margin-top: 1rem; margin-bottom: 0.5rem; padding: 1rem 1.25rem; border-radius: 0.65rem; background: #fff; border: 1.5px solid #8f0000; color: #222; font-size: 1rem; resize: none; box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s;"></textarea>
+    style="width: 100%; margin-top: 1rem; margin-bottom: 0.5rem; padding: 1rem 1.25rem; border-radius: 0.65rem; font-size: 1rem; resize: none; box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s;"></textarea>
 
   <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #aaa; text-align: right;">
     <span id="charCount">0</span>/200 characters
   </div>
 
   <div class="media-buttons" style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
-    <button class="media-btn" style="flex: 1; padding: 0.4rem; background: #292e44; border: 1px solid #444; border-radius: 0.5rem; color: #f0f0f0; font-size: 0.75rem; cursor: pointer;">📷 Photo</button>
-    <button class="media-btn" style="flex: 1; padding: 0.4rem; background: #292e44; border: 1px solid #444; border-radius: 0.5rem; color: #f0f0f0; font-size: 0.75rem; cursor: pointer;">🎥 Video</button>
-    <button class="media-btn" style="flex: 1; padding: 0.4rem; background: #292e44; border: 1px solid #444; border-radius: 0.5rem; color: #f0f0f0; font-size: 0.75rem; cursor: pointer;">😎 GIF</button>
+    <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">📷 Photo</button>
+    <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">🎥 Video</button>
+    <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">😎 GIF</button>
   </div>
 
-  <button style="margin-top: 0.75rem; padding: 0.5rem 1rem; background: linear-gradient(90deg, #ff3c38, #ff6565); border: none; border-radius: 0.5rem; color: white; font-weight: bold; font-size: 0.9rem; cursor: pointer; width: 100%; box-shadow: 0 0 5px rgba(255, 60, 56, 0.5);">Post</button>
+  <button style="margin-top: 0.75rem; padding: 0.5rem 1rem; background: linear-gradient(90deg, #b22222, #ff3c38); border: none; border-radius: 0.5rem; color: white; font-weight: bold; font-size: 0.9rem; cursor: pointer; width: 100%;">Post</button>
 </div>
     
-     <!-- POST: Hijinxx -->
 <div class="post" data-post-id="hijinxx">
   <div class="post-header">
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem; color: #111;">
+        <strong style="font-size: 1rem;">
           @Hijinxx <span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span>
         </strong>
-        <span style="font-size: 0.75rem; color: #444;">🎮 Currently playing: Valorant</span>
+        <span style="font-size: 0.75rem;">🎮 Currently playing: Valorant</span>
       </div>
     </div>
   </div>
@@ -1540,20 +1247,19 @@ body.dark-mode .star-background {
     </button>
   </div>
   <div style="margin-top: 1rem;">
-    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
   </div>
 </div>
 
-<!-- POST: Belt181 -->
 <div class="post" data-post-id="belt181">
   <div class="post-header">
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem; color: #111;">
+        <strong style="font-size: 1rem;">
           @Belt181 <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span>
         </strong>
-        <span style="font-size: 0.75rem; color: #444;">🎮 Currently playing: Apex Legends</span>
+        <span style="font-size: 0.75rem;">🎮 Currently playing: Apex Legends</span>
       </div>
     </div>
   </div>
@@ -1567,20 +1273,19 @@ body.dark-mode .star-background {
     </button>
   </div>
   <div style="margin-top: 1rem;">
-    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
   </div>
 </div>
 
-<!-- POST: Remko -->
 <div class="post" data-post-id="remko">
   <div class="post-header">
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Remko&background=222244&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem; color: #111;">
+        <strong style="font-size: 1rem;">
           @Remko <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span>
         </strong>
-        <span style="font-size: 0.75rem; color: #444;">🌙 Currently: Just vibing</span>
+        <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
       </div>
     </div>
   </div>
@@ -1594,20 +1299,19 @@ body.dark-mode .star-background {
     </button>
   </div>
   <div style="margin-top: 1rem;">
-    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
   </div>
 </div>
 
-<!-- POST: SpaceNavis -->
 <div class="post" data-post-id="spacenavis">
   <div class="post-header">
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=SpaceNavis&background=004080&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem; color: #111;">
+        <strong style="font-size: 1rem;">
           @SpaceNavis <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span>
         </strong>
-        <span style="font-size: 0.75rem; color: #444;">🎮 Currently playing: The Sims</span>
+        <span style="font-size: 0.75rem;">🎮 Currently playing: The Sims</span>
       </div>
     </div>
   </div>
@@ -1621,20 +1325,19 @@ body.dark-mode .star-background {
     </button>
   </div>
   <div style="margin-top: 1rem;">
-    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
   </div>
 </div>
 
-<!-- POST: JuJu -->
 <div class="post" data-post-id="juju">
   <div class="post-header">
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=JuJu&background=660066&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem; color: #111;">
+        <strong style="font-size: 1rem;">
           @JuJu <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span>
         </strong>
-        <span style="font-size: 0.75rem; color: #444;">🌙 Currently: Just vibing</span>
+        <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
       </div>
     </div>
   </div>
@@ -1648,20 +1351,19 @@ body.dark-mode .star-background {
     </button>
   </div>
   <div style="margin-top: 1rem;">
-    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
   </div>
 </div>
 
-<!-- POST: LoriPie -->
 <div class="post" data-post-id="loripie">
   <div class="post-header">
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem; color: #111;">
+        <strong style="font-size: 1rem;">
           @LoriPie <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span>
         </strong>
-        <span style="font-size: 0.75rem; color: #444;">🎮 Currently playing: Stardew Valley</span>
+        <span style="font-size: 0.75rem;">🎮 Currently playing: Stardew Valley</span>
       </div>
     </div>
   </div>
@@ -1675,7 +1377,7 @@ body.dark-mode .star-background {
     </button>
   </div>
   <div style="margin-top: 1rem;">
-    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; background: #fff; border: 1px solid #333; color: #222; font-size: 0.85rem;" />
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
   </div>
 </div>
 
@@ -1691,39 +1393,31 @@ body.dark-mode .star-background {
       <p>&copy; 2023 Noctive. All rights reserved.</p>
     </footer>
 
-    <!-- REMOVE the entire inline <script>...</script> block here -->
-
-    <!-- Add your compiled JavaScript file from TypeScript -->
     <script src="index.js"></script>
 
-    <!-- Add this inside your <body> -->
 <form id="loginForm">
   <input type="text" id="username" placeholder="Username" required />
   <input type="password" id="password" placeholder="Password" required />
   <button type="submit">Login</button>
 </form>
 <script>
-// Track votes per user for each post
-const userVotes = {}; // Example: { postId: { userId: 'up' } }
+const userVotes = {};
 
 async function vote(button, direction) {
   const postElement = button.closest('.post');
   const postId = postElement.getAttribute('data-post-id');
-  const userId = 'currentUser'; // Replace with actual user ID
+  const userId = 'currentUser';
 
   console.log('Post ID:', postId);
   console.log('Direction:', direction);
 
-  // Check if the user has already voted
   if (userVotes[postId]?.[userId]) {
-    return; // Skip further processing if the user has already voted
+    return;
   }
 
-  // Simulate server response for testing
   const data = { success: true };
 
   if (data.success) {
-    // Update the UI
     const voteCountElement = postElement.querySelector('.vote-count');
     let currentVotes = parseInt(voteCountElement.textContent, 10) || 0;
     currentVotes += direction === 'up' ? 1 : -1;
@@ -1731,7 +1425,6 @@ async function vote(button, direction) {
 
     console.log('Updated vote count:', currentVotes);
 
-    // Register the user's vote locally
     if (!userVotes[postId]) {
       userVotes[postId] = {};
     }
