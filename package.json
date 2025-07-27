@@ -1,14 +1,16 @@
 {
-  "name": "untitled_pc_project",
+  "name": "noctive",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["gaming", "platform", "social", "streaming"],
+  "author": "pivotmenace",
   "license": "ISC",
-  "description": "",
+  "description": "Night-First Gaming Platform - Unfollow the algorithm. Noctive follows you.",
+  "homepage": "https://pivotmenace.github.io/Noctive/",
   "dependencies": {
     "express": "^5.1.0"
   },
