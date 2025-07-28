@@ -275,14 +275,19 @@ nav {
           inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         color: #f0f0f0 !important;
         transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease;
+          transform 0.2s ease-out,
+          box-shadow 0.2s ease-out,
+          border-color 0.2s ease-out;
+        position: relative;
       }
       .post:hover {
-        transform: translateY(-3px);
+        border-color: rgba(255, 50, 50, 0.4) !important;
         box-shadow: 
-          0 20px 40px rgba(0, 0, 0, 0.4),
-          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+          0 8px 32px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15),
+          0 0 15px rgba(255, 0, 0, 0.2),
+          0 0 30px rgba(255, 0, 0, 0.1);
+        transform: translateY(-2px);
       }
       .user {
         display: flex;
@@ -1031,17 +1036,15 @@ button:focus,
   }
 }
 
-/* Default behavior - show both icons and text */
-@media (min-width: 701px) {
-  .nav-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 0.5rem;
-  }
-  .nav-text {
-    display: inline;
-  }
+/* Default behavior - hide icons, show only text */
+.nav-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-text {
+  display: inline;
 }
 
 @media (max-width: 700px) {
