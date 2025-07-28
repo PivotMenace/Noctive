@@ -71,7 +71,7 @@ header {
 .brand-title {
   font-family: 'Rubik', 'Roboto Condensed', 'Segoe UI Bold', sans-serif !important;
   font-weight: 700;
-  font-size: 2rem;
+  font-size: 3rem;
   background: linear-gradient(90deg, #800000, #ff3c38);
   -webkit-background-clip: text;
   background-clip: text;
@@ -82,17 +82,51 @@ header {
   margin-right: 2rem; /* Space before navigation */
 }
 
-/* Navigation with midnight glass effect - now inline */
-nav {
+/* Navigation with slider effect */
+.nav-slider-wrapper {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 0.5rem;
-  background: none;
-  border: none;
-  box-shadow: none;
-  padding: 0; /* Removed left padding */
-  margin: 0; /* Removed bottom margin */
+  position: relative;
+  background: #1f1f2f;
+  border: 2px solid #444;
+  border-radius: 999px;
+  padding: 0.2rem;
+  gap: 0.25rem;
+  width: fit-content;
+  margin: auto;
+}
+
+.nav-tab {
+  all: unset;
+  position: relative;
+  z-index: 2;
+  padding: 0.5rem 1.2rem;
+  font-family: 'Rubik', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #f0f0f0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.nav-tab:hover {
+  color: #facc15;
+}
+
+.nav-tab.active {
+  color: #1a1a1a;
+}
+
+.nav-slider-indicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  background: #facc15;
+  border-radius: 999px;
+  z-index: 1;
+  transition: all 0.3s ease;
 }
 
 .nav-link {
@@ -1109,37 +1143,18 @@ button:focus,
 
     <header>
       <div class="header-main">
-        <div class="header-icon" style="position: relative;">
-          <img src="pngs/logo.png" alt="Noctive Logo" style="width:48px;height:48px;">
-        </div>
+        <div class="header-icon" style="position: relative;"></div>
         <span class="brand-title">Noctive</span>
       </div>
-      <nav>
-  <a href="#" class="nav-link nav-home">
-    <span class="nav-icon"><img src="pngs/home.png" alt="Home" width="22" height="22"></span>
-    <span class="nav-text">Home</span>
-  </a>
-  <a href="#" class="nav-link nav-creator">
-    <span class="nav-icon"><img src="pngs/creator.png" alt="Creator Hub" width="22" height="22"></span>
-    <span class="nav-text">Creator Hub</span>
-  </a>
-  <a href="#" class="nav-link nav-highlights">
-    <span class="nav-icon"><img src="pngs/highlights.png" alt="Highlights" width="22" height="22"></span>
-    <span class="nav-text">Highlights</span>
-  </a>
-  <a href="#" class="nav-link nav-findteammates">
-    <span class="nav-icon"><img src="pngs/findteammates.png" alt="Find Teammates" width="22" height="22"></span>
-    <span class="nav-text">Find Teammates</span>
-  </a>
-  <a href="#" class="nav-link nav-store">
-    <span class="nav-icon"><img src="pngs/store.png" alt="Store Hub" width="22" height="22"></span>
-    <span class="nav-text">Store Hub</span>
-  </a>
-  <a href="#" class="nav-link nav-dev">
-    <span class="nav-icon"><img src="pngs/dev.png" alt="Dev Hub" width="22" height="22"></span>
-    <span class="nav-text">Dev Hub</span>
-  </a>
-</nav>
+      <div class="nav-slider-wrapper">
+  <div class="nav-slider-indicator"></div>
+  <button class="nav-tab active">Home</button>
+  <button class="nav-tab">Creator Hub</button>
+  <button class="nav-tab">Highlights</button>
+  <button class="nav-tab">Find Teammates</button>
+  <button class="nav-tab">Store Hub</button>
+  <button class="nav-tab">Dev Hub</button>
+</div>
       <div class="header-account-link">
         <a href="/profile" class="account-link" title="Your Profile">
           <img src="pngs/account.png" alt="Account" class="account-icon">
@@ -1449,6 +1464,31 @@ function toggleTrending() {
   console.log('Toggling Trending Sidebar:', trendingSidebar);
   trendingSidebar.classList.toggle('hidden');
 }
+
+// Navigation Slider
+const tabs = document.querySelectorAll(".nav-tab");
+const indicator = document.querySelector(".nav-slider-indicator");
+
+function updateIndicator(tab) {
+  const wrapper = tab.parentElement;
+  const offsetLeft = tab.offsetLeft;
+  const width = tab.offsetWidth;
+
+  indicator.style.left = `${offsetLeft}px`;
+  indicator.style.width = `${width}px`;
+
+  tabs.forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+}
+
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => updateIndicator(tab));
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const activeTab = document.querySelector(".nav-tab.active");
+  if (activeTab) updateIndicator(activeTab);
+});
 </script>
   </body>
 </html>
