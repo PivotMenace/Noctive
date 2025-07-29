@@ -39,8 +39,8 @@
 /* Header with midnight theme */
 header {
   display: flex;
-  flex-direction: row; /* Changed from column to row */
-  align-items: center; /* Center items vertically */
+  flex-direction: row;
+  align-items: center;
   height: auto;
   background: #23263a !important;
   backdrop-filter: blur(20px);
@@ -51,9 +51,10 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
-  padding: 1rem 1.5rem; /* Adjusted padding */
-  justify-content: space-between; /* Space between brand and account links */
+  padding: 1rem 1.5rem;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1001;
 }
 
 .header-main {
@@ -71,7 +72,7 @@ header {
 .brand-title {
   font-family: 'Rubik', 'Roboto Condensed', 'Segoe UI Bold', sans-serif !important;
   font-weight: 700;
-  font-size: 3rem;
+  font-size: 2rem;
   background: linear-gradient(90deg, #800000, #ff3c38);
   -webkit-background-clip: text;
   background-clip: text;
@@ -86,24 +87,25 @@ header {
 .nav-slider-wrapper {
   display: flex;
   position: relative;
-  background: #1f1f2f;
-  border: 2px solid #444;
+  background: #101018;
+  border: none;
   border-radius: 999px;
   padding: 0.2rem;
   gap: 0.25rem;
   width: fit-content;
   margin: auto;
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.1);
 }
 
 .nav-tab {
   all: unset;
   position: relative;
   z-index: 2;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.3rem;
   font-family: 'Rubik', sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
-  color: #f0f0f0;
+  color: #eaeaea;
   border-radius: 999px;
   cursor: pointer;
   transition: color 0.2s ease;
@@ -115,6 +117,7 @@ header {
 
 .nav-tab.active {
   color: #1a1a1a;
+  font-weight: 600;
 }
 
 .nav-slider-indicator {
@@ -123,7 +126,8 @@ header {
   bottom: 0;
   left: 0;
   width: 0;
-  background: #facc15;
+  background: linear-gradient(145deg, #facc15, #ff9f0a);
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.4);
   border-radius: 999px;
   z-index: 1;
   transition: all 0.3s ease;
@@ -538,37 +542,100 @@ header {
   line-height: 1.2;
 }
     /* TRENDING SIDEBAR */
-    .trending-sidebar {
-      position: fixed;
-      top: 10rem !important;
-      left: 2rem;
-      width: 250px;
-      background: linear-gradient(to bottom right, #1a1d2e, #23263a) !important;
-      padding: 0;
-      border-radius: 0.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-      color: #f0f0f0 !important;
-      font-size: 0.9rem;
-      z-index: 1000;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
+    .retro-window {
+  width: 260px;
+  border: 2px solid #facc15;
+  background: #111827;
+  box-shadow: 6px 6px 0px #000;
+  font-family: 'Rubik', sans-serif;
+  border-radius: 6px;
+  position: fixed;
+  top: 60px;
+  z-index: 100;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+}
 
-    .trending-sidebar h3 {
-      margin: 0 0 1rem;
-      font-size: 1.2rem;
-      color: #facc15 !important;
-      text-shadow: 0 0 8px #facc15;
-      animation: yellowFlicker 2.8s infinite;
-    }
+.retro-window.open {
+  max-height: 500px;
+}
 
-    .trending-sidebar ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+.retro-window.trending {
+  left: 32px;
+}
+
+.retro-window.night-crew {
+  right: 32px;
+}
+
+.retro-titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a2e;
+  color: #facc15;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #facc15;
+  border-radius: 6px 6px 0 0;
+}
+
+.retro-buttons {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.retro-buttons .btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: #333;
+  border: 1px solid #000;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.retro-buttons .btn:hover {
+  transform: scale(1.1);
+}
+
+.retro-buttons .red {
+  background: #ff5f56;
+}
+.retro-buttons .yellow {
+  background: #f5b13f;
+}
+.retro-buttons .green {
+  background: #27c93f;
+}
+
+.retro-content {
+  padding: 1.2rem;
+  color: #f1f1f1;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.retro-window.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.retro-window.trending.hidden {
+  transform: translateX(-300px);
+}
+
+.retro-window.night-crew.hidden {
+  transform: translateX(300px);
+}
+
+.trending-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
     .trending-sidebar li {
       margin-bottom: 0.75rem;
@@ -1106,16 +1173,17 @@ button:focus,
 @media (max-width: 700px) {
   .trending-open-button,
   .sidebar-toggle-button {
-    z-index: 3000 !important;
     position: fixed;
     min-width: 44px;
     min-height: 44px;
     font-size: 1.1rem;
+    z-index: 998;
   }
   .trending-sidebar,
   #nightCrewWidget,
-  .sidebar-widget {
-    z-index: 2000 !important;
+  .sidebar-widget,
+  .retro-window {
+    z-index: 100;
   }
 }
 
@@ -1127,7 +1195,7 @@ button:focus,
 }
 
 #trendingSidebar {
-  color: #f0f0f0 !important;
+  display: none !important;
 }
 
 #trendingSidebar .sidebar-header {
@@ -1136,6 +1204,10 @@ button:focus,
   padding: 6px 12px;
   font-weight: bold;
   border-radius: 4px 4px 0 0;
+}
+
+#toggleTrendingButton {
+  display: none !important;
 }
     </style>
   </head>
@@ -1185,30 +1257,42 @@ button:focus,
       <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-5.png" alt="Night Crew" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">Night Crew
     </button>
 
-    <div class="sidebar-widget hidden" id="nightCrewWidget">
-      <div class="dialog-titlebar">
-        <span>Night Crew</span>
-        <button class="dialog-close-btn" onclick="toggleSidebar()" title="Close">×</button>
+    <div class="retro-window night-crew hidden" id="nightCrewWidget">
+      <div class="retro-titlebar">
+        <span>🌙 Night Crew</span>
+        <div class="retro-buttons">
+          <div class="btn red" onclick="toggleSidebar()"></div>
+          <div class="btn yellow"></div>
+          <div class="btn green"></div>
+        </div>
       </div>
-      <ul>
-        <li><span class="status-dot online"></span> @Venus</li>
-        <li><span class="status-dot online"></span> @Hijinxx</li>
-        <li><span class="status-dot idle"></span> @Belt181</li>
-        <li><span class="status-dot offline"></span> @WispEcho</li>
-      </ul>
+      <div class="retro-content">
+        <ul>
+          <li><span class="status-dot online"></span> @Venus</li>
+          <li><span class="status-dot online"></span> @Hijinxx</li>
+          <li><span class="status-dot idle"></span> @Belt181</li>
+          <li><span class="status-dot offline"></span> @WispEcho</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="trending-sidebar hidden" id="trendingSidebar">
-      <div class="dialog-titlebar">
-        <span>What's Trending</span>
-        <button class="dialog-close-btn" onclick="toggleTrending()" title="Close">×</button>
+    <div class="retro-window trending hidden" id="trendingSidebar">
+      <div class="retro-titlebar">
+        <span>🔥 What's Trending</span>
+        <div class="retro-buttons">
+          <div class="btn red" onclick="toggleTrending()"></div>
+          <div class="btn yellow"></div>
+          <div class="btn green"></div>
+        </div>
       </div>
-      <ul>
-        <li>Valorant Night Tournament</li>
-        <li>New Apex Patch Notes</li>
-        <li>Overwatch 2 Memes</li>
-        <li>Looking for Teammates</li>
-      </ul>
+      <div class="retro-content">
+        <ul>
+          <li>Valorant Night Tournament</li>
+          <li>New Apex Patch Notes</li>
+          <li>Overwatch 2 Memes</li>
+          <li>Looking for Teammates</li>
+        </ul>
+      </div>
     </div>
 
     <section class="feed">
@@ -1409,7 +1493,7 @@ button:focus,
     </div>
 
     <footer>
-      <p>&copy; 2023 Noctive. All rights reserved.</p>
+      <p>&copy; 2025 Noctive. All rights reserved. built on silliness and a dream and a lil anger</p>
     </footer>
 
     <script src="index.js"></script>
@@ -1453,16 +1537,18 @@ async function vote(button, direction) {
   }
 }
 
-function toggleSidebar() {
-  const sidebar = document.getElementById('nightCrewWidget');
-  console.log('Toggling Night Crew Widget:', sidebar);
-  sidebar.classList.toggle('hidden');
+function toggleTrending() {
+  const trendingWindow = document.getElementById('trendingSidebar');
+  console.log('Toggling Trending Window:', trendingWindow);
+  trendingWindow.classList.toggle('hidden');
+  trendingWindow.classList.toggle('open');
 }
 
-function toggleTrending() {
-  const trendingSidebar = document.getElementById('trendingSidebar');
-  console.log('Toggling Trending Sidebar:', trendingSidebar);
-  trendingSidebar.classList.toggle('hidden');
+function toggleSidebar() {
+  const nightWindow = document.getElementById('nightCrewWidget');
+  console.log('Toggling Night Crew Widget:', nightWindow); 
+  nightWindow.classList.toggle('hidden');
+  nightWindow.classList.toggle('open');
 }
 
 // Navigation Slider
