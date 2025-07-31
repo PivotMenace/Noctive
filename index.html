@@ -301,7 +301,7 @@ header {
      margin: auto;
     }
       .feed {
-  margin-top: 4rem; /* Adjust this value to match the height of your header */
+  margin-top: 0;
 }
       .post {
         background: linear-gradient(to bottom right, #1d2133, #292e44) !important;
@@ -384,7 +384,7 @@ header {
         background: #1f1f2f !important;
         border: 1px solid #444 !important;
         border-radius: 50%;
-        box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
+        box-shadow: 0 0 8px #facc15, 0 0 16px rgba(250,204,21,0.25);
         width: 32px;
         height: 32px;
         display: flex;
@@ -401,9 +401,14 @@ header {
       .vote-btn:focus {
         background: #23263a !important;
         border-color: #facc15 !important;
-        box-shadow: 
-          0 0 15px #facc15,
-          0 0 30px rgba(250, 204, 21, 0.5);
+        box-shadow: 0 0 8px #facc15, 0 0 16px rgba(250,204,21,0.25);
+        outline: none;
+      }
+      .vote-btn.downvote:hover,
+      .vote-btn.downvote:focus {
+        background: #23263a !important;
+        border-color: #b22222 !important;
+        box-shadow: 0 0 8px #b22222, 0 0 16px rgba(178,34,34,0.25);
         outline: none;
       }
       .vote-btn img {
@@ -851,7 +856,7 @@ header {
     inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
   color: #f0f0f0 !important;
   margin-bottom: 2rem;
-  margin-top: 0.5rem !important;
+  margin-top: 0 !important; /* Reduced from 0.25rem */
 }
 
 button,
@@ -998,13 +1003,34 @@ button:focus,
   animation: slightBounce 0.32s cubic-bezier(.4,1.2,.6,1);
 }
 
-.vote-btn img {
-  display: inline-block;
-  vertical-align: middle;
-  width: 18px;
-  height: 18px;
-  pointer-events: none;
+.vote-btn {
+  background: #1f1f2f !important;
+  border: 1px solid #444 !important;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #facc15, 0 0 16px rgba(250,204,21,0.25);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition:
+    box-shadow 0.18s cubic-bezier(.4,1.2,.6,1),
+    background 0.18s,
+    border-color 0.18s;
+  margin: 0 2px;
 }
+
+.vote-btn.active {
+  background: #23263a !important;
+  border-color: #facc15 !important;
+  box-shadow: 0 0 8px #facc15, 0 0 16px rgba(250,204,21,0.25);
+}
+.vote-btn.downvote.active {
+  border-color: #b22222 !important;
+  box-shadow: 0 0 8px #b22222, 0 0 16px rgba(178,34,34,0.25);
+}
+
 .account-link {
   display: flex;
   align-items: center;
@@ -1561,30 +1587,49 @@ async function vote(button, direction) {
   const postId = postElement.getAttribute('data-post-id');
   const userId = 'currentUser';
 
-  console.log('Post ID:', postId);
-  console.log('Direction:', direction);
+  const voteCountElement = postElement.querySelector('.vote-count');
+  let currentVotes = parseInt(voteCountElement.textContent, 10) || 0;
 
-  if (userVotes[postId]?.[userId]) {
-    return;
+  if (!userVotes[postId]) {
+    userVotes[postId] = {};
   }
 
-  const data = { success: true };
+  const upBtn = postElement.querySelector('.vote-btn.upvote');
+  const downBtn = postElement.querySelector('.vote-btn.downvote');
 
-  if (data.success) {
-    const voteCountElement = postElement.querySelector('.vote-count');
-    let currentVotes = parseInt(voteCountElement.textContent, 10) || 0;
+  // Toggle logic
+  if (userVotes[postId][userId] === direction) {
+    // Undo vote
+    currentVotes += direction === 'up' ? -1 : 1;
+    delete userVotes[postId][userId];
+    upBtn.classList.remove('active');
+    downBtn.classList.remove('active');
+  } else if (userVotes[postId][userId] === undefined) {
+    // New vote
     currentVotes += direction === 'up' ? 1 : -1;
-    voteCountElement.textContent = currentVotes.toString();
-
-    console.log('Updated vote count:', currentVotes);
-
-    if (!userVotes[postId]) {
-      userVotes[postId] = {};
-    }
     userVotes[postId][userId] = direction;
+    if (direction === 'up') {
+      upBtn.classList.add('active');
+      downBtn.classList.remove('active');
+    } else {
+      downBtn.classList.add('active');
+      upBtn.classList.remove('active');
+    }
   } else {
-    alert(data.message || 'Failed to register vote.');
+    // Switch vote
+    currentVotes += direction === 'up' ? 2 : -2;
+    userVotes[postId][userId] = direction;
+    if (direction === 'up') {
+      upBtn.classList.add('active');
+      downBtn.classList.remove('active');
+    } else {
+      downBtn.classList.add('active');
+      upBtn.classList.remove('active');
+    }
   }
+
+  voteCountElement.textContent = currentVotes.toString();
+  console.log('Updated vote count:', currentVotes);
 }
 
 function toggleTrending() {
