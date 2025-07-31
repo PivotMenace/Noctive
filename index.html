@@ -314,18 +314,16 @@ header {
           inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         color: #f0f0f0 !important;
         transition:
+          box-shadow 1.2s cubic-bezier(.4,2,.6,1),
+          border-color 1.2s cubic-bezier(.4,2,.6,1),
           transform 0.2s ease-out,
-          box-shadow 0.2s ease-out,
-          border-color 0.2s ease-out;
+          color 0.2s;
         position: relative;
       }
       .post:hover {
         border-color: rgba(255, 50, 50, 0.4) !important;
         box-shadow: 
-          0 8px 32px rgba(0, 0, 0, 0.3),
-          inset 0 1px 0 rgba(255, 255, 255, 0.15),
-          0 0 15px rgba(255, 0, 0, 0.2),
-          0 0 30px rgba(255, 0, 0, 0.1);
+          0 0 12px #00eaff, 0 0 24px #ff00cc, 0 0 48px #39ff14;
         transform: translateY(-2px);
       }
       .user {
@@ -852,6 +850,8 @@ header {
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
   color: #f0f0f0 !important;
+  margin-bottom: 2rem;
+  margin-top: 0.5rem !important;
 }
 
 button,
@@ -865,8 +865,9 @@ button,
   border: 1px solid #444 !important;
   box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
   transition:
+    box-shadow 1.2s cubic-bezier(.4,2,.6,1),
+    border-color 1.2s cubic-bezier(.4,2,.6,1),
     transform 0.13s cubic-bezier(.4,2,.6,1),
-    box-shadow 0.13s cubic-bezier(.4,2,.6,1),
     background 0.15s;
 }
 
@@ -877,14 +878,8 @@ button:hover,
 .sidebar-toggle-button:hover,
 .dialog-close-btn:hover {
   transform: none;
-  box-shadow: 
-    0 0 15px #facc15,
-    0 0 30px rgba(250, 204, 21, 0.5);
-  background: #23263a !important;
-  z-index: 2;
-  transition:
-    box-shadow 0.18s cubic-bezier(.4,1.2,.6,1),
-    background 0.18s;
+  box-shadow: 0 0 8px #39ff14, 0 0 16px #00eaff, 0 0 32px #ff00cc, 0 0 2px #facc15;
+  border-color: #39ff14 !important;
 }
 
 .trending-open-button,
@@ -946,6 +941,12 @@ button:hover,
   display: flex;
   align-items: center;
   color: #f0f0f0 !important;
+}
+
+.user-info a:not([href*="Hijinxx"]) {
+  color: #eaeaea !important;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 @media (min-width: 1100px) {
@@ -1209,6 +1210,67 @@ button:focus,
 #toggleTrendingButton {
   display: none !important;
 }
+.glitchy {
+  position: relative;
+  display: inline-block;
+  color: #facc15;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  overflow: hidden;
+}
+
+.glitchy::before,
+.glitchy::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: #ff00cc;
+  clip-path: inset(0 0 0 0);
+}
+
+.glitchy::after {
+  animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% {
+    clip-path: inset(0 0 0 0);
+  }
+  20% {
+    clip-path: inset(10% 0 80% 0);
+  }
+  40% {
+    clip-path: inset(20% 0 60% 0);
+  }
+  60% {
+    clip-path: inset(30% 0 40% 0);
+  }
+  80% {
+    clip-path: inset(10% 0 80% 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.glitchy:hover {
+  animation: glitch 0.3s steps(2, end) infinite;
+  text-shadow: 1px 1px #ff00cc, -1px -1px #00eaff;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
+}
     </style>
   </head>
   <body>
@@ -1268,10 +1330,10 @@ button:focus,
       </div>
       <div class="retro-content">
         <ul>
-          <li><span class="status-dot online"></span> @Venus</li>
-          <li><span class="status-dot online"></span> @Hijinxx</li>
-          <li><span class="status-dot idle"></span> @Belt181</li>
-          <li><span class="status-dot offline"></span> @WispEcho</li>
+          <li><span class="status-dot online"></span> <a href="/profile/Venus" class="glitchy" data-text="@Venus">@Venus</a></li>
+          <li><span class="status-dot online"></span> <a href="/profile/Hijinxx" class="glitchy" data-text="@Hijinxx">@Hijinxx</a></li>
+          <li><span class="status-dot idle"></span> <a href="/profile/Belt181">@Belt181</a></li>
+          <li><span class="status-dot offline"></span> <a href="/profile/WispEcho">@WispEcho</a></li>
         </ul>
       </div>
     </div>
@@ -1333,9 +1395,7 @@ button:focus,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;">
-          @Hijinxx <span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span>
-        </strong>
+        <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="/profile/Hijinxx" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a><span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Valorant</span>
       </div>
     </div>
@@ -1359,9 +1419,7 @@ button:focus,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;">
-          @Belt181 <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span>
-        </strong>
+        <strong style="font-size: 1rem;"><a href="/profile/Belt181">@Belt181</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Apex Legends</span>
       </div>
     </div>
@@ -1385,9 +1443,7 @@ button:focus,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Remko&background=222244&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;">
-          @Remko <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span>
-        </strong>
+        <strong style="font-size: 1rem;"><a href="/profile/Remko">@Remko</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span></strong>
         <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
       </div>
     </div>
@@ -1411,9 +1467,7 @@ button:focus,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=SpaceNavis&background=004080&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;">
-          @SpaceNavis <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span>
-        </strong>
+        <strong style="font-size: 1rem;"><a href="/profile/SpaceNavis">@SpaceNavis</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: The Sims</span>
       </div>
     </div>
@@ -1437,9 +1491,7 @@ button:focus,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=JuJu&background=660066&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;">
-          @JuJu <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span>
-        </strong>
+        <strong style="font-size: 1rem;"><a href="/profile/JuJu">@JuJu</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span></strong>
         <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
       </div>
     </div>
@@ -1463,9 +1515,7 @@ button:focus,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;">
-          @LoriPie <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span>
-        </strong>
+        <strong style="font-size: 1rem;"><a href="/profile/LoriPie">@LoriPie</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Stardew Valley</span>
       </div>
     </div>
@@ -1574,6 +1624,15 @@ tabs.forEach(tab => {
 window.addEventListener("DOMContentLoaded", () => {
   const activeTab = document.querySelector(".nav-tab.active");
   if (activeTab) updateIndicator(activeTab);
+
+  // Live character count for Venus status textarea
+  const newPostInput = document.getElementById("newPostInput");
+  const charCount = document.getElementById("charCount");
+  if (newPostInput && charCount) {
+    newPostInput.addEventListener("input", function() {
+      charCount.textContent = this.value.length;
+    });
+  }
 });
 </script>
   </body>
