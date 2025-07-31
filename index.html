@@ -1597,23 +1597,24 @@ async function vote(button, direction) {
   const upBtn = postElement.querySelector('.vote-btn.upvote');
   const downBtn = postElement.querySelector('.vote-btn.downvote');
 
+  // Always remove active from both first
+  upBtn.classList.remove('active');
+  downBtn.classList.remove('active');
+
   // Toggle logic
   if (userVotes[postId][userId] === direction) {
     // Undo vote
     currentVotes += direction === 'up' ? -1 : 1;
     delete userVotes[postId][userId];
-    upBtn.classList.remove('active');
-    downBtn.classList.remove('active');
+    // No button stays active
   } else if (userVotes[postId][userId] === undefined) {
     // New vote
     currentVotes += direction === 'up' ? 1 : -1;
     userVotes[postId][userId] = direction;
     if (direction === 'up') {
       upBtn.classList.add('active');
-      downBtn.classList.remove('active');
     } else {
       downBtn.classList.add('active');
-      upBtn.classList.remove('active');
     }
   } else {
     // Switch vote
@@ -1621,10 +1622,8 @@ async function vote(button, direction) {
     userVotes[postId][userId] = direction;
     if (direction === 'up') {
       upBtn.classList.add('active');
-      downBtn.classList.remove('active');
     } else {
       downBtn.classList.add('active');
-      upBtn.classList.remove('active');
     }
   }
 
