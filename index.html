@@ -485,6 +485,79 @@ header {
       .ticker-bar:hover .ticker-text {
         animation-play-state: paused;
       }
+
+/* Make ticker bar smaller on mobile */
+@media (max-width: 768px) {
+  .ticker-bar {
+    padding: 0.25rem 0; /* Reduced from 0.5rem */
+  }
+  
+  .ticker-text {
+    font-size: 0.75rem; /* Reduced from 0.95rem */
+    letter-spacing: 0.5px; /* Reduced from 1px */
+  }
+  
+  /* Make post user info smaller on mobile */
+  .user img {
+    width: 32px !important; /* Reduced from 40px */
+    height: 32px !important; /* Reduced from 40px */
+  }
+  
+  .user-info strong {
+    font-size: 0.8rem !important; /* Reduced from 0.9rem */
+  }
+  
+  .user-info .currently-playing,
+  .user-info span[style*="font-size: 0.75rem"] {
+    font-size: 0.55rem !important; /* Reduced from 0.65rem to fit on one line */
+  }
+  
+  .title {
+    font-size: 0.7rem !important; /* Reduced from 0.8rem */
+  }
+  
+  /* Make create post user info smaller too */
+  .create-post .user-avatar {
+    width: 50px !important; /* Reduced from 60px */
+    height: 50px !important; /* Reduced from 60px */
+    box-shadow: 0 0 2px rgba(255, 60, 56, 0.2) !important; /* Reduced glow on mobile */
+    animation: none !important; /* Remove pulsing animation on mobile */
+  }
+  
+  .create-post .user-info span {
+    font-size: 0.9rem !important; /* Reduced from 1rem */
+  }
+  
+  .create-post .title {
+    font-size: 0.7rem !important; /* Reduced from 0.8rem */
+  }
+  
+  .create-post .currently-playing {
+    font-size: 0.55rem !important; /* Reduced from 0.65rem to fit on one line */
+  }
+  
+  /* Target all "Currently" text spans on mobile */
+  span[style*="Currently"],
+  .currently-playing {
+    font-size: 0.55rem !important;
+    line-height: 1.1 !important;
+  }
+  
+  /* Make Venus status post match other posts on mobile */
+  .create-post .user-info span[style*="font-size: 1rem"] {
+    font-size: 0.8rem !important; /* Match other usernames */
+  }
+  
+  .create-post .user-info span[style*="font-size: 0.75rem"] {
+    font-size: 0.55rem !important; /* Match other "Currently playing" text */
+  }
+  
+  /* Make textarea smaller on mobile */
+  .create-post textarea {
+    font-size: 0.65rem !important; /* Reduced from 1rem */
+    padding: 0.75rem 1rem !important; /* Reduced padding */
+  }
+}
       @keyframes tickerScroll {
         0% {
           transform: translateX(0);
@@ -1154,6 +1227,15 @@ button:focus,
   }
 }
 
+/* Default behavior - hide icons on desktop, show only text */
+.nav-icon {
+  display: none;
+}
+
+.nav-text {
+  display: inline;
+}
+
 /* Switch to icon-only mode when text can't fit */
 @media (max-width: 700px) {
   header {
@@ -1323,27 +1405,21 @@ button:focus,
       <div class="nav-slider-wrapper">
   <div class="nav-slider-indicator"></div>
   <button class="nav-tab active">
-    <span class="nav-icon">🏠</span>
     <span class="nav-text">Home</span>
   </button>
   <button class="nav-tab">
-    <span class="nav-icon">🎨</span>
     <span class="nav-text">Creator Hub</span>
   </button>
   <button class="nav-tab">
-    <span class="nav-icon">⭐</span>
     <span class="nav-text">Highlights</span>
   </button>
   <button class="nav-tab">
-    <span class="nav-icon">👥</span>
     <span class="nav-text">Find Teammates</span>
   </button>
   <button class="nav-tab">
-    <span class="nav-icon">🛒</span>
     <span class="nav-text">Store Hub</span>
   </button>
   <button class="nav-tab">
-    <span class="nav-icon">⚙️</span>
     <span class="nav-text">Dev Hub</span>
   </button>
 </div>
@@ -1633,16 +1709,6 @@ button:focus,
       <div class="ticker-text">
         Welcome to Noctive, this is a site I built inspired by my best friend. But if you don't know what is going go, you are in the wrong place. I am currently reading eunuchs and nymphomaniacs, its okay, and chameleon in a candy store is so much better, along with i love the wallows! i guess, shout out to all my besties who is rooting for me!
       </div>
-    </div>
-
-    <!-- GitHub Chat Bubble -->
-    <div class="github-bubble">
-      <a href="https://github.com/PivotMenace/Noctive" target="_blank" rel="noopener noreferrer">
-        <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-        </svg>
-        <span class="bubble-text">Check out the source code!</span>
-      </a>
     </div>
 
     <footer>
