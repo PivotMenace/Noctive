@@ -1,7 +1,9 @@
 <h1>Noctive</h1>
 
 <h2>💬 About Noctive</h2>
-<p>On other platforms, creators feel like they have to chase what’s trending just to be seen. On Noctive, we flip that. Here, your late-night stream of a weird old game matters just as much as the biggest title. Whether you’re streaming, posting, or just chilling, Noctive is about you being you, not gaming for the algorithm.</p>
+<p> Hi, My name is Venus, I wanted to create a fun and light hearted platform that was inspired by my two best friends that I cherish to this day!
+  
+  On other platforms, creators feel like they have to chase what’s trending just to be seen. On Noctive, we flip that. Here, your late-night stream of a weird old game matters just as much as the biggest title. Whether you’re streaming, posting, or just chilling, Noctive is about you being you, not gaming for the algorithm.</p>
 <p><strong>Unfollow the algorithm. Noctive follows you.</strong></p>
 
 <h2>🌟 What Makes Noctive Different?</h2>
