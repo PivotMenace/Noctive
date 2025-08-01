@@ -887,8 +887,8 @@ button:hover,
 .sidebar-toggle-button:hover,
 .dialog-close-btn:hover {
   transform: none;
-  box-shadow: 0 0 3px #39ff14, 0 0 6px #00eaff, 0 0 12px #ff00cc, 0 0 1px #facc15;
-  border-color: #39ff14 !important;
+  box-shadow: 0 0 3px #ffffff, 0 0 6px #ffffff, 0 0 12px rgba(255, 255, 255, 0.3), 0 0 1px #facc15;
+  border-color: #ffffff !important;
 }
 
 .trending-open-button:hover {
@@ -1059,6 +1059,16 @@ button:focus,
   box-shadow: none;
   border-radius: 0;
   object-fit: contain;
+}
+
+.account-icon {
+  filter: invert(1);
+}
+
+.account-link:hover .account-icon {
+  filter: invert(1) drop-shadow(0 0 0px #facc15) drop-shadow(0 0 4px #facc15);
+  transform: scale(1.15);
+  transition: filter 0.18s, transform 0.18s;
 }
 
 .settings-link:hover .settings-icon {
