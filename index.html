@@ -1482,7 +1482,7 @@ button:focus,
   }
   
   .brand-title {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     margin-right: 0.5rem;
   }
   
@@ -2046,15 +2046,15 @@ if (window.innerWidth <= 768) {
 
 <!-- 👇 Paste this inside your <body>, ideally near the bottom -->
 <nav class="bottom-nav">
-  <a href="#home" class="nav-item"><span>🏠</span></a>
-  <a href="#search" class="nav-item"><span>🔍</span></a>
+  <a href="#home" class="nav-item"><span>⌂</span></a>
+  <a href="#search" class="nav-item"><span>⚲</span></a>
 
   <a href="https://github.com/PivotMenace/Noctive" class="nav-center" target="_blank">
-    <span class="logo-circle bounce">N</span>
+    <span class="logo-circle bounce"></span>
   </a>
 
-  <a href="#activity" class="nav-item"><span>❤️</span></a>
-  <a href="#profile" class="nav-item"><span>👤</span></a>
+  <a href="#activity" class="nav-item"><span>♡</span></a>
+  <a href="#profile" class="nav-item"><span>◯</span></a>
 </nav>
 
 <style>
@@ -2079,14 +2079,15 @@ if (window.innerWidth <= 768) {
   .nav-item {
     flex: 1;
     text-align: center;
-    color: #bbb;
+    color: #ffffff !important;
     font-size: 1.2rem;
     transition: all 0.3s ease;
     text-decoration: none !important;
+    filter: none;
   }
 
   .nav-item:hover {
-    color: #facc15;
+    color: #facc15 !important;
     transform: scale(1.1);
   }
 
@@ -2101,10 +2102,9 @@ if (window.innerWidth <= 768) {
   .logo-circle {
     width: 45px;
     height: 45px;
-    background: #facc15;
-    color: #121212;
-    font-weight: bold;
-    font-family: 'Orbitron', sans-serif;
+    background: #121212;
+    font-weight: 700;
+    font-family: 'Rubik', 'Roboto Condensed', 'Segoe UI Bold', sans-serif !important;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -2112,6 +2112,22 @@ if (window.innerWidth <= 768) {
     font-size: 1.4rem;
     box-shadow: 0 4px 12px rgba(250, 204, 21, 0.4);
     transition: transform 0.2s ease-in-out;
+    letter-spacing: 0.5px;
+    text-decoration: none !important;
+  }
+  
+  .nav-center {
+    text-decoration: none !important;
+  }
+  
+  .logo-circle::before {
+    content: "N";
+    background: linear-gradient(45deg, #facc15, #f97316, #dc2626, #7c3aed, #facc15);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400% 400%;
+    animation: trippyGradient 6s ease-in-out infinite;
   }
 
   .logo-circle:hover {
@@ -2124,6 +2140,30 @@ if (window.innerWidth <= 768) {
     30%  { transform: translateY(-10px); }
     60%  { transform: translateY(4px); }
     100% { transform: translateY(0); }
+  }
+
+  /* Trippy gradient animation for the N */
+  @keyframes trippyGradient {
+    0% { 
+      background-position: 0% 50%;
+      filter: hue-rotate(0deg);
+    }
+    25% { 
+      background-position: 100% 0%;
+      filter: hue-rotate(90deg);
+    }
+    50% { 
+      background-position: 100% 100%;
+      filter: hue-rotate(180deg);
+    }
+    75% { 
+      background-position: 0% 100%;
+      filter: hue-rotate(270deg);
+    }
+    100% { 
+      background-position: 0% 50%;
+      filter: hue-rotate(360deg);
+    }
   }
 
   /* Mobile only */
