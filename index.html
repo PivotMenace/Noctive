@@ -252,7 +252,7 @@ header {
       }
       .sidebar-widget li {
         margin-bottom: 0.75rem;
-        padding-left: 1.5rem;
+        padding-left: 0.5rem;
         position: relative;
         font-size: 0.95rem;
         color: #f0f0f0 !important;
@@ -261,47 +261,110 @@ header {
         gap: 0.5rem;
         border: none;
         background: transparent;
+        list-style: none;
       }
-      .sidebar-widget .status-dot {
+
+      /* Night Crew widget link styling */
+      .sidebar-widget a,
+      #nightCrewWidget a {
+        color: #ffffff !important;
+        text-decoration: none !important;
+        text-shadow: 
+          0 0 3px rgba(0, 0, 0, 0.8),
+          0 1px 2px rgba(0, 0, 0, 0.6),
+          0 2px 4px rgba(0, 0, 0, 0.4);
+        transition: all 0.2s ease;
+      }
+
+      .sidebar-widget a:hover,
+      #nightCrewWidget a:hover {
+        color: #facc15 !important;
+        text-shadow: 
+          0 0 5px rgba(250, 204, 21, 0.6),
+          0 0 8px rgba(250, 204, 21, 0.4),
+          0 1px 3px rgba(0, 0, 0, 0.8);
+        transform: translateY(-1px);
+      }
+
+      .sidebar-widget .status-dot,
+      .retro-window .status-dot {
         display: inline-block;
         width: 14px;
         height: 14px;
         border-radius: 50%;
         margin-right: 0.25rem;
       }
-      .sidebar-widget .status-dot.online {
-        background-color: #22c55e;
-        box-shadow: 0 0 4px #22c55e;
+      .sidebar-widget .status-dot.online,
+      .retro-window .status-dot.online {
+        background-color: #10b981;
+        box-shadow: 0 0 6px #10b981;
       }
-      .sidebar-widget .status-dot.idle {
-        background-color: #facc15;
-        box-shadow: 0 0 4px #facc15;
+      .sidebar-widget .status-dot.idle,
+      .retro-window .status-dot.idle {
+        background-color: #f59e0b;
+        box-shadow: 0 0 6px #f59e0b;
       }
-      .sidebar-widget .status-dot.offline {
-        background-color: #6b7280;
-        box-shadow: 0 0 3px #6b7280;
+      .sidebar-widget .status-dot.offline,
+      .retro-window .status-dot.offline {
+        background-color: #dc2626;
+        box-shadow: 0 0 6px #dc2626;
       }
 
-      .sidebar-toggle-button {
+      /* Moon status for Remko */
+      .moon-status {
+        display: inline-block;
+        font-size: 14px;
+        margin-right: 0.25rem;
+        color: #e5e7eb;
+        text-shadow: 0 0 4px rgba(229, 231, 235, 0.6);
+        animation: moonGlow 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes moonGlow {
+        0% {
+          text-shadow: 0 0 4px rgba(229, 231, 235, 0.6);
+        }
+        100% {
+          text-shadow: 0 0 8px rgba(229, 231, 235, 0.8), 0 0 12px rgba(229, 231, 235, 0.4);
+        }
+      }
+
+      /* Night Crew toggle button (controls widget directly) */
+      .night-crew-toggle {
         position: fixed;
         top: 5rem;
-        right: 1rem;
+        right: 10px;
+        width: 50px;
+        height: 50px;
         background: transparent !important;
-        color: rgba(250, 204, 21, 0.8) !important;
-        border: 1px solid rgba(250, 204, 21, 0.3) !important;
-        border-radius: 0.5rem;
-        padding: 0.5rem 1rem;
-        font-weight: bold;
+        color: #ffffff !important;
+        border: 2px solid #ffffff !important;
+        border-radius: 50%;
+        font-size: 1.5rem;
         cursor: pointer;
         z-index: 10000;
-        box-shadow: 0 0 4px rgba(250, 204, 21, 0.2);
+        transition: right 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        visibility: visible;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
       }
 
-      .sidebar-toggle-button:hover {
-        background: rgba(250, 204, 21, 0.1) !important;
+      .night-crew-toggle:hover {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.1) !important;
         border-color: #facc15 !important;
         color: #facc15 !important;
-        box-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
+        box-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
+      }
+
+      .night-crew-toggle.show {
+        right: 10px;
+        opacity: 1;
+        visibility: visible;
       }
 
       /* ─── FEED & POSTS ─── */
@@ -556,7 +619,18 @@ header {
   
   /* Make textarea placeholder smaller on mobile */
   .create-post textarea {
-    font-size: 0.85rem !important; /* Reduced from 1rem */
+    font-size: 0.7rem !important; /* Reduced from 0.85rem to fit on one line */
+    line-height: 1.2 !important; /* Tighter line height */
+  }
+  
+  /* Make Night Crew button draggable on mobile */
+  .sidebar-toggle-button {
+    cursor: move !important;
+    touch-action: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    transition: none !important; /* Remove transitions for smoother dragging */
   }
 }
       @keyframes tickerScroll {
@@ -879,6 +953,12 @@ header {
 #nightCrewWidget li {
   background: transparent !important;
   color: #f0f0f0 !important;
+  list-style: none !important;
+}
+
+#nightCrewWidget ul {
+  padding-left: 0 !important;
+  margin: 0 !important;
 }
 
 #nightCrewWidget .dialog-titlebar {
@@ -1481,12 +1561,15 @@ button:focus,
     >
       <img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_full-2.png" alt="Trending" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">What's Trending
     </button>
+
+    <!-- Moon toggle button to control Night Crew widget directly -->
     <button
-      class="sidebar-toggle-button"
+      class="night-crew-toggle"
       onclick="toggleSidebar()"
       title="Toggle Night Crew"
+      id="nightCrewToggle"
     >
-      <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-5.png" alt="Night Crew" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">Night Crew
+      🌙
     </button>
 
     <div class="retro-window night-crew hidden" id="nightCrewWidget">
@@ -1500,10 +1583,10 @@ button:focus,
       </div>
       <div class="retro-content">
         <ul>
-          <li><span class="status-dot online"></span> <a href="/profile/Venus" class="glitchy" data-text="@Venus">@Venus</a></li>
+          <li><span class="status-dot offline"></span> <a href="/profile/Venus" class="glitchy" data-text="@Venus">@Venus</a></li>
           <li><span class="status-dot online"></span> <a href="/profile/Hijinxx" class="glitchy" data-text="@Hijinxx">@Hijinxx</a></li>
           <li><span class="status-dot idle"></span> <a href="/profile/Belt181">@Belt181</a></li>
-          <li><span class="status-dot offline"></span> <a href="/profile/WispEcho">@WispEcho</a></li>
+          <li><span class="moon-status">🌙</span> <a href="/profile/Remko">@Remko</a></li>
         </ul>
       </div>
     </div>
@@ -1858,6 +1941,77 @@ document.addEventListener('click', function(event) {
     dropdown?.classList.add('hidden');
   }
 });
+
+// Make moon toggle button draggable on mobile only
+if (window.innerWidth <= 768) {
+  const moonToggleButton = document.querySelector('.night-crew-toggle');
+  let isDragging = false;
+  let currentX = 0;
+  let currentY = 0;
+  let initialX = 0;
+  let initialY = 0;
+  let xOffset = 0;
+  let yOffset = 0;
+
+  function dragStart(e) {
+    if (e.type === "touchstart") {
+      initialX = e.touches[0].clientX - xOffset;
+      initialY = e.touches[0].clientY - yOffset;
+    } else {
+      initialX = e.clientX - xOffset;
+      initialY = e.clientY - yOffset;
+    }
+
+    if (e.target === moonToggleButton) {
+      isDragging = true;
+    }
+  }
+
+  function dragEnd(e) {
+    initialX = currentX;
+    initialY = currentY;
+    isDragging = false;
+  }
+
+  function drag(e) {
+    if (isDragging) {
+      e.preventDefault();
+      
+      if (e.type === "touchmove") {
+        currentX = e.touches[0].clientX - initialX;
+        currentY = e.touches[0].clientY - initialY;
+      } else {
+        currentX = e.clientX - initialX;
+        currentY = e.clientY - initialY;
+      }
+
+      xOffset = currentX;
+      yOffset = currentY;
+
+      // Apply boundaries to keep button on screen
+      const rect = moonToggleButton.getBoundingClientRect();
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+      
+      xOffset = Math.max(0, Math.min(xOffset, maxX));
+      yOffset = Math.max(0, Math.min(yOffset, maxY));
+
+      moonToggleButton.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+      moonToggleButton.style.position = 'fixed';
+      moonToggleButton.style.zIndex = '10001';
+    }
+  }
+
+  // Touch events for mobile
+  moonToggleButton.addEventListener("touchstart", dragStart, false);
+  document.addEventListener("touchend", dragEnd, false);
+  document.addEventListener("touchmove", drag, false);
+
+  // Mouse events for testing on desktop
+  moonToggleButton.addEventListener("mousedown", dragStart, false);
+  document.addEventListener("mouseup", dragEnd, false);
+  document.addEventListener("mousemove", drag, false);
+}
 </script>
 
 <!-- 👇 Paste this inside your <body>, ideally near the bottom -->
@@ -1898,6 +2052,7 @@ document.addEventListener('click', function(event) {
     color: #bbb;
     font-size: 1.2rem;
     transition: all 0.3s ease;
+    text-decoration: none !important;
   }
 
   .nav-item:hover {
