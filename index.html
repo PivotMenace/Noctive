@@ -489,12 +489,7 @@ header {
 /* Make ticker bar smaller on mobile */
 @media (max-width: 768px) {
   .ticker-bar {
-    padding: 0.25rem 0; /* Reduced from 0.5rem */
-  }
-  
-  .ticker-text {
-    font-size: 0.75rem; /* Reduced from 0.95rem */
-    letter-spacing: 0.5px; /* Reduced from 1px */
+    display: none !important; /* Hide ticker bar completely on mobile */
   }
   
   /* Make post user info smaller on mobile */
@@ -550,12 +545,6 @@ header {
   
   .create-post .user-info span[style*="font-size: 0.75rem"] {
     font-size: 0.55rem !important; /* Match other "Currently playing" text */
-  }
-  
-  /* Make textarea smaller on mobile */
-  .create-post textarea {
-    font-size: 0.65rem !important; /* Reduced from 1rem */
-    padding: 0.75rem 1rem !important; /* Reduced padding */
   }
 }
       @keyframes tickerScroll {
@@ -1579,6 +1568,11 @@ button:focus,
     </button>
   </div>
   <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
+  </div>
+</div>
+
+<div class="post" data-post-id="belt181">
     <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
   </div>
 </div>
