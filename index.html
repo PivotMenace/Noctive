@@ -570,6 +570,7 @@ header {
 
 .retro-window.trending {
   left: 32px;
+  display: none !important; /* Hide the trending widget */
 }
 
 .retro-window.night-crew {
@@ -696,6 +697,7 @@ header {
       cursor: pointer;
       box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
       transition: box-shadow 0.2s;
+      display: none !important; /* Hide the trending button */
     }
 
     .trending-open-button:hover {
@@ -1169,248 +1171,144 @@ button:focus,
   
   /* Show icons only on very small screens */
   .nav-icon {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
   }
   .nav-text {
-    display: none;
+    display: none !important;
   }
-  .nav-link {
+  .nav-tab {
     justify-content: center;
-    min-width: 44px;
-    padding: 0.3rem 0.5rem;
-    font-size: 1.1rem;
+    min-width: 36px; /* Reduced from 44px */
+    padding: 0.25rem 0.4rem; /* Reduced padding */
+    font-size: 0.9rem; /* Reduced from 1.1rem */
     border-width: 1.5px;
-    height: 2.2rem;
+    height: 1.8rem; /* Reduced from 2.2rem */
+  }
+  
+  .nav-slider-wrapper {
+    padding: 0.08rem; /* Reduced from 0.1rem */
+    gap: 0.08rem; /* Reduced from 0.1rem */
   }
 }
 
-/* Default behavior - hide icons, show only text */
-.nav-icon {
+/* Mobile Hamburger Menu */
+.mobile-menu-wrapper {
   display: none;
-  align-items: center;
-  justify-content: center;
-}
-
-.nav-text {
-  display: inline;
-}
-
-@media (max-width: 700px) {
-  body {
-    padding-bottom: 3.5rem !important;
-    overflow-x: hidden;
-  }
-  header {
-    padding-left: 0.2rem !important;
-    padding-right: 0.2rem !important;
-  }
-}
-
-.sidebar-widget,
-.trending-sidebar {
-  z-index: 999;
-  transition: z-index 0s, transform 0.3s, opacity 0.3s;
-}
-.sidebar-widget:not(.hidden),
-.trending-sidebar:not(.hidden) {
-  z-index: 1001;
-}
-
-@media (max-width: 700px) {
-  .trending-open-button,
-  .sidebar-toggle-button {
-    position: fixed;
-    min-width: 44px;
-    min-height: 44px;
-    font-size: 1.1rem;
-    z-index: 998;
-  }
-  .trending-sidebar,
-  #nightCrewWidget,
-  .sidebar-widget,
-  .retro-window {
-    z-index: 100;
-  }
-}
-
-.nav-link,
-.nav-link:visited,
-.nav-link:hover,
-.nav-link:focus {
-  text-decoration: none !important;
-}
-
-#trendingSidebar {
-  display: none !important;
-}
-
-#trendingSidebar .sidebar-header {
-  color: #facc15 !important;
-  background: #1a1d2e !important;
-  padding: 6px 12px;
-  font-weight: bold;
-  border-radius: 4px 4px 0 0;
-}
-
-#toggleTrendingButton {
-  display: none !important;
-}
-.glitchy {
   position: relative;
-  display: inline-block;
-  color: #facc15;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  overflow: hidden;
 }
 
-.glitchy::before,
-.glitchy::after {
-  content: attr(data-text);
+.hamburger-btn {
+  background: transparent !important;
+  border: none !important;
+  padding: 0.5rem !important;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  box-shadow: none !important;
+}
+
+.hamburger-line {
+  width: 25px;
+  height: 3px;
+  background: #facc15;
+  margin: 2px 0;
+  transition: 0.3s;
+  border-radius: 2px;
+}
+
+.hamburger-btn:hover .hamburger-line {
+  background: #ffffff;
+}
+
+.mobile-dropdown {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom right, #1a1d2e, #23263a);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  min-width: 200px;
+  z-index: 1002;
+  margin-top: 0.5rem;
   overflow: hidden;
-  color: #ff00cc;
-  clip-path: inset(0 0 0 0);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 }
 
-.glitchy::after {
-  animation: glitch-anim 3s infinite linear alternate-reverse;
+.mobile-dropdown.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-10px);
 }
 
-@keyframes glitch-anim {
-  0% {
-    clip-path: inset(0 0 0 0);
-  }
-  20% {
-    clip-path: inset(10% 0 80% 0);
-  }
-  40% {
-    clip-path: inset(20% 0 60% 0);
-  }
-  60% {
-    clip-path: inset(30% 0 40% 0);
-  }
-  80% {
-    clip-path: inset(10% 0 80% 0);
-  }
-  100% {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-.glitchy:hover {
-  animation: glitch 0.3s steps(2, end) infinite;
-  text-shadow: 1px 1px #ff00cc, -1px -1px #00eaff;
-}
-
-@keyframes glitch {
-  0% { transform: translate(0); }
-  20% { transform: translate(-1px, 1px); }
-  40% { transform: translate(-1px, -1px); }
-  60% { transform: translate(1px, 1px); }
-  80% { transform: translate(1px, -1px); }
-  100% { transform: translate(0); }
-}
-
-/* GitHub Chat Bubble */
-.github-bubble {
-  position: fixed;
-  bottom: 100px;
-  right: 30px;
-  z-index: 1000;
-  background: linear-gradient(135deg, #1a1d2e, #23263a);
-  border: 1px solid rgba(250, 204, 21, 0.3);
-  border-radius: 25px 25px 5px 25px;
-  padding: 15px 20px;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 0 6px rgba(250, 204, 21, 0.2);
-  transition: all 0.3s ease;
-  animation: bubbleFloat 3s ease-in-out infinite;
-  max-width: 250px;
-}
-
-.github-bubble:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 0 12px rgba(250, 204, 21, 0.4);
-  border-color: rgba(250, 204, 21, 0.6);
-}
-
-.github-bubble a {
-  color: #facc15;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
+.mobile-nav-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: color 0.2s;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #f0f0f0 !important;
+  text-decoration: none;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.github-bubble a:hover {
-  color: #fff;
-  text-shadow: 0 0 3px #facc15;
+.mobile-nav-item:last-child {
+  border-bottom: none;
 }
 
-.github-bubble::before {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  right: 20px;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 8px solid #23263a;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+.mobile-nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.github-icon {
-  width: 20px;
-  height: 20px;
-  filter: brightness(0) saturate(100%) invert(84%) sepia(58%) saturate(346%) hue-rotate(6deg) brightness(106%) contrast(106%);
+.mobile-nav-item.active {
+  background: rgba(250, 204, 21, 0.2);
+  color: #facc15 !important;
 }
 
-@keyframes bubbleFloat {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+.mobile-nav-icon {
+  font-size: 1.1rem;
 }
 
-.bubble-text {
-  font-family: 'Nunito', sans-serif;
-  line-height: 1.4;
+.mobile-nav-text {
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-@media (max-width: 768px) {
-  .github-bubble {
-    bottom: 80px;
-    right: 15px;
-    max-width: 200px;
-    padding: 12px 16px;
+/* Switch to hamburger menu on mobile */
+@media (max-width: 700px) {
+  header {
+    padding: 0.5rem 1rem;
   }
   
-  .github-bubble a {
-    font-size: 0.8rem;
+  .header-main {
+    gap: 0.5rem;
   }
   
-  .github-icon {
-    width: 16px;
-    height: 16px;
+  .brand-title {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+  }
+  
+  /* Hide regular navigation on mobile */
+  .nav-slider-wrapper {
+    display: none !important;
+  }
+  
+  /* Show hamburger menu on mobile */
+  .mobile-menu-wrapper {
+    display: block !important;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
     </style>
@@ -1424,12 +1322,65 @@ button:focus,
       </div>
       <div class="nav-slider-wrapper">
   <div class="nav-slider-indicator"></div>
-  <button class="nav-tab active">Home</button>
-  <button class="nav-tab">Creator Hub</button>
-  <button class="nav-tab">Highlights</button>
-  <button class="nav-tab">Find Teammates</button>
-  <button class="nav-tab">Store Hub</button>
-  <button class="nav-tab">Dev Hub</button>
+  <button class="nav-tab active">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-text">Home</span>
+  </button>
+  <button class="nav-tab">
+    <span class="nav-icon">🎨</span>
+    <span class="nav-text">Creator Hub</span>
+  </button>
+  <button class="nav-tab">
+    <span class="nav-icon">⭐</span>
+    <span class="nav-text">Highlights</span>
+  </button>
+  <button class="nav-tab">
+    <span class="nav-icon">👥</span>
+    <span class="nav-text">Find Teammates</span>
+  </button>
+  <button class="nav-tab">
+    <span class="nav-icon">🛒</span>
+    <span class="nav-text">Store Hub</span>
+  </button>
+  <button class="nav-tab">
+    <span class="nav-icon">⚙️</span>
+    <span class="nav-text">Dev Hub</span>
+  </button>
+</div>
+
+<!-- Mobile Hamburger Menu -->
+<div class="mobile-menu-wrapper">
+  <button class="hamburger-btn" onclick="toggleMobileMenu()">
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+  </button>
+  <div class="mobile-dropdown hidden" id="mobileDropdown">
+    <a href="#" class="mobile-nav-item active" onclick="selectMobileNav(this, 'Home')">
+      <span class="mobile-nav-icon">🏠</span>
+      <span class="mobile-nav-text">Home</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Creator Hub')">
+      <span class="mobile-nav-icon">🎨</span>
+      <span class="mobile-nav-text">Creator Hub</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Highlights')">
+      <span class="mobile-nav-icon">⭐</span>
+      <span class="mobile-nav-text">Highlights</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Find Teammates')">
+      <span class="mobile-nav-icon">👥</span>
+      <span class="mobile-nav-text">Find Teammates</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Store Hub')">
+      <span class="mobile-nav-icon">🛒</span>
+      <span class="mobile-nav-text">Store Hub</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Dev Hub')">
+      <span class="mobile-nav-icon">⚙️</span>
+      <span class="mobile-nav-text">Dev Hub</span>
+    </a>
+  </div>
 </div>
       <div class="header-account-link">
         <a href="/profile" class="account-link" title="Your Profile">
@@ -1802,6 +1753,37 @@ window.addEventListener("DOMContentLoaded", () => {
     newPostInput.addEventListener("input", function() {
       charCount.textContent = this.value.length;
     });
+  }
+});
+
+/* Mobile Hamburger Menu */
+function toggleMobileMenu() {
+  const dropdown = document.getElementById('mobileDropdown');
+  dropdown.classList.toggle('hidden');
+}
+
+function selectMobileNav(element, pageName) {
+  // Remove active class from all mobile nav items
+  document.querySelectorAll('.mobile-nav-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  // Add active class to clicked item
+  element.classList.add('active');
+  
+  // Hide the dropdown
+  document.getElementById('mobileDropdown').classList.add('hidden');
+  
+  console.log('Selected:', pageName);
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', function(event) {
+  const mobileMenu = document.querySelector('.mobile-menu-wrapper');
+  const dropdown = document.getElementById('mobileDropdown');
+  
+  if (mobileMenu && !mobileMenu.contains(event.target)) {
+    dropdown?.classList.add('hidden');
   }
 });
 </script>
