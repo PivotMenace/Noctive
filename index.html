@@ -428,6 +428,9 @@ header {
         padding: 1rem 1.25rem;
         margin-top: 1rem;
         margin-bottom: 0.5rem;
+        resize: vertical;
+        min-height: 40px;
+        max-height: 200px;
         background: #1e1e2e !important;
         border: 1px solid #333 !important;
         border-radius: 0.65rem;
@@ -469,6 +472,7 @@ header {
           box-shadow 0.18s cubic-bezier(.4,1.2,.6,1),
           background 0.18s,
           border-color 0.18s;
+        touch-action: manipulation;
         margin: 0 2px;
       }
       .vote-btn:hover,
@@ -1283,6 +1287,20 @@ button:focus,
   }
 }
 
+/* Add touch-action manipulation to all interactive elements */
+button, 
+.nav-tab, 
+.vote-btn,
+.media-btn, 
+.trending-open-button,
+.sidebar-toggle-button,
+.dialog-close-btn,
+.mobile-nav button,
+.account-link,
+.theme-switch {
+  touch-action: manipulation;
+}
+
 @media (max-width: 900px) {
   .feed {
     max-width: 90vw;
@@ -1481,6 +1499,17 @@ button:focus,
     gap: 0.5rem;
   }
   
+  .vote-btn {
+    width: 44px !important;
+    height: 44px !important;
+    margin: 0 4px !important;
+  }
+  
+  .vote-btn img {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  
   .brand-title {
     font-size: 1.8rem;
     margin-right: 0.5rem;
@@ -1658,7 +1687,7 @@ button:focus,
   </div>
 
   <textarea id="newPostInput" placeholder="What's on your mind, lil dude?" rows="2" maxlength="200"
-    style="width: 100%; margin-top: 1rem; margin-bottom: 0.5rem; padding: 1rem 1.25rem; border-radius: 0.65rem; font-size: 1rem; resize: none; box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s;"></textarea>
+    style="width: 100%; margin-top: 1rem; margin-bottom: 0.5rem; padding: 1rem 1.25rem; border-radius: 0.65rem; font-size: 1rem; resize: vertical; min-height: 40px; max-height: 200px; box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s;"></textarea>
 
   <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #aaa; text-align: right;">
     <span id="charCount">0</span>/200 characters
@@ -2044,18 +2073,7 @@ if (window.innerWidth <= 768) {
 }
 </script>
 
-<!-- 👇 Paste this inside your <body>, ideally near the bottom -->
-<nav class="bottom-nav">
-  <a href="#home" class="nav-item"><span>⌂</span></a>
-  <a href="#search" class="nav-item"><span>⚲</span></a>
-
-  <a href="https://github.com/PivotMenace/Noctive" class="nav-center" target="_blank">
-    <span class="logo-circle bounce"></span>
-  </a>
-
-  <a href="#activity" class="nav-item"><span>♡</span></a>
-  <a href="#profile" class="nav-item"><span>◯</span></a>
-</nav>
+<!-- Mobile navigation is at the bottom of the page -->
 
 <style>
   .bottom-nav {
@@ -2166,13 +2184,81 @@ if (window.innerWidth <= 768) {
     }
   }
 
-  /* Mobile only */
+  /* Hide mobile nav on desktop */
   @media (min-width: 768px) {
     .bottom-nav {
-      display: none;
+      display: none !important;
+      visibility: hidden;
+      opacity: 0;
+      height: 0;
+      pointer-events: none;
     }
   }
+  
+  /* Mobile Bottom Navigation Bar */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #1a1a2e;
+    border-top: 1px solid #333;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  .nav-item {
+    color: #f0f0f0;
+    font-size: 1.5rem;
+    text-decoration: none;
+  }
+  
+  .nav-center {
+    position: relative;
+    bottom: 15px;
+    background: none;
+    text-align: center;
+    z-index: 1001;
+  }
+  
+  .logo-circle {
+    width: 50px;
+    height: 50px;
+    background: #1f1f2f;
+    color: #ff3c38;
+    font-weight: 700;
+    font-family: 'Rubik', 'Segoe UI Bold', sans-serif;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    box-shadow: 0 0 12px rgba(255, 60, 56, 0.4);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .logo-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 16px rgba(255, 60, 56, 0.6);
+  }
 </style>
+
+  <!-- Mobile Bottom Navigation Bar (only visible on mobile) -->
+  <nav class="bottom-nav">
+    <a href="#home" class="nav-item"><span>⌂</span></a>
+    <a href="#search" class="nav-item"><span>⚲</span></a>
+    
+    <a href="https://github.com/PivotMenace/Noctive" class="nav-center" target="_blank">
+      <div class="logo-circle"></div>
+    </a>
+    
+    <a href="#activity" class="nav-item"><span>♡</span></a>
+    <a href="#profile" class="nav-item"><span>◯</span></a>
+  </nav>
 
   </body>
 </html>
