@@ -29,13 +29,13 @@
 
       // Your web app's Firebase configuration
       const firebaseConfig = {
-        apiKey: "your-api-key-here",
+        apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
         authDomain: "noctive-41c22.firebaseapp.com",
         projectId: "noctive-41c22",
         storageBucket: "noctive-41c22.firebasestorage.app",
-        messagingSenderId: "your-sender-id-here",
-        appId: "your-app-id-here",
-        measurementId: "your-measurement-id-here"
+        messagingSenderId: "617642134193",
+        appId: "1:617642134193:web:ea5f0c93e56c654f66f090",
+        measurementId: "G-8ZFW3MTB3C"
       };
 
       // Initialize Firebase
@@ -2307,6 +2307,206 @@ if (window.innerWidth <= 768) {
     <a href="#activity" class="nav-item"><span>♡</span></a>
     <a href="#profile" class="nav-item"><span>◯</span></a>
   </nav>
+
+  <!-- Authentication Modal -->
+  <div id="authModal" class="auth-modal hidden">
+    <div class="auth-modal-content">
+      <span class="auth-close" onclick="closeAuthModal()">&times;</span>
+      <h2 id="authTitle">Join Noctive</h2>
+      
+      <div id="authForm">
+        <input type="email" id="authEmail" placeholder="Email" required>
+        <input type="password" id="authPassword" placeholder="Password" required>
+        <input type="text" id="authUsername" placeholder="Username" required>
+        
+        <button id="authSubmit" onclick="handleAuth()">Sign Up</button>
+        
+        <p id="authSwitch">
+          Already have an account? 
+          <span onclick="toggleAuthMode()">Sign In</span>
+        </p>
+      </div>
+      
+      <div id="authError" class="auth-error hidden"></div>
+    </div>
+  </div>
+
+  <style>
+  .auth-modal {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+  }
+  
+  .auth-modal.hidden {
+    display: none;
+  }
+  
+  .auth-modal:not(.hidden) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .auth-modal-content {
+    background: linear-gradient(to bottom right, #1a1d2e, #23263a);
+    margin: auto;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    color: #f0f0f0;
+  }
+  
+  .auth-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: -10px;
+  }
+  
+  .auth-close:hover {
+    color: #facc15;
+  }
+  
+  #authForm input {
+    width: 100%;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f0f0f0;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  
+  #authForm input::placeholder {
+    color: #aaa;
+  }
+  
+  #authSubmit {
+    width: 100%;
+    padding: 1rem;
+    margin: 1rem 0;
+    background: linear-gradient(90deg, #b22222, #ff3c38);
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  #authSubmit:hover {
+    box-shadow: 0 0 20px rgba(255, 60, 56, 0.5);
+    transform: translateY(-2px);
+  }
+  
+  #authSwitch {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  #authSwitch span {
+    color: #facc15;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .auth-error {
+    background: rgba(255, 0, 0, 0.2);
+    border: 1px solid #ff3c38;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    color: #ff9999;
+  }
+  </style>
+
+  <script>
+  let isSignUpMode = true;
+  
+  function openAuthModal() {
+    document.getElementById('authModal').classList.remove('hidden');
+  }
+  
+  function closeAuthModal() {
+    document.getElementById('authModal').classList.add('hidden');
+    document.getElementById('authError').classList.add('hidden');
+  }
+  
+  function toggleAuthMode() {
+    isSignUpMode = !isSignUpMode;
+    const title = document.getElementById('authTitle');
+    const submit = document.getElementById('authSubmit');
+    const switchText = document.getElementById('authSwitch');
+    const username = document.getElementById('authUsername');
+    
+    if (isSignUpMode) {
+      title.textContent = 'Join Noctive';
+      submit.textContent = 'Sign Up';
+      switchText.innerHTML = 'Already have an account? <span onclick="toggleAuthMode()">Sign In</span>';
+      username.style.display = 'block';
+    } else {
+      title.textContent = 'Welcome Back';
+      submit.textContent = 'Sign In';
+      switchText.innerHTML = 'Need an account? <span onclick="toggleAuthMode()">Sign Up</span>';
+      username.style.display = 'none';
+    }
+  }
+  
+  async function handleAuth() {
+    const email = document.getElementById('authEmail').value;
+    const password = document.getElementById('authPassword').value;
+    const username = document.getElementById('authUsername').value;
+    const errorDiv = document.getElementById('authError');
+    
+    try {
+      errorDiv.classList.add('hidden');
+      
+      if (isSignUpMode) {
+        // Sign Up
+        const userCredential = await window.firebase.auth.createUserWithEmailAndPassword(window.firebaseAuth, email, password);
+        console.log('User created:', userCredential.user);
+        alert('Account created successfully! Welcome to Noctive!');
+      } else {
+        // Sign In
+        const userCredential = await window.firebase.auth.signInWithEmailAndPassword(window.firebaseAuth, email, password);
+        console.log('User signed in:', userCredential.user);
+        alert('Welcome back to Noctive!');
+      }
+      
+      closeAuthModal();
+    } catch (error) {
+      console.error('Auth error:', error);
+      errorDiv.textContent = error.message;
+      errorDiv.classList.remove('hidden');
+    }
+  }
+  
+  // Update account link to open auth modal instead
+  document.addEventListener('DOMContentLoaded', function() {
+    const accountLink = document.querySelector('.account-link');
+    if (accountLink) {
+      accountLink.onclick = function(e) {
+        e.preventDefault();
+        openAuthModal();
+      };
+    }
+  });
+  </script>
 
   </body>
 </html>
