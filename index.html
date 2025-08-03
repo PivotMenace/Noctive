@@ -24,7 +24,7 @@
       // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-      import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
       import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       // Your web app's Firebase configuration
@@ -52,7 +52,10 @@
           signInWithEmailAndPassword,
           createUserWithEmailAndPassword,
           signOut,
-          onAuthStateChanged
+          onAuthStateChanged,
+          setPersistence,
+          browserLocalPersistence,
+          browserSessionPersistence
         },
         firestore: {
           collection,
@@ -228,13 +231,14 @@ header {
 }
 
 .header-account-link {
-  position: static; /* Changed from absolute */
+  position: static;
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Increased gap for better visibility */
+  justify-content: center;
+  gap: 0.25rem; /* Small gap between icons */
   height: 40px;
   margin-left: auto; /* Push to the right */
-  padding-right: 1rem; /* Increased padding from edge for breathing room */
+  padding-right: 1rem;
 }
 
 /* Update root variables for new header height */
@@ -1278,10 +1282,30 @@ button:focus,
 .account-link {
   display: flex;
   align-items: center;
-  margin-left: 0.5rem;
-  margin-right: -0.25rem;
-  height: 100%;
+  justify-content: center;
+  margin: 0;
+  height: 40px;
+  width: 40px;
+  border-radius: 0.25rem;
+  transition: background 0.2s ease;
 }
+
+.settings-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  height: 40px;
+  width: 40px;
+  border-radius: 0.25rem;
+  transition: background 0.2s ease;
+}
+
+.account-link:hover,
+.settings-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .account-icon,
 .settings-icon {
   width: 32px;
@@ -1309,6 +1333,70 @@ button:focus,
   transform: scale(1.15) rotate(-4deg);
   transition: filter 0.18s, transform 0.18s;
   box-shadow: none;
+}
+
+/* User Info Display Styles */
+.user-info-display {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.user-info-display.hidden {
+  display: none !important;
+}
+
+.user-greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+#userEmail {
+  color: #facc15;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.user-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sign-out-btn {
+  background: rgba(255, 60, 56, 0.2) !important;
+  border: 1px solid #ff3c38 !important;
+  color: #ff9999 !important;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.75rem !important;
+  border-radius: 0.25rem !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+}
+
+.sign-out-btn:hover {
+  background: rgba(255, 60, 56, 0.4) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 8px rgba(255, 60, 56, 0.3) !important;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  height: 40px;
+}
+
+.auth-buttons.hidden {
+  display: none !important;
 }
 
 .feed {
@@ -1598,7 +1686,7 @@ button,
   <button class="nav-tab">
     <span class="nav-text">Creator Hub</span>
   </button>
-  <button class="n`av-tab">
+  <button class="nav-tab">
     <span class="nav-text">Highlights</span>
   </button>
   <button class="nav-tab">
@@ -1647,12 +1735,25 @@ button,
   </div>
 </div>
       <div class="header-account-link">
-        <a href="/profile" class="account-link" title="Your Profile">
-          <img src="pngs/account.png" alt="Account" class="account-icon">
-        </a>
-        <a href="/settings" class="settings-link" title="Settings">
-          <img src="pngs/settings.png" alt="Settings" class="settings-icon">
-        </a>
+        <!-- User Info Display (shows when logged in) -->
+        <div id="userInfo" class="user-info-display hidden">
+          <div class="user-greeting">
+            <span id="userEmail"></span>
+            <div class="user-actions">
+              <button onclick="signOutUser()" class="sign-out-btn">Sign Out</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Login/Account Icons (shows when logged out) -->
+        <div id="authButtons" class="auth-buttons">
+          <a href="#" class="account-link" title="Sign In" onclick="openAuthModal(); return false;">
+            <img src="pngs/account.png" alt="Account" class="account-icon">
+          </a>
+          <a href="/settings" class="settings-link" title="Settings">
+            <img src="pngs/settings.png" alt="Settings" class="settings-icon">
+          </a>
+        </div>
       </div>
     </header>
 
@@ -2319,6 +2420,13 @@ if (window.innerWidth <= 768) {
         <input type="password" id="authPassword" placeholder="Password" required>
         <input type="text" id="authUsername" placeholder="Username" required>
         
+        <div id="rememberMeContainer" class="remember-me-container" style="display: none;">
+          <label class="remember-me-label">
+            <input type="checkbox" id="rememberMe" checked>
+            <span class="remember-me-text">Keep me signed in</span>
+          </label>
+        </div>
+        
         <button id="authSubmit" onclick="handleAuth()">Sign Up</button>
         
         <p id="authSwitch">
@@ -2433,18 +2541,69 @@ if (window.innerWidth <= 768) {
     margin: 1rem 0;
     color: #ff9999;
   }
+  
+  .remember-me-container {
+    margin: 1rem 0 0.5rem 0;
+  }
+  
+  .remember-me-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: #f0f0f0;
+    font-size: 0.9rem;
+  }
+  
+  .remember-me-label input[type="checkbox"] {
+    width: auto !important;
+    margin: 0 !important;
+    accent-color: #facc15;
+  }
+  
+  .remember-me-text {
+    user-select: none;
+  }
   </style>
 
   <script>
   let isSignUpMode = true;
   
   function openAuthModal() {
-    document.getElementById('authModal').classList.remove('hidden');
+    const modal = document.getElementById('authModal');
+    modal.classList.remove('hidden');
+    // Add ESC key listener when modal opens
+    document.addEventListener('keydown', handleEscapeKey);
+    // Add click outside listener when modal opens
+    modal.addEventListener('click', handleBackdropClick);
   }
   
   function closeAuthModal() {
-    document.getElementById('authModal').classList.add('hidden');
+    const modal = document.getElementById('authModal');
+    modal.classList.add('hidden');
     document.getElementById('authError').classList.add('hidden');
+    // Remove ESC key listener when modal closes
+    document.removeEventListener('keydown', handleEscapeKey);
+    // Remove click outside listener when modal closes
+    modal.removeEventListener('click', handleBackdropClick);
+  }
+  
+  // Handle ESC key press
+  function handleEscapeKey(event) {
+    if (event.key === 'Escape' || event.keyCode === 27) {
+      const modal = document.getElementById('authModal');
+      if (!modal.classList.contains('hidden')) {
+        closeAuthModal();
+      }
+    }
+  }
+  
+  // Handle clicking outside the modal content
+  function handleBackdropClick(event) {
+    const modalContent = document.querySelector('.auth-modal-content');
+    if (!modalContent.contains(event.target)) {
+      closeAuthModal();
+    }
   }
   
   function toggleAuthMode() {
@@ -2453,31 +2612,52 @@ if (window.innerWidth <= 768) {
     const submit = document.getElementById('authSubmit');
     const switchText = document.getElementById('authSwitch');
     const username = document.getElementById('authUsername');
+    const rememberMeContainer = document.getElementById('rememberMeContainer');
     
     if (isSignUpMode) {
       title.textContent = 'Join Noctive';
       submit.textContent = 'Sign Up';
       switchText.innerHTML = 'Already have an account? <span onclick="toggleAuthMode()">Sign In</span>';
       username.style.display = 'block';
+      rememberMeContainer.style.display = 'none';
     } else {
       title.textContent = 'Welcome Back';
       submit.textContent = 'Sign In';
       switchText.innerHTML = 'Need an account? <span onclick="toggleAuthMode()">Sign Up</span>';
       username.style.display = 'none';
+      rememberMeContainer.style.display = 'block';
     }
+  }
+  
+  // Helper function to set auth persistence
+  async function setPersistence(persistenceType) {
+    const persistence = persistenceType === 'local' 
+      ? window.firebase.auth.browserLocalPersistence 
+      : window.firebase.auth.browserSessionPersistence;
+    
+    await window.firebase.auth.setPersistence(window.firebaseAuth, persistence);
+    console.log('Auth persistence set to:', persistenceType);
   }
   
   async function handleAuth() {
     const email = document.getElementById('authEmail').value;
     const password = document.getElementById('authPassword').value;
     const username = document.getElementById('authUsername').value;
+    const rememberMe = document.getElementById('rememberMe').checked;
     const errorDiv = document.getElementById('authError');
     
     try {
       errorDiv.classList.add('hidden');
       
+      // Set persistence based on remember me checkbox
+      if (!isSignUpMode) {
+        const persistence = rememberMe ? 'local' : 'session';
+        await setPersistence(persistence);
+      }
+      
       if (isSignUpMode) {
-        // Sign Up
+        // Sign Up - always use local persistence
+        await setPersistence('local');
         const userCredential = await window.firebase.auth.createUserWithEmailAndPassword(window.firebaseAuth, email, password);
         console.log('User created:', userCredential.user);
         alert('Account created successfully! Welcome to Noctive!');
@@ -2489,6 +2669,7 @@ if (window.innerWidth <= 768) {
       }
       
       closeAuthModal();
+      // UI will update automatically via onAuthStateChanged listener
     } catch (error) {
       console.error('Auth error:', error);
       errorDiv.textContent = error.message;
@@ -2496,15 +2677,47 @@ if (window.innerWidth <= 768) {
     }
   }
   
+  // Sign out function
+  async function signOutUser() {
+    try {
+      await window.firebase.auth.signOut(window.firebaseAuth);
+      console.log('User signed out');
+      updateUserUI(null);
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  }
+  
+  // Update UI based on user state
+  function updateUserUI(user) {
+    const userInfo = document.getElementById('userInfo');
+    const authButtons = document.getElementById('authButtons');
+    const userEmail = document.getElementById('userEmail');
+    
+    if (user) {
+      // User is logged in
+      userEmail.textContent = user.email;
+      userInfo.classList.remove('hidden');
+      authButtons.classList.add('hidden');
+      console.log('UI updated for logged in user:', user.email);
+    } else {
+      // User is logged out
+      userInfo.classList.add('hidden');
+      authButtons.classList.remove('hidden');
+      console.log('UI updated for logged out state');
+    }
+  }
+  
+  // Listen for authentication state changes
+  window.firebase.auth.onAuthStateChanged(window.firebaseAuth, (user) => {
+    console.log('Auth state changed:', user ? user.email : 'logged out');
+    updateUserUI(user);
+  });
+  
   // Update account link to open auth modal instead
   document.addEventListener('DOMContentLoaded', function() {
-    const accountLink = document.querySelector('.account-link');
-    if (accountLink) {
-      accountLink.onclick = function(e) {
-        e.preventDefault();
-        openAuthModal();
-      };
-    }
+    // Auth state listener is already set up above
+    console.log('DOM loaded, auth listener ready');
   });
   </script>
 
