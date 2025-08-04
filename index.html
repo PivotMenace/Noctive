@@ -68,6 +68,36 @@
       };
 
       console.log("Firebase initialized successfully!");
+      
+      // Check if user is already logged in and redirect to profile
+      window.firebase.auth.onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is logged in, check if they have a profile
+          const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
+          if (savedProfile) {
+            // Check if user is coming from profile page
+            const urlParams = new URLSearchParams(window.location.search);
+            const fromProfile = urlParams.get('from') === 'profile';
+            
+            if (!fromProfile) {
+              // User has a profile and not coming from profile page, redirect to profile page
+              window.location.href = 'profile.html';
+              return;
+            }
+            // User is coming from profile page, let them see the feed
+            updateUserUI(user);
+          } else {
+            // No profile, let them see the main page but update UI
+            updateUserUI(user);
+          }
+        } else {
+          // User not logged in, update UI for guest
+          updateUserUI(null);
+        }
+      });
+      
+      // Initialize UI after Firebase is ready
+      updateCreatePostSection();
     </script>
 
     <style>
@@ -713,6 +743,11 @@ header {
     right: auto !important;
     transform: translateX(-50%) !important;
   }
+  
+  /* Mobile styles for bottom-left user info */
+  .user-info-display {
+    display: none !important; /* Hide the bottom-left version on mobile */
+  }
 }
       @keyframes tickerScroll {
         0% {
@@ -735,7 +770,8 @@ header {
             0 0 8px #facc15;
         }
       }
-      @keyframes gradientText {
+      
+@keyframes gradientText {
         0% {
           background-position: 0% 50%;
         }
@@ -1337,14 +1373,18 @@ button:focus,
 
 /* User Info Display Styles */
 .user-info-display {
-  display: flex;
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  display: none !important; /* Hide the green profile display completely */
   align-items: center;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
-  margin-right: 0.5rem;
   backdrop-filter: blur(10px);
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .user-info-display.hidden {
@@ -1362,11 +1402,39 @@ button:focus,
   color: #facc15;
   font-size: 0.85rem;
   font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+#userEmail:hover {
+  background: rgba(250, 204, 21, 0.2);
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
+  transform: scale(1.05);
 }
 
 .user-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.profile-btn {
+  background: rgba(250, 204, 21, 0.2) !important;
+  border: 1px solid #facc15 !important;
+  color: #facc15 !important;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.7rem !important;
+  border-radius: 0.25rem !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+}
+
+.profile-btn:hover {
+  background: rgba(250, 204, 21, 0.4) !important;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.3) !important;
 }
 
 .sign-out-btn {
@@ -1592,6 +1660,83 @@ button,
   transform: translateY(-10px);
 }
 
+.mobile-user-section {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-user-section.hidden {
+  display: none !important;
+}
+
+.mobile-user-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mobile-user-name {
+  color: #facc15 !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  padding: 0.5rem !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+}
+
+.mobile-user-name:hover {
+  background: rgba(250, 204, 21, 0.2) !important;
+  transform: scale(1.02) !important;
+}
+
+.mobile-user-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.mobile-profile-btn,
+.mobile-signout-btn {
+  flex: 1;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  border: none !important;
+}
+
+.mobile-profile-btn {
+  background: rgba(250, 204, 21, 0.2) !important;
+  color: #facc15 !important;
+  border: 1px solid rgba(250, 204, 21, 0.4) !important;
+}
+
+.mobile-profile-btn:hover {
+  background: rgba(250, 204, 21, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+.mobile-signout-btn {
+  background: rgba(255, 60, 56, 0.2) !important;
+  color: #ff9999 !important;
+  border: 1px solid rgba(255, 60, 56, 0.4) !important;
+}
+
+.mobile-signout-btn:hover {
+  background: rgba(255, 60, 56, 0.3) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+.mobile-menu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.75rem 0 0 0;
+}
+
 .mobile-nav-item {
   display: flex;
   align-items: center;
@@ -1628,11 +1773,18 @@ button,
 /* Switch to hamburger menu on mobile */
 @media (max-width: 700px) {
   header {
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 1rem; /* Reduced top/bottom padding to move title up */
   }
   
   .header-main {
     gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .brand-title {
+    font-size: 1.6rem; /* Slightly smaller to prevent overlap */
+    margin-right: 0.5rem;
+    margin-top: -0.2rem; /* Move title up slightly */
   }
   
   .vote-btn {
@@ -1644,11 +1796,6 @@ button,
   .vote-btn img {
     width: 22px !important;
     height: 22px !important;
-  }
-  
-  .brand-title {
-    font-size: 1.8rem;
-    margin-right: 0.5rem;
   }
   
   /* Hide regular navigation on mobile */
@@ -1708,6 +1855,18 @@ button,
     <div class="hamburger-line"></div>
   </button>
   <div class="mobile-dropdown hidden" id="mobileDropdown">
+    <!-- User Profile Section in Mobile Menu -->
+    <div id="mobileUserInfo" class="mobile-user-section hidden">
+      <div class="mobile-user-profile">
+        <span id="mobileUserEmail" onclick="window.location.href='profile.html'" class="mobile-user-name">@NoctiveHQ</span>
+        <div class="mobile-user-actions">
+          <button onclick="window.location.href='profile.html'" class="mobile-profile-btn">View Profile</button>
+          <button onclick="signOutUser()" class="mobile-signout-btn">Sign Out</button>
+        </div>
+      </div>
+      <div class="mobile-menu-divider"></div>
+    </div>
+    
     <a href="#" class="mobile-nav-item active" onclick="selectMobileNav(this, 'Home')">
       <span class="mobile-nav-icon">🏠</span>
       <span class="mobile-nav-text">Home</span>
@@ -1735,16 +1894,6 @@ button,
   </div>
 </div>
       <div class="header-account-link">
-        <!-- User Info Display (shows when logged in) -->
-        <div id="userInfo" class="user-info-display hidden">
-          <div class="user-greeting">
-            <span id="userEmail"></span>
-            <div class="user-actions">
-              <button onclick="signOutUser()" class="sign-out-btn">Sign Out</button>
-            </div>
-          </div>
-        </div>
-        
         <!-- Login/Account Icons (shows when logged out) -->
         <div id="authButtons" class="auth-buttons">
           <a href="#" class="account-link" title="Sign In" onclick="openAuthModal(); return false;">
@@ -1790,8 +1939,8 @@ button,
         </div>
       </div>
       <div class="retro-content">
-        <ul>
-          <li><span class="status-dot offline"></span> <a href="/profile/Venus" class="glitchy" data-text="@Venus">@Venus</a></li>
+        <ul id="friendsList">
+          <li id="currentUserFriend"><span id="userStatusDot" class="status-dot offline"></span> <a href="#" id="userFriendLink" class="glitchy" data-text="@Venus">@Venus</a></li>
           <li><span class="status-dot online"></span> <a href="/profile/Hijinxx" class="glitchy" data-text="@Hijinxx">@Hijinxx</a></li>
           <li><span class="status-dot idle"></span> <a href="/profile/Belt181">@Belt181</a></li>
           <li><span class="moon-status">🌙</span> <a href="/profile/Remko">@Remko</a></li>
@@ -1823,13 +1972,13 @@ button,
 <div class="post-status create-post" style="padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem;">
   <div class="user" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
     <div class="user-avatar" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
-      <img src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;" />
+      <img id="createPostAvatar" src="https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;" />
     </div>
     <div class="user-info" style="flex-grow: 1;">
       <span style="font-size: 1rem; font-weight: 500;">
-        @Venus <span class="title" style="font-size: 0.8rem; color: #aaa;">(Nomad)</span>
+        <span id="createPostUsername">@Venus</span> <span id="createPostTitle" class="title" style="font-size: 0.8rem; color: #aaa;">(Nomad)</span>
       </span>
-      <span class="currently-playing" style="display: block; font-size: 0.75rem; margin-top: 0.25rem;">
+      <span id="createPostStatus" class="currently-playing" style="display: block; font-size: 0.75rem; margin-top: 0.25rem;">
         🎮 Currently playing: Rainbow Six Siege
       </span>
     </div>
@@ -2431,11 +2580,58 @@ if (window.innerWidth <= 768) {
         
         <p id="authSwitch">
           Already have an account? 
-          <span onclick="toggleAuthMode()">Sign In</span>
+          <span onclick="toggleAuthMode(event)">Sign In</span>
         </p>
       </div>
       
       <div id="authError" class="auth-error hidden"></div>
+    </div>
+  </div>
+
+  <!-- User Profile Modal -->
+  <div id="profileModal" class="profile-modal hidden">
+    <div class="profile-modal-content">
+      <span class="profile-close" onclick="closeProfileModal()">&times;</span>
+      <h2>Your Profile</h2>
+      
+      <div class="profile-avatar-section">
+        <div class="profile-avatar">
+          <img id="profileAvatar" src="https://ui-avatars.com/api/?name=User&background=800000&color=fff&rounded=true" alt="Profile Avatar" />
+        </div>
+        <button class="change-avatar-btn" onclick="changeAvatar()">Change Avatar</button>
+      </div>
+      
+      <div class="profile-form">
+        <div class="profile-field">
+          <label>Email:</label>
+          <input type="email" id="profileEmail" readonly>
+        </div>
+        
+        <div class="profile-field">
+          <label>Username:</label>
+          <input type="text" id="profileUsername" placeholder="Enter your username">
+        </div>
+        
+        <div class="profile-field">
+          <label>Gaming Status:</label>
+          <input type="text" id="profileStatus" placeholder="Currently playing..." maxlength="50">
+        </div>
+        
+        <div class="profile-field">
+          <label>Bio:</label>
+          <textarea id="profileBio" placeholder="Tell us about yourself..." maxlength="200" rows="3"></textarea>
+        </div>
+        
+        <div class="profile-field">
+          <label>Favorite Games:</label>
+          <input type="text" id="profileGames" placeholder="e.g., Valorant, Apex Legends, etc.">
+        </div>
+        
+        <div class="profile-actions">
+          <button class="save-profile-btn" onclick="saveProfile()">Save Changes</button>
+          <button class="cancel-profile-btn" onclick="closeProfileModal()">Cancel</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2564,6 +2760,190 @@ if (window.innerWidth <= 768) {
   .remember-me-text {
     user-select: none;
   }
+  
+  /* Profile Modal Styles */
+  .profile-modal {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
+  }
+  
+  .profile-modal.hidden {
+    display: none;
+  }
+  
+  .profile-modal:not(.hidden) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+  
+  .profile-modal-content {
+    background: linear-gradient(to bottom right, #1a1d2e, #23263a);
+    margin: auto;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    color: #f0f0f0;
+  }
+  
+  .profile-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: -10px;
+  }
+  
+  .profile-close:hover {
+    color: #facc15;
+  }
+  
+  .profile-avatar-section {
+    text-align: center;
+    margin: 2rem 0;
+  }
+  
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1rem auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #facc15;
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
+  }
+  
+  .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .change-avatar-btn {
+    background: rgba(250, 204, 21, 0.2) !important;
+    border: 1px solid #facc15 !important;
+    color: #facc15 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem !important;
+    cursor: pointer;
+    font-size: 0.9rem !important;
+    transition: all 0.2s ease;
+    box-shadow: none !important;
+  }
+  
+  .change-avatar-btn:hover {
+    background: rgba(250, 204, 21, 0.4) !important;
+    box-shadow: 0 0 15px rgba(250, 204, 21, 0.3) !important;
+  }
+  
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .profile-field label {
+    font-weight: bold;
+    color: #facc15;
+    font-size: 0.9rem;
+  }
+  
+  .profile-field input,
+  .profile-field textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f0f0f0;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+  
+  .profile-field input::placeholder,
+  .profile-field textarea::placeholder {
+    color: #aaa;
+  }
+  
+  .profile-field input:focus,
+  .profile-field textarea:focus {
+    outline: none;
+    border-color: #facc15;
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
+  }
+  
+  .profile-field input[readonly] {
+    background: rgba(255, 255, 255, 0.05);
+    color: #aaa;
+    cursor: not-allowed;
+  }
+  
+  .profile-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .save-profile-btn {
+    flex: 1;
+    padding: 1rem !important;
+    background: linear-gradient(90deg, #b22222, #ff3c38) !important;
+    border: none !important;
+    border-radius: 0.5rem !important;
+    color: white !important;
+    font-weight: bold !important;
+    font-size: 1rem !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: none !important;
+  }
+  
+  .save-profile-btn:hover {
+    box-shadow: 0 0 20px rgba(255, 60, 56, 0.5) !important;
+    transform: translateY(-2px);
+  }
+  
+  .cancel-profile-btn {
+    flex: 1;
+    padding: 1rem !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 0.5rem !important;
+    color: #f0f0f0 !important;
+    font-weight: bold !important;
+    font-size: 1rem !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: none !important;
+  }
+  
+  .cancel-profile-btn:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2) !important;
+  }
   </style>
 
   <script>
@@ -2606,26 +2986,42 @@ if (window.innerWidth <= 768) {
     }
   }
   
-  function toggleAuthMode() {
-    isSignUpMode = !isSignUpMode;
-    const title = document.getElementById('authTitle');
-    const submit = document.getElementById('authSubmit');
-    const switchText = document.getElementById('authSwitch');
-    const username = document.getElementById('authUsername');
-    const rememberMeContainer = document.getElementById('rememberMeContainer');
-    
-    if (isSignUpMode) {
-      title.textContent = 'Join Noctive';
-      submit.textContent = 'Sign Up';
-      switchText.innerHTML = 'Already have an account? <span onclick="toggleAuthMode()">Sign In</span>';
-      username.style.display = 'block';
-      rememberMeContainer.style.display = 'none';
-    } else {
-      title.textContent = 'Welcome Back';
-      submit.textContent = 'Sign In';
-      switchText.innerHTML = 'Need an account? <span onclick="toggleAuthMode()">Sign Up</span>';
-      username.style.display = 'none';
-      rememberMeContainer.style.display = 'block';
+  function toggleAuthMode(event) {
+    try {
+      // Prevent event bubbling
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      
+      isSignUpMode = !isSignUpMode;
+      const title = document.getElementById('authTitle');
+      const submit = document.getElementById('authSubmit');
+      const switchText = document.getElementById('authSwitch');
+      const username = document.getElementById('authUsername');
+      const rememberMeContainer = document.getElementById('rememberMeContainer');
+      
+      console.log('Toggling auth mode. isSignUpMode:', isSignUpMode);
+      
+      if (isSignUpMode) {
+        title.textContent = 'Join Noctive';
+        submit.textContent = 'Sign Up';
+        switchText.innerHTML = 'Already have an account? <span onclick="toggleAuthMode(event)">Sign In</span>';
+        username.style.display = 'block';
+        if (rememberMeContainer) {
+          rememberMeContainer.style.display = 'none';
+        }
+      } else {
+        title.textContent = 'Welcome Back';
+        submit.textContent = 'Sign In';
+        switchText.innerHTML = 'Need an account? <span onclick="toggleAuthMode(event)">Sign Up</span>';
+        username.style.display = 'none';
+        if (rememberMeContainer) {
+          rememberMeContainer.style.display = 'block';
+        }
+      }
+    } catch (error) {
+      console.error('Error in toggleAuthMode:', error);
     }
   }
   
@@ -2660,11 +3056,35 @@ if (window.innerWidth <= 768) {
         await setPersistence('local');
         const userCredential = await window.firebase.auth.createUserWithEmailAndPassword(window.firebaseAuth, email, password);
         console.log('User created:', userCredential.user);
-        alert('Account created successfully! Welcome to Noctive!');
+        
+        // Store temporary user data for profile wizard
+        localStorage.setItem('tempUserData', JSON.stringify({
+          uid: userCredential.user.uid,
+          email: userCredential.user.email,
+          isNewUser: true
+        }));
+        
+        // Redirect to profile creation wizard
+        window.location.href = 'profile-wizard.html';
+        return;
       } else {
-        // Sign In
+        // Sign In - check if user has a profile
         const userCredential = await window.firebase.auth.signInWithEmailAndPassword(window.firebaseAuth, email, password);
         console.log('User signed in:', userCredential.user);
+        
+        // Check if user has completed profile setup
+        const savedProfile = localStorage.getItem(`noctive_profile_${userCredential.user.uid}`);
+        if (!savedProfile) {
+          // First time signing in, redirect to profile wizard
+          localStorage.setItem('tempUserData', JSON.stringify({
+            uid: userCredential.user.uid,
+            email: userCredential.user.email,
+            isNewUser: false
+          }));
+          window.location.href = 'profile-wizard.html';
+          return;
+        }
+        
         alert('Welcome back to Noctive!');
       }
       
@@ -2694,32 +3114,318 @@ if (window.innerWidth <= 768) {
     const authButtons = document.getElementById('authButtons');
     const userEmail = document.getElementById('userEmail');
     
+    // Mobile user info elements
+    const mobileUserInfo = document.getElementById('mobileUserInfo');
+    const mobileUserEmail = document.getElementById('mobileUserEmail');
+    
     if (user) {
       // User is logged in
-      userEmail.textContent = user.email;
-      userInfo.classList.remove('hidden');
+      // Check if user has a saved username
+      const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
+      const displayText = savedProfile ? 
+        (JSON.parse(savedProfile).username ? `@${JSON.parse(savedProfile).username}` : user.email) : 
+        user.email;
+      
+      if (userEmail) userEmail.textContent = displayText;
+      if (mobileUserEmail) mobileUserEmail.textContent = displayText;
+      
+      // Keep the green profile display hidden - we don't want it anymore
+      userInfo.classList.add('hidden');
       authButtons.classList.add('hidden');
+      mobileUserInfo.classList.remove('hidden');
       console.log('UI updated for logged in user:', user.email);
+      
+      // Update the create-post section
+      updateCreatePostSection();
     } else {
       // User is logged out
       userInfo.classList.add('hidden');
       authButtons.classList.remove('hidden');
+      mobileUserInfo.classList.add('hidden');
       console.log('UI updated for logged out state');
+      
+      // Update the create-post section back to Venus
+      updateCreatePostSection();
     }
   }
   
-  // Listen for authentication state changes
-  window.firebase.auth.onAuthStateChanged(window.firebaseAuth, (user) => {
-    console.log('Auth state changed:', user ? user.email : 'logged out');
-    updateUserUI(user);
-  });
-  
   // Update account link to open auth modal instead
   document.addEventListener('DOMContentLoaded', function() {
-    // Auth state listener is already set up above
+    // Auth state listener is set up in Firebase initialization
     console.log('DOM loaded, auth listener ready');
   });
+  
+  // Profile Modal Functions
+  function openProfileModal() {
+    const modal = document.getElementById('profileModal');
+    modal.classList.remove('hidden');
+    loadUserProfile();
+    
+    // Add ESC key listener
+    document.addEventListener('keydown', handleProfileEscapeKey);
+    modal.addEventListener('click', handleProfileBackdropClick);
+  }
+  
+  function closeProfileModal() {
+    const modal = document.getElementById('profileModal');
+    modal.classList.add('hidden');
+    document.getElementById('profileError').classList.add('hidden');
+    document.getElementById('profileSuccess').classList.add('hidden');
+    
+    // Remove event listeners
+    document.removeEventListener('keydown', handleProfileEscapeKey);
+    modal.removeEventListener('click', handleProfileBackdropClick);
+  }
+  
+  function handleProfileEscapeKey(event) {
+    if (event.key === 'Escape' || event.keyCode === 27) {
+      const modal = document.getElementById('profileModal');
+      if (!modal.classList.contains('hidden')) {
+        closeProfileModal();
+      }
+    }
+  }
+  
+  function handleProfileBackdropClick(event) {
+    const modalContent = document.querySelector('.profile-modal-content');
+    if (!modalContent.contains(event.target)) {
+      closeProfileModal();
+    }
+  }
+  
+  function loadUserProfile() {
+    const user = window.firebaseAuth.currentUser;
+    if (user) {
+      document.getElementById('profileEmail').value = user.email;
+      
+      // Generate avatar based on email/username
+      const userName = user.email.split('@')[0];
+      const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=800000&color=fff&rounded=true&size=200`;
+      document.getElementById('profileAvatar').src = avatarUrl;
+      
+      // Load saved profile data from localStorage (for now)
+      const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
+      if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+        document.getElementById('profileUsername').value = profile.username || '';
+        document.getElementById('profileStatus').value = profile.status || '';
+        document.getElementById('profileBio').value = profile.bio || '';
+        document.getElementById('profileGames').value = profile.games || '';
+      }
+    }
+  }
+  
+  async function saveProfile() {
+    const user = window.firebaseAuth.currentUser;
+    if (!user) {
+      showProfileError('You must be logged in to save your profile.');
+      return;
+    }
+    
+    const username = document.getElementById('profileUsername').value.trim();
+    const status = document.getElementById('profileStatus').value.trim();
+    const bio = document.getElementById('profileBio').value.trim();
+    const games = document.getElementById('profileGames').value.trim();
+    
+    if (!username) {
+      showProfileError('Username is required.');
+      return;
+    }
+    
+    const profile = {
+      username,
+      status,
+      bio,
+      games,
+      email: user.email,
+      lastUpdated: new Date().toISOString()
+    };
+    
+    try {
+      // Save to localStorage for now (later we can save to Firestore)
+      localStorage.setItem(`noctive_profile_${user.uid}`, JSON.stringify(profile));
+      
+      // Update the user display in header
+      updateUserDisplayName(username);
+      
+      showProfileSuccess('Profile saved successfully!');
+      
+      setTimeout(() => {
+        closeProfileModal();
+      }, 1500);
+      
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      showProfileError('Failed to save profile. Please try again.');
+    }
+  }
+  
+  function updateUserDisplayName(username) {
+    const userEmail = document.getElementById('userEmail');
+    if (userEmail && username) {
+      userEmail.textContent = `@${username}`;
+    }
+    
+    // Also update the create-post section
+    updateCreatePostSection();
+  }
+  
+  function updateCreatePostSection() {
+    console.log('updateCreatePostSection called');
+    
+    // Check if Firebase auth is ready
+    if (!window.firebaseAuth) {
+      console.log('Firebase auth not ready yet, skipping update');
+      return;
+    }
+    
+    const user = window.firebaseAuth.currentUser;
+    console.log('Current user:', user ? user.email : 'no user');
+    
+    const avatar = document.getElementById('createPostAvatar');
+    const username = document.getElementById('createPostUsername');
+    const title = document.getElementById('createPostTitle');
+    const status = document.getElementById('createPostStatus');
+    const textarea = document.getElementById('newPostInput');
+    
+    // Debug: Check if elements are found
+    console.log('Elements found:', {
+      avatar: !!avatar,
+      username: !!username,
+      title: !!title,
+      status: !!status,
+      textarea: !!textarea
+    });
+    
+    // Also update friends list
+    const userFriendLink = document.getElementById('userFriendLink');
+    const userStatusDot = document.getElementById('userStatusDot');
+    
+    if (user) {
+      // User is logged in - show their info
+      console.log('User is logged in, updating UI for:', user.email);
+      const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
+      console.log('Saved profile data:', savedProfile);
+      
+      if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+        console.log('Parsed profile:', profile);
+        
+        // Update username
+        const displayName = profile.username || user.email.split('@')[0];
+        console.log('Display name will be:', displayName);
+        username.textContent = `@${displayName}`;
+        
+        // Update title
+        if (profile.games && profile.games.length > 0) {
+          title.textContent = `(${profile.games[0]} Player)`;
+        } else {
+          title.textContent = '(Gamer)';
+        }
+        
+        // Update status
+        status.textContent = profile.status ? `🎮 ${profile.status}` : '🌙 Ready to game!';
+        
+        // Update avatar
+        if (profile.avatar) {
+          avatar.src = profile.avatar;
+        } else {
+          avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=004080&color=fff&rounded=true`;
+        }
+        
+        // Update placeholder
+        textarea.placeholder = `What's on your mind, ${displayName}?`;
+        
+        // Update friends list
+        userFriendLink.textContent = `@${displayName}`;
+        userFriendLink.setAttribute('data-text', `@${displayName}`);
+        userStatusDot.className = 'status-dot online'; // Show as online when logged in
+        
+      } else {
+        // No profile saved yet
+        console.log('No saved profile, using email-based name');
+        const emailName = user.email.split('@')[0];
+        console.log('Email name will be:', emailName);
+        username.textContent = `@${emailName}`;
+        title.textContent = '(New User!)';
+        status.textContent = '🌙 Welcome to Noctive!';
+        avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(emailName)}&background=004080&color=fff&rounded=true`;
+        textarea.placeholder = `What's on your mind, ${emailName}?`;
+        
+        // Update friends list
+        userFriendLink.textContent = `@${emailName}`;
+        userFriendLink.setAttribute('data-text', `@${emailName}`);
+        userStatusDot.className = 'status-dot online'; // Show as online when logged in
+      }
+    } else {
+      // User is logged out - show Venus
+      username.textContent = '@Venus';
+      title.textContent = '(Nomad)';
+      status.textContent = '🎮 Currently playing: Rainbow Six Siege';
+      avatar.src = 'https://ui-avatars.com/api/?name=Venus&background=800000&color=fff&rounded=true';
+      textarea.placeholder = "What's on your mind, lil dude?";
+      
+      // Update friends list back to Venus
+      userFriendLink.textContent = '@Venus';
+      userFriendLink.setAttribute('data-text', '@Venus');
+      userStatusDot.className = 'status-dot offline'; // Show Venus as offline
+    }
+  }
+  
+  function changeAvatar() {
+    const username = document.getElementById('profileUsername').value.trim();
+    const name = username || document.getElementById('profileEmail').value.split('@')[0];
+    
+    // Generate new avatar with random background color
+    const colors = ['800000', '800080', '003366', '222244', '004080', '660066', 'ff6600'];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    
+    const newAvatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${randomColor}&color=fff&rounded=true&size=200`;
+    document.getElementById('profileAvatar').src = newAvatarUrl;
+  }
+  
+  function showProfileError(message) {
+    const errorDiv = document.getElementById('profileError');
+    const successDiv = document.getElementById('profileSuccess');
+    
+    successDiv.classList.add('hidden');
+    errorDiv.textContent = message;
+    errorDiv.classList.remove('hidden');
+  }
+  
+  function showProfileSuccess(message) {
+    const errorDiv = document.getElementById('profileError');
+    const successDiv = document.getElementById('profileSuccess');
+    
+    errorDiv.classList.add('hidden');
+    successDiv.textContent = message;
+    successDiv.classList.remove('hidden');
+  }
+
+  // Listen for avatar updates from profile page
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'avatarUpdated') {
+      console.log('Avatar updated, refreshing UI...');
+      // Update the create post section to reflect new avatar
+      updateCreatePostSection();
+    } else if (event.data && event.data.type === 'profileUpdated') {
+      console.log('Profile updated, refreshing UI...');
+      // Update the create post section to reflect profile changes
+      updateCreatePostSection();
+    }
+  });
   </script>
+
+  <!-- User Info Display (shows when logged in) - Bottom Left -->
+  <div id="userInfo" class="user-info-display hidden">
+    <div class="user-greeting">
+      <span id="userEmail" onclick="window.location.href='profile.html'" title="Click to view profile" style="cursor: pointer;"></span>
+      <div class="user-actions">
+        <button onclick="window.location.href='profile.html'" class="profile-btn">View Profile</button>
+        <button onclick="signOutUser()" class="sign-out-btn">Sign Out</button>
+      </div>
+    </div>
+  </div>
 
   </body>
 </html>

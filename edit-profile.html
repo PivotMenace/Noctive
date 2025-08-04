@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - Noctive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #121524, #1a1f3a, #2a1810);
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .edit-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .edit-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .edit-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #800000, #ff3c38);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .edit-subtitle {
+            color: #aaa;
+            font-size: 1rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 60, 56, 0.5);
+            box-shadow: 0 0 0 2px rgba(255, 60, 56, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: #aaa;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: rgba(255, 60, 56, 0.5);
+            box-shadow: 0 0 0 2px rgba(255, 60, 56, 0.2);
+        }
+
+        .form-textarea::placeholder {
+            color: #aaa;
+        }
+
+        .avatar-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .current-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem auto;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .current-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-change-btn {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            background: rgba(255, 60, 56, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .avatar-change-btn:hover {
+            background: rgba(255, 60, 56, 1);
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .games-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .game-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 60, 56, 0.2);
+            border: 1px solid rgba(255, 60, 56, 0.3);
+            border-radius: 20px;
+            color: #ff9999;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remove-game {
+            background: none;
+            border: none;
+            color: #ff9999;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .remove-game:hover {
+            background: rgba(255, 60, 56, 0.3);
+        }
+
+        .add-game-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .add-game-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .add-game-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 60, 56, 0.2);
+            border: 1px solid rgba(255, 60, 56, 0.3);
+            border-radius: 6px;
+            color: #ff9999;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .add-game-btn:hover {
+            background: rgba(255, 60, 56, 0.3);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #800000, #ff3c38);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 60, 56, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .success-message {
+            background: rgba(74, 222, 128, 0.2);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            color: #4ade80;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .error-message {
+            background: rgba(255, 60, 56, 0.2);
+            border: 1px solid rgba(255, 60, 56, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            color: #ff9999;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Avatar Change Modal */
+        .avatar-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .avatar-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .avatar-modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            backdrop-filter: blur(20px);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .avatar-modal.active .avatar-modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 2rem auto;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-option {
+            margin-bottom: 1.5rem;
+        }
+
+        .option-title {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .avatar-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .avatar-input:focus {
+            outline: none;
+            border-color: rgba(255, 60, 56, 0.5);
+            box-shadow: 0 0 0 2px rgba(255, 60, 56, 0.2);
+        }
+
+        .avatar-input::placeholder {
+            color: #aaa;
+        }
+
+        .file-upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .file-upload-area:hover {
+            border-color: rgba(255, 60, 56, 0.5);
+            background: rgba(255, 60, 56, 0.1);
+        }
+
+        .file-upload-area.dragover {
+            border-color: rgba(255, 60, 56, 0.8);
+            background: rgba(255, 60, 56, 0.2);
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #aaa;
+        }
+
+        .upload-text {
+            color: #ddd;
+            font-size: 0.9rem;
+        }
+
+        .upload-subtext {
+            color: #aaa;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-save {
+            background: linear-gradient(45deg, #800000, #ff3c38);
+            color: white;
+        }
+
+        .modal-btn-save:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 60, 56, 0.3);
+        }
+
+        .modal-btn-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .edit-container {
+                padding: 1.5rem;
+            }
+            
+            .edit-title {
+                font-size: 1.5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .add-game-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <div class="edit-header">
+            <h1 class="edit-title">Edit Your Profile</h1>
+            <p class="edit-subtitle">Update your information and customize your Noctive experience</p>
+        </div>
+
+        <div id="successMessage" class="success-message hidden"></div>
+        <div id="errorMessage" class="error-message hidden"></div>
+
+        <!-- Avatar Section -->
+        <div class="form-section">
+            <h2 class="section-title">📷 Profile Picture</h2>
+            <div class="avatar-section">
+                <div class="current-avatar">
+                    <img id="currentAvatar" src="" alt="Current Avatar">
+                    <button class="avatar-change-btn" onclick="openAvatarModal()" title="Change Avatar">📷</button>
+                </div>
+                <button class="btn btn-secondary" onclick="openAvatarModal()" style="margin-top: 1rem; padding: 0.5rem 1.5rem; font-size: 0.9rem;">
+                    📷 Change Profile Picture
+                </button>
+            </div>
+        </div>
+
+        <!-- Basic Info Section -->
+        <div class="form-section">
+            <h2 class="section-title">👤 Basic Information</h2>
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input type="text" id="username" class="form-input" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="status">Status</label>
+                <input type="text" id="status" class="form-input" placeholder="What are you up to?">
+            </div>
+        </div>
+
+        <!-- Bio Section -->
+        <div class="form-section">
+            <h2 class="section-title">📝 About You</h2>
+            <div class="form-group">
+                <label class="form-label" for="bio">Bio</label>
+                <textarea id="bio" class="form-textarea" placeholder="Tell everyone about yourself..."></textarea>
+            </div>
+        </div>
+
+        <!-- Games Section -->
+        <div class="form-section">
+            <h2 class="section-title">🎮 Favorite Games</h2>
+            <div class="games-container" id="gamesContainer">
+                <!-- Current games will be displayed here -->
+            </div>
+            <div class="add-game-container">
+                <input type="text" id="newGameInput" class="add-game-input" placeholder="Add a game..." maxlength="30">
+                <button class="add-game-btn" onclick="addGame()">Add Game</button>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="saveProfile()">💾 Save Changes</button>
+            <a href="profile.html" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+
+    <!-- Avatar Change Modal -->
+    <div class="avatar-modal" id="avatarModal">
+        <div class="avatar-modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Change Profile Picture</h2>
+                <p class="modal-subtitle">Upload an image or GIF, or provide a URL</p>
+            </div>
+
+            <div class="avatar-preview">
+                <img id="avatarPreview" src="" alt="Avatar Preview">
+            </div>
+
+            <div class="avatar-option">
+                <div class="option-title">🔗 Image URL</div>
+                <input 
+                    type="url" 
+                    id="avatarUrl" 
+                    class="avatar-input" 
+                    placeholder="https://example.com/your-image.gif"
+                    onchange="previewAvatarFromUrl()"
+                >
+                <div class="upload-subtext">Supports JPG, PNG, GIF, and WebP formats</div>
+            </div>
+
+            <div class="avatar-option">
+                <div class="option-title">📁 Upload File</div>
+                <div class="file-upload-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text">Click to upload or drag & drop</div>
+                    <div class="upload-subtext">Supports images and GIFs up to 5MB</div>
+                </div>
+                <input 
+                    type="file" 
+                    id="fileInput" 
+                    accept="image/*,.gif"
+                    onchange="previewAvatarFromFile()"
+                >
+            </div>
+
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-cancel" onclick="closeAvatarModal()">Cancel</button>
+                <button class="modal-btn modal-btn-save" onclick="saveNewAvatar()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Configuration -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
+        authDomain: "noctive-41c22.firebaseapp.com",
+        projectId: "noctive-41c22",
+        storageBucket: "noctive-41c22.firebasestorage.app",
+        messagingSenderId: "381044067851",
+        appId: "1:381044067851:web:2e08e03c833a0f7ad7d6fe",
+        measurementId: "G-66HNNMQ76L"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      
+      window.firebaseAuth = auth;
+
+      // Check authentication state
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          loadCurrentProfile(user);
+        } else {
+          // Redirect to main page if not authenticated
+          window.location.href = 'index.html';
+        }
+      });
+    </script>
+
+    <script>
+        let currentGames = [];
+        let newAvatarUrl = '';
+
+        function loadCurrentProfile(user) {
+            const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
+            
+            if (savedProfile) {
+                const profile = JSON.parse(savedProfile);
+                
+                // Load current data
+                document.getElementById('username').value = profile.username || '';
+                document.getElementById('status').value = profile.status || '';
+                document.getElementById('bio').value = profile.bio || '';
+                
+                // Load avatar
+                const avatarUrl = profile.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.username || user.email.split('@')[0])}&background=004080&color=fff&rounded=true`;
+                document.getElementById('currentAvatar').src = avatarUrl;
+                
+                // Load games
+                currentGames = profile.games || [];
+                updateGamesDisplay();
+            } else {
+                // No profile found, redirect to profile wizard
+                showError('No profile found. Please complete your profile setup first.');
+                setTimeout(() => {
+                    window.location.href = 'profile-wizard.html';
+                }, 2000);
+            }
+        }
+
+        function updateGamesDisplay() {
+            const container = document.getElementById('gamesContainer');
+            container.innerHTML = '';
+            
+            currentGames.forEach((game, index) => {
+                const gameTag = document.createElement('div');
+                gameTag.className = 'game-tag';
+                gameTag.innerHTML = `
+                    <span>${game}</span>
+                    <button class="remove-game" onclick="removeGame(${index})" title="Remove game">×</button>
+                `;
+                container.appendChild(gameTag);
+            });
+        }
+
+        function addGame() {
+            const input = document.getElementById('newGameInput');
+            const game = input.value.trim();
+            
+            if (game && !currentGames.includes(game) && currentGames.length < 10) {
+                currentGames.push(game);
+                updateGamesDisplay();
+                input.value = '';
+            } else if (currentGames.includes(game)) {
+                showError('This game is already in your list!');
+            } else if (currentGames.length >= 10) {
+                showError('You can only have up to 10 favorite games.');
+            }
+        }
+
+        function removeGame(index) {
+            currentGames.splice(index, 1);
+            updateGamesDisplay();
+        }
+
+        function saveProfile() {
+            const user = window.firebaseAuth.currentUser;
+            if (!user) {
+                showError('You must be logged in to save your profile.');
+                return;
+            }
+
+            const username = document.getElementById('username').value.trim();
+            const status = document.getElementById('status').value.trim();
+            const bio = document.getElementById('bio').value.trim();
+
+            if (!username) {
+                showError('Username is required.');
+                return;
+            }
+
+            try {
+                // Get existing profile
+                const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
+                const profile = savedProfile ? JSON.parse(savedProfile) : {};
+                
+                // Update profile data
+                profile.username = username;
+                profile.status = status;
+                profile.bio = bio;
+                profile.games = currentGames;
+                
+                // Save updated profile
+                localStorage.setItem(`noctive_profile_${user.uid}`, JSON.stringify(profile));
+                
+                showSuccess('Profile updated successfully!');
+                
+                // Update other open windows
+                if (window.opener && !window.opener.closed) {
+                    window.opener.postMessage({ type: 'profileUpdated' }, '*');
+                }
+                
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                showError('Error saving profile. Please try again.');
+            }
+        }
+
+        // Avatar change functions (same as profile.html)
+        function openAvatarModal() {
+            const modal = document.getElementById('avatarModal');
+            const preview = document.getElementById('avatarPreview');
+            const currentAvatar = document.getElementById('currentAvatar').src;
+            
+            preview.src = currentAvatar;
+            newAvatarUrl = currentAvatar;
+            
+            document.getElementById('avatarUrl').value = '';
+            document.getElementById('fileInput').value = '';
+            
+            modal.classList.add('active');
+        }
+
+        function closeAvatarModal() {
+            const modal = document.getElementById('avatarModal');
+            modal.classList.remove('active');
+            newAvatarUrl = '';
+        }
+
+        function previewAvatarFromUrl() {
+            const urlInput = document.getElementById('avatarUrl');
+            const preview = document.getElementById('avatarPreview');
+            const url = urlInput.value.trim();
+            
+            if (url) {
+                const testImg = new Image();
+                testImg.onload = function() {
+                    preview.src = url;
+                    newAvatarUrl = url;
+                };
+                testImg.onerror = function() {
+                    showError('Unable to load image from this URL. Please check the URL and try again.');
+                    urlInput.value = '';
+                };
+                testImg.src = url;
+            }
+        }
+
+        function previewAvatarFromFile() {
+            const fileInput = document.getElementById('fileInput');
+            const preview = document.getElementById('avatarPreview');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showError('File size too large. Please choose an image under 5MB.');
+                    fileInput.value = '';
+                    return;
+                }
+                
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                if (!validTypes.includes(file.type)) {
+                    showError('Invalid file type. Please choose a JPG, PNG, GIF, or WebP image.');
+                    fileInput.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    newAvatarUrl = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveNewAvatar() {
+            if (!newAvatarUrl) {
+                showError('Please select an avatar first.');
+                return;
+            }
+
+            try {
+                const user = window.firebaseAuth.currentUser;
+                if (!user) {
+                    showError('You must be logged in to change your avatar.');
+                    return;
+                }
+
+                const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
+                let profileData = savedProfile ? JSON.parse(savedProfile) : {};
+                
+                profileData.avatar = newAvatarUrl;
+                localStorage.setItem(`noctive_profile_${user.uid}`, JSON.stringify(profileData));
+                
+                document.getElementById('currentAvatar').src = newAvatarUrl;
+                closeAvatarModal();
+                showSuccess('Profile picture updated!');
+                
+            } catch (error) {
+                console.error('Error saving avatar:', error);
+                showError('Error saving avatar. Please try again.');
+            }
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            const errorDiv = document.getElementById('errorMessage');
+            
+            errorDiv.classList.add('hidden');
+            successDiv.textContent = message;
+            successDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                successDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            
+            successDiv.classList.add('hidden');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                errorDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Add game on Enter key
+        document.getElementById('newGameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addGame();
+            }
+        });
+
+        // Drag and drop functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileUploadArea = document.querySelector('.file-upload-area');
+            
+            fileUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                fileUploadArea.classList.add('dragover');
+            });
+            
+            fileUploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                fileUploadArea.classList.remove('dragover');
+            });
+            
+            fileUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                fileUploadArea.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    document.getElementById('fileInput').files = files;
+                    previewAvatarFromFile();
+                }
+            });
+            
+            // Close modal when clicking outside
+            document.getElementById('avatarModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAvatarModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

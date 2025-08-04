@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Profile - Noctive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #121524, #1a1f3a, #2a1810);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wizard-container {
+            max-width: 500px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .wizard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .wizard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #800000, #ff3c38);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .wizard-subtitle {
+            color: #aaa;
+            font-size: 1rem;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.1);
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background: linear-gradient(45deg, #800000, #ff3c38);
+            color: white;
+        }
+
+        .step.completed {
+            background: #4ade80;
+            color: white;
+        }
+
+        .wizard-step {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .wizard-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ff3c38;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .avatar-selection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .avatar-option {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-option:hover {
+            border-color: #ff3c38;
+            transform: scale(1.1);
+        }
+
+        .avatar-option.selected {
+            border-color: #4ade80;
+            transform: scale(1.1);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .game-tag {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .game-tag:hover {
+            border-color: #ff3c38;
+            background: rgba(255, 60, 56, 0.1);
+        }
+
+        .game-tag.selected {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+        }
+
+        .wizard-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #800000, #ff3c38);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 60, 56, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .completion-message {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="wizard-container">
+        <div class="wizard-header">
+            <h1 class="wizard-title">Welcome to Noctive!</h1>
+            <p class="wizard-subtitle">Let's set up your gaming profile</p>
+        </div>
+
+        <div class="step-indicator">
+            <div class="step active" id="step1">1</div>
+            <div class="step" id="step2">2</div>
+            <div class="step" id="step3">3</div>
+            <div class="step" id="step4">4</div>
+        </div>
+
+        <!-- Step 1: Username -->
+        <div class="wizard-step active" id="stepContent1">
+            <h3>Choose your username</h3>
+            <p style="color: #aaa; margin-bottom: 1.5rem;">This is how other gamers will know you</p>
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" id="username" placeholder="Enter your gaming username" maxlength="20">
+            </div>
+        </div>
+
+        <!-- Step 2: Avatar -->
+        <div class="wizard-step" id="stepContent2">
+            <h3>Pick your avatar</h3>
+            <p style="color: #aaa; margin-bottom: 1.5rem;">Choose an avatar or upload your own (JPG, PNG, GIF)</p>
+            <div class="avatar-selection" id="avatarSelection">
+                <!-- Avatars will be generated here -->
+            </div>
+            <div class="form-group">
+                <label class="form-label">Or upload your own image/GIF</label>
+                <input type="file" class="form-input" id="customAvatar" accept="image/*,.gif">
+            </div>
+        </div>
+
+        <!-- Step 3: Favorite Games -->
+        <div class="wizard-step" id="stepContent3">
+            <h3>What games do you play?</h3>
+            <p style="color: #aaa; margin-bottom: 1.5rem;">Select your favorite games (choose multiple)</p>
+            <div class="games-grid" id="gamesGrid">
+                <div class="game-tag" data-game="Valorant">Valorant</div>
+                <div class="game-tag" data-game="Apex Legends">Apex Legends</div>
+                <div class="game-tag" data-game="Fortnite">Fortnite</div>
+                <div class="game-tag" data-game="CS2">CS2</div>
+                <div class="game-tag" data-game="League of Legends">League of Legends</div>
+                <div class="game-tag" data-game="Overwatch 2">Overwatch 2</div>
+                <div class="game-tag" data-game="Rainbow Six Siege">Rainbow Six Siege</div>
+                <div class="game-tag" data-game="Rocket League">Rocket League</div>
+                <div class="game-tag" data-game="Call of Duty">Call of Duty</div>
+                <div class="game-tag" data-game="Minecraft">Minecraft</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Other games (optional)</label>
+                <input type="text" class="form-input" id="otherGames" placeholder="Enter other games you play">
+            </div>
+        </div>
+
+        <!-- Step 4: Bio -->
+        <div class="wizard-step" id="stepContent4">
+            <h3>Tell us about yourself</h3>
+            <p style="color: #aaa; margin-bottom: 1.5rem;">Write a short bio for your profile</p>
+            <div class="form-group">
+                <label class="form-label">Bio</label>
+                <textarea class="form-input" id="bio" placeholder="Tell other gamers about yourself..." maxlength="200" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Current Status</label>
+                <input type="text" class="form-input" id="status" placeholder="What are you currently playing?" maxlength="50">
+            </div>
+        </div>
+
+        <!-- Completion Step -->
+        <div class="wizard-step" id="completionStep">
+            <div class="completion-message">
+                <div class="completion-icon">🎮</div>
+                <h3>Profile Created!</h3>
+                <p style="color: #aaa; margin: 1rem 0;">Welcome to the Noctive community!</p>
+                <p style="color: #888; font-size: 0.9rem;">Taking you to your profile page...</p>
+            </div>
+        </div>
+
+        <div class="wizard-buttons">
+            <button class="btn btn-secondary" id="prevBtn" onclick="previousStep()" style="display: none;">Previous</button>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedAvatar = '';
+        let selectedGames = [];
+        let profileData = {};
+
+        // Initialize avatars
+        function initializeAvatars() {
+            const avatarSelection = document.getElementById('avatarSelection');
+            const colors = ['800000', '800080', '003366', '222244', '004080', '660066', 'ff6600', '228B22', '8B4513'];
+            
+            for (let i = 0; i < 9; i++) {
+                const img = document.createElement('img');
+                img.className = 'avatar-option';
+                img.src = `https://ui-avatars.com/api/?name=User${i}&background=${colors[i]}&color=fff&rounded=true&size=80`;
+                img.onclick = () => selectAvatar(img.src);
+                avatarSelection.appendChild(img);
+            }
+        }
+
+        function selectAvatar(src) {
+            document.querySelectorAll('.avatar-option').forEach(av => av.classList.remove('selected'));
+            event.target.classList.add('selected');
+            selectedAvatar = src;
+        }
+
+        // Game selection
+        document.getElementById('gamesGrid').addEventListener('click', (e) => {
+            if (e.target.classList.contains('game-tag')) {
+                const game = e.target.dataset.game;
+                if (selectedGames.includes(game)) {
+                    selectedGames = selectedGames.filter(g => g !== game);
+                    e.target.classList.remove('selected');
+                } else {
+                    selectedGames.push(game);
+                    e.target.classList.add('selected');
+                }
+            }
+        });
+
+        // Custom avatar upload
+        document.getElementById('customAvatar').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    // Clear previous selections
+                    document.querySelectorAll('.avatar-option').forEach(av => av.classList.remove('selected'));
+                    selectedAvatar = e.target.result;
+                    
+                    // Show preview (optional enhancement)
+                    console.log('Custom avatar selected');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < 4) {
+                    currentStep++;
+                    updateStep();
+                } else {
+                    // Complete profile creation
+                    completeProfile();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStep();
+            }
+        }
+
+        function updateStep() {
+            // Update step indicators
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                } else if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+
+            // Update step content
+            document.querySelectorAll('.wizard-step').forEach(step => step.classList.remove('active'));
+            document.getElementById(`stepContent${currentStep}`).classList.add('active');
+
+            // Update buttons
+            document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'block';
+            document.getElementById('nextBtn').textContent = currentStep === 4 ? 'Complete Profile' : 'Next';
+        }
+
+        function validateCurrentStep() {
+            switch (currentStep) {
+                case 1:
+                    const username = document.getElementById('username').value.trim();
+                    if (!username) {
+                        showError('Please enter a username');
+                        return false;
+                    }
+                    if (username.length < 3) {
+                        showError('Username must be at least 3 characters long');
+                        return false;
+                    }
+                    profileData.username = username;
+                    return true;
+                case 2:
+                    if (!selectedAvatar) {
+                        showError('Please select an avatar or upload your own');
+                        return false;
+                    }
+                    profileData.avatar = selectedAvatar;
+                    return true;
+                case 3:
+                    const otherGames = document.getElementById('otherGames').value.trim();
+                    profileData.games = [...selectedGames];
+                    if (otherGames) {
+                        profileData.games.push(...otherGames.split(',').map(g => g.trim()));
+                    }
+                    return true;
+                case 4:
+                    profileData.bio = document.getElementById('bio').value.trim();
+                    profileData.status = document.getElementById('status').value.trim();
+                    return true;
+            }
+            return true;
+        }
+
+        function showError(message) {
+            // Simple error display - you could make this fancier
+            const existingError = document.querySelector('.error-message');
+            if (existingError) existingError.remove();
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.style.cssText = 'color: #ff6b6b; text-align: center; margin: 1rem 0; padding: 0.5rem; background: rgba(255, 107, 107, 0.1); border-radius: 5px; border: 1px solid rgba(255, 107, 107, 0.3);';
+            errorDiv.textContent = message;
+            
+            document.querySelector('.wizard-buttons').before(errorDiv);
+            setTimeout(() => errorDiv.remove(), 3000);
+        }
+
+        function completeProfile() {
+            // Save profile data to localStorage (in real app, this would go to Firebase)
+            const userData = JSON.parse(localStorage.getItem('tempUserData') || '{}');
+            const profileKey = `noctive_profile_${userData.uid}`;
+            localStorage.setItem(profileKey, JSON.stringify(profileData));
+
+            // Show completion message
+            document.querySelectorAll('.step').forEach(step => step.classList.add('completed'));
+            document.querySelectorAll('.wizard-step').forEach(step => step.classList.remove('active'));
+            document.getElementById('completionStep').classList.add('active');
+            document.querySelector('.wizard-buttons').style.display = 'none';
+
+            // Redirect to profile page after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'profile.html';
+            }, 2000);
+        }
+
+        // Initialize
+        initializeAvatars();
+    </script>
+</body>
+</html>
