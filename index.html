@@ -124,6 +124,7 @@ header {
   flex-direction: row;
   align-items: center;
   height: auto;
+  min-height: var(--header-height);
   background: #23263a !important;
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -133,16 +134,18 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1rem 0.75rem; /* Slightly reduced right padding */
+  padding: 1rem 0.75rem;
   justify-content: space-between;
   z-index: 1001;
+  box-sizing: border-box;
 }
 
 .header-main {
   display: flex;
   align-items: center;
-  gap: 1rem; /* Reduced gap */
-  flex: 1; /* Take available space */
+  gap: 1rem;
+  flex: 1;
+  min-width: 0; /* Allow shrinking */
 }
 
 .header-icon {
@@ -276,6 +279,443 @@ header {
   --header-height: 5rem; /* Reduced from 8rem */
   --button-top-offset: calc(var(--header-height) + 1rem);
   --widget-top-offset: calc(var(--button-top-offset) + 3rem);
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 70px;
+}
+
+/* ─── SIDEBAR NAVIGATION ─── */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: var(--header-height);
+  width: var(--sidebar-width);
+  height: calc(100vh - var(--header-height));
+  background: linear-gradient(to bottom, #1a1d2e, #16182a);
+  border-right: 1px solid rgba(250, 204, 21, 0.2);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+/* Custom scrollbar for sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(250, 204, 21, 0.3);
+  border-radius: 2px;
+  transition: background 0.2s ease;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(250, 204, 21, 0.5);
+}
+
+/* Hide scrollbar for Firefox */
+.sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(250, 204, 21, 0.3) transparent;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+.sidebar-toggle {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(250, 204, 21, 0.1);
+}
+
+.toggle-icon {
+  font-size: 1.2rem;
+  color: #facc15;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px rgba(250, 204, 21, 0.3);
+  cursor: pointer;
+}
+
+.toggle-icon:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(250, 204, 21, 0.5);
+  transform: scale(1.1);
+}
+
+.sidebar.collapsed .toggle-icon {
+  font-size: 1.4rem;
+  text-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
+}
+
+.sidebar.collapsed .sidebar-toggle {
+  padding: 1rem 0.5rem;
+  justify-content: center;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+/* Custom scrollbar for sidebar nav */
+.sidebar-nav::-webkit-scrollbar {
+  width: 3px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(250, 204, 21, 0.2);
+  border-radius: 2px;
+  transition: background 0.2s ease;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(250, 204, 21, 0.4);
+}
+
+.sidebar-nav {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(250, 204, 21, 0.2) transparent;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin: 0.25rem 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  color: #e5e7eb;
+}
+
+.nav-item:hover {
+  background: rgba(250, 204, 21, 0.1);
+  color: #facc15;
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(250, 204, 21, 0.1));
+  color: #facc15;
+  box-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-right: 0.75rem;
+  min-width: 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+  display: inline-block;
+  line-height: 1;
+}
+
+.nav-label {
+  font-weight: 400;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .nav-label {
+  opacity: 0;
+}
+
+.sidebar.collapsed .nav-icon {
+  margin-right: 0;
+  font-size: 1.4rem;
+  min-width: auto;
+  width: 100%;
+  text-align: center;
+  display: block !important;
+  opacity: 1 !important;
+  color: #facc15 !important;
+  background: rgba(250, 204, 21, 0.1) !important;
+  padding: 0.5rem !important;
+  border-radius: 8px !important;
+  margin: 0.25rem 0 !important;
+  text-shadow: 
+    -1px -1px 0 rgba(255, 255, 255, 0.8),
+    1px -1px 0 rgba(255, 255, 255, 0.8),
+    -1px 1px 0 rgba(255, 255, 255, 0.8),
+    1px 1px 0 rgba(255, 255, 255, 0.8),
+    0 0 3px rgba(255, 255, 255, 0.5) !important;
+}
+
+.sidebar.collapsed .nav-item {
+  justify-content: center;
+  padding: 0;
+  margin: 0.25rem 0.25rem;
+  position: relative;
+  background: transparent !important;
+}
+
+.sidebar.collapsed .nav-item:hover .nav-icon {
+  background: rgba(250, 204, 21, 0.2) !important;
+  transform: scale(1.1);
+  text-shadow: 
+    -1px -1px 0 rgba(255, 255, 255, 1),
+    1px -1px 0 rgba(255, 255, 255, 1),
+    -1px 1px 0 rgba(255, 255, 255, 1),
+    1px 1px 0 rgba(255, 255, 255, 1),
+    0 0 5px rgba(255, 255, 255, 0.8),
+    0 0 10px rgba(250, 204, 21, 0.5) !important;
+}
+
+.sidebar.collapsed .nav-label {
+  display: none !important;
+}
+
+.sidebar.collapsed .notification-badge {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  transform: scale(0.8);
+}
+
+.notification-badge {
+  background: #ff3c38;
+  color: white;
+  border-radius: 10px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.7rem;
+  font-weight: bold;
+  margin-left: auto;
+  min-width: 16px;
+  text-align: center;
+}
+
+.more-toggle .expand-arrow {
+  margin-left: auto;
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.more-toggle.expanded .expand-arrow {
+  transform: rotate(180deg);
+}
+
+.sidebar.collapsed .expand-arrow {
+  display: none;
+}
+
+.more-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-left: 1rem;
+}
+
+.sidebar.collapsed .more-menu {
+  margin-left: 0;
+}
+
+.more-menu.expanded {
+  max-height: 200px;
+}
+
+.post-button-container {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.post-button {
+  width: 100%;
+  background: linear-gradient(135deg, #facc15, #f59e0b);
+  border: none;
+  border-radius: 25px;
+  padding: 0.75rem 1rem;
+  color: #1a1d2e;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3);
+}
+
+.post-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5);
+  background: linear-gradient(135deg, #f59e0b, #facc15);
+}
+
+.post-icon {
+  margin-right: 0.5rem;
+}
+
+.sidebar.collapsed .post-button {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+}
+
+.sidebar.collapsed .post-label {
+  display: none;
+}
+
+.sidebar-user {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sidebar-user:hover {
+  background: rgba(250, 204, 21, 0.1);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(250, 204, 21, 0.5);
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #facc15;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-status {
+  font-size: 0.8rem;
+  color: #10b981;
+}
+
+.user-menu-toggle {
+  color: #9ca3af;
+  font-size: 1.2rem;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.user-menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #facc15;
+}
+
+.sidebar.collapsed .user-info,
+.sidebar.collapsed .user-menu-toggle {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-user {
+  justify-content: center;
+  padding: 1rem 0.5rem;
+}
+
+.sidebar.collapsed .user-avatar {
+  margin-right: 0;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: var(--sidebar-width);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  
+  .sidebar-overlay.active {
+    display: block;
+  }
+}
+
+/* Adjust main content when sidebar is open */
+.main-content {
+  margin-left: var(--sidebar-width);
+  transition: margin-left 0.3s ease;
+  min-height: calc(100vh - var(--header-height));
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.sidebar.collapsed + .main-content {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  /* Ensure proper spacing when sidebar is open on mobile */
+  .sidebar.mobile-open ~ .main-content {
+    margin-left: 0;
+  }
 }
 
 /* ─── SLOGAN ─── */
@@ -1027,6 +1467,7 @@ header {
   box-shadow: 0 0 4px rgba(255, 60, 56, 0.4), 0 0 8px rgba(255, 60, 56, 0.3), 0 0 12px rgba(255, 60, 56, 0.2);
   animation: pulseGlow 2s infinite;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .user-avatar img {
@@ -1034,6 +1475,7 @@ header {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  display: block;
 }
 
 @keyframes pulseGlow {
@@ -1330,6 +1772,7 @@ button:focus,
   border: 2px solid rgba(250, 204, 21, 0.3);
   position: relative;
   overflow: hidden;
+  text-decoration: none;
 }
 
 .settings-link {
@@ -1571,22 +2014,83 @@ button,
 
 @media (max-width: 1000px) {
   .header-main {
-    gap: 1rem; /* Reduce gap on smaller screens */
+    gap: 1rem; 
   }
   
   .brand-title {
-    font-size: 1.5rem; /* Smaller title on mobile */
+    font-size: 1.5rem; 
     margin-right: 1rem;
   }
   
   nav {
-    gap: 0.3rem; /* Reduce gap between nav items */
+    gap: 0.3rem; 
   }
   
   .nav-link {
-    min-width: 90px; /* Smaller nav links */
+    min-width: 90px; 
     padding: 0.2rem 0.8rem;
     font-size: 0.9rem;
+  }
+}
+
+/* Medium screens */
+@media (max-width: 800px) {
+  .main-content {
+    padding: 0.75rem;
+  }
+  
+  .brand-title {
+    font-size: 1.4rem;
+  }
+  
+  .feed {
+    max-width: 95vw;
+    padding: 0.5rem;
+  }
+}
+
+/* Small tablets and large phones */
+@media (max-width: 600px) {
+  .main-content {
+    padding: 0.5rem;
+  }
+  
+  .feed {
+    max-width: 100vw;
+    padding: 0.25rem;
+  }
+  
+  .brand-title {
+    font-size: 1.3rem;
+  }
+  
+  .post, .create-post {
+    margin: 0.5rem 0;
+    border-radius: 0.5rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .header-main {
+    gap: 0.25rem;
+  }
+  
+  .brand-title {
+    font-size: 1.2rem;
+    margin-right: 0.25rem;
+  }
+  
+  .main-content {
+    padding: 0.25rem;
+  }
+  
+  .feed {
+    padding: 0.1rem;
+  }
+  
+  .mobile-menu-wrapper {
+    right: 1rem;
   }
 }
 
@@ -1825,18 +2329,25 @@ button,
 /* Switch to hamburger menu on mobile */
 @media (max-width: 700px) {
   header {
-    padding: 0.3rem 1rem; /* Reduced top/bottom padding to move title up */
+    padding: 0.3rem 1rem; 
+    min-height: var(--header-height);
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
   }
   
   .header-main {
     gap: 0.5rem;
     align-items: center;
+    flex: 1;
   }
   
   .brand-title {
-    font-size: 1.6rem; /* Slightly smaller to prevent overlap */
+    font-size: 1.4rem; 
     margin-right: 0.5rem;
-    margin-top: -0.2rem; /* Move title up slightly */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .vote-btn {
@@ -1877,7 +2388,7 @@ button,
         <div class="header-icon" style="position: relative;"></div>
         <span class="brand-title">Noctive</span>
       </div>
-      <div class="nav-slider-wrapper">
+      <div class="nav-slider-wrapper" style="display: none;">
   <div class="nav-slider-indicator"></div>
   <button class="nav-tab active">
     <span class="nav-text">Home</span>
@@ -1962,6 +2473,106 @@ button,
     
     <div class="star-background" id="starBg"></div>
 
+    <!-- Left Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+      <!-- Sidebar Toggle Button -->
+      <div class="sidebar-toggle" onclick="toggleMainSidebar()">
+        <span class="toggle-icon">☰</span>
+      </div>
+      
+      <!-- Main Navigation -->
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-page="home">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Home</span>
+        </div>
+        
+        <div class="nav-item" data-page="explore">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-label">Explore</span>
+        </div>
+        
+        <div class="nav-item" data-page="hubs">
+          <span class="nav-icon">🎮</span>
+          <span class="nav-label">Hubs</span>
+        </div>
+        
+        <div class="nav-item" data-page="creator">
+          <span class="nav-icon">✨</span>
+          <span class="nav-label">Creator Hub</span>
+        </div>
+        
+        <div class="nav-item" data-page="messages">
+          <span class="nav-icon">💬</span>
+          <span class="nav-label">Messages</span>
+          <span class="notification-badge">3</span>
+        </div>
+        
+        <div class="nav-item" data-page="notifications">
+          <span class="nav-icon">🔔</span>
+          <span class="nav-label">Notifications</span>
+          <span class="notification-badge">12</span>
+        </div>
+        
+        <div class="nav-item" data-page="profile">
+          <span class="nav-icon">👤</span>
+          <span class="nav-label">Profile</span>
+        </div>
+        
+        <!-- More Menu (Collapsible) -->
+        <div class="nav-item more-toggle" onclick="toggleMoreMenu()">
+          <span class="nav-icon">⋯</span>
+          <span class="nav-label">More</span>
+          <span class="expand-arrow">▼</span>
+        </div>
+        
+        <div class="more-menu" id="moreMenu">
+          <div class="nav-item" data-page="search">
+            <span class="nav-icon">🔎</span>
+            <span class="nav-label">Search</span>
+          </div>
+          
+          <div class="nav-item" data-page="store">
+            <span class="nav-icon">🛒</span>
+            <span class="nav-label">Store</span>
+          </div>
+          
+          <div class="nav-item" data-page="dev">
+            <span class="nav-icon">💻</span>
+            <span class="nav-label">Dev Hub</span>
+          </div>
+          
+          <div class="nav-item" data-page="settings">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">Settings</span>
+          </div>
+        </div>
+      </nav>
+      
+      <!-- Post Button -->
+      <div class="post-button-container">
+        <button class="post-button" onclick="openCreatePost()">
+          <span class="post-icon">✨</span>
+          <span class="post-label">Post</span>
+        </button>
+      </div>
+      
+      <!-- User Profile at Bottom -->
+      <div class="sidebar-user" id="sidebarUser">
+        <div class="user-avatar">
+          <img src="pngs/account.png" alt="User Avatar" id="sidebarAvatar">
+        </div>
+        <div class="user-info">
+          <div class="user-name" id="sidebarUserName">@username</div>
+          <div class="user-status">Online</div>
+        </div>
+        <div class="user-menu-toggle" onclick="toggleUserMenu()">⋯</div>
+      </div>
+    </div>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
     <button
       class="trending-open-button"
       id="toggleTrendingButton"
@@ -2019,7 +2630,9 @@ button,
       </div>
     </div>
 
-    <section class="feed">
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <section class="feed">
       
 <div class="post-status create-post" style="padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem;">
   <div class="user" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
@@ -2285,6 +2898,80 @@ function toggleSidebar() {
   nightWindow.classList.toggle('hidden');
   nightWindow.classList.toggle('open');
 }
+
+// Left Sidebar Functions
+function toggleMainSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  
+  if (window.innerWidth <= 768) {
+    // Mobile behavior
+    sidebar.classList.toggle('mobile-open');
+    overlay.classList.toggle('active');
+  } else {
+    // Desktop behavior
+    sidebar.classList.toggle('collapsed');
+  }
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  
+  sidebar.classList.remove('mobile-open');
+  overlay.classList.remove('active');
+}
+
+function toggleMoreMenu() {
+  const moreMenu = document.getElementById('moreMenu');
+  const moreToggle = document.querySelector('.more-toggle');
+  
+  moreMenu.classList.toggle('expanded');
+  moreToggle.classList.toggle('expanded');
+}
+
+function selectNavItem(element) {
+  // Remove active class from all nav items
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  // Add active class to clicked item
+  element.classList.add('active');
+  
+  // Get the page data
+  const page = element.getAttribute('data-page');
+  console.log('Navigating to:', page);
+  
+  // Here you can add navigation logic
+  // For now, just log the page
+}
+
+function toggleUserMenu() {
+  console.log('User menu toggled');
+  // Add user menu functionality here
+}
+
+function openCreatePost() {
+  console.log('Opening create post modal');
+  // Add create post modal functionality here
+}
+
+// Add click handlers to nav items
+document.addEventListener('DOMContentLoaded', function() {
+  const navItems = document.querySelectorAll('.nav-item[data-page]');
+  navItems.forEach(item => {
+    item.addEventListener('click', function() {
+      selectNavItem(this);
+    });
+  });
+  
+  // Update sidebar toggle in existing HTML to use new function
+  const sidebarToggle = document.querySelector('.sidebar-toggle');
+  if (sidebarToggle) {
+    sidebarToggle.setAttribute('onclick', 'toggleMainSidebar()');
+  }
+});
 
 // Navigation Slider
 const tabs = document.querySelectorAll(".nav-tab");
@@ -2788,6 +3475,7 @@ if (window.innerWidth <= 768) {
     padding: 1rem;
     margin: 1rem 0;
     color: #ff9999;
+    display: none !important;
   }
   
   .remember-me-container {
@@ -3120,24 +3808,26 @@ if (window.innerWidth <= 768) {
         window.location.href = 'profile-wizard.html';
         return;
       } else {
-        // Sign In - check if user has a profile
+        // Sign In - existing user signing back in
         const userCredential = await window.firebase.auth.signInWithEmailAndPassword(window.firebaseAuth, email, password);
         console.log('User signed in:', userCredential.user);
         
-        // Check if user has completed profile setup
-        const savedProfile = localStorage.getItem(`noctive_profile_${userCredential.user.uid}`);
-        if (!savedProfile) {
-          // First time signing in, redirect to profile wizard
-          localStorage.setItem('tempUserData', JSON.stringify({
-            uid: userCredential.user.uid,
-            email: userCredential.user.email,
-            isNewUser: false
-          }));
-          window.location.href = 'profile-wizard.html';
-          return;
-        }
-        
+        // For sign in, always redirect to profile page regardless of saved profile
+        // Users signing in are existing users, they shouldn't need the welcome wizard
         alert('Welcome back to Noctive!');
+        closeAuthModal();
+        
+        // Check if they have a saved profile to redirect appropriately
+        const savedProfile = localStorage.getItem(`noctive_profile_${userCredential.user.uid}`);
+        if (savedProfile) {
+          // User has a profile, redirect to profile page
+          window.location.href = 'profile.html';
+        } else {
+          // User doesn't have a local profile, but they're signing in so just stay on main page
+          // The onAuthStateChanged listener will handle UI updates
+          window.location.reload();
+        }
+        return;
       }
       
       closeAuthModal();
@@ -3467,6 +4157,9 @@ if (window.innerWidth <= 768) {
     }
   });
   </script>
+
+  <!-- Close Main Content Area -->
+  </div>
 
   <!-- User Info Display (shows when logged in) - Bottom Left -->
   <div id="userInfo" class="user-info-display hidden">
