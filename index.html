@@ -18,6 +18,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Rounded:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Firebase SDKs -->
     <script type="module">
@@ -2401,37 +2404,86 @@ button,
   margin: 0.75rem 0 0 0;
 }
 
-.mobile-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  color: #f0f0f0 !important;
-  text-decoration: none;
-  transition: background 0.2s ease;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(26, 29, 46, 0.95), rgba(22, 24, 42, 0.95));
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem env(safe-area-inset-right) calc(0.5rem + env(safe-area-inset-bottom)) env(safe-area-inset-left);
+  z-index: 1000;
+  backdrop-filter: blur(10px);
 }
 
-.mobile-nav-item:last-child {
-  border-bottom: none;
+.mobile-bottom-nav ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin: 0 auto;
+  list-style: none;
+  width: 100%;
+  max-width: min(500px, 100% - 32px);
+}
+
+.mobile-bottom-nav li {
+  flex: 1;
+  text-align: center;
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  color: #f0f0f0;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  width: 100%;
 }
 
 .mobile-nav-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  color: #ff3c38;
 }
 
 .mobile-nav-item.active {
-  background: rgba(250, 204, 21, 0.2);
-  color: #facc15 !important;
+  color: #facc15;
 }
 
 .mobile-nav-icon {
-  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--icon-color, #8492a6);
+  stroke-width: 1.5;
+  transition: all 0.2s ease;
+}
+
+.nav-center .mobile-nav-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--accent-color, #facc15);
 }
 
 .mobile-nav-text {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: block;
+  }
+  
+  .main-content {
+    padding-bottom: 80px;
+  }
 }
 
 /* Switch to hamburger menu on mobile */
@@ -4274,5 +4326,45 @@ if (window.innerWidth <= 768) {
     </div>
   </div>
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+      <ul class="nav-list">
+        <li>
+          <a href="#" class="mobile-nav-item active" onclick="selectMobileNav(this, 'Home')">
+            <i class="mobile-nav-icon" data-lucide="home"></i>
+            <span class="mobile-nav-text">Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Search')">
+            <i class="mobile-nav-icon" data-lucide="search"></i>
+            <span class="mobile-nav-text">Search</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="mobile-nav-item nav-center" onclick="selectMobileNav(this, 'Create')">
+            <i class="mobile-nav-icon" data-lucide="plus-circle"></i>
+            <span class="mobile-nav-text">Create</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Activity')">
+            <i class="mobile-nav-icon" data-lucide="bell"></i>
+            <span class="mobile-nav-text">Activity</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Profile')">
+            <i class="mobile-nav-icon" data-lucide="user"></i>
+            <span class="mobile-nav-text">Profile</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
   </body>
 </html>
