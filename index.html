@@ -695,26 +695,72 @@ header {
   margin-left: var(--sidebar-width);
   transition: margin-left 0.3s ease;
   min-height: calc(100vh - var(--header-height));
-  padding: 1rem;
+  padding: 0;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100vw - var(--sidebar-width));
 }
 
 .sidebar.collapsed + .main-content {
   margin-left: var(--sidebar-collapsed-width);
+  width: calc(100vw - var(--sidebar-collapsed-width));
 }
 
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
-    padding: 0.5rem;
+    padding: 0;
     width: 100%;
     max-width: 100vw;
     overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .feed {
+    max-width: 95%;
+    padding: 1rem 0.5rem;
   }
   
   /* Ensure proper spacing when sidebar is open on mobile */
   .sidebar.mobile-open ~ .main-content {
     margin-left: 0;
+  }
+}
+
+/* Add responsive breakpoints for window resizing */
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 0 1rem;
+  }
+  
+  .feed {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    padding: 0 0.5rem;
+  }
+  
+  .feed {
+    max-width: 95%;
+    padding: 1.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .feed {
+    max-width: 100%;
+    padding: 1rem 0.5rem;
+  }
+  
+  .post, .create-post {
+    margin-bottom: 1rem;
   }
 }
 
@@ -891,14 +937,18 @@ header {
 
       /* ─── FEED & POSTS ─── */
       .feed {
-        
-     padding: 2rem 0.5rem;
-     max-width: 100%;
-     margin: auto;
-    }
+        padding: 2rem 1rem;
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
       .feed {
-  margin-top: 0;
-}
+        margin-top: 0;
+      }
       .post {
         background: linear-gradient(to bottom right, #1d2133, #292e44) !important;
         padding: 1.25rem;
@@ -915,6 +965,9 @@ header {
           transform 0.2s ease-out,
           color 0.2s;
         position: relative;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
       .post:hover {
         border-color: rgba(255, 50, 50, 0.4) !important;
@@ -1240,12 +1293,16 @@ header {
       }
       
     footer {
+      width: 100%;
       text-align: center;
       padding: 2rem;
       font-size: 0.85rem;
       color: #888;
       background: rgba(0, 0, 0, 0.3);
       border-top: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
+      margin-top: auto;
+      margin-bottom: 2rem;
     }
 
 .currently-playing {
@@ -1576,6 +1633,9 @@ header {
   color: #f0f0f0 !important;
   margin-bottom: 2rem;
   margin-top: 0 !important; /* Reduced from 0.25rem */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 button,
@@ -2457,8 +2517,13 @@ button,
   </div>
 </div>
       <div class="header-account-link">
-        <!-- Login/Account Icons (shows when logged out) -->
-        <div id="authButtons" class="auth-buttons">
+        <!-- Login Form (shows when logged out) -->
+        <form id="loginForm" style="display: flex; align-items: center; gap: 0.5rem;">
+          <input type="text" id="username" placeholder="Username" required style="padding: 0.4rem 0.6rem; border-radius: 0.25rem; border: 1px solid #444; background: #1e1e2e; color: #fff; font-size: 0.8rem; width: 100px;" />
+          <input type="password" id="password" placeholder="Password" required style="padding: 0.4rem 0.6rem; border-radius: 0.25rem; border: 1px solid #444; background: #1e1e2e; color: #fff; font-size: 0.8rem; width: 100px;" />
+          <button type="submit" style="padding: 0.4rem 0.8rem; background: linear-gradient(90deg, #b22222, #ff3c38); border: none; border-radius: 0.25rem; color: white; font-weight: bold; cursor: pointer; font-size: 0.8rem;">Login</button>
+        </form>
+        <div id="authButtons" class="auth-buttons" style="display: none;">
           <a href="#" class="account-link" title="Sign In" onclick="openAuthModal(); return false;">
             <span class="login-text">Login / Sign Up</span>
           </a>
@@ -2690,16 +2755,11 @@ button,
 </div>
 
 <div class="post" data-post-id="belt181">
-    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
-  </div>
-</div>
-
-<div class="post" data-post-id="belt181">
   <div class="post-header">
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;"><a href="/profile/Belt181">@Belt181</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span></strong>
+        <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="/profile/Belt181">@Belt181</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Apex Legends</span>
       </div>
     </div>
@@ -2827,12 +2887,6 @@ button,
     </footer>
 
     <script src="index.js"></script>
-
-<form id="loginForm">
-  <input type="text" id="username" placeholder="Username" required />
-  <input type="password" id="password" placeholder="Password" required />
-  <button type="submit">Login</button>
-</form>
 <script>
 const userVotes = {};
 
