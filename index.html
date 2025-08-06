@@ -2930,6 +2930,13 @@ button,
       </div>
       
       <!-- User Profile at Bottom -->
+      <!-- Copilot: replace this static avatar block with currentUser data
+        • Import or grab `currentUser` from your auth/context (e.g. `const { currentUser } = useAuth()`).
+        • If `currentUser` is null, render nothing.
+        • If `currentUser` exists, render:
+          <img src={currentUser.photoURL} alt={currentUser.displayName} class="user-avatar"/>
+          <span class="user-name">{currentUser.displayName}</span>
+      -->
       <div class="sidebar-user" id="sidebarUser">
         <div class="user-avatar">
           <img src="pngs/account.png" alt="User Avatar" id="sidebarAvatar">
@@ -4373,16 +4380,34 @@ function showTouchTooltip(element, text, event) {
     const mobileUserInfo = document.getElementById('mobileUserInfo');
     const mobileUserEmail = document.getElementById('mobileUserEmail');
     
+    // Sidebar user elements
+    const sidebarUser = document.getElementById('sidebarUser');
+    const sidebarAvatar = document.getElementById('sidebarAvatar');
+    const sidebarUserName = document.getElementById('sidebarUserName');
+    
     if (user) {
       // User is logged in
       // Check if user has a saved username
       const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
-      const displayText = savedProfile ? 
-        (JSON.parse(savedProfile).username ? `@${JSON.parse(savedProfile).username}` : user.email) : 
-        user.email;
+      const profileData = savedProfile ? JSON.parse(savedProfile) : null;
+      const displayText = profileData?.username ? `@${profileData.username}` : user.email;
       
       if (userEmail) userEmail.textContent = displayText;
       if (mobileUserEmail) mobileUserEmail.textContent = displayText;
+      
+      // Update sidebar user with currentUser data
+      if (sidebarUser && sidebarAvatar && sidebarUserName) {
+        // Show sidebar user section
+        sidebarUser.style.display = 'flex';
+        
+        // Update avatar - use profile photo if available, otherwise use default
+        const avatarUrl = user.photoURL || profileData?.avatarUrl || 'pngs/account.png';
+        sidebarAvatar.src = avatarUrl;
+        sidebarAvatar.alt = user.displayName || profileData?.username || 'User Avatar';
+        
+        // Update username
+        sidebarUserName.textContent = displayText;
+      }
       
       // Keep the green profile display hidden - we don't want it anymore
       userInfo.classList.add('hidden');
@@ -4393,7 +4418,11 @@ function showTouchTooltip(element, text, event) {
       // Update the create-post section
       updateCreatePostSection();
     } else {
-      // User is logged out
+      // User is logged out - hide sidebar user section
+      if (sidebarUser) {
+        sidebarUser.style.display = 'none';
+      }
+      
       userInfo.classList.add('hidden');
       authButtons.classList.remove('hidden');
       mobileUserInfo.classList.add('hidden');
