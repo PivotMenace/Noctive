@@ -121,7 +121,7 @@
   min-height: 100vh;
 }
 
-/* Header with midnight theme */
+/* Header - Mobile First */
 header {
   display: flex;
   flex-direction: row;
@@ -137,30 +137,25 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1rem 0.75rem;
+  padding: 0.75rem;
   justify-content: space-between;
   z-index: 1001;
   box-sizing: border-box;
 }
 
+/* Mobile header adjustments */
 .header-main {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   flex: 1;
-  min-width: 0; /* Allow shrinking */
-}
-
-.header-icon {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  min-width: 0;
 }
 
 .brand-title {
   font-family: 'Rubik', 'Roboto Condensed', 'Segoe UI Bold', sans-serif !important;
   font-weight: 700;
-  font-size: 1.75rem; /* Reduced from 2rem */
+  font-size: 1.5rem;
   background: linear-gradient(90deg, #800000, #ff3c38);
   -webkit-background-clip: text;
   background-clip: text;
@@ -168,20 +163,43 @@ header {
   background-size: 200% 200%;
   animation: gradientText 6s ease-in-out infinite;
   letter-spacing: 0.5px;
-  margin-right: 1rem; /* Reduced from 2rem */
 }
 
-/* Navigation with slider effect */
+/* Hide navigation on mobile by default */
 .nav-slider-wrapper {
-  display: flex;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  display: none;
+}
+
+/* Desktop header improvements */
+@media (min-width: 769px) {
+  header {
+    padding: 1rem 0.75rem;
+  }
+  
+  .header-main {
+    gap: 1rem;
+  }
+  
+  .brand-title {
+    font-size: 1.75rem;
+    margin-right: 1rem;
+  }
+  
+  .nav-slider-wrapper {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Navigation - Mobile First */
+.nav-slider-wrapper {
   background: #101018;
   border: none;
   border-radius: 999px;
-  padding: 0.15rem; /* Reduced from 0.2rem */
-  gap: 0.2rem; /* Reduced from 0.25rem */
+  padding: 0.15rem;
+  gap: 0.2rem;
   width: fit-content;
   box-shadow: 0 0 12px rgba(250, 204, 21, 0.1);
 }
@@ -190,9 +208,9 @@ header {
   all: unset;
   position: relative;
   z-index: 2;
-  padding: 0.4rem 0.8rem; /* Reduced from 0.5rem 1rem */
+  padding: 0.4rem 0.8rem;
   font-family: 'Rubik', sans-serif;
-  font-size: 0.8rem; /* Reduced from 0.85rem */
+  font-size: 0.8rem;
   font-weight: 500;
   color: #eaeaea;
   border-radius: 999px;
@@ -200,13 +218,23 @@ header {
   transition: color 0.2s ease;
 }
 
-.nav-tab:hover {
+.nav-tab:hover,
+.nav-tab:active,
+.nav-tab:focus {
   color: #facc15;
 }
 
 .nav-tab.active {
   color: #1a1a1a;
   font-weight: 600;
+}
+
+/* Mobile navigation improvements */
+@media (min-width: 769px) {
+  .nav-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
 }
 
 .nav-slider-indicator {
@@ -254,7 +282,8 @@ header {
 }
 
 .nav-link:hover,
-.nav-link:focus {
+.nav-link:focus,
+.nav-link:active {
   background: rgba(255, 255, 255, 0.15) !important;
   color: #ffffff !important;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
@@ -262,7 +291,8 @@ header {
 }
 
 .nav-link:hover .arrow,
-.nav-link:focus .arrow {
+.nav-link:focus .arrow,
+.nav-link:active .arrow {
   color: #ff3c38 !important;
 }
 
@@ -418,12 +448,16 @@ header {
   color: #e5e7eb;
 }
 
-.nav-item:hover {
+.nav-item:hover,
+.nav-item:active,
+.nav-item:focus {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
 }
 
-.nav-item:hover .nav-icon {
+.nav-item:hover .nav-icon,
+.nav-item:active .nav-icon,
+.nav-item:focus .nav-icon {
   opacity: 1;
 }
 
@@ -489,10 +523,14 @@ header {
   background: transparent !important;
 }
 
-.sidebar.collapsed .nav-item:hover .nav-icon {
+.sidebar.collapsed .nav-item:hover .nav-icon,
+.sidebar.collapsed .nav-item:active .nav-icon,
+.sidebar.collapsed .nav-item:focus .nav-icon {
   background: rgba(255, 255, 255, 0.1) !important;
   transform: scale(1.1);
   opacity: 1;
+  text-shadow: 
+    -1px -1px 0 rgba(255, 255, 255, 1),
     1px -1px 0 rgba(255, 255, 255, 1),
     -1px 1px 0 rgba(255, 255, 255, 1),
     1px 1px 0 rgba(255, 255, 255, 1),
@@ -706,11 +744,64 @@ header {
   .sidebar-overlay.active {
     display: block;
   }
+
+  /* Mobile Touch-Friendly Improvements */
+  .nav-item,
+  .btn,
+  .vote-btn,
+  .user-menu-toggle,
+  .sidebar-toggle,
+  .hamburger-btn {
+    min-height: 44px; /* Apple's recommended minimum touch target */
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Remove hover effects on touch devices */
+  .nav-item:hover,
+  .btn:hover,
+  .vote-btn:hover {
+    background: initial;
+    transform: initial;
+  }
+
+  /* Add active states for touch feedback */
+  .nav-item:active,
+  .btn:active,
+  .vote-btn:active {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(0.95);
+    transition: all 0.1s ease;
+  }
 }
 
-/* Layout wrapper */
+/* Touch device specific styles */
+.touch-device *:hover {
+  /* Disable all hover effects on touch devices */
+  background: initial !important;
+  color: initial !important;
+  transform: initial !important;
+  box-shadow: initial !important;
+}
+
+/* Re-enable active states for touch devices */
+.touch-device .nav-item:active,
+.touch-device .btn:active,
+.touch-device .vote-btn:active,
+.touch-device button:active {
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: scale(0.95) !important;
+  transition: all 0.1s ease !important;
+}
+
+/* ═══ MOBILE-FIRST LAYOUT ═══ */
+
+/* Mobile default layout - single column */
 .layout {
   display: flex;
+  flex-direction: column;
   min-height: calc(100vh - var(--header-height));
   margin-top: var(--header-height);
   width: 100%;
@@ -720,30 +811,122 @@ header {
   z-index: 1;
 }
 
-/* Main content styles */
+/* Main content - mobile first */
 .main-content {
   flex: 1;
-  min-width: 0;
-  padding: 2rem;
+  width: 100%;
+  padding: 1rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: all 0.3s ease;
-  margin-left: var(--sidebar-width);
-  width: calc(100% - var(--sidebar-width));
-}
-
-.sidebar.collapsed ~ .main-content {
-  margin-left: var(--sidebar-collapsed-width);
-  width: calc(100% - var(--sidebar-collapsed-width));
+  margin: 0;
+  padding-bottom: 80px; /* Space for mobile nav */
 }
 
 .feed {
-  width: var(--feed-width);
-  max-width: var(--main-content-max-width);
+  width: 100%;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0.5rem;
+}
+
+/* Feed Tabs Component */
+.feed-tabs {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  background: rgba(18, 21, 36, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+.feed-tabs .tab {
+  background: transparent;
+  border: none;
+  color: #888;
+  padding: 1rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.feed-tabs .tab:hover {
+  color: #f0f0f0;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.feed-tabs .tab.active {
+  color: #1d9bf0;
+  font-weight: 600;
+}
+
+.feed-tabs .tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #1d9bf0;
+  border-radius: 2px 2px 0 0;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .feed-tabs .tab {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Hide sidebar on mobile by default */
+.sidebar {
+  display: none;
+}
+
+/* Desktop layout - min-width: 769px */
+@media (min-width: 769px) {
+  .layout {
+    flex-direction: row;
+  }
+  
+  .sidebar {
+    display: flex;
+  }
+  
+  .main-content {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    padding: 2rem;
+    padding-bottom: 2rem; /* Remove mobile nav space */
+  }
+  
+  .sidebar.collapsed ~ .main-content {
+    margin-left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
+  }
+  
+  .feed {
+    width: var(--feed-width);
+    max-width: var(--main-content-max-width);
+    padding: 0;
+  }
 }
 
 @media (max-width: 1400px) {
@@ -815,7 +998,6 @@ header {
     width: 100%;
     padding: 0.25rem;
   }
-}
 }
 
 /* ─── SLOGAN ─── */
@@ -2270,9 +2452,9 @@ button,
   }
 }
 
-/* Mobile Hamburger Menu */
+/* Mobile Hamburger Menu - Mobile First */
 .mobile-menu-wrapper {
-  display: none;
+  display: block;
   position: relative;
 }
 
@@ -2288,6 +2470,17 @@ button,
   width: 40px;
   height: 40px;
   box-shadow: none !important;
+}
+
+/* Hide hamburger on desktop, show account links instead */
+@media (min-width: 769px) {
+  .mobile-menu-wrapper {
+    display: none;
+  }
+  
+  .header-account-link {
+    display: flex;
+  }
 }
 
 .hamburger-line {
@@ -2405,7 +2598,7 @@ button,
 }
 
 .mobile-bottom-nav {
-  display: none;
+  display: block;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -2427,6 +2620,17 @@ button,
   list-style: none;
   width: 100%;
   max-width: min(500px, 100% - 32px);
+}
+
+/* Hide mobile nav on desktop */
+@media (min-width: 769px) {
+  .mobile-bottom-nav {
+    display: none;
+  }
+  
+  .main-content {
+    padding-bottom: 2rem; /* Remove mobile nav space on desktop */
+  }
 }
 
 .mobile-bottom-nav li {
@@ -2572,7 +2776,10 @@ button,
 
 <!-- Mobile Hamburger Menu -->
 <div class="mobile-menu-wrapper">
-  <button class="hamburger-btn" onclick="toggleMobileMenu()">
+  <button class="hamburger-btn" onclick="toggleMobileMenu()" 
+          aria-label="Toggle mobile navigation menu" 
+          aria-expanded="false" 
+          type="button">
     <div class="hamburger-line"></div>
     <div class="hamburger-line"></div>
     <div class="hamburger-line"></div>
@@ -2799,6 +3006,26 @@ button,
     <div class="main-content">
       <section class="feed">
       
+<!-- Copilot: create a responsive feed-tabs component like Twitter's "For You / Following / [Game]"  
+  • HTML:  
+    – <nav class="feed-tabs"> with three <button class="tab" data-tab="for-you">For You</button>, <button data-tab="following">Following</button>, <button data-tab="game">Hubs</button>  
+    – Three <section id="for-you">, <section id="following">, <section id="game"> panels  
+  • CSS:  
+    – .feed-tabs: flex center, border-bottom  
+    – .tab: default/inactive style  
+    – .tab.active::after: colored underline  
+  • JS:  
+    – Add click listeners to remove .active from all .tab, add to clicked one  
+    – Hide all .tab-panel, unhide the panel matching clicked button's data-tab  
+-->
+
+<nav class="feed-tabs">
+  <button class="tab active" data-tab="for-you">For you</button>
+  <button class="tab" data-tab="following">Following</button>
+  <button class="tab" data-tab="game">Lounge</button>
+</nav>
+
+<section id="for-you" class="tab-panel active">
 <div class="post-status create-post" style="padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem;">
   <div class="user" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
     <div class="user-avatar" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
@@ -2973,6 +3200,22 @@ button,
     <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
   </div>
 </div>
+
+</section>
+
+<section id="following" class="tab-panel">
+  <div class="empty-state" style="text-align: center; padding: 4rem 2rem; color: #888;">
+    <h3 style="color: #facc15; margin-bottom: 1rem;">No posts yet</h3>
+    <p>Posts from people you follow will appear here.</p>
+  </div>
+</section>
+
+<section id="game" class="tab-panel">
+  <div class="empty-state" style="text-align: center; padding: 4rem 2rem; color: #888;">
+    <h3 style="color: #facc15; margin-bottom: 1rem;">Hubs Feed</h3>
+    <p>Game-specific posts and updates will appear here.</p>
+  </div>
+</section>
 
     </section>
 
@@ -3159,12 +3402,47 @@ window.addEventListener("DOMContentLoaded", () => {
       charCount.textContent = this.value.length;
     });
   }
+  
+  // Feed Tabs Functionality
+  initializeFeedTabs();
 });
+
+function initializeFeedTabs() {
+  const tabs = document.querySelectorAll('.feed-tabs .tab');
+  const panels = document.querySelectorAll('.tab-panel');
+  
+  tabs.forEach(tab => {
+    tab.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      // Remove active class from all tabs
+      tabs.forEach(t => t.classList.remove('active'));
+      
+      // Add active class to clicked tab
+      this.classList.add('active');
+      
+      // Hide all panels
+      panels.forEach(panel => panel.classList.remove('active'));
+      
+      // Show target panel
+      const targetPanel = document.getElementById(targetTab);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+      }
+    });
+  });
+}
 
 /* Mobile Hamburger Menu */
 function toggleMobileMenu() {
   const dropdown = document.getElementById('mobileDropdown');
+  const hamburgerBtn = document.querySelector('.hamburger-btn');
+  
   dropdown.classList.toggle('hidden');
+  
+  // Update aria-expanded for accessibility
+  const isExpanded = !dropdown.classList.contains('hidden');
+  hamburgerBtn.setAttribute('aria-expanded', isExpanded);
 }
 
 function selectMobileNav(element, pageName) {
@@ -3261,6 +3539,87 @@ if (window.innerWidth <= 768) {
   moonToggleButton.addEventListener("mousedown", dragStart, false);
   document.addEventListener("mouseup", dragEnd, false);
   document.addEventListener("mousemove", drag, false);
+}
+
+// Mobile touch-friendly interaction improvements
+document.addEventListener('DOMContentLoaded', function() {
+  // Detect touch device
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  
+  if (isTouchDevice) {
+    // Add touch-device class to body for CSS targeting
+    document.body.classList.add('touch-device');
+    
+    // Convert hover tooltips to tap interactions
+    const hoverElements = document.querySelectorAll('[title]');
+    hoverElements.forEach(element => {
+      const title = element.getAttribute('title');
+      if (title) {
+        // Remove title to prevent default tooltip
+        element.removeAttribute('title');
+        
+        // Add custom tap tooltip
+        element.addEventListener('click', function(e) {
+          // Create or show tooltip
+          showTouchTooltip(this, title, e);
+        });
+      }
+    });
+    
+    // Improve tap feedback for interactive elements
+    const interactiveElements = document.querySelectorAll('.nav-item, .btn, .vote-btn, button, .clickable');
+    interactiveElements.forEach(element => {
+      element.addEventListener('touchstart', function() {
+        this.style.transform = 'scale(0.95)';
+        this.style.opacity = '0.8';
+      });
+      
+      element.addEventListener('touchend', function() {
+        setTimeout(() => {
+          this.style.transform = '';
+          this.style.opacity = '';
+        }, 150);
+      });
+    });
+  }
+});
+
+// Touch tooltip function
+function showTouchTooltip(element, text, event) {
+  // Remove existing tooltips
+  const existingTooltips = document.querySelectorAll('.touch-tooltip');
+  existingTooltips.forEach(tooltip => tooltip.remove());
+  
+  // Create new tooltip
+  const tooltip = document.createElement('div');
+  tooltip.className = 'touch-tooltip';
+  tooltip.textContent = text;
+  tooltip.style.cssText = `
+    position: fixed;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 10000;
+    pointer-events: none;
+    max-width: 200px;
+    word-wrap: break-word;
+  `;
+  
+  document.body.appendChild(tooltip);
+  
+  // Position tooltip
+  const rect = element.getBoundingClientRect();
+  tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+  tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+  
+  // Auto remove after 3 seconds
+  setTimeout(() => {
+    if (tooltip.parentNode) {
+      tooltip.remove();
+    }
+  }, 3000);
 }
 </script>
 
