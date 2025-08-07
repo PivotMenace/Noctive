@@ -537,7 +537,7 @@
     <!-- Firebase Configuration (same as main app) -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import { getAuth, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
@@ -552,6 +552,13 @@
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
       
+      // Set authentication persistence
+      setPersistence(auth, browserLocalPersistence).then(() => {
+        console.log('Profile page - Auth persistence set to LOCAL');
+      }).catch((error) => {
+        console.error('Profile page - Auth persistence error:', error);
+      });
+      
       window.firebaseAuth = auth;
       window.firebase = {
         auth: {
@@ -561,26 +568,40 @@
 
       // Check authentication state
       onAuthStateChanged(auth, (user) => {
+        console.log('Profile page - Auth state changed:', user ? 'User logged in' : 'No user');
         if (user) {
+          console.log('User ID:', user.uid);
+          console.log('User email:', user.email);
           loadUserProfile(user);
         } else {
-          // Redirect to main page if not authenticated
-          window.location.href = 'index.html';
+          console.log('No user found - showing guest profile or redirect option');
+          // Instead of immediate redirect, show a message or guest view
+          document.body.innerHTML = `
+            <div style="text-align: center; padding: 2rem; font-family: Arial, sans-serif;">
+              <h1>Profile Access</h1>
+              <p>You need to be logged in to view your profile.</p>
+              <a href="index.html" style="background: #ff3c38; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Go Back to Home</a>
+            </div>
+          `;
         }
       });
     </script>
 
     <script>
         function loadUserProfile(user) {
+            console.log('loadUserProfile called for user:', user.uid);
             // Load profile data from localStorage
             const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
+            console.log('Saved profile data:', savedProfile);
             
             if (!savedProfile) {
+                console.log('No profile found, redirecting to wizard');
                 // No profile found, redirect to wizard
                 window.location.href = 'profile-wizard.html';
                 return;
             }
 
+            console.log('Profile found, parsing and displaying');
             const profile = JSON.parse(savedProfile);
             
             // Update profile display
