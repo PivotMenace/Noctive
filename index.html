@@ -72,18 +72,24 @@
 
       console.log("Firebase initialized successfully!");
       
-      // Check if user is already logged in and update UI
+      // Check if user is already logged in and redirect to profile
       window.firebase.auth.onAuthStateChanged(auth, (user) => {
-        console.log('Auth state changed on index.html:', user ? 'User logged in' : 'No user');
         if (user) {
           // User is logged in, check if they have a profile
           const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
           if (savedProfile) {
-            console.log('User has saved profile, updating UI');
-            // User has a profile, just update the UI - don't auto-redirect
+            // Check if user is coming from profile page
+            const urlParams = new URLSearchParams(window.location.search);
+            const fromProfile = urlParams.get('from') === 'profile';
+            
+            if (!fromProfile) {
+              // User has a profile and not coming from profile page, redirect to profile page
+              window.location.href = 'profile.html';
+              return;
+            }
+            // User is coming from profile page, let them see the feed
             updateUserUI(user);
           } else {
-            console.log('No saved profile found');
             // No profile, let them see the main page but update UI
             updateUserUI(user);
           }
@@ -2880,7 +2886,7 @@ button,
           <span class="notification-badge">12</span>
         </div>
         
-        <div class="nav-item" data-page="profile" onclick="window.location.href='profile.html'" style="cursor: pointer;">
+        <div class="nav-item" data-page="profile">
           <span class="nav-icon">👤</span>
           <span class="nav-label">Profile</span>
         </div>
@@ -2931,7 +2937,7 @@ button,
           <img src={currentUser.photoURL} alt={currentUser.displayName} class="user-avatar"/>
           <span class="user-name">{currentUser.displayName}</span>
       -->
-      <div class="sidebar-user" id="sidebarUser" onclick="window.location.href='profile.html'" style="cursor: pointer;" title="Click to view profile">
+      <div class="sidebar-user" id="sidebarUser">
         <div class="user-avatar">
           <img src="pngs/account.png" alt="User Avatar" id="sidebarAvatar">
         </div>
@@ -2976,10 +2982,10 @@ button,
       </div>
       <div class="retro-content">
         <ul id="friendsList">
-          <li id="currentUserFriend"><span id="userStatusDot" class="status-dot offline"></span> <a href="profile.html" id="userFriendLink" class="glitchy" data-text="@Venus" title="Click to view your profile">@Venus</a></li>
-          <li><span class="status-dot online"></span> <a href="profile.html" class="glitchy" data-text="@Hijinxx">@Hijinxx</a></li>
-          <li><span class="status-dot idle"></span> <a href="profile.html">@Belt181</a></li>
-          <li><span class="moon-status">🌙</span> <a href="profile.html">@Remko</a></li>
+          <li id="currentUserFriend"><span id="userStatusDot" class="status-dot offline"></span> <a href="#" id="userFriendLink" class="glitchy" data-text="@Venus">@Venus</a></li>
+          <li><span class="status-dot online"></span> <a href="/profile/Hijinxx" class="glitchy" data-text="@Hijinxx">@Hijinxx</a></li>
+          <li><span class="status-dot idle"></span> <a href="/profile/Belt181">@Belt181</a></li>
+          <li><span class="moon-status">🌙</span> <a href="/profile/Remko">@Remko</a></li>
         </ul>
       </div>
     </div>
@@ -3034,7 +3040,7 @@ button,
     </div>
     <div class="user-info" style="flex-grow: 1;">
       <span style="font-size: 1rem; font-weight: 500;">
-        <a href="profile.html" id="createPostUsername" style="color: inherit; text-decoration: none; cursor: pointer;" title="Click to view profile">@Venus</a> <span id="createPostTitle" class="title" style="font-size: 0.8rem; color: #aaa;">(Nomad)</span>
+        <span id="createPostUsername">@Venus</span> <span id="createPostTitle" class="title" style="font-size: 0.8rem; color: #aaa;">(Nomad)</span>
       </span>
       <span id="createPostStatus" class="currently-playing" style="display: block; font-size: 0.75rem; margin-top: 0.25rem;">
         🎮 Currently playing: Rainbow Six Siege
@@ -3063,7 +3069,7 @@ button,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="profile.html" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a><span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span></strong>
+        <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="/profile/Hijinxx" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a><span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Valorant</span>
       </div>
     </div>
@@ -3087,7 +3093,7 @@ button,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="profile.html">@Belt181</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span></strong>
+        <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="/profile/Belt181">@Belt181</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Apex Legends</span>
       </div>
     </div>
@@ -3111,7 +3117,7 @@ button,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=Remko&background=222244&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;"><a href="profile.html">@Remko</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span></strong>
+        <strong style="font-size: 1rem;"><a href="/profile/Remko">@Remko</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span></strong>
         <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
       </div>
     </div>
@@ -3130,12 +3136,12 @@ button,
   </div>
 </div>
 
-<div class="post" data-post-id="spacenavis">
+<div class="post" data-post-id="WakeBakeWes">
   <div class="post-header">
     <div class="user">
-      <img src="https://ui-avatars.com/api/?name=SpaceNavis&background=004080&color=fff&rounded=true" alt="User Avatar" />
+      <img src="https://ui-avatars.com/api/?name=WakeBakeWes&background=004080&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;"><a href="profile.html">@SpaceNavis</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span></strong>
+        <strong style="font-size: 1rem;"><a href="/profile/WakeBakeWes">@WakeBakeWes</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: The Sims</span>
       </div>
     </div>
@@ -3159,7 +3165,7 @@ button,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=JuJu&background=660066&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;"><a href="profile.html">@JuJu</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span></strong>
+        <strong style="font-size: 1rem;"><a href="/profile/JuJu">@JuJu</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span></strong>
         <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
       </div>
     </div>
@@ -3183,7 +3189,7 @@ button,
     <div class="user">
       <img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;"><a href="profile.html">@LoriPie</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span></strong>
+        <strong style="font-size: 1rem;"><a href="/profile/LoriPie">@LoriPie</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Stardew Valley</span>
       </div>
     </div>
@@ -3348,11 +3354,6 @@ function selectNavItem(element) {
 function toggleUserMenu() {
   console.log('User menu toggled');
   // Add user menu functionality here
-}
-
-function navigateToProfile() {
-  console.log('navigateToProfile called - using direct navigation');
-  window.location.href = 'profile.html';
 }
 
 function openCreatePost() {
@@ -3813,7 +3814,7 @@ function showTouchTooltip(element, text, event) {
     </a>
     
     <a href="#activity" class="nav-item"><span>♡</span></a>
-    <a href="profile.html" class="nav-item"><span>◯</span></a>
+    <a href="#profile" class="nav-item"><span>◯</span></a>
   </nav>
 
   <!-- Authentication Modal -->
