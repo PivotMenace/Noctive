@@ -740,6 +740,8 @@ header {
   justify-content: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 1rem;
+  margin-top: 2rem; /* Added top margin for breathing room */
+  padding-top: 1rem; /* Added top padding for extra space */
   position: sticky;
   top: 0;
   background: rgba(18, 21, 36, 0.95);
@@ -792,6 +794,11 @@ header {
 }
 
 @media (max-width: 768px) {
+  .feed-tabs {
+    margin-top: 1.5rem; /* Slightly less on mobile */
+    padding-top: 0.75rem; /* Reduced padding on mobile */
+  }
+  
   .feed-tabs .tab {
     padding: 0.75rem 1rem;
     font-size: 0.9rem;
@@ -2363,152 +2370,41 @@ button:focus,
   margin: 0.75rem 0 0 0;
 }
 
-.mobile-bottom-nav {
-  display: block;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  background: linear-gradient(to bottom, rgba(26, 29, 46, 0.95), rgba(22, 24, 42, 0.95));
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.5rem env(safe-area-inset-right) calc(0.5rem + env(safe-area-inset-bottom)) env(safe-area-inset-left);
-  z-index: 1000;
-  backdrop-filter: blur(10px);
-}
-
-.mobile-bottom-nav ul {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0;
-  margin: 0 auto;
-  list-style: none;
-  width: 100%;
-  max-width: min(500px, 100% - 32px);
-}
-
-/* Hide mobile nav on desktop */
-@media (min-width: 769px) {
-  .mobile-bottom-nav {
-    display: none;
-  }
-  
-  .main-content {
-    padding-bottom: 2rem; /* Remove mobile nav space on desktop */
-  }
-}
-
-.mobile-bottom-nav li {
-  flex: 1;
-  text-align: center;
-}
-
-.mobile-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem;
-  color: #f0f0f0;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  width: 100%;
-}
-
-.mobile-nav-item:hover {
-  color: #ff3c38;
-}
-
-.mobile-nav-item.active {
-  color: #facc15;
-}
-
-.mobile-nav-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  color: var(--icon-color, #8492a6);
-  stroke-width: 1.5;
-  transition: all 0.2s ease;
-}
-
-.nav-center .mobile-nav-icon {
-  width: 28px;
-  height: 28px;
-  color: var(--accent-color, #facc15);
-}
-
-.mobile-nav-text {
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
+/* Make ticker bar smaller on mobile */
 @media (max-width: 768px) {
-  .mobile-bottom-nav {
-    display: block;
+  .ticker-bar {
+    display: none !important; /* Hide ticker bar completely on mobile */
   }
   
+  /* Adjust main content padding to account for mobile nav instead of ticker */
   .main-content {
-    padding-bottom: 80px;
+    padding-bottom: 60px; /* Reduced from 80px since no mobile nav */
+    margin-bottom: 0;
+  }
+  
+  /* Make sure footer doesn't overlap mobile nav */
+  footer {
+    margin-bottom: 0; /* Removed mobile nav space */
   }
 }
 
-/* Switch to hamburger menu on mobile */
-@media (max-width: 700px) {
-  header {
-    padding: 0.3rem 1rem; 
-    min-height: var(--header-height);
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
+/* Desktop adjustments */
+@media (min-width: 769px) {
+  .ticker-bar {
+    display: flex !important;
   }
   
-  .header-main {
-    gap: 0.5rem;
-    align-items: center;
-    flex: 1;
+  /* Adjust main content and footer for desktop ticker */
+  .main-content {
+    padding-bottom: 60px; /* Space for ticker */
+    margin-bottom: 0;
   }
   
-  .brand-title {
-    font-size: 1.4rem; 
-    margin-right: 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .vote-btn {
-    width: 44px !important;
-    height: 44px !important;
-    margin: 0 4px !important;
-  }
-  
-  .vote-btn img {
-    width: 22px !important;
-    height: 22px !important;
-  }
-  
-  /* Hide regular navigation on mobile */
-  .nav-slider-wrapper {
-    display: none !important;
-  }
-  
-  /* Show hamburger menu on mobile */
-  .mobile-menu-wrapper {
-    display: block !important;
-    position: absolute;
-    right: 2.5rem;
-    transform: none;
-  }
-  
-  /* Hide profile and settings icons on mobile */
-  .header-account-link {
-    display: none !important;
+  footer {
+    margin-bottom: 60px; /* Space for ticker */
   }
 }
+
     </style>
   </head>
   <body>
@@ -2742,7 +2638,7 @@ button:focus,
 
   <div class="media-buttons" style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
     <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">📷 Photo</button>
-    <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">🎥 Video</button>
+    <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem, cursor: pointer;">🎥 Video</button>
     <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">😎 GIF</button>
   </div>
 
@@ -3318,19 +3214,6 @@ function showTouchTooltip(element, text, event) {
   }, 3000);
 }
 </script>
-
-  <!-- Mobile Bottom Navigation Bar (only visible on mobile) -->
-  <nav class="bottom-nav">
-    <a href="#home" class="nav-item"><span>⌂</span></a>
-    <a href="#search" class="nav-item"><span>⚲</span></a>
-    
-    <a href="https://github.com/PivotMenace/Noctive" class="nav-center" target="_blank">
-      <div class="logo-circle"></div>
-    </a>
-    
-    <a href="#activity" class="nav-item"><span>♡</span></a>
-    <a href="profile.html" class="nav-item"><span>◯</span></a>
-  </nav>
 
   <!-- Authentication Modal -->
   <div id="authModal" class="auth-modal hidden">
@@ -4248,44 +4131,6 @@ function showTouchTooltip(element, text, event) {
     </div>
   </div>
 
-    <!-- Mobile Bottom Navigation -->
-    <nav class="mobile-bottom-nav">
-      <ul class="nav-list">
-        <li>
-          <a href="#" class="mobile-nav-item active" onclick="selectMobileNav(this, 'Home')">
-            <i class="mobile-nav-icon" data-lucide="home"></i>
-            <span class="mobile-nav-text">Home</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Search')">
-            <i class="mobile-nav-icon" data-lucide="search"></i>
-            <span class="mobile-nav-text">Search</span>
-          </a>
-        </li>
-        
-        <a href="https://github.com/PivotMenace/Noctive" class="nav-center" target="_blank">
-          <div class="logo-circle"></div>
-        </a>
-        
-        <li>
-          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Activity')">
-            <i class="mobile-nav-icon" data-lucide="bell"></i>
-            <span class="mobile-nav-text">Activity</span>
-          </a>
-        </li>
-        <li>
-          <a href="profile.html" class="mobile-nav-item" onclick="selectMobileNav(this, 'Profile')">
-            <i class="mobile-nav-icon" data-lucide="user"></i>
-            <span class="mobile-nav-text">Profile</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-    
-    <script>
-      // Initialize Lucide icons
-      lucide.createIcons();
-    </script>
-  </body>
+    <!-- Close body and html tags -->
+</body>
 </html>
