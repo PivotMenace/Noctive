@@ -124,10 +124,10 @@
 /* Header - Mobile First */
 header {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   height: auto;
-  min-height: var(--header-height);
+  min-height: calc(var(--header-height) + 1rem); /* Reduced from 3rem */
   background: #23263a !important;
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -137,185 +137,100 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 0.75rem;
-  justify-content: space-between;
+  padding: 0.5rem; /* Reduced from 0.75rem */
   z-index: 1001;
   box-sizing: border-box;
 }
 
-/* Mobile header adjustments */
-.header-main {
+.header-top {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex: 1;
-  min-width: 0;
-}
-
-.brand-title {
-  font-family: 'Rubik', 'Roboto Condensed', 'Segoe UI Bold', sans-serif !important;
-  font-weight: 700;
-  font-size: 1.5rem;
-  background: linear-gradient(90deg, #800000, #ff3c38);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% 200%;
-  animation: gradientText 6s ease-in-out infinite;
-  letter-spacing: 0.5px;
-}
-
-/* Hide navigation on mobile by default */
-.nav-slider-wrapper {
-  display: none;
-}
-
-/* Desktop header improvements */
-@media (min-width: 769px) {
-  header {
-    padding: 1rem 0.75rem;
-  }
-  
-  .header-main {
-    gap: 1rem;
-  }
-  
-  .brand-title {
-    font-size: 1.75rem;
-    margin-right: 1rem;
-  }
-  
-  .nav-slider-wrapper {
-    display: flex;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
-
-/* Navigation - Mobile First */
-.nav-slider-wrapper {
-  background: #101018;
-  border: none;
-  border-radius: 999px;
-  padding: 0.15rem;
-  gap: 0.2rem;
-  width: fit-content;
-  box-shadow: 0 0 12px rgba(250, 204, 21, 0.1);
-}
-
-.nav-tab {
-  all: unset;
-  position: relative;
-  z-index: 2;
-  padding: 0.4rem 0.8rem;
-  font-family: 'Rubik', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #eaeaea;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.nav-tab:hover,
-.nav-tab:active,
-.nav-tab:focus {
-  color: #facc15;
-}
-
-.nav-tab.active {
-  color: #1a1a1a;
-  font-weight: 600;
-}
-
-/* Mobile navigation improvements */
-@media (min-width: 769px) {
-  .nav-tab {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-  }
-}
-
-.nav-slider-indicator {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  background: linear-gradient(145deg, #facc15, #ff9f0a);
-  box-shadow: 0 0 12px rgba(250, 204, 21, 0.4);
-  border-radius: 999px;
-  z-index: 1;
-  transition: all 0.3s ease;
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
+  width: 100%;
   justify-content: space-between;
-  min-width: 110px;
-  padding: 0.3rem 1.2rem 0.3rem 1rem;
-  background: rgba(255, 255, 255, 0.1) !important;
+  align-items: center;
+  margin-bottom: 0.5rem; /* Reduced from 1rem */
+}
+
+.header-nav {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0.25rem 0; /* Reduced from 0.5rem */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Horizontal Navigation */
+.horizontal-nav {
+  display: flex;
+  gap: 0.25rem; /* Reduced from 0.5rem */
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 25px;
+  padding: 0.25rem; /* Reduced from 0.5rem */
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 12px;
-  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.horizontal-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem; /* Reduced from 0.75rem 1.25rem */
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #e5e7eb;
+  font-size: 0.85rem; /* Reduced from 0.9rem */
   font-weight: 500;
-  color: #f0f0f0 !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  margin: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  height: 2.1rem;
-  letter-spacing: 0.01em;
+  white-space: nowrap;
   position: relative;
 }
 
-.nav-link .arrow {
-  font-size: 1.1em;
-  margin-left: 0.7em;
-  color: #f0f0f0;
-  font-family: inherit;
-  transition: color 0.15s;
-  line-height: 1;
-  user-select: none;
+.horizontal-nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
-.nav-link:hover,
-.nav-link:focus,
-.nav-link:active {
-  background: rgba(255, 255, 255, 0.15) !important;
-  color: #ffffff !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px);
+.horizontal-nav-item.active {
+  background: rgba(250, 204, 21, 0.2);
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.3);
 }
 
-.nav-link:hover .arrow,
-.nav-link:focus .arrow,
-.nav-link:active .arrow {
-  color: #ff3c38 !important;
+.horizontal-nav-item .nav-icon {
+  font-size: 1.1rem;
+  opacity: 0.8;
 }
 
-.header-account-link {
-  position: static;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem; /* Small gap between icons */
-  height: 40px;
-  margin-left: auto; /* Push to the right */
-  padding-right: 1rem;
+.horizontal-nav-item.active .nav-icon {
+  opacity: 1;
+}
+
+.notification-badge {
+  background: #ff3c38;
+  color: white;
+  border-radius: 10px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.7rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+  min-width: 16px;
+  text-align: center;
 }
 
 /* Update root variables for new header height */
 :root {
-  --header-height: 5rem;
+  --header-height: 5.5rem; /* Reduced from 8rem */
   --button-top-offset: calc(var(--header-height) + 1rem);
   --widget-top-offset: calc(var(--button-top-offset) + 3rem);
-  --sidebar-width: 240px;
-  --sidebar-collapsed-width: 60px;
+  --sidebar-width: 0px;
+  --sidebar-collapsed-width: 0px;
   --main-content-max-width: 1200px;
   --feed-width: min(95%, var(--main-content-max-width));
+}
+
+/* Hide the old sidebar completely */
+.sidebar {
+  display: none !important;
 }
 
 /* ─── SIDEBAR NAVIGATION ─── */
@@ -453,12 +368,6 @@ header {
 .nav-item:focus {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
-}
-
-.nav-item:hover .nav-icon,
-.nav-item:active .nav-icon,
-.nav-item:focus .nav-icon {
-  opacity: 1;
 }
 
 .nav-item.active {
@@ -837,6 +746,8 @@ header {
   justify-content: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 1rem;
+  margin-top: 2rem; /* Added top margin for breathing room */
+  padding-top: 1rem; /* Added top padding for extra space */
   position: sticky;
   top: 0;
   background: rgba(18, 21, 36, 0.95);
@@ -889,6 +800,11 @@ header {
 }
 
 @media (max-width: 768px) {
+  .feed-tabs {
+    margin-top: 1.5rem; /* Slightly less on mobile */
+    padding-top: 0.75rem; /* Reduced padding on mobile */
+  }
+  
   .feed-tabs .tab {
     padding: 0.75rem 1rem;
     font-size: 0.9rem;
@@ -1341,12 +1257,19 @@ header {
       .ticker-bar {
         position: fixed;
         bottom: 0;
+        left: 0;
+        right: 0;
         width: 100%;
         background: #0a0a1a !important;
-        padding: 0.5rem 0;
+        padding: 0.75rem 0;
         overflow: hidden;
         z-index: 9999;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+        box-sizing: border-box;
+        height: auto;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
       }
       .ticker-text {
         white-space: nowrap;
@@ -1363,118 +1286,15 @@ header {
           0 0 6px #facc15;
         font-weight: bold;
         letter-spacing: 1px;
+        line-height: 1.2;
+        vertical-align: middle;
+        will-change: transform;
+        transform: translateZ(0);
       }
       .ticker-bar:hover .ticker-text {
         animation-play-state: paused;
       }
 
-/* Make ticker bar smaller on mobile */
-@media (max-width: 768px) {
-  .ticker-bar {
-    display: none !important; /* Hide ticker bar completely on mobile */
-  }
-  
-  /* Make post user info smaller on mobile */
-  .user img {
-    width: 32px !important; /* Reduced from 40px */
-    height: 32px !important; /* Reduced from 40px */
-  }
-  
-  .user-info strong {
-    font-size: 0.8rem !important; /* Reduced from 0.9rem */
-  }
-  
-  .user-info .currently-playing,
-  .user-info span[style*="font-size: 0.75rem"] {
-    font-size: 0.55rem !important; /* Reduced from 0.65rem to fit on one line */
-  }
-  
-  .title {
-    font-size: 0.7rem !important; /* Reduced from 0.8rem */
-  }
-  
-  /* Make create post user info smaller too */
-  .create-post .user-avatar {
-    width: 50px !important; /* Reduced from 60px */
-    height: 50px !important; /* Reduced from 60px */
-    box-shadow: 0 0 2px rgba(255, 60, 56, 0.2) !important; /* Reduced glow on mobile */
-    animation: none !important; /* Remove pulsing animation on mobile */
-  }
-  
-  .create-post .user-info span {
-    font-size: 0.9rem !important; /* Reduced from 1rem */
-  }
-  
-  .create-post .title {
-    font-size: 0.7rem !important; /* Reduced from 0.8rem */
-  }
-  
-  .create-post .currently-playing {
-    font-size: 0.55rem !important; /* Reduced from 0.65rem to fit on one line */
-  }
-  
-  /* Target all "Currently" text spans on mobile */
-  span[style*="Currently"],
-  .currently-playing {
-    font-size: 0.55rem !important;
-    line-height: 1.1 !important;
-  }
-  
-  /* Make Venus status post match other posts on mobile */
-  .create-post .user-info span[style*="font-size: 1rem"] {
-    font-size: 0.8rem !important; /* Match other usernames */
-  }
-  
-  .create-post .user-info span[style*="font-size: 0.75rem"] {
-    font-size: 0.55rem !important; /* Match other "Currently playing" text */
-  }
-  
-  /* Make textarea placeholder smaller on mobile */
-  .create-post textarea {
-    font-size: 0.7rem !important; /* Reduced from 0.85rem to fit on one line */
-    line-height: 1.2 !important; /* Tighter line height */
-  }
-  
-  /* Make Night Crew button draggable on mobile */
-  .sidebar-toggle-button {
-    cursor: move !important;
-    touch-action: none !important;
-    user-select: none !important;
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    transition: none !important; /* Remove transitions for smoother dragging */
-  }
-  
-  /* Make moon toggle button smaller on mobile */
-  .night-crew-toggle {
-    width: 40px !important;
-    height: 40px !important;
-    font-size: 1.2rem !important;
-  }
-  
-  /* Make Night Crew widget centered and smaller on mobile */
-  #nightCrewWidget {
-    width: 220px !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) !important;
-    top: 8rem !important;
-    font-size: 0.8rem !important;
-    padding: 0.8rem !important;
-  }
-  
-  .retro-window.night-crew {
-    width: 220px !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) !important;
-  }
-  
-  /* Mobile styles for bottom-left user info */
-  .user-info-display {
-    display: none !important; /* Hide the bottom-left version on mobile */
-  }
-}
       @keyframes tickerScroll {
         0% {
           transform: translateX(0);
@@ -1496,35 +1316,7 @@ header {
             0 0 8px #facc15;
         }
       }
-      
-@keyframes gradientText {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
-      }
-      @keyframes yellowFlicker {
-        0%,
-        19%,
-        22%,
-        25%,
-        53%,
-        57%,
-        100% {
-          opacity: 1;
-        }
-        20%,
-        24%,
-        55% {
-          opacity: 0.7;
-        }
-      }
-      
+
     footer {
       width: 100%;
       text-align: center;
@@ -1535,7 +1327,8 @@ header {
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       box-sizing: border-box;
       margin-top: auto;
-      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
     }
 
 .currently-playing {
@@ -2192,7 +1985,7 @@ button:focus,
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  padding: 0.25rem 0.5rem;
+     padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
 }
 
@@ -2279,20 +2072,6 @@ button:focus,
   }
 }
 
-/* Add touch-action manipulation to all interactive elements */
-button, 
-.nav-tab, 
-.vote-btn,
-.media-btn, 
-.trending-open-button,
-.sidebar-toggle-button,
-.dialog-close-btn,
-.mobile-nav button,
-.account-link,
-.theme-switch {
-  touch-action: manipulation;
-}
-
 @media (max-width: 900px) {
   .feed {
     max-width: 90vw;
@@ -2321,7 +2100,7 @@ button,
   
   .nav-link {
     min-width: 90px; 
-    padding: 0.2rem 0.8rem;
+    padding: 0.2rem  0.8rem;
     font-size: 0.9rem;
   }
 }
@@ -2597,232 +2376,101 @@ button,
   margin: 0.75rem 0 0 0;
 }
 
-.mobile-bottom-nav {
-  display: block;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  background: linear-gradient(to bottom, rgba(26, 29, 46, 0.95), rgba(22, 24, 42, 0.95));
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.5rem env(safe-area-inset-right) calc(0.5rem + env(safe-area-inset-bottom)) env(safe-area-inset-left);
-  z-index: 1000;
-  backdrop-filter: blur(10px);
-}
-
-.mobile-bottom-nav ul {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0;
-  margin: 0 auto;
-  list-style: none;
-  width: 100%;
-  max-width: min(500px, 100% - 32px);
-}
-
-/* Hide mobile nav on desktop */
-@media (min-width: 769px) {
-  .mobile-bottom-nav {
-    display: none;
-  }
-  
-  .main-content {
-    padding-bottom: 2rem; /* Remove mobile nav space on desktop */
-  }
-}
-
-.mobile-bottom-nav li {
-  flex: 1;
-  text-align: center;
-}
-
-.mobile-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem;
-  color: #f0f0f0;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  width: 100%;
-}
-
-.mobile-nav-item:hover {
-  color: #ff3c38;
-}
-
-.mobile-nav-item.active {
-  color: #facc15;
-}
-
-.mobile-nav-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  color: var(--icon-color, #8492a6);
-  stroke-width: 1.5;
-  transition: all 0.2s ease;
-}
-
-.nav-center .mobile-nav-icon {
-  width: 28px;
-  height: 28px;
-  color: var(--accent-color, #facc15);
-}
-
-.mobile-nav-text {
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
+/* Make ticker bar smaller on mobile */
 @media (max-width: 768px) {
-  .mobile-bottom-nav {
-    display: block;
+  .ticker-bar {
+    display: none !important; /* Hide ticker bar completely on mobile */
   }
   
+  /* Adjust main content padding to account for mobile nav instead of ticker */
   .main-content {
-    padding-bottom: 80px;
+    padding-bottom: 60px; /* Reduced from 80px since no mobile nav */
+    margin-bottom: 0;
+  }
+  
+  /* Make sure footer doesn't overlap mobile nav */
+  footer {
+    margin-bottom: 0; /* Removed mobile nav space */
   }
 }
 
-/* Switch to hamburger menu on mobile */
-@media (max-width: 700px) {
-  header {
-    padding: 0.3rem 1rem; 
-    min-height: var(--header-height);
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
+/* Desktop adjustments */
+@media (min-width: 769px) {
+  .ticker-bar {
+    display: flex !important;
   }
   
-  .header-main {
-    gap: 0.5rem;
-    align-items: center;
-    flex: 1;
+  /* Adjust main content and footer for desktop ticker */
+  .main-content {
+    padding-bottom: 60px; /* Space for ticker */
+    margin-bottom: 0;
   }
   
-  .brand-title {
-    font-size: 1.4rem; 
-    margin-right: 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .vote-btn {
-    width: 44px !important;
-    height: 44px !important;
-    margin: 0 4px !important;
-  }
-  
-  .vote-btn img {
-    width: 22px !important;
-    height: 22px !important;
-  }
-  
-  /* Hide regular navigation on mobile */
-  .nav-slider-wrapper {
-    display: none !important;
-  }
-  
-  /* Show hamburger menu on mobile */
-  .mobile-menu-wrapper {
-    display: block !important;
-    position: absolute;
-    right: 2.5rem;
-    transform: none;
-  }
-  
-  /* Hide profile and settings icons on mobile */
-  .header-account-link {
-    display: none !important;
+  footer {
+    margin-bottom: 60px; /* Space for ticker */
   }
 }
+
     </style>
   </head>
   <body>
-
     <header>
+    <div class="header-top">
       <div class="header-main">
         <div class="header-icon" style="position: relative;"></div>
         <span class="brand-title">Noctive</span>
       </div>
-      <div class="nav-slider-wrapper" style="display: none;">
-  <div class="nav-slider-indicator"></div>
-  <button class="nav-tab active">
-    <span class="nav-text">Home</span>
-  </button>
-  <button class="nav-tab">
-    <span class="nav-text">Creator Hub</span>
-  </button>
-  <button class="nav-tab">
-    <span class="nav-text">Highlights</span>
-  </button>
-  <button class="nav-tab">
-    <span class="nav-text">Find Teammates</span>
-  </button>
-  <button class="nav-tab">
-    <span class="nav-text">Store Hub</span>
-  </button>
-  <button class="nav-tab">
-    <span class="nav-text">Dev Hub</span>
-  </button>
-</div>
-
-<!-- Mobile Hamburger Menu -->
-<div class="mobile-menu-wrapper">
-  <button class="hamburger-btn" onclick="toggleMobileMenu()" 
-          aria-label="Toggle mobile navigation menu" 
-          aria-expanded="false" 
-          type="button">
-    <div class="hamburger-line"></div>
-    <div class="hamburger-line"></div>
-    <div class="hamburger-line"></div>
-  </button>
-  <div class="mobile-dropdown hidden" id="mobileDropdown">
-    <!-- User Profile Section in Mobile Menu -->
-    <div id="mobileUserInfo" class="mobile-user-section hidden">
-      <div class="mobile-user-profile">
-        <span id="mobileUserEmail" onclick="window.location.href='profile.html'" class="mobile-user-name">@NoctiveHQ</span>
-        <div class="mobile-user-actions">
-          <button onclick="window.location.href='profile.html'" class="mobile-profile-btn">View Profile</button>
-          <button onclick="signOutUser()" class="mobile-signout-btn">Sign Out</button>
+      
+      <!-- Mobile Hamburger Menu -->
+      <div class="mobile-menu-wrapper">
+        <button class="hamburger-btn" onclick="toggleMobileMenu()" 
+                aria-label="Toggle mobile navigation menu" 
+                aria-expanded="false" 
+                type="button">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </button>
+        <div class="mobile-dropdown hidden" id="mobileDropdown">
+          <!-- User Profile Section in Mobile Menu -->
+          <div id="mobileUserInfo" class="mobile-user-section hidden">
+            <div class="mobile-user-profile">
+              <span id="mobileUserEmail" onclick="window.location.href='profile.html'" class="mobile-user-name">@NoctiveHQ</span>
+              <div class="mobile-user-actions">
+                <button onclick="window.location.href='profile.html'" class="mobile-profile-btn">View Profile</button>
+                <button onclick="signOutUser()" class="mobile-signout-btn">Sign Out</button>
+              </div>
+            </div>
+            <div class="mobile-menu-divider"></div>
+          </div>
+          
+          <a href="#" class="mobile-nav-item active" onclick="selectMobileNav(this, 'Home')">
+            <span class="mobile-nav-icon">🏠</span>
+            <span class="mobile-nav-text">Home</span>
+          </a>
+          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Creator Hub')">
+            <span class="mobile-nav-icon">🎨</span>
+            <span class="mobile-nav-text">Creator Hub</span>
+          </a>
+          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Highlights')">
+            <span class="mobile-nav-icon">⭐</span>
+            <span class="mobile-nav-text">Highlights</span>
+          </a>
+          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Find Teammates')">
+            <span class="mobile-nav-icon">👥</span>
+            <span class="mobile-nav-text">Find Teammates</span>
+          </a>
+          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Store Hub')">
+            <span class="mobile-nav-icon">🛒</span>
+            <span class="mobile-nav-text">Store Hub</span>
+          </a>
+          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Dev Hub')">
+            <span class="mobile-nav-icon">⚙️</span>
+            <span class="mobile-nav-text">Dev Hub</span>
+          </a>
         </div>
       </div>
-      <div class="mobile-menu-divider"></div>
-    </div>
-    
-    <a href="#" class="mobile-nav-item active" onclick="selectMobileNav(this, 'Home')">
-      <span class="mobile-nav-icon">🏠</span>
-      <span class="mobile-nav-text">Home</span>
-    </a>
-    <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Creator Hub')">
-      <span class="mobile-nav-icon">🎨</span>
-      <span class="mobile-nav-text">Creator Hub</span>
-    </a>
-    <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Highlights')">
-      <span class="mobile-nav-icon">⭐</span>
-      <span class="mobile-nav-text">Highlights</span>
-    </a>
-    <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Find Teammates')">
-      <span class="mobile-nav-icon">👥</span>
-      <span class="mobile-nav-text">Find Teammates</span>
-    </a>
-    <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Store Hub')">
-      <span class="mobile-nav-icon">🛒</span>
-      <span class="mobile-nav-text">Store Hub</span>
-    </a>
-    <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Dev Hub')">
-      <span class="mobile-nav-icon">⚙️</span>
-      <span class="mobile-nav-text">Dev Hub</span>
-    </a>
-  </div>
-</div>
+      
       <div class="header-account-link">
         <!-- Login Form (shows when logged out) -->
         <form id="loginForm" style="display: flex; align-items: center; gap: 0.5rem;">
@@ -2839,87 +2487,53 @@ button,
           </a>
         </div>
       </div>
-    </header>
-
-    <p class="slogan-blink">"Built for the ones who never log off."</p>
+    </div>
     
-    <div class="star-background" id="starBg"></div>
-
-    <!-- Left Sidebar Navigation -->
-    <div class="sidebar" id="sidebar">
-      <!-- Sidebar Toggle Button -->
-      <div class="sidebar-toggle" onclick="toggleMainSidebar()">
-        <span class="toggle-icon">☰</span>
-      </div>
-      
-      <!-- Main Navigation -->
-      <nav class="sidebar-nav">
-        <div class="nav-item active" data-page="home">
+    <!-- Horizontal Navigation -->
+    <div class="header-nav">
+      <nav class="horizontal-nav">
+        <div class="horizontal-nav-item active" data-page="home">
           <span class="nav-icon">🏠</span>
           <span class="nav-label">Home</span>
         </div>
         
-        <div class="nav-item" data-page="explore">
+        <div class="horizontal-nav-item" data-page="explore">
           <span class="nav-icon">🔍</span>
           <span class="nav-label">Explore</span>
         </div>
         
-        <div class="nav-item" data-page="hubs">
+        <div class="horizontal-nav-item" data-page="hubs">
           <span class="nav-icon">🎮</span>
           <span class="nav-label">Hubs</span>
         </div>
         
-        <div class="nav-item" data-page="creator">
+        <div class="horizontal-nav-item" data-page="creator">
           <span class="nav-icon">✨</span>
           <span class="nav-label">Creator Hub</span>
         </div>
         
-        <div class="nav-item" data-page="messages">
+        <div class="horizontal-nav-item" data-page="messages">
           <span class="nav-icon">💬</span>
           <span class="nav-label">Messages</span>
           <span class="notification-badge">3</span>
         </div>
         
-        <div class="nav-item" data-page="notifications">
+        <div class="horizontal-nav-item" data-page="notifications">
           <span class="nav-icon">🔔</span>
           <span class="nav-label">Notifications</span>
           <span class="notification-badge">12</span>
         </div>
         
+<<<<<<< HEAD
         <div class="nav-item" data-page="profile">
+=======
+        <div class="horizontal-nav-item" data-page="profile" onclick="window.location.href='profile.html'" style="cursor: pointer;">
+>>>>>>> 7a32a06444c927669e6eed217693f2d3227bea73
           <span class="nav-icon">👤</span>
           <span class="nav-label">Profile</span>
         </div>
-        
-        <!-- More Menu (Collapsible) -->
-        <div class="nav-item more-toggle" onclick="toggleMoreMenu()">
-          <span class="nav-icon">⋯</span>
-          <span class="nav-label">More</span>
-          <span class="expand-arrow">▼</span>
-        </div>
-        
-        <div class="more-menu" id="moreMenu">
-          <div class="nav-item" data-page="search">
-            <span class="nav-icon">🔎</span>
-            <span class="nav-label">Search</span>
-          </div>
-          
-          <div class="nav-item" data-page="store">
-            <span class="nav-icon">🛒</span>
-            <span class="nav-label">Store</span>
-          </div>
-          
-          <div class="nav-item" data-page="dev">
-            <span class="nav-icon">💻</span>
-            <span class="nav-label">Dev Hub</span>
-          </div>
-          
-          <div class="nav-item" data-page="settings">
-            <span class="nav-icon">⚙️</span>
-            <span class="nav-label">Settings</span>
-          </div>
-        </div>
       </nav>
+<<<<<<< HEAD
       
       <!-- Post Button -->
       <div class="post-button-container">
@@ -2947,7 +2561,14 @@ button,
         </div>
         <div class="user-menu-toggle" onclick="toggleUserMenu()">⋯</div>
       </div>
+=======
+>>>>>>> 7a32a06444c927669e6eed217693f2d3227bea73
     </div>
+  </header>
+
+    <p class="slogan-blink">"Built for the ones who never log off."</p>
+    
+    <div class="star-background" id="starBg"></div>
 
     <!-- Sidebar Overlay for Mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
@@ -3057,7 +2678,7 @@ button,
 
   <div class="media-buttons" style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
     <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">📷 Photo</button>
-    <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">🎥 Video</button>
+    <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem, cursor: pointer;">🎥 Video</button>
     <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">😎 GIF</button>
   </div>
 
@@ -3160,12 +2781,16 @@ button,
   </div>
 </div>
 
-<div class="post" data-post-id="juju">
+<div class="post" data-post-id="UnDiscoverableTalent">
   <div class="post-header">
     <div class="user">
-      <img src="https://ui-avatars.com/api/?name=JuJu&background=660066&color=fff&rounded=true" alt="User Avatar" />
+      <img src="https://ui-avatars.com/api/?name=UnDiscoverableTalent&background=660066&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
+<<<<<<< HEAD
         <strong style="font-size: 1rem;"><a href="/profile/JuJu">@JuJu</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span></strong>
+=======
+        <strong style="font-size: 1rem;"><a href="profile.html">@UnDiscoverableTalent</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span></strong>
+>>>>>>> 7a32a06444c927669e6eed217693f2d3227bea73
         <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
       </div>
     </div>
@@ -3228,7 +2853,7 @@ button,
 
     <div class="ticker-bar">
       <div class="ticker-text">
-        Welcome to Noctive, this is a site I built inspired by my best friend. But if you don't know what is going go, you are in the wrong place. I am currently reading eunuchs and nymphomaniacs, its okay, and chameleon in a candy store is so much better, along with i love the wallows! i guess, shout out to all my besties who is rooting for me!
+        🌙 Welcome to Noctive – Built for the ones who never log off! 🎮 This is a site I built inspired by my best friend. But if you don't know what's going on, you are in the wrong place. I am currently reading eunuchs and nymphomaniacs, it's okay, and chameleon in a candy store is so much better, along with I love the wallows! I guess, shout out to all my besties who are rooting for me! ✨
       </div>
     </div>
 
@@ -3336,7 +2961,7 @@ function toggleMoreMenu() {
 
 function selectNavItem(element) {
   // Remove active class from all nav items
-  document.querySelectorAll('.nav-item').forEach(item => {
+  document.querySelectorAll('.horizontal-nav-item').forEach(item => {
     item.classList.remove('active');
   });
   
@@ -3346,9 +2971,6 @@ function selectNavItem(element) {
   // Get the page data
   const page = element.getAttribute('data-page');
   console.log('Navigating to:', page);
-  
-  // Here you can add navigation logic
-  // For now, just log the page
 }
 
 function toggleUserMenu() {
@@ -3363,7 +2985,7 @@ function openCreatePost() {
 
 // Add click handlers to nav items
 document.addEventListener('DOMContentLoaded', function() {
-  const navItems = document.querySelectorAll('.nav-item[data-page]');
+  const navItems = document.querySelectorAll('.horizontal-nav-item[data-page]');
   navItems.forEach(item => {
     item.addEventListener('click', function() {
       selectNavItem(this);
@@ -3376,6 +2998,7 @@ document.addEventListener('DOMContentLoaded', function() {
     sidebarToggle.setAttribute('onclick', 'toggleMainSidebar()');
   }
 });
+
 
 // Navigation Slider
 const tabs = document.querySelectorAll(".nav-tab");
@@ -3476,6 +3099,7 @@ document.addEventListener('click', function(event) {
     dropdown?.classList.add('hidden');
   }
 });
+
 
 // Make moon toggle button draggable on mobile only
 if (window.innerWidth <= 768) {
@@ -3630,6 +3254,7 @@ function showTouchTooltip(element, text, event) {
 }
 </script>
 
+<<<<<<< HEAD
 <!-- Mobile navigation is at the bottom of the page -->
 
 <style>
@@ -3817,6 +3442,8 @@ function showTouchTooltip(element, text, event) {
     <a href="#profile" class="nav-item"><span>◯</span></a>
   </nav>
 
+=======
+>>>>>>> 7a32a06444c927669e6eed217693f2d3227bea73
   <!-- Authentication Modal -->
   <div id="authModal" class="auth-modal hidden">
     <div class="auth-modal-content">
@@ -4125,7 +3752,7 @@ function showTouchTooltip(element, text, event) {
   }
   
   .profile-field label {
-    font-weight: bold;
+       font-weight: bold;
     color: #facc15;
     font-size: 0.9rem;
   }
@@ -4375,6 +4002,7 @@ function showTouchTooltip(element, text, event) {
     const userInfo = document.getElementById('userInfo');
     const authButtons = document.getElementById('authButtons');
     const userEmail = document.getElementById('userEmail');
+    const loginForm = document.getElementById('loginForm');
     
     // Mobile user info elements
     const mobileUserInfo = document.getElementById('mobileUserInfo');
@@ -4387,6 +4015,8 @@ function showTouchTooltip(element, text, event) {
     
     if (user) {
       // User is logged in
+      console.log('User is logged in, hiding login form and auth buttons');
+      
       // Check if user has a saved username
       const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
       const profileData = savedProfile ? JSON.parse(savedProfile) : null;
@@ -4409,23 +4039,34 @@ function showTouchTooltip(element, text, event) {
         sidebarUserName.textContent = displayText;
       }
       
+      // HIDE login form and auth buttons when user is logged in
+      if (loginForm) loginForm.style.display = 'none';
+      if (authButtons) authButtons.style.display = 'none';
+      
       // Keep the green profile display hidden - we don't want it anymore
-      userInfo.classList.add('hidden');
-      authButtons.classList.add('hidden');
-      mobileUserInfo.classList.remove('hidden');
+      if (userInfo) userInfo.classList.add('hidden');
+      if (mobileUserInfo) mobileUserInfo.classList.remove('hidden');
+      
       console.log('UI updated for logged in user:', user.email);
       
       // Update the create-post section
       updateCreatePostSection();
     } else {
-      // User is logged out - hide sidebar user section
+      // User is logged out
+      console.log('User is logged out, showing login form and auth buttons');
+      
+      // Hide sidebar user section
       if (sidebarUser) {
         sidebarUser.style.display = 'none';
       }
       
-      userInfo.classList.add('hidden');
-      authButtons.classList.remove('hidden');
-      mobileUserInfo.classList.add('hidden');
+      // SHOW login form and auth buttons when user is logged out
+      if (loginForm) loginForm.style.display = 'flex';
+      if (authButtons) authButtons.style.display = 'flex';
+      
+      if (userInfo) userInfo.classList.add('hidden');
+      if (mobileUserInfo) mobileUserInfo.classList.add('hidden');
+      
       console.log('UI updated for logged out state');
       
       // Update the create-post section back to Venus
@@ -4433,8 +4074,12 @@ function showTouchTooltip(element, text, event) {
     }
   }
   
-  // Update account link to open auth modal instead
+  // Initialize UI after Firebase is ready
   document.addEventListener('DOMContentLoaded', function() {
+    // Make sure initial UI state is correct
+    const user = window.firebaseAuth?.currentUser;
+    updateUserUI(user);
+    
     // Auth state listener is set up in Firebase initialization
     console.log('DOM loaded, auth listener ready');
   });
@@ -4549,6 +4194,7 @@ function showTouchTooltip(element, text, event) {
     if (userEmail && username) {
       userEmail.textContent = `@${username}`;
     }
+    
     
     // Also update the create-post section
     updateCreatePostSection();
@@ -4714,45 +4360,6 @@ function showTouchTooltip(element, text, event) {
     </div>
   </div>
 
-    <!-- Mobile Bottom Navigation -->
-    <nav class="mobile-bottom-nav">
-      <ul class="nav-list">
-        <li>
-          <a href="#" class="mobile-nav-item active" onclick="selectMobileNav(this, 'Home')">
-            <i class="mobile-nav-icon" data-lucide="home"></i>
-            <span class="mobile-nav-text">Home</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Search')">
-            <i class="mobile-nav-icon" data-lucide="search"></i>
-            <span class="mobile-nav-text">Search</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="mobile-nav-item nav-center" onclick="selectMobileNav(this, 'Create')">
-            <i class="mobile-nav-icon" data-lucide="plus-circle"></i>
-            <span class="mobile-nav-text">Create</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Activity')">
-            <i class="mobile-nav-icon" data-lucide="bell"></i>
-            <span class="mobile-nav-text">Activity</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="mobile-nav-item" onclick="selectMobileNav(this, 'Profile')">
-            <i class="mobile-nav-icon" data-lucide="user"></i>
-            <span class="mobile-nav-text">Profile</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-    
-    <script>
-      // Initialize Lucide icons
-      lucide.createIcons();
-    </script>
-  </body>
+    <!-- Close body and html tags -->
+</body>
 </html>
