@@ -177,7 +177,7 @@ header {
 
 .header-nav {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   flex: 1;
   padding: 0;
@@ -1160,6 +1160,18 @@ header {
         transform: translateY(-2px);
       }
 
+      /* Links in posts - make usernames white */
+      .post a,
+      .post a.glitchy {
+        color: #ffffff !important;
+        text-decoration: none;
+      }
+
+      .post a:hover,
+      .post a.glitchy:hover {
+        color: #facc15 !important;
+      }
+
       .create-post {
         background: linear-gradient(to bottom right, #1d2133, #292e44) !important;
         border: 2px dashed rgba(255, 60, 56, 0.5) !important;
@@ -1204,6 +1216,26 @@ header {
         background: #23263a !important;
         border-color: #facc15 !important;
         box-shadow: 0 0 3px #facc15, 0 0 6px rgba(250,204,21,0.15);
+      }
+      .vote-btn.active {
+        background: #facc15 !important;
+        border-color: #facc15 !important;
+        box-shadow: 0 0 8px #facc15, 0 0 15px rgba(250,204,21,0.4), 0 0 20px rgba(250,204,21,0.2);
+      }
+      .vote-btn.active img {
+        filter: brightness(0) drop-shadow(0 0 2px #000) !important;
+      }
+      /* Downvote active state - red glow */
+      .vote-btn.downvote.active {
+        background: #ff3c38 !important;
+        border-color: #ff3c38 !important;
+        box-shadow: 0 0 8px #ff3c38, 0 0 15px rgba(255, 60, 56, 0.4), 0 0 20px rgba(255, 60, 56, 0.2);
+      }
+      .vote-btn img {
+        width: 18px;
+        height: 18px;
+        pointer-events: none;
+        filter: brightness(0) invert(1) !important;
       }
       .vote-btn.img {
         width: 18px;
@@ -1320,14 +1352,16 @@ header {
         transform: translateY(-10px);
       }
 
+      /* Header account link - always on the right */
+      .header-account-link {
+        display: flex;
+        margin-left: auto;
+      }
+
       /* Hide hamburger on desktop */
       @media (min-width: 769px) {
         .mobile-menu-wrapper {
           display: none;
-        }
-        
-        .header-account-link {
-          display: flex;
         }
       }
 
@@ -1392,6 +1426,36 @@ header {
         
         footer {
           margin-bottom: 0; /* Removed mobile nav space */
+        }
+
+        /* Hide horizontal navigation on mobile - use hamburger menu instead */
+        .header-nav {
+          display: none !important;
+        }
+
+        /* Adjust header layout for mobile */
+        header {
+          padding: 0.4rem 0.5rem;
+        }
+
+        /* Make login form smaller on mobile */
+        .header-account-link form {
+          gap: 0.3rem !important;
+        }
+
+        .header-account-link input {
+          width: 70px !important;
+          font-size: 0.7rem !important;
+          padding: 0.3rem 0.4rem !important;
+        }
+
+        .header-account-link button[type="submit"] {
+          font-size: 0.7rem !important;
+          padding: 0.3rem 0.5rem !important;
+        }
+
+        .brand-title {
+          font-size: 1.5rem;
         }
       }
 
@@ -2006,10 +2070,10 @@ header {
           <button type="submit" style="padding: 0.4rem 0.8rem; background: linear-gradient(90deg, #b22222, #ff3c38); border: none; border-radius: 0.25rem; color: white; font-weight: bold; cursor: pointer; font-size: 0.8rem;">Login</button>
         </form>
         <div id="authButtons" class="auth-buttons" style="display: none;">
-          <a href="#" class="account-link" title="Sign In" onclick="openAuthModal(); return false;">
+          <a href="#" class="account-link" title="Sign In" onclick="openAuthModal(); return false;" style="display: none;">
             <span class="login-text">Login / Sign Up</span>
           </a>
-          <a href="/settings" class="settings-link" title="Settings">
+          <a href="/settings" class="settings-link" title="Settings" style="display: none;">
             <img src="pngs/settings.png" alt="Settings" class="settings-icon">
           </a>
         </div>
@@ -2019,31 +2083,31 @@ header {
     <!-- Horizontal Navigation -->
     <div class="header-nav">
       <nav class="horizontal-nav">
-        <div class="horizontal-nav-item active" data-page="home">
+        <a href="index.html" class="horizontal-nav-item active" data-page="home" style="text-decoration: none; color: inherit;">
           <span class="nav-label">Home</span>
-        </div>
+        </a>
         
-        <div class="horizontal-nav-item" data-page="explore">
+        <a href="explore.html" class="horizontal-nav-item" data-page="explore" style="text-decoration: none; color: inherit;">
           <span class="nav-label">Explore</span>
-        </div>
+        </a>
         
-        <div class="horizontal-nav-item" data-page="hubs">
+        <a href="hubs.html" class="horizontal-nav-item" data-page="hubs" style="text-decoration: none; color: inherit;">
           <span class="nav-label">Hubs</span>
-        </div>
+        </a>
         
-        <div class="horizontal-nav-item" data-page="creator">
+        <a href="creator-hub.html" class="horizontal-nav-item" data-page="creator" style="text-decoration: none; color: inherit;">
           <span class="nav-label">Creator Hub</span>
-        </div>
+        </a>
         
-        <div class="horizontal-nav-item" data-page="messages">
+        <a href="messages.html" class="horizontal-nav-item" data-page="messages" style="text-decoration: none; color: inherit;">
           <span class="nav-label">Messages</span>
           <span class="notification-badge">3</span>
-        </div>
+        </a>
         
-        <div class="horizontal-nav-item" data-page="notifications">
+        <a href="notifications.html" class="horizontal-nav-item" data-page="notifications" style="text-decoration: none; color: inherit;">
           <span class="nav-label">Notifications</span>
           <span class="notification-badge">12</span>
-        </div>
+        </a>
       </nav>
       
       <!-- Post Button -->
@@ -2288,19 +2352,168 @@ header {
   </div>
 </div>
 
+<div class="post" data-post-id="hypurly">
+  <div class="post-header">
+    <div class="user">
+      <img src="https://ui-avatars.com/api/?name=Hypurly&background=9333ea&color=fff&rounded=true" alt="User Avatar" />
+      <div class="user-info">
+        <strong style="font-size: 1rem;"><a href="/profile/Hypurly" class="glitchy" data-text="@Hypurly">@Hypurly</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill Vibes)</span></strong>
+        <span style="font-size: 0.75rem;">🎮 Currently playing: Minecraft</span>
+      </div>
+    </div>
+  </div>
+  <div class="vote-section">
+    <span class="vote-count">0</span>
+    <button class="vote-btn upvote" onclick="vote(this, 'up')">
+      <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+    </button>
+    <button class="vote-btn downvote" onclick="vote(this, 'down')">
+      <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+    </button>
+  </div>
+  <div style="margin-top: 1rem;">
+    <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
+  </div>
+</div>
+
 </section>
 
 <section id="following" class="tab-panel">
-  <div class="empty-state" style="text-align: center; padding: 4rem 2rem; color: #888;">
-    <h3 style="color: #facc15; margin-bottom: 1rem;">No posts yet</h3>
-    <p>Posts from people you follow will appear here.</p>
+  <div class="post" data-post-id="hijinxx-following">
+    <div class="post-header">
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
+            <a href="/profile/Hijinxx" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span>
+          </strong>
+          <span style="font-size: 0.75rem;">🎮 Currently playing: Valorant</span>
+        </div>
+      </div>
+    </div>
+    <div class="vote-section">
+      <span class="vote-count">45</span>
+      <button class="vote-btn upvote" onclick="vote(this, 'up')">
+        <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+      </button>
+      <button class="vote-btn downvote" onclick="vote(this, 'down')">
+        <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+      </button>
+    </div>
+    <div style="margin-top: 1rem;">
+      <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
+    </div>
+  </div>
+
+  <div class="post" data-post-id="belt181-following">
+    <div class="post-header">
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=Belt181&background=004080&color=fff&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
+            <a href="/profile/Belt181" class="glitchy" data-text="@Belt181" style="margin-right: 0.1rem;">@Belt181</a>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Speedrunner)</span>
+          </strong>
+          <span style="font-size: 0.75rem;">🎮 Currently playing: Elden Ring</span>
+        </div>
+      </div>
+    </div>
+    <div class="vote-section">
+      <span class="vote-count">78</span>
+      <button class="vote-btn upvote" onclick="vote(this, 'up')">
+        <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+      </button>
+      <button class="vote-btn downvote" onclick="vote(this, 'down')">
+        <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+      </button>
+    </div>
+    <div style="margin-top: 1rem;">
+      <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
+    </div>
   </div>
 </section>
 
 <section id="game" class="tab-panel">
-  <div class="empty-state" style="text-align: center; padding: 4rem 2rem; color: #888;">
-    <h3 style="color: #facc15; margin-bottom: 1rem;">Hubs Feed</h3>
-    <p>Game-specific posts and updates will appear here.</p>
+  <div class="post" data-post-id="lounge-tournament">
+    <div class="post-header">
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=NightCrewHub&background=facc15&color=1a1d2e&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
+            <a href="/profile/NightCrewHub" class="glitchy" data-text="@NightCrewHub" style="margin-right: 0.1rem;">@NightCrewHub</a>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Official)</span>
+          </strong>
+          <span style="font-size: 0.75rem;">🏆 Community Hub</span>
+        </div>
+      </div>
+    </div>
+    <div class="vote-section">
+      <span class="vote-count">156</span>
+      <button class="vote-btn upvote" onclick="vote(this, 'up')">
+        <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+      </button>
+      <button class="vote-btn downvote" onclick="vote(this, 'down')">
+        <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+      </button>
+    </div>
+    <div style="margin-top: 1rem;">
+      <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
+    </div>
+  </div>
+
+  <div class="post" data-post-id="lounge-squad">
+    <div class="post-header">
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=SquadLeader&background=ff6600&color=fff&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
+            <a href="/profile/SquadLeader" class="glitchy" data-text="@SquadLeader" style="margin-right: 0.1rem;">@SquadLeader</a>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Squad Captain)</span>
+          </strong>
+          <span style="font-size: 0.75rem;">🎮 Looking for teammates</span>
+        </div>
+      </div>
+    </div>
+    <div class="vote-section">
+      <span class="vote-count">23</span>
+      <button class="vote-btn upvote" onclick="vote(this, 'up')">
+        <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+      </button>
+      <button class="vote-btn downvote" onclick="vote(this, 'down')">
+        <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+      </button>
+    </div>
+    <div style="margin-top: 1rem;">
+      <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
+    </div>
+  </div>
+
+  <div class="post" data-post-id="lounge-tips">
+    <div class="post-header">
+      <div class="user">
+        <img src="https://ui-avatars.com/api/?name=ProTips&background=222244&color=fff&rounded=true" alt="User Avatar" />
+        <div class="user-info">
+          <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
+            <a href="/profile/ProTips" class="glitchy" data-text="@ProTips" style="margin-right: 0.1rem;">@ProTips</a>
+            <span class="title" style="font-size: 0.8rem; color: #aaa;">(Coach)</span>
+          </strong>
+          <span style="font-size: 0.75rem;">🎓 Gaming Coach</span>
+        </div>
+      </div>
+    </div>
+    <div class="vote-section">
+      <span class="vote-count">92</span>
+      <button class="vote-btn upvote" onclick="vote(this, 'up')">
+        <img src="pngs/arrow.png" alt="Upvote" width="18" height="18" style="vertical-align:middle;">
+      </button>
+      <button class="vote-btn downvote" onclick="vote(this, 'down')">
+        <img src="pngs/arrow.png" alt="Downvote" width="18" height="18" style="vertical-align:middle; transform:rotate(180deg);">
+      </button>
+    </div>
+    <div style="margin-top: 1rem;">
+      <input type="text" placeholder="Leave a comment..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; font-size: 0.85rem;" />
+    </div>
   </div>
 </section>
 
@@ -3223,6 +3436,88 @@ header {
       // Update the create post section to reflect profile changes
       updateCreatePostSection();
     }
+  });
+
+  // Vote function - works like Instagram (only one vote active at a time)
+  function vote(button, type) {
+    // Get the vote section (parent container)
+    const voteSection = button.closest('.vote-section');
+    const voteCount = voteSection.querySelector('.vote-count');
+    const upvoteBtn = voteSection.querySelector('.upvote');
+    const downvoteBtn = voteSection.querySelector('.downvote');
+    
+    // Get current count
+    let count = parseInt(voteCount.textContent) || 0;
+    
+    // Check if buttons already have active state
+    const upvoteActive = upvoteBtn.classList.contains('active');
+    const downvoteActive = downvoteBtn.classList.contains('active');
+    
+    if (type === 'up') {
+      if (upvoteActive) {
+        // User is un-upvoting
+        upvoteBtn.classList.remove('active');
+        count -= 1;
+      } else {
+        // User is upvoting
+        if (downvoteActive) {
+          // Remove downvote first
+          downvoteBtn.classList.remove('active');
+          count += 1; // Cancel the downvote
+        }
+        upvoteBtn.classList.add('active');
+        count += 1;
+      }
+    } else if (type === 'down') {
+      if (downvoteActive) {
+        // User is un-downvoting
+        downvoteBtn.classList.remove('active');
+        count += 1;
+      } else {
+        // User is downvoting
+        if (upvoteActive) {
+          // Remove upvote first
+          upvoteBtn.classList.remove('active');
+          count -= 1; // Cancel the upvote
+        }
+        downvoteBtn.classList.add('active');
+        count -= 1;
+      }
+    }
+    
+    // Update the count with animation
+    voteCount.textContent = count;
+    voteCount.classList.add('animate');
+    setTimeout(() => {
+      voteCount.classList.remove('animate');
+    }, 200);
+  }
+
+  // Tab switching functionality for feed tabs
+  document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.feed-tabs .tab');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        const targetTab = this.getAttribute('data-tab');
+        
+        // Remove active class from all tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        this.classList.add('active');
+        
+        // Hide all tab panels
+        tabPanels.forEach(panel => panel.classList.remove('active'));
+        
+        // Show the target tab panel
+        const targetPanel = document.getElementById(targetTab);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
+      });
+    });
   });
   </script>
 

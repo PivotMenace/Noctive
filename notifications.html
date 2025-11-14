@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Noctive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #121524, #1e2242, #2b2d61, #383580, #453c9e);
+            background-attachment: fixed;
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(90deg, #b22222, #ff3c38);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+        .notification-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(250, 204, 21, 0.2);
+            border-color: #facc15;
+            color: #facc15;
+        }
+        .notification {
+            background: linear-gradient(to bottom right, #1d2133, #292e44);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            transition: all 0.2s;
+        }
+        .notification:hover {
+            border-color: rgba(250, 204, 21, 0.3);
+            transform: translateX(4px);
+        }
+        .notification.unread {
+            background: linear-gradient(to bottom right, #1f2440, #2d3250);
+            border-left: 3px solid #facc15;
+        }
+        .notification-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(250, 204, 21, 0.1);
+            flex-shrink: 0;
+        }
+        .notification-content {
+            flex: 1;
+        }
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .notification-title {
+            font-weight: bold;
+            color: #facc15;
+        }
+        .notification-time {
+            font-size: 0.85rem;
+            color: #999;
+        }
+        .notification-body {
+            color: #d0d0d0;
+            line-height: 1.5;
+        }
+        .notification-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        .action-btn {
+            padding: 0.4rem 1rem;
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 0.5rem;
+            color: #facc15;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .action-btn:hover {
+            background: rgba(250, 204, 21, 0.2);
+            transform: scale(1.05);
+        }
+        .mark-all-read {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            color: #1a1d2e;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: transform 0.2s;
+        }
+        .mark-all-read:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <h1>🔔 Notifications</h1>
+        
+        <div class="notification-filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Mentions</button>
+            <button class="filter-btn">Likes</button>
+            <button class="filter-btn">Comments</button>
+            <button class="filter-btn">Followers</button>
+            <button class="filter-btn">Messages</button>
+        </div>
+
+        <button class="mark-all-read">Mark All as Read</button>
+
+        <div class="notification unread">
+            <div class="notification-icon">❤️</div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <div class="notification-title">@NightHawk liked your post</div>
+                    <div class="notification-time">5 min ago</div>
+                </div>
+                <div class="notification-body">
+                    "Just hit Diamond rank in Rainbow Six Siege! 🎮💎"
+                </div>
+            </div>
+        </div>
+
+        <div class="notification unread">
+            <div class="notification-icon">💬</div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <div class="notification-title">@GamerQueen commented on your post</div>
+                    <div class="notification-time">15 min ago</div>
+                </div>
+                <div class="notification-body">
+                    "Congrats! Want to squad up later?"
+                </div>
+                <div class="notification-actions">
+                    <button class="action-btn">Reply</button>
+                    <button class="action-btn">View Post</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification unread">
+            <div class="notification-icon">👥</div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <div class="notification-title">@ProStreamer started following you</div>
+                    <div class="notification-time">1 hour ago</div>
+                </div>
+                <div class="notification-actions">
+                    <button class="action-btn">Follow Back</button>
+                    <button class="action-btn">View Profile</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification">
+            <div class="notification-icon">🏆</div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <div class="notification-title">Achievement Unlocked!</div>
+                    <div class="notification-time">2 hours ago</div>
+                </div>
+                <div class="notification-body">
+                    You've earned the "Night Owl" badge for posting at 3 AM! 🌙
+                </div>
+            </div>
+        </div>
+
+        <div class="notification">
+            <div class="notification-icon">📢</div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <div class="notification-title">Night Crew Hub Update</div>
+                    <div class="notification-time">3 hours ago</div>
+                </div>
+                <div class="notification-body">
+                    New tournament announced! Sign up before Friday to compete for prizes.
+                </div>
+                <div class="notification-actions">
+                    <button class="action-btn">Learn More</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification">
+            <div class="notification-icon">🎮</div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <div class="notification-title">@SnipeKing mentioned you</div>
+                    <div class="notification-time">5 hours ago</div>
+                </div>
+                <div class="notification-body">
+                    "Shoutout to @You for the clutch play last night! 🔥"
+                </div>
+                <div class="notification-actions">
+                    <button class="action-btn">View Post</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification">
+            <div class="notification-icon">⭐</div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <div class="notification-title">Your post is trending!</div>
+                    <div class="notification-time">8 hours ago</div>
+                </div>
+                <div class="notification-body">
+                    Your clip has received 500+ upvotes and is now on the trending page!
+                </div>
+                <div class="notification-actions">
+                    <button class="action-btn">View Analytics</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification">
+            <div class="notification-icon">💬</div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <div class="notification-title">@TeamLeader invited you to a squad</div>
+                    <div class="notification-time">12 hours ago</div>
+                </div>
+                <div class="notification-body">
+                    Join "Midnight Raiders" for competitive ranked matches
+                </div>
+                <div class="notification-actions">
+                    <button class="action-btn">Accept</button>
+                    <button class="action-btn">Decline</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
