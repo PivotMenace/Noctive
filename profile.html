@@ -594,15 +594,16 @@
             const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
             console.log('Saved profile data:', savedProfile);
             
-            if (!savedProfile) {
-                console.log('No profile found, redirecting to wizard');
-                // No profile found, redirect to wizard
-                window.location.href = 'profile-wizard.html';
-                return;
-            }
+            // Parse profile or use defaults
+            const profile = savedProfile ? JSON.parse(savedProfile) : {
+                username: user.email.split('@')[0],
+                bio: 'No bio yet',
+                status: 'New to Noctive',
+                favoriteGames: [],
+                title: 'Newcomer'
+            };
 
-            console.log('Profile found, parsing and displaying');
-            const profile = JSON.parse(savedProfile);
+            console.log('Profile loaded:', profile);
             
             // Update profile display
             document.getElementById('profileUsername').textContent = `@${profile.username || user.email.split('@')[0]}`;
