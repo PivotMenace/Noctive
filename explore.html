@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore - Noctive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #121524, #1e2242, #2b2d61, #383580, #453c9e);
+            background-attachment: fixed;
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(90deg, #b22222, #ff3c38);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .card {
+            background: linear-gradient(to bottom right, #1d2133, #292e44);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 6px #00eaff, 0 0 12px #ff00cc;
+        }
+        .card h3 {
+            color: #facc15;
+            margin-top: 0;
+        }
+        .card p {
+            color: #d0d0d0;
+            line-height: 1.6;
+        }
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(250, 204, 21, 0.2);
+            color: #facc15;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <h1>🔍 Explore</h1>
+        <p style="font-size: 1.2rem; color: #d0d0d0; margin-bottom: 2rem;">
+            Discover trending games, communities, and content across Noctive
+        </p>
+
+        <div class="content-grid">
+            <div class="card">
+                <h3>🎮 Trending Games</h3>
+                <p>Check out the most popular games in the community right now.</p>
+                <div>
+                    <span class="tag">Rainbow Six Siege</span>
+                    <span class="tag">Valorant</span>
+                    <span class="tag">Apex Legends</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🌟 Top Creators</h3>
+                <p>Follow the most active and engaging content creators on Noctive.</p>
+                <div>
+                    <span class="tag">@NightHawk</span>
+                    <span class="tag">@GamerQueen</span>
+                    <span class="tag">@ProStreamer</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🔥 Hot Topics</h3>
+                <p>Join the conversation on the most discussed topics this week.</p>
+                <div>
+                    <span class="tag">#NightGaming</span>
+                    <span class="tag">#TeamUp</span>
+                    <span class="tag">#ProTips</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📺 Live Streams</h3>
+                <p>Watch live gaming sessions from the Noctive community.</p>
+                <div>
+                    <span class="tag">12 Live Now</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🎯 Communities</h3>
+                <p>Find and join gaming communities that match your interests.</p>
+                <div>
+                    <span class="tag">FPS Squad</span>
+                    <span class="tag">RPG Guild</span>
+                    <span class="tag">Indie Lovers</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>⚡ Quick Matches</h3>
+                <p>Find teammates for quick gaming sessions right now.</p>
+                <div>
+                    <span class="tag">8 Players Looking</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

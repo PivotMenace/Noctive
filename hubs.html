@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubs - Noctive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #121524, #1e2242, #2b2d61, #383580, #453c9e);
+            background-attachment: fixed;
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(90deg, #b22222, #ff3c38);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .hub-card {
+            background: linear-gradient(to bottom right, #1d2133, #292e44);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .hub-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 6px #00eaff, 0 0 12px #ff00cc;
+        }
+        .hub-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .hub-card h2 {
+            color: #facc15;
+            margin: 0.5rem 0;
+        }
+        .hub-card p {
+            color: #d0d0d0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .hub-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .stat {
+            color: #999;
+            font-size: 0.9rem;
+        }
+        .stat strong {
+            color: #facc15;
+        }
+        .join-btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            color: #1a1d2e;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: transform 0.2s;
+        }
+        .join-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <h1>🎮 Gaming Hubs</h1>
+        <p style="font-size: 1.2rem; color: #d0d0d0; margin-bottom: 2rem;">
+            Join specialized communities for your favorite games and genres
+        </p>
+
+        <div class="hub-grid">
+            <div class="hub-card">
+                <div class="hub-icon">🎯</div>
+                <h2>FPS Hub</h2>
+                <p>Connect with first-person shooter enthusiasts. Share tactics, find teammates, and dominate the battlefield.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>2.4k</strong> Members</span>
+                    <span class="stat"><strong>156</strong> Online</span>
+                </div>
+                <a href="#" class="join-btn">Join Hub</a>
+            </div>
+
+            <div class="hub-card">
+                <div class="hub-icon">⚔️</div>
+                <h2>RPG Hub</h2>
+                <p>For lovers of role-playing games. Discuss builds, lore, and embark on epic adventures together.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>1.8k</strong> Members</span>
+                    <span class="stat"><strong>89</strong> Online</span>
+                </div>
+                <a href="#" class="join-btn">Join Hub</a>
+            </div>
+
+            <div class="hub-card">
+                <div class="hub-icon">🏎️</div>
+                <h2>Racing Hub</h2>
+                <p>Speed demons unite! Share your best lap times, tuning tips, and racing strategies.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>1.2k</strong> Members</span>
+                    <span class="stat"><strong>67</strong> Online</span>
+                </div>
+                <a href="#" class="join-btn">Join Hub</a>
+            </div>
+
+            <div class="hub-card">
+                <div class="hub-icon">🎨</div>
+                <h2>Indie Hub</h2>
+                <p>Discover and discuss hidden indie gems. Support indie developers and unique gaming experiences.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>980</strong> Members</span>
+                    <span class="stat"><strong>45</strong> Online</span>
+                </div>
+                <a href="#" class="join-btn">Join Hub</a>
+            </div>
+
+            <div class="hub-card">
+                <div class="hub-icon">🏆</div>
+                <h2>Competitive Hub</h2>
+                <p>For serious esports players and competitive gamers. Find scrims, join tournaments, and climb the ranks.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>3.1k</strong> Members</span>
+                    <span class="stat"><strong>234</strong> Online</span>
+                </div>
+                <a href="#" class="join-btn">Join Hub</a>
+            </div>
+
+            <div class="hub-card">
+                <div class="hub-icon">🌙</div>
+                <h2>Night Crew Hub</h2>
+                <p>The official hub for nocturnal gamers. Connect with fellow night owls and own the darkness.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>4.5k</strong> Members</span>
+                    <span class="stat"><strong>412</strong> Online</span>
+                </div>
+                <a href="#" class="join-btn">Join Hub</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

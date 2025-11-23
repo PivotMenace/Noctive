@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Noctive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #121524, #1e2242, #2b2d61, #383580, #453c9e);
+            background-attachment: fixed;
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            height: calc(100vh - 4rem);
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(90deg, #b22222, #ff3c38);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: transform 0.2s;
+            width: fit-content;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+        .messages-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 1.5rem;
+            flex: 1;
+            overflow: hidden;
+        }
+        .conversations-list {
+            background: linear-gradient(to bottom right, #1d2133, #292e44);
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+        }
+        .conversation {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .conversation:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .conversation.active {
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+        }
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b0000, #dc143c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .conversation-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .conversation-name {
+            font-weight: bold;
+            color: #facc15;
+            margin-bottom: 0.25rem;
+        }
+        .conversation-preview {
+            color: #999;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .unread-badge {
+            background: #ff3c38;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .chat-window {
+            background: linear-gradient(to bottom right, #1d2133, #292e44);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .chat-header h2 {
+            color: #facc15;
+            margin: 0;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        .message {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .message.sent {
+            flex-direction: row-reverse;
+        }
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b0000, #dc143c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .message-content {
+            max-width: 60%;
+        }
+        .message-bubble {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        .message.sent .message-bubble {
+            background: rgba(250, 204, 21, 0.2);
+        }
+        .message-time {
+            font-size: 0.75rem;
+            color: #999;
+            padding: 0 0.5rem;
+        }
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+        }
+        .chat-input input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: #f0f0f0;
+            font-family: 'Nunito', sans-serif;
+        }
+        .chat-input input:focus {
+            outline: none;
+            border-color: #facc15;
+        }
+        .send-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            color: #1a1d2e;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        <h1>💬 Messages</h1>
+
+        <div class="messages-container">
+            <div class="conversations-list">
+                <div class="conversation active">
+                    <div class="avatar">🎮</div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">@NightHawk</div>
+                        <div class="conversation-preview">Let's squad up tonight!</div>
+                    </div>
+                    <div class="unread-badge">2</div>
+                </div>
+
+                <div class="conversation">
+                    <div class="avatar">👾</div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">@GamerQueen</div>
+                        <div class="conversation-preview">GG! That was amazing</div>
+                    </div>
+                </div>
+
+                <div class="conversation">
+                    <div class="avatar">🔥</div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">@ProStreamer</div>
+                        <div class="conversation-preview">Check out my new stream setup</div>
+                    </div>
+                    <div class="unread-badge">1</div>
+                </div>
+
+                <div class="conversation">
+                    <div class="avatar">⚡</div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">Night Crew Hub</div>
+                        <div class="conversation-preview">Tournament this weekend!</div>
+                    </div>
+                </div>
+
+                <div class="conversation">
+                    <div class="avatar">🌟</div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">@SnipeKing</div>
+                        <div class="conversation-preview">Want to join our clan?</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-window">
+                <div class="chat-header">
+                    <h2>@NightHawk</h2>
+                    <p style="color: #10b981; margin: 0.25rem 0 0 0; font-size: 0.9rem;">● Online</p>
+                </div>
+
+                <div class="chat-messages">
+                    <div class="message">
+                        <div class="message-avatar">🎮</div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                Hey! Are you up for some ranked matches tonight?
+                            </div>
+                            <div class="message-time">2:45 AM</div>
+                        </div>
+                    </div>
+
+                    <div class="message sent">
+                        <div class="message-avatar">😎</div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                Yeah! I'm down. What time?
+                            </div>
+                            <div class="message-time">2:46 AM</div>
+                        </div>
+                    </div>
+
+                    <div class="message">
+                        <div class="message-avatar">🎮</div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                Let's squad up at 3 AM. I'll invite the rest of the crew.
+                            </div>
+                            <div class="message-time">2:47 AM</div>
+                        </div>
+                    </div>
+
+                    <div class="message sent">
+                        <div class="message-avatar">😎</div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                Perfect! See you then 🔥
+                            </div>
+                            <div class="message-time">2:48 AM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input">
+                    <input type="text" placeholder="Type a message...">
+                    <button class="send-btn">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
