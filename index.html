@@ -244,6 +244,33 @@ header {
   text-align: center;
 }
 
+/* Username styling - bold white for all usernames */
+.glitchy,
+a.glitchy {
+  color: #ffffff !important;
+  font-weight: bold !important;
+  text-decoration: none;
+}
+
+.glitchy:hover,
+a.glitchy:hover {
+  color: #ffffff !important;
+  text-decoration: underline;
+}
+
+/* Ensure all username links in posts are white and bold */
+.post .user-info strong a,
+.post .user-info a {
+  color: #ffffff !important;
+  font-weight: bold !important;
+  text-decoration: none;
+}
+
+.post .user-info strong a:hover,
+.post .user-info a:hover {
+  text-decoration: underline;
+}
+
 /* Update root variables for new header height */
 :root {
   --header-height: 3rem;
