@@ -428,63 +428,403 @@
                 flex-direction: column;
             }
         }
+
+        /* ═══════════════════════════════════════════════════════════
+           TWITTER-STYLE PROFILE LAYOUT
+           ═══════════════════════════════════════════════════════════ */
+
+        /* Profile Banner */
+        .profile-banner {
+            width: calc(100% + 4rem);
+            margin: -2rem -2rem 0 -2rem;
+            height: 150px;
+            border-radius: 20px 20px 0 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .banner-gradient {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3a8a, #7c2d12, #312e81);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Profile Header Redesign */
+        .profile-header {
+            text-align: left;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0;
+            border-bottom: none;
+            position: relative;
+        }
+
+        .avatar-section {
+            margin-top: -48px;
+            margin-bottom: 1rem;
+        }
+
+        .profile-avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            margin: 0;
+            border: 4px solid rgba(10, 13, 31, 1);
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 60, 56, 0.3), 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .profile-info {
+            padding: 0;
+        }
+
+        .profile-username {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #fff, #facc15);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+            text-align: left;
+        }
+
+        .profile-email {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            text-align: left;
+        }
+
+        .profile-status {
+            display: inline-block;
+            padding: 0.4rem 0.9rem;
+            background: rgba(74, 222, 128, 0.15);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 16px;
+            color: #4ade80;
+            font-weight: 500;
+            font-size: 0.85rem;
+            box-shadow: 0 0 10px rgba(74, 222, 128, 0.2);
+        }
+
+        /* Stats Row (Twitter-style horizontal) */
+        .stats-row {
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 1.25rem 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            flex: 1;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: #9ca3af;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Card Wrapper for Sections */
+        .card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 
+                        0 0 20px rgba(255, 60, 56, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), 
+                        0 0 25px rgba(255, 60, 56, 0.08);
+        }
+
+        .profile-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-content {
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .bio-text {
+            line-height: 1.7;
+            color: #d1d5db;
+            font-size: 0.95rem;
+        }
+
+        .games-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .game-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 60, 56, 0.15);
+            border: 1px solid rgba(255, 60, 56, 0.25);
+            border-radius: 16px;
+            color: #fca5a5;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 0 8px rgba(255, 60, 56, 0.15);
+            transition: all 0.2s ease;
+        }
+
+        .game-tag:hover {
+            background: rgba(255, 60, 56, 0.25);
+            border-color: rgba(255, 60, 56, 0.4);
+            box-shadow: 0 0 12px rgba(255, 60, 56, 0.25);
+        }
+
+        /* Action Row */
+        .action-row {
+            margin-top: 2rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.65rem 1.5rem;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #0a0d1f;
+            border: 1px solid #fff;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-primary:hover {
+            background: #f3f4f6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .btn-logout {
+            background: transparent;
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 107, 107, 0.15);
+            border-color: rgba(255, 107, 107, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-banner {
+                height: 120px;
+            }
+
+            .avatar-section {
+                margin-top: -40px;
+            }
+
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+            }
+
+            .profile-username {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                padding: 1rem 0.5rem;
+            }
+
+            .stat-number {
+                font-size: 1.25rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+
+            .action-row {
+                width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-primary {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="profile-container">
+        <!-- Banner Section -->
+        <div class="profile-banner">
+            <div class="banner-gradient"></div>
+        </div>
+
+        <!-- Profile Header with Overlapping Avatar -->
         <div class="profile-header">
-            <div class="profile-avatar">
-                <img id="profileAvatar" src="" alt="Profile Avatar">
-                <button class="avatar-change-btn" onclick="openAvatarModal()" title="Change Avatar">📷</button>
+            <div class="avatar-section">
+                <div class="profile-avatar">
+                    <img id="profileAvatar" src="" alt="Profile Avatar">
+                    <button class="avatar-change-btn" onclick="openAvatarModal()" title="Change Avatar">📷</button>
+                </div>
             </div>
-            <h1 class="profile-username" id="profileUsername">@username</h1>
-            <p class="profile-email" id="profileEmail">user@email.com</p>
-            <div class="profile-status" id="profileStatus">🎮 Currently playing</div>
-        </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">0</div>
-                <div class="stat-label">Posts</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">0</div>
-                <div class="stat-label">Followers</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">0</div>
-                <div class="stat-label">Following</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="gameCount">0</div>
-                <div class="stat-label">Games</div>
+            <div class="profile-info">
+                <h1 class="profile-username" id="profileUsername">@username</h1>
+                <p class="profile-email" id="profileEmail">user@email.com</p>
+                <div class="profile-status" id="profileStatus">🎮 Currently playing</div>
             </div>
         </div>
 
-        <div class="profile-section">
-            <h2 class="section-title">
-                📝 About Me
-            </h2>
-            <div class="section-content">
-                <p class="bio-text" id="profileBio">No bio added yet.</p>
-            </div>
-        </div>
-
-        <div class="profile-section">
-            <h2 class="section-title">
-                🎮 Favorite Games
-            </h2>
-            <div class="section-content">
-                <div class="games-grid" id="gamesGrid">
-                    <!-- Games will be populated here -->
+        <!-- Stats Row (Twitter-style horizontal) -->
+        <div class="stats-row">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Posts</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Followers</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Following</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-card">
+                    <div class="stat-number" id="gameCount">0</div>
+                    <div class="stat-label">Games</div>
                 </div>
             </div>
         </div>
 
-        <div class="action-buttons">
-            <a href="index.html?from=profile" class="btn btn-primary">🏠 Go to Feed</a>
-            <button class="btn btn-secondary" onclick="editProfile()">✏️ Edit Profile</button>
-            <button class="btn btn-logout" onclick="logout()">🚪 Logout</button>
+        <!-- About Me Card -->
+        <div class="profile-section">
+            <div class="card">
+                <h2 class="section-title">
+                    📝 About Me
+                </h2>
+                <div class="section-content">
+                    <p class="bio-text" id="profileBio">No bio added yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorite Games Card -->
+        <div class="profile-section">
+            <div class="card">
+                <h2 class="section-title">
+                    🎮 Favorite Games
+                </h2>
+                <div class="section-content">
+                    <div class="games-grid" id="gamesGrid">
+                        <!-- Games will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons Row -->
+        <div class="action-row">
+            <div class="action-buttons">
+                <a href="index.html?from=profile" class="btn btn-primary">🏠 Go to Feed</a>
+                <button class="btn btn-secondary" onclick="editProfile()">✏️ Edit Profile</button>
+                <button class="btn btn-logout" onclick="logout()">🚪 Logout</button>
+            </div>
         </div>
     </div>
 
