@@ -72,27 +72,11 @@
 
       console.log("Firebase initialized successfully!");
       
-      // Check if user is already logged in and redirect to profile
+      // Check if user is already logged in
       window.firebase.auth.onAuthStateChanged(auth, (user) => {
         if (user) {
-          // User is logged in, check if they have a profile
-          const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
-          if (savedProfile) {
-            // Check if user is coming from profile page
-            const urlParams = new URLSearchParams(window.location.search);
-            const fromProfile = urlParams.get('from') === 'profile';
-            
-            if (!fromProfile) {
-              // User has a profile and not coming from profile page, redirect to profile page
-              window.location.href = 'profile.html';
-              return;
-            }
-            // User is coming from profile page, let them see the feed
-            updateUserUI(user);
-          } else {
-            // No profile, let them see the main page but update UI
-            updateUserUI(user);
-          }
+          // User is logged in, just update UI
+          updateUserUI(user);
         } else {
           // User not logged in, update UI for guest
           updateUserUI(null);
@@ -598,7 +582,7 @@ a.glitchy:hover {
 }
 
 .sidebar-user {
-  padding: 0;
+  padding: 0.2rem 0.4rem;
   border-top: none;
   display: flex;
   align-items: center;
@@ -606,17 +590,16 @@ a.glitchy:hover {
   transition: background 0.2s ease;
   gap: 0.4rem;
   margin-left: auto;
+  border-radius: 6px;
 }
 
 .sidebar-user:hover {
   background: rgba(250, 204, 21, 0.1);
-  border-radius: 8px;
-  padding: 0.3rem;
 }
 
 .user-avatar {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   overflow: hidden;
   border: 1.5px solid rgba(250, 204, 21, 0.5);
@@ -646,14 +629,14 @@ a.glitchy:hover {
 .user-name {
   font-weight: 600;
   color: #facc15;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .user-status {
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   color: #10b981;
 }
 
@@ -1092,7 +1075,7 @@ a.glitchy:hover {
         box-shadow: 0 0 6px #dc2626;
       }
 
-      /* Moon status for Remko */
+      /* Moon status for cardboard box */
       .moon-status {
         display: inline-block;
         font-size: 14px;
@@ -1725,14 +1708,14 @@ a.glitchy:hover {
 }
 
 .user-avatar {
-  width: 80px;
-  height: 80px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   background: transparent;
-  box-shadow: 0 0 4px rgba(255, 60, 56, 0.4), 0 0 8px rgba(255, 60, 56, 0.3), 0 0 12px rgba(255, 60, 56, 0.2);
+  box-shadow: 0 0 2px rgba(255, 60, 56, 0.3), 0 0 4px rgba(255, 60, 56, 0.2);
   animation: pulseGlow 2s infinite;
   overflow: hidden;
   flex-shrink: 0;
@@ -2187,7 +2170,7 @@ a.glitchy:hover {
           <li id="currentUserFriend"><span id="userStatusDot" class="status-dot offline"></span> <a href="#" id="userFriendLink" class="glitchy" data-text="@Venus">@Venus</a></li>
           <li><span class="status-dot online"></span> <a href="/profile/Hijinxx" class="glitchy" data-text="@Hijinxx">@Hijinxx</a></li>
           <li><span class="status-dot idle"></span> <a href="/profile/Belt181">@Belt181</a></li>
-          <li><span class="moon-status">🌙</span> <a href="/profile/Remko">@Remko</a></li>
+          <li><span class="moon-status">🌙</span> <a href="/profile/cardboard box">@cardboard box</a></li>
         </ul>
       </div>
     </div>
@@ -2283,12 +2266,12 @@ a.glitchy:hover {
   </div>
 </div>
 
-<div class="post" data-post-id="remko">
+<div class="post" data-post-id="cardboard-box">
   <div class="post-header">
     <div class="user">
-      <img src="https://ui-avatars.com/api/?name=Remko&background=222244&color=fff&rounded=true" alt="User Avatar" />
+      <img src="https://ui-avatars.com/api/?name=cardboard+box&background=222244&color=fff&rounded=true" alt="User Avatar" />
       <div class="user-info">
-        <strong style="font-size: 1rem;"><a href="/profile/Remko">@Remko</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span></strong>
+        <strong style="font-size: 1rem;"><a href="/profile/cardboard box">@cardboard box</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span></strong>
         <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
       </div>
     </div>
@@ -3561,6 +3544,143 @@ a.glitchy:hover {
       </div>
     </div>
   </div>
+
+    <!-- Owl Companion -->
+    <div id="owlCompanion" class="owl-companion">
+      <div class="owl-icon">🦉</div>
+      <div class="owl-bubble" id="owlBubble">
+        <span id="owlMessage">Hoot hoot! 🌙</span>
+      </div>
+    </div>
+
+    <style>
+      .owl-companion {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 9999;
+        cursor: pointer;
+      }
+
+      .owl-icon {
+        font-size: 3rem;
+        animation: owlBounce 3s ease-in-out infinite;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        transition: transform 0.3s ease;
+      }
+
+      .owl-icon:hover {
+        transform: scale(1.2) rotate(-10deg);
+        animation: owlWiggle 0.5s ease-in-out infinite;
+      }
+
+      .owl-bubble {
+        position: absolute;
+        bottom: 70px;
+        left: 0;
+        background: linear-gradient(135deg, #2d2f45, #3a3d5a);
+        color: #f0f0f0;
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(250, 204, 21, 0.3);
+        opacity: 0;
+        transform: translateY(10px);
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      .owl-bubble::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 20px;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #2d2f45;
+      }
+
+      .owl-bubble.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @keyframes owlBounce {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes owlWiggle {
+        0%, 100% {
+          transform: scale(1.2) rotate(-10deg);
+        }
+        50% {
+          transform: scale(1.2) rotate(10deg);
+        }
+      }
+    </style>
+
+    <script>
+      // Owl companion functionality
+      const owlCompanion = document.getElementById('owlCompanion');
+      const owlBubble = document.getElementById('owlBubble');
+      const owlMessage = document.getElementById('owlMessage');
+
+      const owlMessages = [
+        "Click me for info! 🦉",
+        "Check out our FAQ! 📖",
+        "Learn about Noctive! ✨",
+        "Want to know more? 🌙"
+      ];
+
+      let messageIndex = 0;
+      let bubbleTimeout;
+
+      // Navigate to FAQ page on click
+      owlCompanion.addEventListener('click', () => {
+        window.location.href = 'faq.html';
+      });
+
+      // Show bubble on hover
+      owlCompanion.addEventListener('mouseenter', () => {
+        messageIndex = Math.floor(Math.random() * owlMessages.length);
+        owlMessage.textContent = owlMessages[messageIndex];
+        owlBubble.classList.add('show');
+      });
+
+      owlCompanion.addEventListener('mouseleave', () => {
+        owlBubble.classList.remove('show');
+      });
+
+      // Auto show first message after 5 seconds
+      setTimeout(() => {
+        owlMessage.textContent = "Click me for info! 🦉";
+        owlBubble.classList.add('show');
+        setTimeout(() => {
+          owlBubble.classList.remove('show');
+        }, 3000);
+      }, 5000);
+
+      // Random occasional messages
+      setInterval(() => {
+        if (!owlBubble.classList.contains('show') && Math.random() > 0.7) {
+          messageIndex = Math.floor(Math.random() * owlMessages.length);
+          owlMessage.textContent = owlMessages[messageIndex];
+          owlBubble.classList.add('show');
+          setTimeout(() => {
+            owlBubble.classList.remove('show');
+          }, 3000);
+        }
+      }, 60000); // Every minute, 30% chance
+    </script>
 
     <!-- Close body and html tags -->
 </body>

@@ -216,7 +216,7 @@
                 <div class="conversation active">
                     <div class="avatar">🎮</div>
                     <div class="conversation-info">
-                        <div class="conversation-name">@NightHawk</div>
+                        <div class="conversation-name">@Hijinxx</div>
                         <div class="conversation-preview">Let's squad up tonight!</div>
                     </div>
                     <div class="unread-badge">2</div>
@@ -225,7 +225,7 @@
                 <div class="conversation">
                     <div class="avatar">👾</div>
                     <div class="conversation-info">
-                        <div class="conversation-name">@GamerQueen</div>
+                        <div class="conversation-name">@Belt181</div>
                         <div class="conversation-preview">GG! That was amazing</div>
                     </div>
                 </div>
@@ -233,7 +233,7 @@
                 <div class="conversation">
                     <div class="avatar">🔥</div>
                     <div class="conversation-info">
-                        <div class="conversation-name">@ProStreamer</div>
+                        <div class="conversation-name">@cardboard box</div>
                         <div class="conversation-preview">Check out my new stream setup</div>
                     </div>
                     <div class="unread-badge">1</div>
@@ -250,7 +250,7 @@
                 <div class="conversation">
                     <div class="avatar">🌟</div>
                     <div class="conversation-info">
-                        <div class="conversation-name">@SnipeKing</div>
+                        <div class="conversation-name">@NoctiveHQ</div>
                         <div class="conversation-preview">Want to join our clan?</div>
                     </div>
                 </div>
@@ -258,7 +258,7 @@
 
             <div class="chat-window">
                 <div class="chat-header">
-                    <h2>@NightHawk</h2>
+                    <h2>@Hijinxx</h2>
                     <p style="color: #10b981; margin: 0.25rem 0 0 0; font-size: 0.9rem;">● Online</p>
                 </div>
 
@@ -311,5 +311,118 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Chat data for different users
+        const chatData = {
+            'Hijinxx': {
+                name: '@Hijinxx',
+                status: 'Online',
+                statusColor: '#10b981',
+                avatar: '🎮',
+                messages: [
+                    { sent: false, avatar: '🎮', text: 'Hey! Are you up for some ranked matches tonight?', time: '2:45 AM' },
+                    { sent: true, avatar: '😎', text: "Yeah! I'm down. What time?", time: '2:46 AM' },
+                    { sent: false, avatar: '🎮', text: "Let's squad up at 3 AM. I'll invite the rest of the crew.", time: '2:47 AM' },
+                    { sent: true, avatar: '😎', text: 'Perfect! See you then 🔥', time: '2:48 AM' }
+                ]
+            },
+            'Belt181': {
+                name: '@Belt181',
+                status: 'Idle',
+                statusColor: '#facc15',
+                avatar: '👾',
+                messages: [
+                    { sent: false, avatar: '👾', text: 'GG! That was amazing', time: '1:30 AM' },
+                    { sent: true, avatar: '😎', text: 'Thanks! You played really well too', time: '1:32 AM' },
+                    { sent: false, avatar: '👾', text: 'Want to run it back tomorrow?', time: '1:33 AM' }
+                ]
+            },
+            'cardboard box': {
+                name: '@cardboard box',
+                status: 'Online',
+                statusColor: '#10b981',
+                avatar: '🔥',
+                messages: [
+                    { sent: false, avatar: '🔥', text: 'Check out my new stream setup', time: '11:20 PM' },
+                    { sent: true, avatar: '😎', text: 'Looks sick! What camera are you using?', time: '11:25 PM' },
+                    { sent: false, avatar: '🔥', text: 'Got the Logitech StreamCam. The quality is insane!', time: '11:27 PM' }
+                ]
+            },
+            'Night Crew Hub': {
+                name: 'Night Crew Hub',
+                status: 'Active',
+                statusColor: '#10b981',
+                avatar: '⚡',
+                messages: [
+                    { sent: false, avatar: '⚡', text: 'Tournament this weekend!', time: 'Yesterday' },
+                    { sent: false, avatar: '⚡', text: 'Sign ups are open now. Prize pool is $500!', time: 'Yesterday' },
+                    { sent: true, avatar: '😎', text: 'Count me in!', time: 'Yesterday' }
+                ]
+            },
+            'NoctiveHQ': {
+                name: '@NoctiveHQ',
+                status: 'Online',
+                statusColor: '#10b981',
+                avatar: '🌟',
+                messages: [
+                    { sent: false, avatar: '🌟', text: 'Want to join our clan?', time: '3:00 AM' },
+                    { sent: true, avatar: '😎', text: 'Tell me more about it', time: '3:05 AM' },
+                    { sent: false, avatar: '🌟', text: 'We are a competitive clan looking for skilled players. We do tournaments every weekend!', time: '3:06 AM' }
+                ]
+            }
+        };
+
+        // Get all conversation elements
+        const conversations = document.querySelectorAll('.conversation');
+        const chatHeader = document.querySelector('.chat-header');
+        const chatMessages = document.querySelector('.chat-messages');
+
+        // Function to render messages
+        function renderMessages(messages) {
+            chatMessages.innerHTML = '';
+            messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = msg.sent ? 'message sent' : 'message';
+                messageDiv.innerHTML = `
+                    <div class="message-avatar">${msg.avatar}</div>
+                    <div class="message-content">
+                        <div class="message-bubble">${msg.text}</div>
+                        <div class="message-time">${msg.time}</div>
+                    </div>
+                `;
+                chatMessages.appendChild(messageDiv);
+            });
+        }
+
+        // Function to switch chat
+        function switchChat(userName) {
+            const chat = chatData[userName];
+            if (!chat) return;
+
+            // Update header
+            chatHeader.innerHTML = `
+                <h2>${chat.name}</h2>
+                <p style="color: ${chat.statusColor}; margin: 0.25rem 0 0 0; font-size: 0.9rem;">● ${chat.status}</p>
+            `;
+
+            // Render messages
+            renderMessages(chat.messages);
+        }
+
+        // Add click handlers to conversations
+        conversations.forEach(conv => {
+            conv.addEventListener('click', function() {
+                // Remove active class from all
+                conversations.forEach(c => c.classList.remove('active'));
+                // Add active class to clicked
+                this.classList.add('active');
+                
+                // Get username from conversation
+                const userName = this.querySelector('.conversation-name').textContent.replace('@', '');
+                switchChat(userName);
+            });
+        });
+    </script>
 </body>
 </html>

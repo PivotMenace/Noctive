@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Noctive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #121524, #1e2242, #2b2d61, #383580, #453c9e);
+            background-attachment: fixed;
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, #facc15, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #d0d0d0;
+            margin-bottom: 3rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(90deg, #facc15, #f59e0b);
+            color: #1a1d2e;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+        .section {
+            background: linear-gradient(to bottom right, #1d2133, #292e44);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(250, 204, 21, 0.2);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+        .section-title {
+            font-size: 2rem;
+            color: #facc15;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-content {
+            color: #d0d0d0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        .section-content p {
+            margin-bottom: 1rem;
+        }
+        .shoutout-item, .mention-item {
+            background: rgba(250, 204, 21, 0.05);
+            border-left: 3px solid #facc15;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+        }
+        .shoutout-name, .mention-name {
+            font-weight: bold;
+            color: #facc15;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .shoutout-desc, .mention-desc {
+            color: #b0b0b0;
+        }
+        .announcement {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.1), rgba(245, 158, 11, 0.1));
+            border: 2px solid #facc15;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .announcement-title {
+            font-weight: bold;
+            color: #facc15;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+        .announcement-date {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 0.5rem;
+        }
+        .owl-mascot {
+            text-align: center;
+            font-size: 4rem;
+            margin: 2rem 0;
+            animation: owlFloat 3s ease-in-out infinite;
+        }
+        @keyframes owlFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <div class="owl-mascot">🦉</div>
+        <h1>Noctive Info Hub</h1>
+        <p class="subtitle">Everything you need to know about your favorite night-first gaming platform!</p>
+
+        <!-- What Are We Section -->
+        <div class="section">
+            <div class="section-title">
+                🌙 What Are We?
+            </div>
+            <div class="section-content">
+                <p>
+                    Noctive is a <strong>night-first gaming platform</strong> built by night owls, for night owls. We understand that the best gaming happens after dark, when the world is quiet and the competition is fierce.
+                </p>
+                <p>
+                    We're not just another social network – we're a community where gamers can connect, share epic moments, find squad mates, and celebrate the unique culture of late-night gaming. Whether you're grinding ranked, streaming to your crew, or just vibing with friends at 3 AM, Noctive is your home.
+                </p>
+                <p>
+                    Our platform features real-time chat, post sharing, gaming hubs, tournaments, and a community that truly gets what it means to be a night gamer. Join us and embrace the night! 🎮✨
+                </p>
+            </div>
+        </div>
+
+        <!-- Special Shoutouts Section -->
+        <div class="section">
+            <div class="section-title">
+                ⭐ Special Shoutouts
+            </div>
+            <div class="section-content">
+                <div class="shoutout-item">
+                    <div class="shoutout-name">🎮 @Hijinxx</div>
+                    <div class="shoutout-desc">
+                        Our resident Night Owl and Valorant extraordinaire! Thanks for always bringing the energy and sick plays to the platform. Your clutch moments inspire us all! 🔥
+                    </div>
+                </div>
+                <div class="shoutout-item">
+                    <div class="shoutout-name">🎯 @Belt181</div>
+                    <div class="shoutout-desc">
+                        The Apex Legends rookie who's already making waves! Keep grinding and showing everyone what you're made of. We're watching your rise! 🚀
+                    </div>
+                </div>
+                <div class="shoutout-item">
+                    <div class="shoutout-name">📦 @cardboard box</div>
+                    <div class="shoutout-desc">
+                        Our favorite bestie and vibe master! Thanks for keeping the community chill and always being there for late-night gaming sessions. 🌙
+                    </div>
+                </div>
+                <div class="shoutout-item">
+                    <div class="shoutout-name">💭 @WakeBakeWes</div>
+                    <div class="shoutout-desc">
+                        The Sims dreamer who brings creativity to everything! Your unique perspective and positive energy make Noctive a better place. ✨
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Honorable Mentions Section -->
+        <div class="section">
+            <div class="section-title">
+                🏆 Honorable Mentions
+            </div>
+            <div class="section-content">
+                <div class="mention-item">
+                    <div class="mention-name">Night Crew Hub</div>
+                    <div class="mention-desc">
+                        For organizing incredible tournaments and keeping the competitive spirit alive! Your dedication to the community doesn't go unnoticed. 🏅
+                    </div>
+                </div>
+                <div class="mention-item">
+                    <div class="mention-name">@NoctiveHQ</div>
+                    <div class="mention-desc">
+                        Our official team account, working around the clock to make Noctive the best platform for night gamers everywhere! 💜
+                    </div>
+                </div>
+                <div class="mention-item">
+                    <div class="mention-name">All Our Night Owls</div>
+                    <div class="mention-desc">
+                        To every gamer who's joined us on this journey – you make Noctive what it is. Your posts, your streams, your epic moments – they all matter. Thank you for being part of our community! 🦉💙
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Special Announcements Section -->
+        <div class="section">
+            <div class="section-title">
+                📢 Special Announcements
+            </div>
+            <div class="section-content">
+                <div class="announcement">
+                    <div class="announcement-title">🎉 Welcome to Noctive Beta!</div>
+                    <div class="announcement-date">December 5, 2025</div>
+                    <p>
+                        We're officially in beta! Thank you for being early adopters and helping us shape the future of night gaming. Your feedback is invaluable as we continue to build and improve the platform.
+                    </p>
+                </div>
+                <div class="announcement">
+                    <div class="announcement-title">🏆 Monthly Tournament Series Coming Soon!</div>
+                    <div class="announcement-date">Coming January 2026</div>
+                    <p>
+                        Get ready for our first official tournament series! Prize pools, exclusive badges, and bragging rights await. More details coming soon – stay tuned to Night Crew Hub for updates!
+                    </p>
+                </div>
+                <div class="announcement">
+                    <div class="announcement-title">🌟 New Features in Development</div>
+                    <div class="announcement-date">Ongoing</div>
+                    <p>
+                        We're working on exciting new features including: enhanced profiles, gaming stats tracking, clan systems, and live streaming integration. The night is just getting started! 🚀
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem; color: #999;">
+            <p>🦉 Have questions or suggestions? Reach out to @NoctiveHQ!</p>
+            <p style="font-size: 0.9rem; margin-top: 1rem;">Built with ❤️ for the night gaming community</p>
+        </div>
+    </div>
+</body>
+</html>
