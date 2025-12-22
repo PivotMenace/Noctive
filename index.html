@@ -2679,6 +2679,10 @@ a.glitchy:hover {
           Already have an account? 
           <span onclick="toggleAuthMode(event)">Sign In</span>
         </p>
+        
+        <p class="forgot-password-link">
+          <a href="reset-password.html" onclick="closeAuthModal()">Forgot your password?</a>
+        </p>
       </div>
       
       <div id="authError" class="auth-error hidden"></div>
@@ -2823,6 +2827,23 @@ a.glitchy:hover {
   #authSwitch span {
     color: #facc15;
     cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .forgot-password-link {
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  
+  .forgot-password-link a {
+    color: #facc15;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+  }
+  
+  .forgot-password-link a:hover {
+    color: #fbbf24;
     text-decoration: underline;
   }
   
