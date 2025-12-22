@@ -3319,23 +3319,23 @@ a.glitchy:hover {
     const sidebarAvatar = document.getElementById('sidebarAvatar');
     const sidebarUserName = document.getElementById('sidebarUserName');
     
-    // Navigation elements to show/hide based on login status
-    const homeNav = document.querySelector('.horizontal-nav-item[data-page="home"]');
-    const exploreNav = document.querySelector('.horizontal-nav-item[data-page="explore"]');
-    const mobileHomeNav = document.querySelector('.mobile-nav-item .mobile-nav-text');
-    // Find the mobile Home nav item by checking if it contains "Home"
+    // Navigation elements for auth-based visibility
+    const horizontalNavItems = document.querySelectorAll('.horizontal-nav-item');
     const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
-    let mobileHomeItem = null;
-    mobileNavItems.forEach(item => {
-      const text = item.querySelector('.mobile-nav-text');
-      if (text && text.textContent === 'Home') {
-        mobileHomeItem = item;
-      }
-    });
     
     if (user) {
-      // User is logged in
+      // User is logged in - show all navigation items
       console.log('User is logged in, hiding login form and auth buttons');
+      
+      // Show all horizontal nav items
+      horizontalNavItems.forEach(item => {
+        item.style.display = 'flex';
+      });
+      
+      // Show all mobile nav items
+      mobileNavItems.forEach(item => {
+        item.style.display = 'block';
+      });
       
       // Check if user has a saved username
       const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
@@ -3367,18 +3367,34 @@ a.glitchy:hover {
       if (userInfo) userInfo.classList.add('hidden');
       if (mobileUserInfo) mobileUserInfo.classList.remove('hidden');
       
-      // Show Home and Explore navigation when logged in
-      if (homeNav) homeNav.style.display = 'flex';
-      if (exploreNav) exploreNav.style.display = 'flex';
-      if (mobileHomeItem) mobileHomeItem.style.display = 'flex';
-      
       console.log('UI updated for logged in user:', user.email);
       
       // Update the create-post section
       updateCreatePostSection();
     } else {
-      // User is logged out
+      // User is logged out - show only Home and Explore navigation items
       console.log('User is logged out, showing login form and auth buttons');
+      
+      // Hide navigation items that require login
+      horizontalNavItems.forEach(item => {
+        const dataPage = item.getAttribute('data-page');
+        if (dataPage === 'home' || dataPage === 'explore') {
+          item.style.display = 'flex'; // Show Home and Explore
+        } else {
+          item.style.display = 'none'; // Hide others
+        }
+      });
+      
+      // Hide mobile nav items that require login (show only Home and Reset Password)
+      mobileNavItems.forEach(item => {
+        const navText = item.querySelector('.mobile-nav-text');
+        const text = navText ? navText.textContent.trim() : item.textContent.trim();
+        if (text === 'Home' || text === 'Reset Password') {
+          item.style.display = 'block'; // Show Home and Reset Password
+        } else {
+          item.style.display = 'none'; // Hide others
+        }
+      });
       
       // Hide sidebar user section
       if (sidebarUser) {
@@ -3391,11 +3407,6 @@ a.glitchy:hover {
       
       if (userInfo) userInfo.classList.add('hidden');
       if (mobileUserInfo) mobileUserInfo.classList.add('hidden');
-      
-      // Hide Home and Explore navigation when logged out
-      if (homeNav) homeNav.style.display = 'none';
-      if (exploreNav) exploreNav.style.display = 'none';
-      if (mobileHomeItem) mobileHomeItem.style.display = 'none';
       
       console.log('UI updated for logged out state');
       
