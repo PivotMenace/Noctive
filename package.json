@@ -12,7 +12,11 @@
   "description": "Night-First Gaming Platform - Unfollow the algorithm. Noctive follows you.",
   "homepage": "https://pivotmenace.github.io/Noctive/",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "nodemailer": "^6.9.8",
+    "crypto": "^1.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
