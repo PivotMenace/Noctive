@@ -775,12 +775,25 @@
             document.getElementById('fileInput').value = '';
             
             modal.classList.add('active');
+            
+            // Add escape key listener
+            document.addEventListener('keydown', handleAvatarModalEscape);
         }
 
         function closeAvatarModal() {
             const modal = document.getElementById('avatarModal');
             modal.classList.remove('active');
             newAvatarUrl = '';
+            
+            // Remove escape key listener
+            document.removeEventListener('keydown', handleAvatarModalEscape);
+        }
+        
+        // Handle escape key for avatar modal
+        function handleAvatarModalEscape(event) {
+            if (event.key === 'Escape' || event.keyCode === 27) {
+                closeAvatarModal();
+            }
         }
 
         function previewAvatarFromUrl() {

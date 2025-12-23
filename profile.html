@@ -60,13 +60,13 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.65rem;
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
@@ -1028,12 +1028,25 @@
             document.getElementById('fileInput').value = '';
             
             modal.classList.add('active');
+            
+            // Add escape key listener
+            document.addEventListener('keydown', handleAvatarModalEscape);
         }
 
         function closeAvatarModal() {
             const modal = document.getElementById('avatarModal');
             modal.classList.remove('active');
             newAvatarUrl = '';
+            
+            // Remove escape key listener
+            document.removeEventListener('keydown', handleAvatarModalEscape);
+        }
+        
+        // Handle escape key for avatar modal
+        function handleAvatarModalEscape(event) {
+            if (event.key === 'Escape' || event.keyCode === 27) {
+                closeAvatarModal();
+            }
         }
 
         function previewAvatarFromUrl() {

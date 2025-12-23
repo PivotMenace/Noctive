@@ -71,8 +71,6 @@
         }
       };
 
-      console.log("Firebase initialized successfully!");
-      
       // Check if user is already logged in
       window.firebase.auth.onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -1053,38 +1051,98 @@ a.glitchy:hover {
         transform: translateY(-1px);
       }
 
+      /* Status Circles */
       .sidebar-widget .status-dot,
-      .retro-window .status-dot {
+      .retro-window .status-dot,
+      #nightCrewWidget .status-dot {
         display: inline-block;
-        width: 14px;
-        height: 14px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
-        margin-right: 0.25rem;
+        margin-right: 0.5rem;
+        vertical-align: middle;
       }
+      
+      /* Online - Green Circle */
       .sidebar-widget .status-dot.online,
-      .retro-window .status-dot.online {
+      .retro-window .status-dot.online,
+      #nightCrewWidget .status-dot.online {
         background-color: #10b981;
         box-shadow: 0 0 6px #10b981;
       }
+      
+      /* Idle - Yellow/Orange Circle */
       .sidebar-widget .status-dot.idle,
-      .retro-window .status-dot.idle {
+      .retro-window .status-dot.idle,
+      #nightCrewWidget .status-dot.idle {
         background-color: #f59e0b;
         box-shadow: 0 0 6px #f59e0b;
       }
-      .sidebar-widget .status-dot.offline,
-      .retro-window .status-dot.offline {
+      
+      /* Busy - Red Circle */
+      .sidebar-widget .status-dot.busy,
+      .retro-window .status-dot.busy,
+      #nightCrewWidget .status-dot.busy {
         background-color: #dc2626;
         box-shadow: 0 0 6px #dc2626;
       }
 
-      /* Moon status for cardboard box */
+      /* Moon status (keeping for backward compatibility) */
       .moon-status {
         display: inline-block;
         font-size: 14px;
         margin-right: 0.25rem;
-        color: #e5e7eb;
-        text-shadow: 0 0 4px rgba(229, 231, 235, 0.6);
-        animation: moonGlow 2s ease-in-out infinite alternate;
+        color: #f59e0b;
+        text-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+      }
+      
+      /* Night Crew username formatting - consistent for all users */
+      #nightCrewWidget #friendsList a {
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+      
+      #nightCrewWidget #friendsList a:hover {
+        color: #facc15;
+      }
+      
+      /* User sub-links styling */
+      .user-sublinks {
+        display: flex;
+        gap: 0.5rem;
+        margin-left: 1.25rem;
+        margin-top: 0.25rem;
+      }
+      
+      .user-sublink {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 0.25rem;
+        color: #f0f0f0;
+        text-decoration: none;
+        font-size: 0.8rem;
+        opacity: 0.4;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+      
+      .user-sublink:hover {
+        background: rgba(250, 204, 21, 0.1);
+        border-color: rgba(250, 204, 21, 0.3);
+        color: #facc15;
+        opacity: 1;
+        transform: translateX(2px);
+      }
+      
+      .user-sublink-icon {
+        font-size: 0.85rem;
       }
 
       @keyframes moonGlow {
@@ -1421,6 +1479,9 @@ a.glitchy:hover {
         font-size: 1rem;
         min-width: 20px;
         text-align: center;
+        position: relative;
+        z-index: 10;
+        display: inline-block;
       }
 
       .user-menu-text {
@@ -1455,12 +1516,6 @@ a.glitchy:hover {
         .user-menu-dropdown.hidden {
           transform: translateY(0);
         }
-      }
-
-      /* Header account link - always on the right */
-      .header-account-link {
-        display: flex;
-        margin-left: auto;
       }
 
       /* Login/Signup Button */
@@ -2229,14 +2284,7 @@ a.glitchy:hover {
       <!-- Login/Signup Button (shows when logged out) -->
       <a href="login.html" id="loginSignupBtn" class="login-signup-btn">Login / Sign Up</a>
       
-      <!-- User Profile at Bottom -->
-      <!-- Copilot: replace this static avatar block with currentUser data
-        • Import or grab `currentUser` from your auth/context (e.g. `const { currentUser } = useAuth()`).
-        • If `currentUser` is null, render nothing.
-        • If `currentUser` exists, render:
-          <img src={currentUser.photoURL} alt={currentUser.displayName} class="user-avatar"/>
-          <span class="user-name">{currentUser.displayName}</span>
-      -->
+      <!-- User Profile Section -->
       <div class="sidebar-user" id="sidebarUser" style="cursor: pointer;">
         <div class="user-avatar">
           <img src="pngs/account.png" alt="User Avatar" id="sidebarAvatar">
@@ -2292,11 +2340,55 @@ a.glitchy:hover {
         </div>
       </div>
       <div class="retro-content">
-        <ul id="friendsList">
-          <li id="currentUserFriend"><span id="userStatusDot" class="status-dot offline"></span> <a href="#" id="userFriendLink" class="glitchy" data-text="@Venus">@Venus</a></li>
-          <li><span class="status-dot online"></span> <a href="/profile/Hijinxx" class="glitchy" data-text="@Hijinxx">@Hijinxx</a></li>
-          <li><span class="status-dot idle"></span> <a href="/profile/Belt181">@Belt181</a></li>
-          <li><span class="moon-status">🌙</span> <a href="/profile/cardboard box">@cardboard box</a></li>
+        <ul id="friendsList" style="list-style: none; padding: 0; margin: 0;">
+          <li id="currentUserFriend" style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span id="userStatusDot" class="status-dot busy"></span>
+            <a href="profile.html" id="userFriendLink" class="glitchy" data-text="@Venus">@Venus</a>
+            <div class="user-sublinks" id="currentUserSublinks" style="margin-left: auto; margin-top: 0;">
+              <a href="profile.html" class="user-sublink" title="View Profile">
+                <span class="user-sublink-icon">👤</span>
+              </a>
+              <a href="messages.html" class="user-sublink" title="Send Message">
+                <span class="user-sublink-icon">💬</span>
+              </a>
+            </div>
+          </li>
+          <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span class="status-dot online"></span>
+            <a href="/profile/Hijinxx" class="glitchy" data-text="@Hijinxx">@Hijinxx</a>
+            <div class="user-sublinks" style="margin-left: auto; margin-top: 0;">
+              <a href="/profile/Hijinxx" class="user-sublink" title="View Profile">
+                <span class="user-sublink-icon">👤</span>
+              </a>
+              <a href="messages.html" class="user-sublink" title="Send Message">
+                <span class="user-sublink-icon">💬</span>
+              </a>
+            </div>
+          </li>
+          <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span class="status-dot idle"></span>
+            <a href="/profile/Belt181">@Belt181</a>
+            <div class="user-sublinks" style="margin-left: auto; margin-top: 0;">
+              <a href="/profile/Belt181" class="user-sublink" title="View Profile">
+                <span class="user-sublink-icon">👤</span>
+              </a>
+              <a href="messages.html" class="user-sublink" title="Send Message">
+                <span class="user-sublink-icon">💬</span>
+              </a>
+            </div>
+          </li>
+          <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span class="status-dot busy"></span>
+            <a href="/profile/cardboard box">@cardboard box</a>
+            <div class="user-sublinks" style="margin-left: auto; margin-top: 0;">
+              <a href="/profile/cardboard box" class="user-sublink" title="View Profile">
+                <span class="user-sublink-icon">👤</span>
+              </a>
+              <a href="messages.html" class="user-sublink" title="Send Message">
+                <span class="user-sublink-icon">💬</span>
+              </a>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -2337,7 +2429,7 @@ a.glitchy:hover {
 
   <div class="media-buttons" style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
     <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">📷 Photo</button>
-    <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem, cursor: pointer;">🎥 Video</button>
+    <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">🎥 Video</button>
     <button class="media-btn" style="flex: 1; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;">😎 GIF</button>
   </div>
 
@@ -3103,7 +3195,6 @@ a.glitchy:hover {
     const user = window.firebaseAuth?.currentUser;
     if (user) {
       // User is already logged in, don't show auth modal
-      console.log('User already logged in, skipping auth modal');
       return;
     }
     
@@ -3158,8 +3249,6 @@ a.glitchy:hover {
       const username = document.getElementById('authUsername');
       const rememberMeContainer = document.getElementById('rememberMeContainer');
       
-      console.log('Toggling auth mode. isSignUpMode:', isSignUpMode);
-      
       if (isSignUpMode) {
         title.textContent = 'Join Noctive';
         submit.textContent = 'Sign Up';
@@ -3189,7 +3278,6 @@ a.glitchy:hover {
       : window.firebase.auth.browserSessionPersistence;
     
     await window.firebase.auth.setPersistence(window.firebaseAuth, persistence);
-    console.log('Auth persistence set to:', persistenceType);
   }
   
   async function handleAuth() {
@@ -3212,7 +3300,6 @@ a.glitchy:hover {
         // Sign Up - always use local persistence
         await setPersistence('local');
         const userCredential = await window.firebase.auth.createUserWithEmailAndPassword(window.firebaseAuth, email, password);
-        console.log('User created:', userCredential.user);
         
         // Store temporary user data for profile wizard
         localStorage.setItem('tempUserData', JSON.stringify({
@@ -3227,7 +3314,6 @@ a.glitchy:hover {
       } else {
         // Sign In - existing user signing back in
         const userCredential = await window.firebase.auth.signInWithEmailAndPassword(window.firebaseAuth, email, password);
-        console.log('User signed in:', userCredential.user);
         
         // For sign in, always redirect to profile page regardless of saved profile
         // Users signing in are existing users, they shouldn't need the welcome wizard
@@ -3260,7 +3346,6 @@ a.glitchy:hover {
   async function signOutUser() {
     try {
       await window.firebase.auth.signOut(window.firebaseAuth);
-      console.log('User signed out');
       updateUserUI(null);
     } catch (error) {
       console.error('Sign out error:', error);
@@ -3326,7 +3411,6 @@ a.glitchy:hover {
   // Update UI based on user state
   function updateUserUI(user) {
     const userInfo = document.getElementById('userInfo');
-    const authButtons = document.getElementById('authButtons');
     const userEmail = document.getElementById('userEmail');
     const loginSignupBtn = document.getElementById('loginSignupBtn');
     
@@ -3345,7 +3429,6 @@ a.glitchy:hover {
     
     if (user) {
       // User is logged in - show all navigation items
-      console.log('User is logged in, hiding login form and auth buttons');
       
       // Show all horizontal nav items
       horizontalNavItems.forEach(item => {
@@ -3381,19 +3464,15 @@ a.glitchy:hover {
       
       // HIDE login button when user is logged in
       if (loginSignupBtn) loginSignupBtn.style.display = 'none';
-      if (authButtons) authButtons.style.display = 'none';
       
       // Keep the green profile display hidden - we don't want it anymore
       if (userInfo) userInfo.classList.add('hidden');
       if (mobileUserInfo) mobileUserInfo.classList.remove('hidden');
       
-      console.log('UI updated for logged in user:', user.email);
-      
       // Update the create-post section
       updateCreatePostSection();
     } else {
       // User is logged out - show only Home and Explore navigation items
-      console.log('User is logged out, showing login form and auth buttons');
       
       // Hide navigation items that require login
       horizontalNavItems.forEach(item => {
@@ -3423,12 +3502,9 @@ a.glitchy:hover {
       
       // SHOW login button when user is logged out
       if (loginSignupBtn) loginSignupBtn.style.display = 'inline-block';
-      if (authButtons) authButtons.style.display = 'none';
       
       if (userInfo) userInfo.classList.add('hidden');
       if (mobileUserInfo) mobileUserInfo.classList.add('hidden');
-      
-      console.log('UI updated for logged out state');
       
       // Update the create-post section back to Venus
       updateCreatePostSection();
@@ -3440,9 +3516,6 @@ a.glitchy:hover {
     // Make sure initial UI state is correct
     const user = window.firebaseAuth?.currentUser;
     updateUserUI(user);
-    
-    // Auth state listener is set up in Firebase initialization
-    console.log('DOM loaded, auth listener ready');
   });
   
   // Profile Modal Functions
@@ -3562,16 +3635,12 @@ a.glitchy:hover {
   }
   
   function updateCreatePostSection() {
-    console.log('updateCreatePostSection called');
-    
     // Check if Firebase auth is ready
     if (!window.firebaseAuth) {
-      console.log('Firebase auth not ready yet, skipping update');
       return;
     }
     
     const user = window.firebaseAuth.currentUser;
-    console.log('Current user:', user ? user.email : 'no user');
     
     const avatar = document.getElementById('createPostAvatar');
     const username = document.getElementById('createPostUsername');
@@ -3579,32 +3648,19 @@ a.glitchy:hover {
     const status = document.getElementById('createPostStatus');
     const textarea = document.getElementById('newPostInput');
     
-    // Debug: Check if elements are found
-    console.log('Elements found:', {
-      avatar: !!avatar,
-      username: !!username,
-      title: !!title,
-      status: !!status,
-      textarea: !!textarea
-    });
-    
     // Also update friends list
     const userFriendLink = document.getElementById('userFriendLink');
     const userStatusDot = document.getElementById('userStatusDot');
     
     if (user) {
       // User is logged in - show their info
-      console.log('User is logged in, updating UI for:', user.email);
       const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
-      console.log('Saved profile data:', savedProfile);
       
       if (savedProfile) {
         const profile = JSON.parse(savedProfile);
-        console.log('Parsed profile:', profile);
         
         // Update username
         const displayName = profile.username || user.email.split('@')[0];
-        console.log('Display name will be:', displayName);
         username.textContent = `@${displayName}`;
         
         // Update title
@@ -3633,10 +3689,8 @@ a.glitchy:hover {
         userStatusDot.className = 'status-dot online'; // Show as online when logged in
         
       } else {
-        // No profile saved yet
-        console.log('No saved profile, using email-based name');
+        // No profile saved yet - use email-based name
         const emailName = user.email.split('@')[0];
-        console.log('Email name will be:', emailName);
         username.textContent = `@${emailName}`;
         title.textContent = '(New User!)';
         status.textContent = '🌙 Welcome to Noctive!';
@@ -3646,7 +3700,7 @@ a.glitchy:hover {
         // Update friends list
         userFriendLink.textContent = `@${emailName}`;
         userFriendLink.setAttribute('data-text', `@${emailName}`);
-        userStatusDot.className = 'status-dot online'; // Show as online when logged in
+        userStatusDot.className = 'status-dot online';
       }
     } else {
       // User is logged out - show Venus
@@ -3659,7 +3713,7 @@ a.glitchy:hover {
       // Update friends list back to Venus
       userFriendLink.textContent = '@Venus';
       userFriendLink.setAttribute('data-text', '@Venus');
-      userStatusDot.className = 'status-dot offline'; // Show Venus as offline
+      userStatusDot.className = 'status-dot busy'; // Show Venus as busy when logged out
     }
   }
   
@@ -3697,11 +3751,9 @@ a.glitchy:hover {
 
   window.addEventListener('message', function(event) {
     if (event.data && event.data.type === 'avatarUpdated') {
-      console.log('Avatar updated, refreshing UI...');
       // Update the create post section to reflect new avatar
       updateCreatePostSection();
     } else if (event.data && event.data.type === 'profileUpdated') {
-      console.log('Profile updated, refreshing UI...');
       // Update the create post section to reflect profile changes
       updateCreatePostSection();
     }
@@ -3788,6 +3840,32 @@ a.glitchy:hover {
       });
     });
   });
+  
+  // Toggle Night Crew Widget
+  function toggleSidebar() {
+    const widget = document.getElementById('nightCrewWidget');
+    const isHidden = widget.classList.contains('hidden');
+    
+    if (isHidden) {
+      widget.classList.remove('hidden');
+      // Add escape key listener when opening
+      document.addEventListener('keydown', handleNightCrewEscape);
+    } else {
+      widget.classList.add('hidden');
+      // Remove escape key listener when closing
+      document.removeEventListener('keydown', handleNightCrewEscape);
+    }
+  }
+  
+  // Handle escape key for Night Crew widget
+  function handleNightCrewEscape(event) {
+    if (event.key === 'Escape' || event.keyCode === 27) {
+      const widget = document.getElementById('nightCrewWidget');
+      if (!widget.classList.contains('hidden')) {
+        toggleSidebar();
+      }
+    }
+  }
   </script>
 
   <!-- Close Main Content Area -->
