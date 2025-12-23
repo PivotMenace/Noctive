@@ -27,7 +27,7 @@
       // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-      import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence, browserSessionPersistence, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
       import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       // Your web app's Firebase configuration
@@ -58,7 +58,8 @@
           onAuthStateChanged,
           setPersistence,
           browserLocalPersistence,
-          browserSessionPersistence
+          browserSessionPersistence,
+          sendPasswordResetEmail
         },
         firestore: {
           collection,
@@ -1156,7 +1157,9 @@ a.glitchy:hover {
         margin-bottom: 1.5rem;
         border-radius: 1rem;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 
+          0 8px 32px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         color: #f0f0f0 !important;
         transition: box-shadow 1.2s cubic-bezier(.4,2,.6,1), border-color 1.2s cubic-bezier(.4,2,.6,1), transform 0.2s ease-out, color 0.2s;
         position: relative;
@@ -1167,7 +1170,8 @@ a.glitchy:hover {
 
       .post:hover {
         border-color: rgba(255, 50, 50, 0.4) !important;
-        box-shadow: 0 0 6px #00eaff, 0 0 12px #ff00cc, 0 0 24px #39ff14;
+        box-shadow: 
+          0 0 6px #00eaff, 0 0 12px #ff00cc, 0 0 24px #39ff14;
         transform: translateY(-2px);
       }
 
@@ -1459,6 +1463,29 @@ a.glitchy:hover {
         margin-left: auto;
       }
 
+      /* Login/Signup Button */
+      .login-signup-btn {
+        display: inline-block;
+        padding: 0.4rem 1rem;
+        margin-left: 0.75rem;
+        background: linear-gradient(90deg, #b22222, #ff3c38);
+        border: none;
+        border-radius: 6px;
+        color: white !important;
+        font-weight: bold;
+        font-size: 0.8rem;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        font-family: 'Nunito', sans-serif;
+      }
+
+      .login-signup-btn:hover {
+        box-shadow: 0 0 15px rgba(255, 60, 56, 0.5);
+        transform: translateY(-1px);
+      }
+
       /* Hide hamburger on desktop */
       @media (min-width: 769px) {
         .mobile-menu-wrapper {
@@ -1539,20 +1566,10 @@ a.glitchy:hover {
           padding: 0.4rem 0.5rem;
         }
 
-        /* Make login form smaller on mobile */
-        .header-account-link form {
-          gap: 0.3rem !important;
-        }
-
-        .header-account-link input {
-          width: 70px !important;
-          font-size: 0.7rem !important;
-          padding: 0.3rem 0.4rem !important;
-        }
-
-        .header-account-link button[type="submit"] {
-          font-size: 0.7rem !important;
-          padding: 0.3rem 0.5rem !important;
+        /* Login/Signup button on mobile */
+        .login-signup-btn {
+          padding: 0.4rem 0.8rem !important;
+          font-size: 0.75rem !important;
         }
 
         .brand-title {
@@ -2169,26 +2186,6 @@ a.glitchy:hover {
           </a>
         </div>
       </div>
-      
-      <div class="header-account-link">
-        <!-- Login Form (shows when logged out) -->
-        <form id="loginForm" style="display: flex; align-items: center; gap: 0.5rem;">
-          <input type="text" id="username" placeholder="Username" required style="padding: 0.4rem 0.6rem; border-radius: 0.25rem; border: 1px solid #444; background: #1e1e2e; color: #fff; font-size: 0.8rem; width: 100px;" />
-          <input type="password" id="password" placeholder="Password" required style="padding: 0.4rem 0.6rem; border-radius: 0.25rem; border: 1px solid #444; background: #1e1e2e; color: #fff; font-size: 0.8rem; width: 100px;" />
-          <button type="submit" style="padding: 0.4rem 0.8rem; background: linear-gradient(90deg, #b22222, #ff3c38); border: none; border-radius: 0.25rem; color: white; font-weight: bold; cursor: pointer; font-size: 0.8rem;">Login</button>
-        </form>
-        <div style="font-size: 0.7rem; margin-top: 0.25rem;">
-          <a href="reset-password.html" style="color: #facc15; text-decoration: none;">Forgot password?</a>
-        </div>
-        <div id="authButtons" class="auth-buttons" style="display: none;">
-          <a href="#" class="account-link" title="Sign In" onclick="openAuthModal(); return false;" style="display: none;">
-            <span class="login-text">Login / Sign Up</span>
-          </a>
-          <a href="/settings" class="settings-link" title="Settings" style="display: none;">
-            <img src="pngs/settings.png" alt="Settings" class="settings-icon">
-          </a>
-        </div>
-      </div>
     </div>
     
     <!-- Horizontal Navigation -->
@@ -2221,13 +2218,16 @@ a.glitchy:hover {
         </a>
       </nav>
       
-      <!-- Post Button -->
-      <div class="post-button-container">
+      <!-- Post Button (hidden for now) -->
+      <div class="post-button-container" style="display: none;">
         <button class="post-button" onclick="openCreatePost()">
           <span class="post-icon">✨</span>
           <span class="post-label">Post</span>
         </button>
       </div>
+      
+      <!-- Login/Signup Button (shows when logged out) -->
+      <a href="login.html" id="loginSignupBtn" class="login-signup-btn">Login / Sign Up</a>
       
       <!-- User Profile at Bottom -->
       <!-- Copilot: replace this static avatar block with currentUser data
@@ -2514,8 +2514,29 @@ a.glitchy:hover {
 
 </section>
 
-<section id="following" class="tab-panel">
-  <div class="post" data-post-id="hijinxx-following">
+        <!-- Reset Password Section (initially hidden) -->
+        <section id="reset-password" class="tab-panel">
+          <div class="reset-password-form" style="max-width: 400px; margin: 0 auto; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+            <h2 style="font-size: 1.25rem; margin-bottom: 1rem; color: #facc15;">Reset Password</h2>
+            <p style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #ddd;">Enter your email address below and we'll send you a link to reset your password.</p>
+            
+            <input type="email" id="resetEmail" placeholder="Email address" required style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #444; border-radius: 0.5rem; background: #1e1e2e; color: #fff; font-size: 0.9rem;" />
+            
+            <button id="sendResetLink" onclick="sendPasswordReset()" style="width: 100%; padding: 0.75rem; background: linear-gradient(90deg, #b22222, #ff3c38); border: none; border-radius: 0.5rem; color: white; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: background 0.3s ease;">
+              Send Reset Link
+            </button>
+            
+            <div id="resetMessage" class="reset-message" style="margin-top: 1rem; font-size: 0.85rem; color: #aaa; display: none;"></div>
+            
+            <div style="margin-top: 1.5rem; font-size: 0.8rem; text-align: center; color: #ccc;">
+              Remembered your password? <a href="#" onclick="toggleAuthMode(event)" style="color: #facc15; text-decoration: none;">Sign In</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab panels for feed -->
+        <section id="following" class="tab-panel">
+          <div class="post" data-post-id="hijinxx-following">
     <div class="post-header">
       <div class="user">
         <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" />
@@ -2936,7 +2957,6 @@ a.glitchy:hover {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: -10px;
   }
   
   .profile-close:hover {
@@ -3308,7 +3328,7 @@ a.glitchy:hover {
     const userInfo = document.getElementById('userInfo');
     const authButtons = document.getElementById('authButtons');
     const userEmail = document.getElementById('userEmail');
-    const loginForm = document.getElementById('loginForm');
+    const loginSignupBtn = document.getElementById('loginSignupBtn');
     
     // Mobile user info elements
     const mobileUserInfo = document.getElementById('mobileUserInfo');
@@ -3359,8 +3379,8 @@ a.glitchy:hover {
         sidebarUserName.textContent = displayText;
       }
       
-      // HIDE login form and auth buttons when user is logged in
-      if (loginForm) loginForm.style.display = 'none';
+      // HIDE login button when user is logged in
+      if (loginSignupBtn) loginSignupBtn.style.display = 'none';
       if (authButtons) authButtons.style.display = 'none';
       
       // Keep the green profile display hidden - we don't want it anymore
@@ -3401,9 +3421,9 @@ a.glitchy:hover {
         sidebarUser.style.display = 'none';
       }
       
-      // SHOW login form and auth buttons when user is logged out
-      if (loginForm) loginForm.style.display = 'flex';
-      if (authButtons) authButtons.style.display = 'flex';
+      // SHOW login button when user is logged out
+      if (loginSignupBtn) loginSignupBtn.style.display = 'inline-block';
+      if (authButtons) authButtons.style.display = 'none';
       
       if (userInfo) userInfo.classList.add('hidden');
       if (mobileUserInfo) mobileUserInfo.classList.add('hidden');
@@ -3674,6 +3694,7 @@ a.glitchy:hover {
   }
 
   // Listen for avatar updates from profile page
+
   window.addEventListener('message', function(event) {
     if (event.data && event.data.type === 'avatarUpdated') {
       console.log('Avatar updated, refreshing UI...');

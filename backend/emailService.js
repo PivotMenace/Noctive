@@ -5,56 +5,20 @@ require('dotenv').config();
 
 // Create transporter for sending emails
 const createTransporter = () => {
-  const emailService = process.env.EMAIL_SERVICE || 'gmail';
-
-  if (emailService === 'ethereal') {
-    // For testing - create Ethereal test account
-    return nodemailer.createTestAccount().then(testAccount => {
-      console.log('Ethereal test account created:', testAccount);
-      return nodemailer.createTransporter({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass,
-        },
-      });
-    });
-  } else if (emailService === 'sendgrid') {
-    // SendGrid configuration
-    return nodemailer.createTransporter({
-      service: 'SendGrid',
-      auth: {
-        user: 'apikey',
-        pass: process.env.SENDGRID_API_KEY
-      }
-    });
-  } else if (emailService === 'outlook') {
-    // Outlook configuration
-    return nodemailer.createTransporter({
-      service: 'outlook',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-  } else {
-    // Default Gmail configuration
-    return nodemailer.createTransporter({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER || 'your-email@gmail.com',
-        pass: process.env.EMAIL_PASS || 'your-app-password'
-      }
-    });
-  }
+  // For Gmail (you can change this to other providers)
+  return nodemailer.createTransporter({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER || 'your-email@gmail.com',
+      pass: process.env.EMAIL_PASS || 'your-app-password'
+    }
+  });
 };
 
 // Send password reset email
 const sendPasswordResetEmail = async (email, resetToken) => {
   try {
-    const transporter = await createTransporter();
+    const transporter = createTransporter();
 
     const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/new-password.html?token=${resetToken}`;
 
@@ -128,12 +92,6 @@ const sendPasswordResetEmail = async (email, resetToken) => {
 
     const info = await transporter.sendMail(mailOptions);
     console.log('Password reset email sent:', info.messageId);
-
-    // If using Ethereal, log the test URL
-    if (process.env.EMAIL_SERVICE === 'ethereal') {
-      console.log('Test email URL:', nodemailer.getTestMessageUrl(info));
-    }
-
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('Error sending password reset email:', error);
