@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Hypurly - Noctive Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #121524, #1a1f3a, #3a1810);
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 60, 56, 0.8);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 60, 56, 1);
+            transform: translateY(-2px);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem auto;
+            border: 4px solid rgba(251, 146, 60, 0.5);
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-username {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #facc15;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-title {
+            font-size: 1rem;
+            color: #fb923c;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: #a0a0a0;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ef4444;
+            box-shadow: 0 0 6px #ef4444;
+        }
+
+        .profile-bio {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-bio h3 {
+            color: #facc15;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-games {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 1rem;
+        }
+
+        .profile-games h3 {
+            color: #facc15;
+            margin-bottom: 1rem;
+        }
+
+        .game-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .game-list li {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            border-left: 3px solid #facc15;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 1rem;
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 0.5rem;
+            color: #facc15;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(250, 204, 21, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <a href="../index.html" class="back-button">← Back to Home</a>
+        
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <img src="https://ui-avatars.com/api/?name=Hypurly&background=fb923c&color=fff&rounded=true&size=200" alt="Hypurly Avatar">
+            </div>
+            <h1 class="profile-username">@Hypurly</h1>
+            <p class="profile-title">(Speed Demon)</p>
+            <div class="profile-status">
+                <span class="status-dot"></span>
+                <span>Busy</span>
+            </div>
+        </div>
+
+        <div class="profile-bio">
+            <h3>✨ About</h3>
+            <p>sweaty tryhard and proud. if it doesn't require frame-perfect inputs i'm not interested. my reaction time is faster than your excuses fr</p>
+        </div>
+
+        <div class="profile-games">
+            <h3>🎮 Currently Playing</h3>
+            <ul class="game-list">
+                <li>🏃 Apex Legends</li>
+                <li>⚡ Celeste (Speedrunning)</li>
+                <li>🎯 CS:GO</li>
+                <li>🏎️ TrackMania</li>
+            </ul>
+        </div>
+
+        <div class="action-buttons">
+            <a href="../messages.html" class="action-btn">💬 Send Message</a>
+            <a href="#" class="action-btn" onclick="alert('Friend request feature coming soon!'); return false;">➕ Add Friend</a>
+        </div>
+    </div>
+</body>
+</html>
