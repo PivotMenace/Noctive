@@ -310,6 +310,14 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .profile-container {
+                padding: 1.5rem;
+            }
+
             .profile-banner {
                 height: 120px;
             }
@@ -329,6 +337,7 @@
 
             .stats-grid {
                 padding: 1rem 0.5rem;
+                flex-wrap: wrap;
             }
 
             .stat-number {
@@ -337,6 +346,33 @@
 
             .stat-label {
                 font-size: 0.75rem;
+            }
+
+            .games-grid {
+                gap: 0.5rem;
+            }
+
+            .game-tag {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .btn {
+                min-height: 44px;
+                touch-action: manipulation;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .back-button {
+                margin-bottom: 0.75rem;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
     </style>
