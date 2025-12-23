@@ -1,2 +1,35 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+
+# Build outputs
+dist/
+build/
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# OS files
+desktop.ini
+.DS_Store
+Thumbs.db
+
+# Unused folders (keeping locally but not in repo)
+backend/
+server/
+my-app/
+scripts/
+
+# TypeScript config (not needed)
+tsconfig.json
+
+# Test files
+test-email.js
+
 # Local Netlify folder
 .netlify
