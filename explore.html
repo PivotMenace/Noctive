@@ -22,11 +22,19 @@
         }
         h1 {
             font-size: 3rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        h1 .title-text {
             background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
+        }
+        h1 .title-icon {
+            font-style: normal;
         }
         .back-link {
             display: inline-block;
@@ -48,6 +56,11 @@
             gap: 1.5rem;
             margin-top: 2rem;
         }
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
         .card {
             background: linear-gradient(to bottom right, #1d2133, #292e44);
             border-radius: 1rem;
@@ -55,6 +68,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
         }
         .card:hover {
             transform: translateY(-4px);
@@ -84,67 +98,79 @@
     <div class="container">
         <a href="index.html" class="back-link">← Back to Home</a>
         
-        <h1>🔍 Explore</h1>
+        <h1><span class="title-icon">🔍</span> <span class="title-text">Explore</span></h1>
         <p style="font-size: 1.2rem; color: #d0d0d0; margin-bottom: 2rem;">
             Discover trending games, communities, and content across Noctive
         </p>
 
         <div class="content-grid">
-            <div class="card">
-                <h3>🎮 Trending Games</h3>
-                <p>Check out the most popular games in the community right now.</p>
-                <div>
-                    <span class="tag">Rainbow Six Siege</span>
-                    <span class="tag">Valorant</span>
-                    <span class="tag">Apex Legends</span>
+            <a href="hubs.html" class="card-link">
+                <div class="card">
+                    <h3>🎮 Trending Games</h3>
+                    <p>Check out the most popular games in the community right now.</p>
+                    <div>
+                        <span class="tag">Rainbow Six Siege</span>
+                        <span class="tag">Valorant</span>
+                        <span class="tag">Apex Legends</span>
+                    </div>
                 </div>
-            </div>
+            </a>
 
-            <div class="card">
-                <h3>🌟 Top Creators</h3>
-                <p>Follow the most active and engaging content creators on Noctive.</p>
-                <div>
-                    <span class="tag">@NightHawk</span>
-                    <span class="tag">@GamerQueen</span>
-                    <span class="tag">@ProStreamer</span>
+            <a href="creator-hub.html" class="card-link">
+                <div class="card">
+                    <h3>🌟 Top Creators</h3>
+                    <p>Follow the most active and engaging content creators on Noctive.</p>
+                    <div>
+                        <span class="tag">@NightHawk</span>
+                        <span class="tag">@GamerQueen</span>
+                        <span class="tag">@ProStreamer</span>
+                    </div>
                 </div>
-            </div>
+            </a>
 
-            <div class="card">
-                <h3>🔥 Hot Topics</h3>
-                <p>Join the conversation on the most discussed topics this week.</p>
-                <div>
-                    <span class="tag">#NightGaming</span>
-                    <span class="tag">#TeamUp</span>
-                    <span class="tag">#ProTips</span>
+            <a href="index.html#feed" class="card-link">
+                <div class="card">
+                    <h3>🔥 Hot Topics</h3>
+                    <p>Join the conversation on the most discussed topics this week.</p>
+                    <div>
+                        <span class="tag">#NightGaming</span>
+                        <span class="tag">#TeamUp</span>
+                        <span class="tag">#ProTips</span>
+                    </div>
                 </div>
-            </div>
+            </a>
 
-            <div class="card">
-                <h3>📺 Live Streams</h3>
-                <p>Watch live gaming sessions from the Noctive community.</p>
-                <div>
-                    <span class="tag">12 Live Now</span>
+            <a href="hubs.html" class="card-link">
+                <div class="card">
+                    <h3>📺 Live Streams</h3>
+                    <p>Watch live gaming sessions from the Noctive community.</p>
+                    <div>
+                        <span class="tag">12 Live Now</span>
+                    </div>
                 </div>
-            </div>
+            </a>
 
-            <div class="card">
-                <h3>🎯 Communities</h3>
-                <p>Find and join gaming communities that match your interests.</p>
-                <div>
-                    <span class="tag">FPS Squad</span>
-                    <span class="tag">RPG Guild</span>
-                    <span class="tag">Indie Lovers</span>
+            <a href="hubs.html" class="card-link">
+                <div class="card">
+                    <h3>🎯 Communities</h3>
+                    <p>Find and join gaming communities that match your interests.</p>
+                    <div>
+                        <span class="tag">FPS Squad</span>
+                        <span class="tag">RPG Guild</span>
+                        <span class="tag">Indie Lovers</span>
+                    </div>
                 </div>
-            </div>
+            </a>
 
-            <div class="card">
-                <h3>⚡ Quick Matches</h3>
-                <p>Find teammates for quick gaming sessions right now.</p>
-                <div>
-                    <span class="tag">8 Players Looking</span>
+            <a href="hubs.html" class="card-link">
+                <div class="card">
+                    <h3>⚡ Quick Matches</h3>
+                    <p>Find teammates for quick gaming sessions right now.</p>
+                    <div>
+                        <span class="tag">8 Players Looking</span>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </body>

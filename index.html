@@ -597,23 +597,37 @@ a.glitchy:hover {
   background: rgba(250, 204, 21, 0.1);
 }
 
-.user-avatar {
-  width: 28px;
-  height: 28px;
+.sidebar-user .user-avatar {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   overflow: hidden;
-  border: 1.5px solid rgba(250, 204, 21, 0.5);
+  border: 2px solid #ffffff !important;
   margin-right: 0;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: transparent !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) !important;
+  animation: none !important;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-.user-avatar img {
+.sidebar-user .user-avatar:hover {
+  transform: scale(1.05);
+  border-color: #facc15 !important;
+  box-shadow: 0 0 15px rgba(250, 204, 21, 0.3) !important;
+}
+
+.sidebar-user .user-avatar img {
   width: 100%;
   height: 100%;
+  min-width: 100%;
+  min-height: 100%;
   object-fit: cover;
+  object-position: center;
   border-radius: 50%;
   display: block;
 }
@@ -663,12 +677,15 @@ a.glitchy:hover {
   padding: 1rem 0.5rem;
 }
 
-.sidebar.collapsed .user-avatar {
+.sidebar.collapsed .sidebar-user .user-avatar {
   margin-right: 0;
   width: 45px;
   height: 45px;
   border-radius: 50%;
   flex-shrink: 0;
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) !important;
+  animation: none !important;
 }
 
 .sidebar-overlay {
@@ -1471,6 +1488,19 @@ a.glitchy:hover {
         border-radius: 2px;
       }
 
+      /* Hamburger animation when active */
+      .hamburger-btn.active .hamburger-line:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .hamburger-btn.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger-btn.active .hamburger-line:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
+
       .mobile-dropdown {
         position: absolute;
         top: 100%;
@@ -1493,6 +1523,98 @@ a.glitchy:hover {
         opacity: 0;
         visibility: hidden;
         transform: translateY(-10px);
+      }
+
+      /* Mobile Navigation Items */
+      .mobile-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: #f0f0f0;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: none;
+        background: transparent;
+      }
+
+      .mobile-nav-item:hover {
+        background: rgba(250, 204, 21, 0.1);
+        color: #facc15;
+      }
+
+      .mobile-nav-item.active {
+        background: rgba(250, 204, 21, 0.15);
+        color: #facc15;
+        border-left: 3px solid #facc15;
+      }
+
+      .mobile-nav-icon {
+        font-size: 1.1rem;
+        min-width: 24px;
+        text-align: center;
+      }
+
+      .mobile-nav-text {
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+
+      .mobile-menu-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        margin: 0.5rem 0;
+      }
+
+      .mobile-user-section {
+        padding: 0.75rem 1rem;
+      }
+
+      .mobile-user-profile {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .mobile-user-name {
+        color: #facc15;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+      }
+
+      .mobile-user-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .mobile-profile-btn,
+      .mobile-signout-btn {
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+        border: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .mobile-profile-btn {
+        background: rgba(250, 204, 21, 0.2);
+        color: #facc15;
+      }
+
+      .mobile-profile-btn:hover {
+        background: rgba(250, 204, 21, 0.3);
+      }
+
+      .mobile-signout-btn {
+        background: rgba(255, 60, 56, 0.2);
+        color: #ff9999;
+      }
+
+      .mobile-signout-btn:hover {
+        background: rgba(255, 60, 56, 0.3);
       }
 
       /* User Menu Dropdown */
@@ -1568,6 +1690,143 @@ a.glitchy:hover {
       .logout-item:hover {
         background: rgba(255, 60, 56, 0.1);
         color: #ff9999;
+      }
+
+      /* Status Picker Modal */
+      .status-picker-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 20000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .status-picker-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .status-picker-modal {
+        background: linear-gradient(to bottom right, #1a1d2e, #23263a);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        min-width: 280px;
+        max-width: 90%;
+        box-shadow: 0 16px 64px rgba(0, 0, 0, 0.5);
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+      }
+
+      .status-picker-overlay.show .status-picker-modal {
+        transform: scale(1);
+      }
+
+      .status-picker-title {
+        color: #facc15;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .status-option {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #f0f0f0;
+        margin-bottom: 0.5rem;
+      }
+
+      .status-option:hover {
+        background: rgba(250, 204, 21, 0.1);
+      }
+
+      .status-option.active {
+        background: rgba(250, 204, 21, 0.2);
+        border: 1px solid rgba(250, 204, 21, 0.5);
+      }
+
+      .status-option-icon {
+        font-size: 1.2rem;
+      }
+
+      .status-option-text {
+        font-weight: 500;
+      }
+
+      .status-option-desc {
+        font-size: 0.75rem;
+        color: #9ca3af;
+        margin-top: 0.15rem;
+      }
+
+      .status-custom-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        color: #f0f0f0;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        outline: none;
+        transition: border-color 0.2s ease;
+      }
+
+      .status-custom-input:focus {
+        border-color: #facc15;
+      }
+
+      .status-custom-input::placeholder {
+        color: #6b7280;
+      }
+
+      .status-picker-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+
+      .status-picker-btn {
+        flex: 1;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+        font-size: 0.9rem;
+      }
+
+      .status-picker-btn.cancel {
+        background: rgba(255, 255, 255, 0.1);
+        color: #f0f0f0;
+      }
+
+      .status-picker-btn.cancel:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .status-picker-btn.save {
+        background: #facc15;
+        color: #1a1d2e;
+      }
+
+      .status-picker-btn.save:hover {
+        background: #fde047;
       }
 
       /* Mobile adjustments for user menu */
@@ -1960,6 +2219,47 @@ a.glitchy:hover {
   border-radius: 50%;
   object-fit: cover;
   display: block;
+}
+
+/* Avatar links - clickable profile pictures */
+.avatar-link {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.avatar-link:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
+}
+
+.avatar-link img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Post user avatars */
+.post .user img,
+.post .user .avatar-link img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post .user img:hover,
+.post .user .avatar-link:hover img {
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
 }
 
 @keyframes pulseGlow {
@@ -2356,18 +2656,23 @@ a.glitchy:hover {
       
       <!-- User Profile Section -->
       <div class="sidebar-user" id="sidebarUser" style="cursor: pointer;">
-        <div class="user-avatar">
-          <img src="pngs/account.png" alt="User Avatar" id="sidebarAvatar">
+        <div class="user-avatar" onclick="window.location.href='profile.html'" style="cursor: pointer;">
+          <img src="pngs/account.png" alt="User Avatar" id="sidebarAvatar" onerror="this.src='pngs/account.png'">
         </div>
         <div class="user-info" onclick="window.location.href='profile.html'">
           <div class="user-name" id="sidebarUserName">@username</div>
-          <div class="user-status">Online</div>
+          <div class="user-status" id="userStatusDisplay">🟢 Online</div>
         </div>
         <div class="user-menu-toggle" onclick="toggleUserMenu(); return false;">⋯</div>
       </div>
       
       <!-- User Menu Dropdown -->
       <div class="user-menu-dropdown hidden" id="userMenuDropdown">
+        <div class="user-menu-item" onclick="openStatusPicker(); document.getElementById('userMenuDropdown').classList.add('hidden');">
+          <span class="user-menu-icon" id="statusMenuIcon">🟢</span>
+          <span class="user-menu-text">Set Status</span>
+        </div>
+        <div class="user-menu-divider"></div>
         <div class="user-menu-item" onclick="window.location.href='profile.html'; document.getElementById('userMenuDropdown').classList.add('hidden');">
           <span class="user-menu-icon">👤</span>
           <span class="user-menu-text">Profile Settings</span>
@@ -2509,7 +2814,7 @@ a.glitchy:hover {
 <div class="post" data-post-id="hijinxx">
   <div class="post-header">
     <div class="user">
-      <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" />
+      <a href="profile/Hijinxx.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" /></a>
       <div class="user-info">
         <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="profile/Hijinxx.html" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a><span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Valorant</span>
@@ -2533,7 +2838,7 @@ a.glitchy:hover {
 <div class="post" data-post-id="belt181">
   <div class="post-header">
     <div class="user">
-      <img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" />
+      <a href="profile/Belt181.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" /></a>
       <div class="user-info">
         <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="profile/Belt181.html" class="glitchy" data-text="@Belt181">@Belt181</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Apex Legends</span>
@@ -2557,7 +2862,7 @@ a.glitchy:hover {
 <div class="post" data-post-id="cardboard-box">
   <div class="post-header">
     <div class="user">
-      <img src="https://ui-avatars.com/api/?name=cardboard+box&background=222244&color=fff&rounded=true" alt="User Avatar" />
+      <a href="profile/cardboard-box.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=cardboard+box&background=222244&color=fff&rounded=true" alt="User Avatar" /></a>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/cardboard-box.html" class="glitchy" data-text="@cardboard box">@cardboard box</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span></strong>
         <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
@@ -2581,7 +2886,7 @@ a.glitchy:hover {
 <div class="post" data-post-id="WakeBakeWes">
   <div class="post-header">
     <div class="user">
-      <img src="https://ui-avatars.com/api/?name=WakeBakeWes&background=004080&color=fff&rounded=true" alt="User Avatar" />
+      <a href="profile/WakeBakeWes.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=WakeBakeWes&background=004080&color=fff&rounded=true" alt="User Avatar" /></a>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/WakeBakeWes.html" class="glitchy" data-text="@WakeBakeWes">@WakeBakeWes</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: The Sims</span>
@@ -2605,7 +2910,7 @@ a.glitchy:hover {
 <div class="post" data-post-id="UnDiscoverableTalent">
   <div class="post-header">
     <div class="user">
-      <img src="https://ui-avatars.com/api/?name=UnDiscoverableTalent&background=660066&color=fff&rounded=true" alt="User Avatar" />
+      <a href="profile/UnDiscoverableTalent.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=UnDiscoverableTalent&background=660066&color=fff&rounded=true" alt="User Avatar" /></a>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/UnDiscoverableTalent.html" class="glitchy" data-text="@UnDiscoverableTalent">@UnDiscoverableTalent</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span></strong>
         <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
@@ -2629,7 +2934,7 @@ a.glitchy:hover {
 <div class="post" data-post-id="loripie">
   <div class="post-header">
     <div class="user">
-      <img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar" />
+      <a href="profile/LoriPie.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar" /></a>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/LoriPie.html" class="glitchy" data-text="@LoriPie">@LoriPie</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Stardew Valley</span>
@@ -2653,7 +2958,7 @@ a.glitchy:hover {
 <div class="post" data-post-id="hypurly">
   <div class="post-header">
     <div class="user">
-      <img src="https://ui-avatars.com/api/?name=Hypurly&background=9333ea&color=fff&rounded=true" alt="User Avatar" />
+      <a href="profile/Hypurly.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hypurly&background=9333ea&color=fff&rounded=true" alt="User Avatar" /></a>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/Hypurly.html" class="glitchy" data-text="@Hypurly">@Hypurly</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill Vibes)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Minecraft</span>
@@ -2701,7 +3006,7 @@ a.glitchy:hover {
           <div class="post" data-post-id="hijinxx-following">
     <div class="post-header">
       <div class="user">
-        <img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" />
+        <a href="profile/Hijinxx.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" /></a>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
             <a href="profile/Hijinxx.html" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a>
@@ -2728,7 +3033,7 @@ a.glitchy:hover {
   <div class="post" data-post-id="belt181-following">
     <div class="post-header">
       <div class="user">
-        <img src="https://ui-avatars.com/api/?name=Belt181&background=004080&color=fff&rounded=true" alt="User Avatar" />
+        <a href="profile/Belt181.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Belt181&background=004080&color=fff&rounded=true" alt="User Avatar" /></a>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
             <a href="profile/Belt181.html" class="glitchy" data-text="@Belt181" style="margin-right: 0.1rem;">@Belt181</a>
@@ -2757,7 +3062,7 @@ a.glitchy:hover {
   <div class="post" data-post-id="lounge-tournament">
     <div class="post-header">
       <div class="user">
-        <img src="https://ui-avatars.com/api/?name=NightCrewHub&background=facc15&color=1a1d2e&rounded=true" alt="User Avatar" />
+        <a href="profile/NightCrewHub.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=NightCrewHub&background=facc15&color=1a1d2e&rounded=true" alt="User Avatar" /></a>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
             <a href="/profile/NightCrewHub" class="glitchy" data-text="@NightCrewHub" style="margin-right: 0.1rem;">@NightCrewHub</a>
@@ -2784,7 +3089,7 @@ a.glitchy:hover {
   <div class="post" data-post-id="lounge-squad">
     <div class="post-header">
       <div class="user">
-        <img src="https://ui-avatars.com/api/?name=SquadLeader&background=ff6600&color=fff&rounded=true" alt="User Avatar" />
+        <a href="profile/SquadLeader.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=SquadLeader&background=ff6600&color=fff&rounded=true" alt="User Avatar" /></a>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
             <a href="/profile/SquadLeader" class="glitchy" data-text="@SquadLeader" style="margin-right: 0.1rem;">@SquadLeader</a>
@@ -2811,7 +3116,7 @@ a.glitchy:hover {
   <div class="post" data-post-id="lounge-tips">
     <div class="post-header">
       <div class="user">
-        <img src="https://ui-avatars.com/api/?name=ProTips&background=222244&color=fff&rounded=true" alt="User Avatar" />
+        <a href="profile/ProTips.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=ProTips&background=222244&color=fff&rounded=true" alt="User Avatar" /></a>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
             <a href="/profile/ProTips" class="glitchy" data-text="@ProTips" style="margin-right: 0.1rem;">@ProTips</a>
@@ -3258,6 +3563,120 @@ a.glitchy:hover {
   </style>
 
   <script>
+  // ─── TOUCH DEVICE DETECTION ───
+  (function() {
+    // Detect touch device
+    function isTouchDevice() {
+      return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+    }
+    
+    if (isTouchDevice()) {
+      document.body.classList.add('touch-device');
+    }
+    
+    // Also listen for first touch event
+    document.addEventListener('touchstart', function onFirstTouch() {
+      document.body.classList.add('touch-device');
+      document.removeEventListener('touchstart', onFirstTouch);
+    }, { passive: true });
+  })();
+
+  // ─── MOBILE MENU FUNCTIONS ───
+  function toggleMobileMenu() {
+    const dropdown = document.getElementById('mobileDropdown');
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    
+    if (dropdown) {
+      dropdown.classList.toggle('hidden');
+      
+      // Update aria-expanded for accessibility
+      if (hamburgerBtn) {
+        const isExpanded = !dropdown.classList.contains('hidden');
+        hamburgerBtn.setAttribute('aria-expanded', isExpanded);
+        hamburgerBtn.classList.toggle('active', isExpanded);
+      }
+    }
+  }
+  
+  function selectMobileNav(element, pageName) {
+    // Remove active class from all mobile nav items
+    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    
+    // Add active class to clicked item
+    element.classList.add('active');
+    
+    // Close mobile menu
+    const dropdown = document.getElementById('mobileDropdown');
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    if (dropdown) {
+      dropdown.classList.add('hidden');
+    }
+    if (hamburgerBtn) {
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      hamburgerBtn.classList.remove('active');
+    }
+    
+    // Navigate to the appropriate page
+    const pageRoutes = {
+      'Home': 'index.html',
+      'Creator Hub': 'creator-hub.html',
+      'Highlights': 'index.html#highlights',
+      'Find Teammates': 'index.html#teammates',
+      'Store Hub': 'index.html#store',
+      'Dev Hub': 'index.html#dev'
+    };
+    
+    const route = pageRoutes[pageName];
+    if (route) {
+      window.location.href = route;
+    }
+  }
+  
+  // Open create post section - scrolls to the create post area
+  function openCreatePost() {
+    const createPostSection = document.querySelector('.create-post');
+    const newPostInput = document.getElementById('newPostInput');
+    
+    if (createPostSection) {
+      createPostSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (newPostInput) {
+        setTimeout(() => newPostInput.focus(), 500);
+      }
+    }
+  }
+  
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', function(event) {
+    const mobileMenuWrapper = document.querySelector('.mobile-menu-wrapper');
+    const dropdown = document.getElementById('mobileDropdown');
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    
+    if (mobileMenuWrapper && dropdown && !mobileMenuWrapper.contains(event.target)) {
+      dropdown.classList.add('hidden');
+      if (hamburgerBtn) {
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        hamburgerBtn.classList.remove('active');
+      }
+    }
+  });
+  
+  // Close mobile menu on escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      const dropdown = document.getElementById('mobileDropdown');
+      const hamburgerBtn = document.querySelector('.hamburger-btn');
+      if (dropdown && !dropdown.classList.contains('hidden')) {
+        dropdown.classList.add('hidden');
+        if (hamburgerBtn) {
+          hamburgerBtn.setAttribute('aria-expanded', 'false');
+          hamburgerBtn.classList.remove('active');
+        }
+      }
+    }
+  });
+  
   let isSignUpMode = true;
   
   function openAuthModal() {
@@ -3527,6 +3946,11 @@ a.glitchy:hover {
         const avatarUrl = user.photoURL || profileData?.avatarUrl || 'pngs/account.png';
         sidebarAvatar.src = avatarUrl;
         sidebarAvatar.alt = user.displayName || profileData?.username || 'User Avatar';
+        
+        // Add fallback in case avatar URL fails to load
+        sidebarAvatar.onerror = function() {
+          this.src = 'pngs/account.png';
+        };
         
         // Update username
         sidebarUserName.textContent = displayText;
@@ -4087,6 +4511,175 @@ a.glitchy:hover {
           }, 3000);
         }
       }, 60000); // Every minute, 30% chance
+    </script>
+
+    <!-- Status Picker Modal -->
+    <div class="status-picker-overlay" id="statusPickerOverlay" onclick="closeStatusPicker(event)">
+      <div class="status-picker-modal" onclick="event.stopPropagation()">
+        <div class="status-picker-title">Set Your Status</div>
+        
+        <div class="status-option" data-status="online" data-icon="🟢" onclick="selectStatus(this)">
+          <span class="status-option-icon">🟢</span>
+          <div>
+            <div class="status-option-text">Online</div>
+            <div class="status-option-desc">You're available and active</div>
+          </div>
+        </div>
+        
+        <div class="status-option" data-status="away" data-icon="🟡" onclick="selectStatus(this)">
+          <span class="status-option-icon">🟡</span>
+          <div>
+            <div class="status-option-text">Away</div>
+            <div class="status-option-desc">Stepped away for a bit</div>
+          </div>
+        </div>
+        
+        <div class="status-option" data-status="busy" data-icon="🔴" onclick="selectStatus(this)">
+          <span class="status-option-icon">🔴</span>
+          <div>
+            <div class="status-option-text">Do Not Disturb</div>
+            <div class="status-option-desc">Notifications muted</div>
+          </div>
+        </div>
+        
+        <div class="status-option" data-status="gaming" data-icon="🎮" onclick="selectStatus(this)">
+          <span class="status-option-icon">🎮</span>
+          <div>
+            <div class="status-option-text">Gaming</div>
+            <div class="status-option-desc">In a gaming session</div>
+          </div>
+        </div>
+        
+        <div class="status-option" data-status="streaming" data-icon="📺" onclick="selectStatus(this)">
+          <span class="status-option-icon">📺</span>
+          <div>
+            <div class="status-option-text">Streaming</div>
+            <div class="status-option-desc">Live on stream</div>
+          </div>
+        </div>
+        
+        <div class="status-option" data-status="invisible" data-icon="⚫" onclick="selectStatus(this)">
+          <span class="status-option-icon">⚫</span>
+          <div>
+            <div class="status-option-text">Invisible</div>
+            <div class="status-option-desc">Appear offline to others</div>
+          </div>
+        </div>
+        
+        <input type="text" class="status-custom-input" id="customStatusInput" placeholder="Add a custom status message..." maxlength="50">
+        
+        <div class="status-picker-actions">
+          <button class="status-picker-btn cancel" onclick="closeStatusPicker()">Cancel</button>
+          <button class="status-picker-btn save" onclick="saveStatus()">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Status Picker Functions
+      let selectedStatus = 'online';
+      let selectedIcon = '🟢';
+      
+      function openStatusPicker() {
+        const overlay = document.getElementById('statusPickerOverlay');
+        overlay.classList.add('show');
+        
+        // Load current status
+        const savedStatus = localStorage.getItem('noctive_user_status');
+        if (savedStatus) {
+          const statusData = JSON.parse(savedStatus);
+          selectedStatus = statusData.status;
+          selectedIcon = statusData.icon;
+          document.getElementById('customStatusInput').value = statusData.customMessage || '';
+          
+          // Highlight current status
+          document.querySelectorAll('.status-option').forEach(opt => {
+            opt.classList.remove('active');
+            if (opt.dataset.status === selectedStatus) {
+              opt.classList.add('active');
+            }
+          });
+        }
+      }
+      
+      function closeStatusPicker(event) {
+        if (event && event.target !== event.currentTarget) return;
+        const overlay = document.getElementById('statusPickerOverlay');
+        overlay.classList.remove('show');
+      }
+      
+      function selectStatus(element) {
+        document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('active'));
+        element.classList.add('active');
+        selectedStatus = element.dataset.status;
+        selectedIcon = element.dataset.icon;
+      }
+      
+      function saveStatus() {
+        const customMessage = document.getElementById('customStatusInput').value.trim();
+        
+        // Get status text
+        const statusTexts = {
+          'online': 'Online',
+          'away': 'Away',
+          'busy': 'Do Not Disturb',
+          'gaming': 'Gaming',
+          'streaming': 'Streaming',
+          'invisible': 'Invisible'
+        };
+        
+        const statusData = {
+          status: selectedStatus,
+          icon: selectedIcon,
+          text: statusTexts[selectedStatus],
+          customMessage: customMessage
+        };
+        
+        // Save to localStorage
+        localStorage.setItem('noctive_user_status', JSON.stringify(statusData));
+        
+        // Update display
+        updateStatusDisplay(statusData);
+        
+        // Close modal
+        closeStatusPicker();
+      }
+      
+      function updateStatusDisplay(statusData) {
+        const statusDisplay = document.getElementById('userStatusDisplay');
+        const statusMenuIcon = document.getElementById('statusMenuIcon');
+        
+        if (statusDisplay) {
+          if (statusData.customMessage) {
+            statusDisplay.textContent = `${statusData.icon} ${statusData.customMessage}`;
+          } else {
+            statusDisplay.textContent = `${statusData.icon} ${statusData.text}`;
+          }
+          
+          // Update status color
+          const colors = {
+            'online': '#10b981',
+            'away': '#f59e0b',
+            'busy': '#ef4444',
+            'gaming': '#8b5cf6',
+            'streaming': '#ec4899',
+            'invisible': '#6b7280'
+          };
+          statusDisplay.style.color = colors[statusData.status] || '#10b981';
+        }
+        
+        if (statusMenuIcon) {
+          statusMenuIcon.textContent = statusData.icon;
+        }
+      }
+      
+      // Load status on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        const savedStatus = localStorage.getItem('noctive_user_status');
+        if (savedStatus) {
+          updateStatusDisplay(JSON.parse(savedStatus));
+        }
+      });
     </script>
 
     <!-- Close body and html tags -->

@@ -22,11 +22,19 @@
         }
         h1 {
             font-size: 3rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        h1 .title-text {
             background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
+        }
+        h1 .title-icon {
+            font-style: normal;
         }
         .back-link {
             display: inline-block;
@@ -105,7 +113,7 @@
     <div class="container">
         <a href="index.html" class="back-link">← Back to Home</a>
         
-        <h1>🎮 Gaming Hubs</h1>
+        <h1><span class="title-icon">🎮</span> <span class="title-text">Gaming Hubs</span></h1>
         <p style="font-size: 1.2rem; color: #d0d0d0; margin-bottom: 2rem;">
             Join specialized communities for your favorite games and genres
         </p>

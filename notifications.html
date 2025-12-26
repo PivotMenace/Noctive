@@ -22,11 +22,19 @@
         }
         h1 {
             font-size: 3rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        h1 .title-text {
             background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
+        }
+        h1 .title-icon {
+            font-style: normal;
         }
         .back-link {
             display: inline-block;
@@ -56,6 +64,8 @@
             color: #f0f0f0;
             cursor: pointer;
             transition: all 0.2s;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
         }
         .filter-btn:hover, .filter-btn.active {
             background: rgba(250, 204, 21, 0.2);
@@ -143,9 +153,45 @@
             cursor: pointer;
             margin-bottom: 1rem;
             transition: transform 0.2s;
+            font-family: 'Nunito', sans-serif;
         }
         .mark-all-read:hover {
             transform: scale(1.05);
+        }
+        .hidden {
+            display: none !important;
+        }
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .notification-filters {
+                gap: 0.5rem;
+            }
+            .filter-btn {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+            }
+            .notification {
+                padding: 1rem;
+            }
+            .notification-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -153,140 +199,273 @@
     <div class="container">
         <a href="index.html" class="back-link">← Back to Home</a>
         
-        <h1>🔔 Notifications</h1>
+        <h1><span class="title-icon">🔔</span> <span class="title-text">Notifications</span></h1>
         
         <div class="notification-filters">
-            <button class="filter-btn active">All</button>
-            <button class="filter-btn">Mentions</button>
-            <button class="filter-btn">Likes</button>
-            <button class="filter-btn">Comments</button>
-            <button class="filter-btn">Followers</button>
-            <button class="filter-btn">Messages</button>
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="mentions">Mentions</button>
+            <button class="filter-btn" data-filter="likes">Likes</button>
+            <button class="filter-btn" data-filter="comments">Comments</button>
+            <button class="filter-btn" data-filter="followers">Followers</button>
+            <button class="filter-btn" data-filter="messages">Messages</button>
         </div>
 
-        <button class="mark-all-read">Mark All as Read</button>
+        <button class="mark-all-read" onclick="markAllAsRead()">Mark All as Read</button>
 
-        <div class="notification unread">
-            <div class="notification-icon">❤️</div>
-            <div class="notification-content">
-                <div class="notification-header">
-                    <div class="notification-title">@Hijinxx liked your post</div>
-                    <div class="notification-time">5 min ago</div>
+        <div class="notifications-list" id="notificationsList">
+            <div class="notification unread" data-type="likes">
+                <div class="notification-icon">❤️</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">@Hijinxx liked your post</div>
+                        <div class="notification-time">5 min ago</div>
+                    </div>
+                    <div class="notification-body">
+                        "Just hit Diamond rank in Rainbow Six Siege! 🎮💎"
+                    </div>
                 </div>
-                <div class="notification-body">
-                    "Just hit Diamond rank in Rainbow Six Siege! 🎮💎"
+            </div>
+
+            <div class="notification unread" data-type="comments">
+                <div class="notification-icon">💬</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">@Belt181 commented on your post</div>
+                        <div class="notification-time">15 min ago</div>
+                    </div>
+                    <div class="notification-body">
+                        "Congrats! Want to squad up later?"
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn">Reply</button>
+                        <button class="action-btn">View Post</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification unread" data-type="followers">
+                <div class="notification-icon">👥</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">@cardboard box started following you</div>
+                        <div class="notification-time">1 hour ago</div>
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn">Follow Back</button>
+                        <button class="action-btn">View Profile</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification" data-type="likes">
+                <div class="notification-icon">🏆</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">Achievement Unlocked!</div>
+                        <div class="notification-time">2 hours ago</div>
+                    </div>
+                    <div class="notification-body">
+                        You've earned the "Night Owl" badge for posting at 3 AM! 🌙
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification" data-type="messages">
+                <div class="notification-icon">📢</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">Night Crew Hub Update</div>
+                        <div class="notification-time">3 hours ago</div>
+                    </div>
+                    <div class="notification-body">
+                        New tournament announced! Sign up before Friday to compete for prizes.
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn">Learn More</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification" data-type="mentions">
+                <div class="notification-icon">🎮</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">@WakeBakeWes mentioned you</div>
+                        <div class="notification-time">5 hours ago</div>
+                    </div>
+                    <div class="notification-body">
+                        "Shoutout to @You for the clutch play last night! 🔥"
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn">View Post</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification" data-type="likes">
+                <div class="notification-icon">⭐</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">Your post is trending!</div>
+                        <div class="notification-time">8 hours ago</div>
+                    </div>
+                    <div class="notification-body">
+                        Your clip has received 500+ upvotes and is now on the trending page!
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn">View Analytics</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification" data-type="messages">
+                <div class="notification-icon">💬</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">@Hijinxx invited you to a squad</div>
+                        <div class="notification-time">12 hours ago</div>
+                    </div>
+                    <div class="notification-body">
+                        Join "Midnight Raiders" for competitive ranked matches
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn">Accept</button>
+                        <button class="action-btn">Decline</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification unread" data-type="likes">
+                <div class="notification-icon">❤️</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">@LoriPie liked your post</div>
+                        <div class="notification-time">30 min ago</div>
+                    </div>
+                    <div class="notification-body">
+                        "That Apex clutch was insane! 🔥"
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification unread" data-type="mentions">
+                <div class="notification-icon">📣</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">@UnDiscoverableTalent mentioned you</div>
+                        <div class="notification-time">45 min ago</div>
+                    </div>
+                    <div class="notification-body">
+                        "Anyone else catch @You's stream last night? Absolutely wild gameplay!"
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn">View Post</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification" data-type="followers">
+                <div class="notification-icon">👥</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">@Hypurly started following you</div>
+                        <div class="notification-time">2 hours ago</div>
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn">Follow Back</button>
+                        <button class="action-btn">View Profile</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification" data-type="comments">
+                <div class="notification-icon">💬</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">@WakeBakeWes replied to your comment</div>
+                        <div class="notification-time">4 hours ago</div>
+                    </div>
+                    <div class="notification-body">
+                        "I'm down for ranked tonight! What time works for you?"
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn">Reply</button>
+                        <button class="action-btn">View Thread</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification" data-type="messages">
+                <div class="notification-icon">✉️</div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">New message from @Belt181</div>
+                        <div class="notification-time">6 hours ago</div>
+                    </div>
+                    <div class="notification-body">
+                        "Hey! Are you joining the tournament this weekend?"
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn" onclick="window.location.href='messages.html'">Read Message</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="notification unread">
-            <div class="notification-icon">💬</div>
-            <div class="notification-content">
-                <div class="notification-header">
-                    <div class="notification-title">@Belt181 commented on your post</div>
-                    <div class="notification-time">15 min ago</div>
-                </div>
-                <div class="notification-body">
-                    "Congrats! Want to squad up later?"
-                </div>
-                <div class="notification-actions">
-                    <button class="action-btn">Reply</button>
-                    <button class="action-btn">View Post</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="notification unread">
-            <div class="notification-icon">👥</div>
-            <div class="notification-content">
-                <div class="notification-header">
-                    <div class="notification-title">@cardboard box started following you</div>
-                    <div class="notification-time">1 hour ago</div>
-                </div>
-                <div class="notification-actions">
-                    <button class="action-btn">Follow Back</button>
-                    <button class="action-btn">View Profile</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="notification">
-            <div class="notification-icon">🏆</div>
-            <div class="notification-content">
-                <div class="notification-header">
-                    <div class="notification-title">Achievement Unlocked!</div>
-                    <div class="notification-time">2 hours ago</div>
-                </div>
-                <div class="notification-body">
-                    You've earned the "Night Owl" badge for posting at 3 AM! 🌙
-                </div>
-            </div>
-        </div>
-
-        <div class="notification">
-            <div class="notification-icon">📢</div>
-            <div class="notification-content">
-                <div class="notification-header">
-                    <div class="notification-title">Night Crew Hub Update</div>
-                    <div class="notification-time">3 hours ago</div>
-                </div>
-                <div class="notification-body">
-                    New tournament announced! Sign up before Friday to compete for prizes.
-                </div>
-                <div class="notification-actions">
-                    <button class="action-btn">Learn More</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="notification">
-            <div class="notification-icon">🎮</div>
-            <div class="notification-content">
-                <div class="notification-header">
-                    <div class="notification-title">@WakeBakeWes mentioned you</div>
-                    <div class="notification-time">5 hours ago</div>
-                </div>
-                <div class="notification-body">
-                    "Shoutout to @You for the clutch play last night! 🔥"
-                </div>
-                <div class="notification-actions">
-                    <button class="action-btn">View Post</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="notification">
-            <div class="notification-icon">⭐</div>
-            <div class="notification-content">
-                <div class="notification-header">
-                    <div class="notification-title">Your post is trending!</div>
-                    <div class="notification-time">8 hours ago</div>
-                </div>
-                <div class="notification-body">
-                    Your clip has received 500+ upvotes and is now on the trending page!
-                </div>
-                <div class="notification-actions">
-                    <button class="action-btn">View Analytics</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="notification">
-            <div class="notification-icon">💬</div>
-            <div class="notification-content">
-                <div class="notification-header">
-                    <div class="notification-title">@Hijinxx invited you to a squad</div>
-                    <div class="notification-time">12 hours ago</div>
-                </div>
-                <div class="notification-body">
-                    Join "Midnight Raiders" for competitive ranked matches
-                </div>
-                <div class="notification-actions">
-                    <button class="action-btn">Accept</button>
-                    <button class="action-btn">Decline</button>
-                </div>
+        <div class="no-notifications hidden" id="noNotifications">
+            <div style="text-align: center; padding: 3rem; color: #999;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🔔</div>
+                <div style="font-size: 1.2rem;">No notifications in this category</div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const notifications = document.querySelectorAll('.notification');
+        const noNotifications = document.getElementById('noNotifications');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+                let visibleCount = 0;
+
+                notifications.forEach(notification => {
+                    if (filter === 'all' || notification.dataset.type === filter) {
+                        notification.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        notification.style.display = 'none';
+                    }
+                });
+
+                // Show "no notifications" message if none visible
+                if (visibleCount === 0) {
+                    noNotifications.classList.remove('hidden');
+                } else {
+                    noNotifications.classList.add('hidden');
+                }
+            });
+        });
+
+        // Mark all as read
+        function markAllAsRead() {
+            notifications.forEach(notification => {
+                notification.classList.remove('unread');
+            });
+        }
+
+        // Mark individual notification as read when clicked
+        notifications.forEach(notification => {
+            notification.addEventListener('click', () => {
+                notification.classList.remove('unread');
+            });
+        });
+    </script>
 </body>
 </html>
