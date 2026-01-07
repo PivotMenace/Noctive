@@ -14,7 +14,96 @@
             color: #f0f0f0;
             min-height: 100vh;
             padding: 2rem;
+            padding-top: 5rem;
         }
+        
+        /* Navigation Header */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #23263a;
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .nav-link {
+            padding: 0.5rem 1rem;
+            color: #9ca3af;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e5e7eb;
+        }
+        .nav-link.active {
+            background: rgba(250, 204, 21, 0.1);
+            color: #facc15;
+            border: 1px solid rgba(250, 204, 21, 0.2);
+        }
+        .login-btn {
+            padding: 0.4rem 1rem;
+            background: linear-gradient(90deg, #b22222, #ff3c38);
+            color: white !important;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+        }
+        .login-btn:hover {
+            box-shadow: 0 0 15px rgba(255, 60, 56, 0.5);
+        }
+        
+        /* User Profile in Nav */
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.3rem 0.5rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+        }
+        .nav-user:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .nav-user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #facc15;
+            object-fit: cover;
+        }
+        .nav-user-name {
+            color: #facc15;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .hidden { display: none !important; }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -35,20 +124,6 @@
         }
         h1 .title-icon {
             font-style: normal;
-        }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 2rem;
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(90deg, #b22222, #ff3c38);
-            color: white;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            transition: transform 0.2s;
-        }
-        .back-link:hover {
-            transform: translateY(-2px);
         }
         .hub-grid {
             display: grid;
@@ -71,6 +146,19 @@
         .hub-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
+        }
+        .hub-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hub-card:hover .hub-image {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
         }
         .hub-card h2 {
             color: #facc15;
@@ -110,8 +198,25 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Header -->
+    <nav class="nav-header">
+        <a href="index.html" class="nav-brand">Noctive</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="explore.html" class="nav-link">Explore</a>
+            <a href="hubs.html" class="nav-link active">Hubs</a>
+            <a href="creator-hub.html" class="nav-link">Creator Hub</a>
+            <a href="messages.html" class="nav-link">Messages</a>
+            <a href="notifications.html" class="nav-link">Notifications</a>
+            <a href="login.html" id="loginBtn" class="nav-link login-btn">Login / Sign Up</a>
+            <a href="profile.html" id="userProfile" class="nav-user hidden">
+                <img src="pngs/games/account.png" alt="Avatar" class="nav-user-avatar" id="navAvatar" onerror="this.src='pngs/account.png'">
+                <span class="nav-user-name" id="navUsername">@user</span>
+            </a>
+        </div>
+    </nav>
+
     <div class="container">
-        <a href="index.html" class="back-link">← Back to Home</a>
         
         <h1><span class="title-icon">🎮</span> <span class="title-text">Gaming Hubs</span></h1>
         <p style="font-size: 1.2rem; color: #d0d0d0; margin-bottom: 2rem;">
@@ -120,61 +225,127 @@
 
         <div class="hub-grid">
             <div class="hub-card">
+                <img src="pngs/games/valorant.jpg" alt="Valorant" class="hub-image" onerror="this.style.display='none';" onload="this.previousElementSibling ? null : this.nextElementSibling.style.display='none';">
                 <div class="hub-icon">🎯</div>
-                <h2>FPS Hub</h2>
-                <p>Connect with first-person shooter enthusiasts. Share tactics, find teammates, and dominate the battlefield.</p>
+                <h2>Valorant Hub</h2>
+                <p>Master the art of tactical shooting. Share agent guides, lineups, and find your perfect squad for ranked.</p>
                 <div class="hub-stats">
-                    <span class="stat"><strong>2.4k</strong> Members</span>
-                    <span class="stat"><strong>156</strong> Online</span>
+                    <span class="stat"><strong>12.4k</strong> Members</span>
+                    <span class="stat"><strong>1.2k</strong> Online</span>
                 </div>
-                <a href="#" class="join-btn">Join Hub</a>
+                <a href="hubs/valorant-hub.html" class="join-btn">Join Hub</a>
             </div>
 
             <div class="hub-card">
-                <div class="hub-icon">⚔️</div>
-                <h2>RPG Hub</h2>
-                <p>For lovers of role-playing games. Discuss builds, lore, and embark on epic adventures together.</p>
+                <img src="pngs/games/r6x.jpg" alt="Rainbow Six Siege X" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
+                <div class="hub-icon">🛡️</div>
+                <h2>Rainbow Six Siege X Hub</h2>
+                <p>Breach and clear! Master tactical operations, share operator strats, and find your competitive squad.</p>
                 <div class="hub-stats">
-                    <span class="stat"><strong>1.8k</strong> Members</span>
-                    <span class="stat"><strong>89</strong> Online</span>
+                    <span class="stat"><strong>11.2k</strong> Members</span>
+                    <span class="stat"><strong>1.8k</strong> Online</span>
                 </div>
-                <a href="#" class="join-btn">Join Hub</a>
+                <a href="hubs/r6x-hub.html" class="join-btn">Join Hub</a>
             </div>
 
             <div class="hub-card">
+                <img src="pngs/games/cod.jpg" alt="Call of Duty" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
+                <div class="hub-icon">🔫</div>
+                <h2>Call of Duty Hub</h2>
+                <p>From Warzone to multiplayer, connect with CoD players. Share loadouts, strategies, and dominate the lobby.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>15.8k</strong> Members</span>
+                    <span class="stat"><strong>2.1k</strong> Online</span>
+                </div>
+                <a href="hubs/cod-hub.html" class="join-btn">Join Hub</a>
+            </div>
+
+            <div class="hub-card">
+                <img src="pngs/games/fortnite.jpg" alt="Fortnite" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
+                <div class="hub-icon">🏝️</div>
+                <h2>Fortnite Hub</h2>
+                <p>Build, battle, and Victory Royale! Share creative builds, find duo partners, and stay updated on the latest season.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>18.2k</strong> Members</span>
+                    <span class="stat"><strong>3.4k</strong> Online</span>
+                </div>
+                <a href="hubs/fortnite-hub.html" class="join-btn">Join Hub</a>
+            </div>
+
+            <div class="hub-card">
+                <img src="pngs/games/rocketleague.jpg" alt="Rocket League" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
                 <div class="hub-icon">🏎️</div>
-                <h2>Racing Hub</h2>
-                <p>Speed demons unite! Share your best lap times, tuning tips, and racing strategies.</p>
+                <h2>Rocket League Hub</h2>
+                <p>Supersonic acrobatic rocket-powered car soccer! Share aerial training, find teammates, and climb to Grand Champion.</p>
                 <div class="hub-stats">
-                    <span class="stat"><strong>1.2k</strong> Members</span>
-                    <span class="stat"><strong>67</strong> Online</span>
+                    <span class="stat"><strong>8.9k</strong> Members</span>
+                    <span class="stat"><strong>876</strong> Online</span>
                 </div>
-                <a href="#" class="join-btn">Join Hub</a>
+                <a href="hubs/rocketleague-hub.html" class="join-btn">Join Hub</a>
             </div>
 
             <div class="hub-card">
-                <div class="hub-icon">🎨</div>
-                <h2>Indie Hub</h2>
-                <p>Discover and discuss hidden indie gems. Support indie developers and unique gaming experiences.</p>
+                <img src="pngs/games/lol.jpg" alt="League of Legends" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
+                <div class="hub-icon">⚔️</div>
+                <h2>League of Legends Hub</h2>
+                <p>Dominate the Rift! Discuss meta builds, find your ranked duo, and share epic pentakill clips.</p>
                 <div class="hub-stats">
-                    <span class="stat"><strong>980</strong> Members</span>
-                    <span class="stat"><strong>45</strong> Online</span>
+                    <span class="stat"><strong>22.1k</strong> Members</span>
+                    <span class="stat"><strong>4.5k</strong> Online</span>
                 </div>
-                <a href="#" class="join-btn">Join Hub</a>
+                <a href="hubs/lol-hub.html" class="join-btn">Join Hub</a>
             </div>
 
             <div class="hub-card">
-                <div class="hub-icon">🏆</div>
-                <h2>Competitive Hub</h2>
-                <p>For serious esports players and competitive gamers. Find scrims, join tournaments, and climb the ranks.</p>
+                <img src="pngs/games/apex.jpg" alt="Apex Legends" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
+                <div class="hub-icon">🔥</div>
+                <h2>Apex Legends Hub</h2>
+                <p>Become an Apex Champion! Share movement tech, legend strategies, and find your perfect trio.</p>
                 <div class="hub-stats">
-                    <span class="stat"><strong>3.1k</strong> Members</span>
-                    <span class="stat"><strong>234</strong> Online</span>
+                    <span class="stat"><strong>9.7k</strong> Members</span>
+                    <span class="stat"><strong>1.1k</strong> Online</span>
                 </div>
-                <a href="#" class="join-btn">Join Hub</a>
+                <a href="hubs/apex-hub.html" class="join-btn">Join Hub</a>
             </div>
 
             <div class="hub-card">
+                <img src="pngs/games/minecraft.jpg" alt="Minecraft" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
+                <div class="hub-icon">⛏️</div>
+                <h2>Minecraft Hub</h2>
+                <p>Build, explore, survive! Share your epic builds, redstone creations, and find servers to join.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>25.3k</strong> Members</span>
+                    <span class="stat"><strong>5.2k</strong> Online</span>
+                </div>
+                <a href="hubs/minecraft-hub.html" class="join-btn">Join Hub</a>
+            </div>
+
+            <div class="hub-card">
+                <img src="pngs/games/gta.jpg" alt="GTA Online" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
+                <div class="hub-icon">🌌</div>
+                <h2>GTA Online Hub</h2>
+                <p>Rule the streets of Los Santos! Share heist strategies, car meets, and crew up for mayhem.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>14.6k</strong> Members</span>
+                    <span class="stat"><strong>2.8k</strong> Online</span>
+                </div>
+                <a href="hubs/gta-hub.html" class="join-btn">Join Hub</a>
+            </div>
+
+            <div class="hub-card">
+                <img src="pngs/games/cs2.jpg" alt="Counter-Strike 2" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
+                <div class="hub-icon">🎴</div>
+                <h2>Counter-Strike 2 Hub</h2>
+                <p>The legendary tactical shooter. Share smokes, find 5-stacks, and grind to Global Elite.</p>
+                <div class="hub-stats">
+                    <span class="stat"><strong>16.4k</strong> Members</span>
+                    <span class="stat"><strong>3.1k</strong> Online</span>
+                </div>
+                <a href="hubs/cs2-hub.html" class="join-btn">Join Hub</a>
+            </div>
+
+            <div class="hub-card">
+                <img src="pngs/games/nightcrew.jpg" alt="Night Crew" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
                 <div class="hub-icon">🌙</div>
                 <h2>Night Crew Hub</h2>
                 <p>The official hub for nocturnal gamers. Connect with fellow night owls and own the darkness.</p>
@@ -182,9 +353,44 @@
                     <span class="stat"><strong>4.5k</strong> Members</span>
                     <span class="stat"><strong>412</strong> Online</span>
                 </div>
-                <a href="#" class="join-btn">Join Hub</a>
+                <a href="hubs/nightcrew-hub.html" class="join-btn">Join Hub</a>
             </div>
         </div>
     </div>
+
+    <!-- Firebase Auth Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
+            authDomain: "noctive-41c22.firebaseapp.com",
+            projectId: "noctive-41c22",
+            storageBucket: "noctive-41c22.firebasestorage.app",
+            messagingSenderId: "617642134193",
+            appId: "1:617642134193:web:ea5f0c93e56c654f66f090"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        onAuthStateChanged(auth, (user) => {
+            const loginBtn = document.getElementById('loginBtn');
+            const userProfile = document.getElementById('userProfile');
+            const navUsername = document.getElementById('navUsername');
+            const navAvatar = document.getElementById('navAvatar');
+            
+            if (user) {
+                loginBtn.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+                navUsername.textContent = '@' + (user.displayName || user.email.split('@')[0]);
+                if (user.photoURL) navAvatar.src = user.photoURL;
+            } else {
+                loginBtn.classList.remove('hidden');
+                userProfile.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

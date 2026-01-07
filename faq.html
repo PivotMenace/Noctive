@@ -14,7 +14,96 @@
             color: #f0f0f0;
             min-height: 100vh;
             padding: 2rem;
+            padding-top: 5rem;
         }
+        
+        /* Navigation Header */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #23263a;
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .nav-link {
+            padding: 0.5rem 1rem;
+            color: #9ca3af;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e5e7eb;
+        }
+        .nav-link.active {
+            background: rgba(250, 204, 21, 0.1);
+            color: #facc15;
+            border: 1px solid rgba(250, 204, 21, 0.2);
+        }
+        .login-btn {
+            padding: 0.4rem 1rem;
+            background: linear-gradient(90deg, #b22222, #ff3c38);
+            color: white !important;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+        }
+        .login-btn:hover {
+            box-shadow: 0 0 15px rgba(255, 60, 56, 0.5);
+        }
+        
+        /* User Profile in Nav */
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.3rem 0.5rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+        }
+        .nav-user:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .nav-user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #facc15;
+            object-fit: cover;
+        }
+        .nav-user-name {
+            color: #facc15;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .hidden { display: none !important; }
+        
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -124,8 +213,25 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Header -->
+    <nav class="nav-header">
+        <a href="index.html" class="nav-brand">Noctive</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="explore.html" class="nav-link">Explore</a>
+            <a href="hubs.html" class="nav-link">Hubs</a>
+            <a href="creator-hub.html" class="nav-link">Creator Hub</a>
+            <a href="messages.html" class="nav-link">Messages</a>
+            <a href="notifications.html" class="nav-link">Notifications</a>
+            <a href="login.html" id="loginBtn" class="nav-link login-btn">Login / Sign Up</a>
+            <a href="profile.html" id="userProfile" class="nav-user hidden">
+                <img src="pngs/account.png" alt="Avatar" class="nav-user-avatar" id="navAvatar">
+                <span class="nav-user-name" id="navUsername">@user</span>
+            </a>
+        </div>
+    </nav>
+
     <div class="container">
-        <a href="index.html" class="back-link">← Back to Home</a>
         
         <div class="owl-mascot">🦉</div>
         <h1>Noctive Info Hub</h1>
@@ -253,5 +359,40 @@
             <p style="font-size: 0.9rem; margin-top: 1rem;">Built with ❤️ for the night gaming community</p>
         </div>
     </div>
+
+    <!-- Firebase Auth Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
+            authDomain: "noctive-41c22.firebaseapp.com",
+            projectId: "noctive-41c22",
+            storageBucket: "noctive-41c22.firebasestorage.app",
+            messagingSenderId: "617642134193",
+            appId: "1:617642134193:web:ea5f0c93e56c654f66f090"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        onAuthStateChanged(auth, (user) => {
+            const loginBtn = document.getElementById('loginBtn');
+            const userProfile = document.getElementById('userProfile');
+            const navUsername = document.getElementById('navUsername');
+            const navAvatar = document.getElementById('navAvatar');
+            
+            if (user) {
+                loginBtn.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+                navUsername.textContent = '@' + (user.displayName || user.email.split('@')[0]);
+                if (user.photoURL) navAvatar.src = user.photoURL;
+            } else {
+                loginBtn.classList.remove('hidden');
+                userProfile.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>
