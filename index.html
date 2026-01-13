@@ -227,6 +227,81 @@ header {
   text-align: center;
 }
 
+/* Nav Links (matching creator-hub.html) */
+.nav-links {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+.nav-link {
+    padding: 0.5rem 1rem;
+    color: #9ca3af;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+.nav-link:hover {
+    background: rgba(139, 92, 246, 0.18);
+    color: #b8a5d6;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    box-shadow: 0 0 6px rgba(139, 92, 246, 0.5), 0 0 12px rgba(139, 92, 246, 0.3), 0 0 18px rgba(255, 60, 56, 0.25);
+    text-shadow: 0 0 5px rgba(196, 181, 253, 0.6), 0 0 10px rgba(255, 60, 56, 0.3);
+}
+.nav-link.active {
+    background: rgba(139, 92, 246, 0.1);
+    color: #9380b5;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    transition: all 0.3s ease;
+}
+.nav-link.active:hover {
+    background: rgba(139, 92, 246, 0.18);
+    color: #b8a5d6;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    box-shadow: 0 0 6px rgba(139, 92, 246, 0.5), 0 0 12px rgba(139, 92, 246, 0.3), 0 0 18px rgba(255, 60, 56, 0.25);
+    text-shadow: 0 0 5px rgba(196, 181, 253, 0.6), 0 0 10px rgba(255, 60, 56, 0.3);
+}
+.login-btn {
+    padding: 0.4rem 1rem;
+    background: linear-gradient(90deg, #b22222, #ff3c38);
+    color: white !important;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+}
+.login-btn:hover {
+    box-shadow: 0 0 15px rgba(255, 60, 56, 0.5);
+}
+
+/* User Profile in Nav */
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.5rem;
+    transition: background 0.2s;
+    text-decoration: none;
+}
+.nav-user:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+.nav-user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #facc15;
+    object-fit: cover;
+}
+.nav-user-name {
+    color: #facc15;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
 /* Username styling - bold white for all usernames */
 .glitchy,
 a.glitchy {
@@ -2820,55 +2895,15 @@ a.glitchy:hover {
     
     <!-- Horizontal Navigation -->
     <div class="header-nav">
-      <nav class="horizontal-nav">
-        <a href="index.html" class="horizontal-nav-item active" data-page="home" style="text-decoration: none; color: inherit;">
-          <span class="nav-label">Home</span>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active" data-page="home">Home</a>
+        <a href="explore.html" class="nav-link" data-page="explore">Explore</a>
+        <a href="messages.html" class="nav-link" data-page="messages">Messages</a>
+        <a href="login.html" id="loginSignupBtn" class="nav-link login-btn">Login / Sign Up</a>
+        <a href="profile.html" id="sidebarUser" class="nav-user hidden">
+          <img src="pngs/account.png" alt="Avatar" class="nav-user-avatar" id="sidebarAvatar" onerror="this.src='pngs/account.png'">
+          <span class="nav-user-name" id="sidebarUserName">@username</span>
         </a>
-        
-        <a href="explore.html" class="horizontal-nav-item" data-page="explore" style="text-decoration: none; color: inherit;">
-          <span class="nav-label">Explore</span>
-        </a>
-        
-        <a href="hubs.html" class="horizontal-nav-item" data-page="hubs" style="text-decoration: none; color: inherit;">
-          <span class="nav-label">Hubs</span>
-        </a>
-        
-        <a href="creator-hub.html" class="horizontal-nav-item" data-page="creator" style="text-decoration: none; color: inherit;">
-          <span class="nav-label">Creator Hub</span>
-        </a>
-        
-        <a href="messages.html" class="horizontal-nav-item" data-page="messages" style="text-decoration: none; color: inherit;">
-          <span class="nav-label">Messages</span>
-          <span class="notification-badge">3</span>
-        </a>
-        
-        <a href="notifications.html" class="horizontal-nav-item" data-page="notifications" style="text-decoration: none; color: inherit;">
-          <span class="nav-label">Notifications</span>
-          <span class="notification-badge">12</span>
-        </a>
-      </nav>
-      
-      <!-- Post Button (hidden for now) -->
-      <div class="post-button-container" style="display: none;">
-        <button class="post-button" onclick="openCreatePost()">
-          <span class="post-icon">✨</span>
-          <span class="post-label">Post</span>
-        </button>
-      </div>
-      
-      <!-- Login/Signup Button (shows when logged out) -->
-      <a href="login.html" id="loginSignupBtn" class="login-signup-btn">Login / Sign Up</a>
-      
-      <!-- User Profile Section -->
-      <div class="sidebar-user" id="sidebarUser" style="cursor: pointer;">
-        <div class="user-avatar" onclick="window.location.href='profile.html'" style="cursor: pointer;">
-          <img src="pngs/account.png" alt="User Avatar" id="sidebarAvatar" onerror="this.src='pngs/account.png'">
-        </div>
-        <div class="user-info" onclick="window.location.href='profile.html'">
-          <div class="user-name" id="sidebarUserName">@username</div>
-          <div class="user-status" id="userStatusDisplay">🟢 Online</div>
-        </div>
-        <div class="user-menu-toggle" onclick="toggleUserMenu(); return false;">⋯</div>
       </div>
       
       <!-- User Menu Dropdown -->
@@ -2966,6 +3001,9 @@ a.glitchy:hover {
     <div class="user-info" style="flex-grow: 1;">
       <span style="font-size: 1rem; font-weight: 500;">
         <span id="createPostUsername">@Venus</span> <span id="createPostTitle" class="title" style="font-size: 0.8rem; color: #aaa;">(Nomad)</span>
+      </span>
+      <span id="createPostUserStatus" style="display: block; font-size: 0.75rem; margin-top: 0.15rem; color: #ffbd2e;">
+        🌙 Idle
       </span>
       <span id="createPostStatus" class="currently-playing" style="display: block; font-size: 0.75rem; margin-top: 0.25rem;">
         🎮 Currently playing: Rainbow Six Siege
@@ -3797,6 +3835,7 @@ a.glitchy:hover {
     const statusDot = document.getElementById('currentStatusDot');
     const statusText = document.getElementById('currentStatusText');
     const userStatusDot = document.getElementById('userStatusDot');
+    const userStatusDisplay = document.getElementById('userStatusDisplay');
     const menu = document.getElementById('statusDropdownMenu');
     
     // Update the dropdown button
@@ -3810,8 +3849,25 @@ a.glitchy:hover {
       'idle': 'Idle',
       'busy': 'Do Not Disturb'
     };
+    const statusIcons = {
+      'online': '🟢',
+      'idle': '🌙',
+      'busy': '⛔'
+    };
+    const statusColors = {
+      'online': '#27c93f',
+      'idle': '#ffbd2e',
+      'busy': '#ff5f56'
+    };
+    
     if (statusText) {
       statusText.textContent = statusLabels[status] || 'Online';
+    }
+    
+    // Update the status display under the username
+    if (userStatusDisplay) {
+      userStatusDisplay.textContent = `${statusIcons[status]} ${statusLabels[status]}`;
+      userStatusDisplay.style.color = statusColors[status];
     }
     
     // Update the Night Crew widget status dot for current user
@@ -3829,6 +3885,13 @@ a.glitchy:hover {
       };
       venusLabel.className = 'status-label ' + labelClasses[status];
       venusLabel.textContent = statusLabels[status];
+    }
+    
+    // Update the create post section status under username
+    const createPostUserStatus = document.getElementById('createPostUserStatus');
+    if (createPostUserStatus) {
+      createPostUserStatus.textContent = `${statusIcons[status]} ${statusLabels[status]}`;
+      createPostUserStatus.style.color = statusColors[status];
     }
     
     // Close the dropdown
