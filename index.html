@@ -1274,6 +1274,48 @@ a.glitchy:hover {
         border: 1px solid rgba(255, 95, 86, 0.3);
       }
       
+      /* Status Dropdown Styles */
+      .status-dot-small {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+      }
+      
+      .status-dot-small.online {
+        background: #27c93f;
+        box-shadow: 0 0 6px rgba(39, 201, 63, 0.7);
+      }
+      
+      .status-dot-small.idle {
+        background: #ffbd2e;
+        box-shadow: 0 0 6px rgba(255, 189, 46, 0.7);
+      }
+      
+      .status-dot-small.busy {
+        background: #ff5f56;
+        box-shadow: 0 0 6px rgba(255, 95, 86, 0.7);
+      }
+      
+      .status-dropdown-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(250, 204, 21, 0.3);
+      }
+      
+      .status-dropdown-menu.hidden {
+        display: none;
+      }
+      
+      .status-option:hover {
+        background: rgba(250, 204, 21, 0.1);
+        color: #facc15;
+      }
+      
+      .status-option span:last-child {
+        font-size: 0.85rem;
+      }
+      
       .user-sublink {
         display: inline-flex;
         align-items: center;
@@ -1535,6 +1577,7 @@ a.glitchy:hover {
       .mobile-menu-wrapper {
         display: block;
         position: relative;
+        z-index: 1005;
       }
 
       .hamburger-btn {
@@ -1549,6 +1592,8 @@ a.glitchy:hover {
         width: 40px;
         height: 40px;
         box-shadow: none !important;
+        position: relative;
+        z-index: 1005;
       }
 
       .hamburger-line {
@@ -1586,12 +1631,13 @@ a.glitchy:hover {
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         width: 100%;
         max-width: 100%;
-        z-index: 1002;
+        z-index: 1000;
         margin-top: 0;
         overflow: hidden;
         opacity: 1;
         visibility: visible;
         transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        padding-top: 0.5rem;
       }
 
       .mobile-dropdown.hidden {
@@ -2723,7 +2769,7 @@ a.glitchy:hover {
       
       <!-- Mobile Hamburger Menu -->
       <div class="mobile-menu-wrapper">
-        <button class="hamburger-btn" onclick="toggleMobileMenu()" 
+        <button class="hamburger-btn" onclick="toggleMobileMenu(event)" 
                 aria-label="Toggle mobile navigation menu" 
                 aria-expanded="false" 
                 type="button">
@@ -2767,13 +2813,6 @@ a.glitchy:hover {
           <a href="notifications.html" class="mobile-nav-item">
             <span class="mobile-nav-icon">🔔</span>
             <span class="mobile-nav-text">Notifications</span>
-          </a>
-          
-          <div class="mobile-menu-divider"></div>
-          
-          <a href="reset-password.html" class="mobile-nav-item">
-            <span class="mobile-nav-icon">🔑</span>
-            <span class="mobile-nav-text">Reset Password</span>
           </a>
         </div>
       </div>
@@ -2931,6 +2970,28 @@ a.glitchy:hover {
       <span id="createPostStatus" class="currently-playing" style="display: block; font-size: 0.75rem; margin-top: 0.25rem;">
         🎮 Currently playing: Rainbow Six Siege
       </span>
+    </div>
+    <!-- Status Dropdown -->
+    <div class="status-dropdown-wrapper" style="position: relative;">
+      <button id="statusDropdownBtn" class="status-dropdown-btn" onclick="toggleStatusDropdown(event)" style="display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.5rem; color: #f0f0f0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">
+        <span id="currentStatusDot" class="status-dot-small online"></span>
+        <span id="currentStatusText">Online</span>
+        <span style="font-size: 0.6rem;">▼</span>
+      </button>
+      <div id="statusDropdownMenu" class="status-dropdown-menu hidden" style="position: absolute; top: 100%; right: 0; margin-top: 0.5rem; background: linear-gradient(to bottom right, #1a1d2e, #23263a); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.5rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4); min-width: 150px; z-index: 100; overflow: hidden;">
+        <div class="status-option" onclick="setUserStatus('online')" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem; cursor: pointer; transition: background 0.2s;">
+          <span class="status-dot-small online"></span>
+          <span>Online</span>
+        </div>
+        <div class="status-option" onclick="setUserStatus('idle')" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem; cursor: pointer; transition: background 0.2s;">
+          <span class="status-dot-small idle"></span>
+          <span>Idle</span>
+        </div>
+        <div class="status-option" onclick="setUserStatus('busy')" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem; cursor: pointer; transition: background 0.2s;">
+          <span class="status-dot-small busy"></span>
+          <span>Do Not Disturb</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -3720,8 +3781,78 @@ a.glitchy:hover {
     }, { passive: true });
   })();
 
+  // ─── STATUS DROPDOWN FUNCTIONS ───
+  function toggleStatusDropdown(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const menu = document.getElementById('statusDropdownMenu');
+    if (menu) {
+      menu.classList.toggle('hidden');
+    }
+  }
+  
+  function setUserStatus(status) {
+    const statusDot = document.getElementById('currentStatusDot');
+    const statusText = document.getElementById('currentStatusText');
+    const userStatusDot = document.getElementById('userStatusDot');
+    const menu = document.getElementById('statusDropdownMenu');
+    
+    // Update the dropdown button
+    if (statusDot) {
+      statusDot.className = 'status-dot-small ' + status;
+    }
+    
+    // Update the status text
+    const statusLabels = {
+      'online': 'Online',
+      'idle': 'Idle',
+      'busy': 'Do Not Disturb'
+    };
+    if (statusText) {
+      statusText.textContent = statusLabels[status] || 'Online';
+    }
+    
+    // Update the Night Crew widget status dot for current user
+    if (userStatusDot) {
+      userStatusDot.className = 'status-dot ' + status;
+    }
+    
+    // Update the status label in Night Crew if it exists
+    const venusLabel = document.querySelector('#currentUserFriend .status-label');
+    if (venusLabel) {
+      const labelClasses = {
+        'online': 'green',
+        'idle': 'yellow',
+        'busy': 'red'
+      };
+      venusLabel.className = 'status-label ' + labelClasses[status];
+      venusLabel.textContent = statusLabels[status];
+    }
+    
+    // Close the dropdown
+    if (menu) {
+      menu.classList.add('hidden');
+    }
+  }
+  
+  // Close status dropdown when clicking outside
+  document.addEventListener('click', function(event) {
+    const wrapper = document.querySelector('.status-dropdown-wrapper');
+    const menu = document.getElementById('statusDropdownMenu');
+    if (wrapper && menu && !wrapper.contains(event.target)) {
+      menu.classList.add('hidden');
+    }
+  });
+
   // ─── MOBILE MENU FUNCTIONS ───
-  function toggleMobileMenu() {
+  function toggleMobileMenu(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    
     const dropdown = document.getElementById('mobileDropdown');
     const hamburgerBtn = document.querySelector('.hamburger-btn');
     
@@ -4304,7 +4435,7 @@ a.glitchy:hover {
         }
         
         // Update status
-        status.textContent = profile.status ? `🎮 ${profile.status}` : '🌙 Ready to game!';
+        status.textContent = profile.status ? `🎮 ${profile.status}` : '🌙 Idle';
         
         // Update avatar
         if (profile.avatar) {
@@ -4504,8 +4635,8 @@ a.glitchy:hover {
   <!-- Close Main Content Area -->
   </div>
 
-  <!-- User Info Display (shows when logged in) - Bottom Left -->
-  <div id="userInfo" class="user-info-display hidden">
+  <!-- User Info Display (shows when logged in) - Bottom Left - HIDDEN -->
+  <div id="userInfo" class="user-info-display hidden" style="display: none !important;">
     <div class="user-greeting">
       <span id="userEmail" onclick="window.location.href='profile.html'" title="Click to view profile" style="cursor: pointer;"></span>
       <div class="user-actions">
