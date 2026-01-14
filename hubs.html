@@ -3,356 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hubs - Noctive</title>
+    <title>Communities & Streams - Noctive</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, #121524, #1e2242, #2b2d61, #383580, #453c9e);
-            background-attachment: fixed;
             color: #f0f0f0;
             min-height: 100vh;
-            padding: 2rem;
-            padding-top: 5rem;
         }
-        
-        /* Navigation Header */
-        .nav-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+        .explore-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background: #181a2b;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            border-right: 1px solid rgba(255,255,255,0.07);
+        }
+        .sidebar h2 {
+            font-size: 1.2rem;
+            color: #facc15;
+            margin-bottom: 1rem;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .sidebar-nav a {
+            color: #d0d0d0;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.7rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .sidebar-nav a.active,
+        .sidebar-nav a:hover {
             background: #23263a;
-            padding: 0.75rem 2rem;
+            color: #facc15;
+            text-decoration: none;
+        }
+        .main-content {
+            flex: 1;
+            padding: 2.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .explore-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
-        .nav-brand {
-            font-size: 1.5rem;
+        .explore-title {
+            font-size: 2.5rem;
             font-weight: 700;
             background: linear-gradient(90deg, #8b0000, #b22222, #dc143c);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-decoration: none;
         }
-        .nav-links {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .nav-link {
+        .search-bar {
+            background: #23263a;
+            border-radius: 0.5rem;
             padding: 0.5rem 1rem;
-            color: #9ca3af;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s;
+            border: none;
+            color: #f0f0f0;
+            font-size: 1rem;
+            width: 300px;
         }
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #e5e7eb;
-        }
-        .nav-link.active {
-            background: rgba(250, 204, 21, 0.1);
-            color: #facc15;
-            border: 1px solid rgba(250, 204, 21, 0.2);
-        }
-        .login-btn {
-            padding: 0.4rem 1rem;
-            background: linear-gradient(90deg, #b22222, #ff3c38);
-            color: white !important;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-left: 0.5rem;
-        }
-        .login-btn:hover {
-            box-shadow: 0 0 15px rgba(255, 60, 56, 0.5);
-        }
-        
-        /* User Profile in Nav */
-        .nav-user {
+        .category-tabs {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.3rem 0.5rem;
-            border-radius: 0.5rem;
-            transition: background 0.2s;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
         }
-        .nav-user:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .nav-user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 2px solid #facc15;
-            object-fit: cover;
-        }
-        .nav-user-name {
-            color: #facc15;
+        .category-tab {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.1rem;
             font-weight: 600;
-            font-size: 0.9rem;
+            padding: 0.7rem 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            text-decoration: none;
         }
-        .hidden { display: none !important; }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+        .category-tab.active,
+        .category-tab:hover {
+            background: #23263a;
+            color: #facc15;
         }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        h1 .title-text {
-            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        h1 .title-icon {
-            font-style: normal;
-        }
-        .hub-grid {
+        .explore-feed {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
         }
-        .hub-card {
+        .feed-card {
             background: linear-gradient(to bottom right, #1d2133, #292e44);
             border-radius: 1rem;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
             transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-decoration: none;
         }
-        .hub-card:hover {
+        .feed-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 0 6px #00eaff, 0 0 12px #ff00cc;
         }
-        .hub-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        .hub-image {
-            width: 100%;
-            height: 180px;
-            border-radius: 0.75rem;
-            margin-bottom: 1rem;
-            object-fit: cover;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .hub-card:hover .hub-image {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
-        }
-        .hub-card h2 {
+        .feed-card .card-title {
+            font-size: 1.3rem;
             color: #facc15;
-            margin: 0.5rem 0;
+            margin: 0;
         }
-        .hub-card p {
+        .feed-card .card-desc {
             color: #d0d0d0;
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            font-size: 1rem;
         }
-        .hub-stats {
+        .feed-card .card-tags {
             display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
-        .stat {
-            color: #999;
-            font-size: 0.9rem;
-        }
-        .stat strong {
+        .tag {
+            background: rgba(250,204,21,0.18);
             color: #facc15;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.75rem;
         }
-        .join-btn {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            background: linear-gradient(135deg, #facc15, #f59e0b);
-            color: #1a1d2e;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            margin-top: 1rem;
-            transition: transform 0.2s;
+        @media (max-width: 900px) {
+            .explore-layout {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.07);
+                flex-direction: row;
+                gap: 2rem;
+                justify-content: center;
+            }
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
         }
-        .join-btn:hover {
-            transform: scale(1.05);
+        @media (max-width: 600px) {
+            .main-content {
+                padding: 1rem 0.5rem;
+            }
+            .explore-title {
+                font-size: 1.5rem;
+            }
+            .search-bar {
+                width: 100%;
+            }
+            .explore-feed {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-    <nav class="nav-header">
-        <a href="index.html" class="nav-brand">Noctive</a>
-        <div class="nav-links">
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="explore.html" class="nav-link">Explore</a>
-            <a href="messages.html" class="nav-link">Messages</a>
-            <a href="login.html" id="loginBtn" class="nav-link login-btn">Login / Sign Up</a>
-            <a href="profile.html" id="userProfile" class="nav-user hidden">
-                <img src="pngs/games/account.png" alt="Avatar" class="nav-user-avatar" id="navAvatar" onerror="this.src='pngs/account.png'">
-                <span class="nav-user-name" id="navUsername">@user</span>
-            </a>
-        </div>
-    </nav>
-
-    <div class="container">
-        
-        <h1><span class="title-icon">🎮</span> <span class="title-text">Gaming Hubs</span></h1>
-        <p style="font-size: 1.2rem; color: #d0d0d0; margin-bottom: 2rem;">
-            Join specialized communities for your favorite games and genres
-        </p>
-
-        <div class="hub-grid">
-            <div class="hub-card">
-                <img src="pngs/games/valorant.jpg" alt="Valorant" class="hub-image" onerror="this.style.display='none';" onload="this.previousElementSibling ? null : this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">🎯</div>
-                <h2>Valorant Hub</h2>
-                <p>Master the art of tactical shooting. Share agent guides, lineups, and find your perfect squad for ranked.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>12.4k</strong> Members</span>
-                    <span class="stat"><strong>1.2k</strong> Online</span>
+    <div class="explore-layout">
+        <aside class="sidebar">
+            <h2>Discover</h2>
+            <nav class="sidebar-nav">
+                <a href="explore.html">Explore</a>
+                <a href="creator-hub.html">Creators</a>
+                <a href="hubs.html" class="active">Communities</a>
+                <a href="hubs.html">Streams</a>
+                <a href="profile.html">Content Creator</a>
+            </nav>
+            <div class="sidebar-userbox" style="margin-top:auto;display:flex;align-items:center;gap:0.75rem;padding:1rem 0.5rem;background:rgba(36,39,59,0.85);border-radius:0.75rem;">
+                <img src="pngs/account.png" alt="Avatar" style="width:40px;height:40px;border-radius:50%;border:2px solid #facc15;object-fit:cover;">
+                <div style="flex:1;">
+                    <div style="font-weight:600;color:#facc15;font-size:1rem;">@Username</div>
+                    <a href="profile.html" style="color:#888;font-size:0.85rem;text-decoration:none;">View Profile</a>
                 </div>
-                <a href="hubs/valorant-hub.html" class="join-btn">Join Hub</a>
+                <a href="settings.html" style="color:#facc15;font-size:1.2rem;text-decoration:none;">⚙️</a>
             </div>
-
-            <div class="hub-card">
-                <img src="pngs/games/r6x.jpg" alt="Rainbow Six Siege X" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">🛡️</div>
-                <h2>Rainbow Six Siege X Hub</h2>
-                <p>Breach and clear! Master tactical operations, share operator strats, and find your competitive squad.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>11.2k</strong> Members</span>
-                    <span class="stat"><strong>1.8k</strong> Online</span>
+        </aside>
+        <main class="main-content">
+            <div class="explore-header">
+                <span class="explore-title">Communities & Streams</span>
+                <input class="search-bar" type="text" placeholder="Search communities, streams..." />
+            </div>
+            <div class="category-tabs">
+                <a href="explore.html" class="category-tab">Explore</a>
+                <a href="creator-hub.html" class="category-tab">Creators</a>
+                <a href="hubs.html" class="category-tab active">Communities</a>
+                <a href="hubs.html" class="category-tab">Streams</a>
+            </div>
+            <section class="explore-feed">
+                <div class="feed-card">
+                    <div class="card-title">🎯 Communities</div>
+                    <div class="card-desc">Find and join gaming communities that match your interests.</div>
+                    <div class="card-tags">
+                        <span class="tag">FPS Squad</span>
+                        <span class="tag">RPG Guild</span>
+                        <span class="tag">Indie Lovers</span>
+                    </div>
                 </div>
-                <a href="hubs/r6x-hub.html" class="join-btn">Join Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <img src="pngs/games/cod.jpg" alt="Call of Duty" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">🔫</div>
-                <h2>Call of Duty Hub</h2>
-                <p>From Warzone to multiplayer, connect with CoD players. Share loadouts, strategies, and dominate the lobby.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>15.8k</strong> Members</span>
-                    <span class="stat"><strong>2.1k</strong> Online</span>
+                <div class="feed-card">
+                    <div class="card-title">📺 Live Streams</div>
+                    <div class="card-desc">Watch live gaming sessions from the Noctive community.</div>
+                    <div class="card-tags">
+                        <span class="tag">12 Live Now</span>
+                    </div>
                 </div>
-                <a href="hubs/cod-hub.html" class="join-btn">Join Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <img src="pngs/games/fortnite.jpg" alt="Fortnite" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">🏝️</div>
-                <h2>Fortnite Hub</h2>
-                <p>Build, battle, and Victory Royale! Share creative builds, find duo partners, and stay updated on the latest season.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>18.2k</strong> Members</span>
-                    <span class="stat"><strong>3.4k</strong> Online</span>
+                <div class="feed-card">
+                    <div class="card-title">⚡ Quick Matches</div>
+                    <div class="card-desc">Find teammates for quick gaming sessions right now.</div>
+                    <div class="card-tags">
+                        <span class="tag">8 Players Looking</span>
+                    </div>
                 </div>
-                <a href="hubs/fortnite-hub.html" class="join-btn">Join Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <img src="pngs/games/rocketleague.jpg" alt="Rocket League" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">🏎️</div>
-                <h2>Rocket League Hub</h2>
-                <p>Supersonic acrobatic rocket-powered car soccer! Share aerial training, find teammates, and climb to Grand Champion.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>8.9k</strong> Members</span>
-                    <span class="stat"><strong>876</strong> Online</span>
-                </div>
-                <a href="hubs/rocketleague-hub.html" class="join-btn">Join Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <img src="pngs/games/lol.jpg" alt="League of Legends" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">⚔️</div>
-                <h2>League of Legends Hub</h2>
-                <p>Dominate the Rift! Discuss meta builds, find your ranked duo, and share epic pentakill clips.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>22.1k</strong> Members</span>
-                    <span class="stat"><strong>4.5k</strong> Online</span>
-                </div>
-                <a href="hubs/lol-hub.html" class="join-btn">Join Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <img src="pngs/games/apex.jpg" alt="Apex Legends" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">🔥</div>
-                <h2>Apex Legends Hub</h2>
-                <p>Become an Apex Champion! Share movement tech, legend strategies, and find your perfect trio.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>9.7k</strong> Members</span>
-                    <span class="stat"><strong>1.1k</strong> Online</span>
-                </div>
-                <a href="hubs/apex-hub.html" class="join-btn">Join Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <img src="pngs/games/minecraft.jpg" alt="Minecraft" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">⛏️</div>
-                <h2>Minecraft Hub</h2>
-                <p>Build, explore, survive! Share your epic builds, redstone creations, and find servers to join.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>25.3k</strong> Members</span>
-                    <span class="stat"><strong>5.2k</strong> Online</span>
-                </div>
-                <a href="hubs/minecraft-hub.html" class="join-btn">Join Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <img src="pngs/games/gta.jpg" alt="GTA Online" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">🌌</div>
-                <h2>GTA Online Hub</h2>
-                <p>Rule the streets of Los Santos! Share heist strategies, car meets, and crew up for mayhem.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>14.6k</strong> Members</span>
-                    <span class="stat"><strong>2.8k</strong> Online</span>
-                </div>
-                <a href="hubs/gta-hub.html" class="join-btn">Join Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <img src="pngs/games/cs2.jpg" alt="Counter-Strike 2" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">🎴</div>
-                <h2>Counter-Strike 2 Hub</h2>
-                <p>The legendary tactical shooter. Share smokes, find 5-stacks, and grind to Global Elite.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>16.4k</strong> Members</span>
-                    <span class="stat"><strong>3.1k</strong> Online</span>
-                </div>
-                <a href="hubs/cs2-hub.html" class="join-btn">Join Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <img src="pngs/games/nightcrew.jpg" alt="Night Crew" class="hub-image" onerror="this.style.display='none';" onload="this.nextElementSibling.style.display='none';">
-                <div class="hub-icon">🌙</div>
-                <h2>Night Crew Hub</h2>
-                <p>The official hub for nocturnal gamers. Connect with fellow night owls and own the darkness.</p>
-                <div class="hub-stats">
-                    <span class="stat"><strong>4.5k</strong> Members</span>
-                    <span class="stat"><strong>412</strong> Online</span>
-                </div>
-                <a href="hubs/nightcrew-hub.html" class="join-btn">Join Hub</a>
-            </div>
-        </div>
+            </section>
+        </main>
     </div>
 
     <!-- Firebase Auth Script -->

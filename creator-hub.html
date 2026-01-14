@@ -3,325 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creator Hub - Noctive</title>
+    <title>Creators - Noctive</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, #121524, #1e2242, #2b2d61, #383580, #453c9e);
-            background-attachment: fixed;
             color: #f0f0f0;
             min-height: 100vh;
-            padding: 2rem;
-            padding-top: 5rem;
         }
-        
-        /* Navigation Header */
-        .nav-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+        .explore-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background: #181a2b;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            border-right: 1px solid rgba(255,255,255,0.07);
+        }
+        .sidebar h2 {
+            font-size: 1.2rem;
+            color: #facc15;
+            margin-bottom: 1rem;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .sidebar-nav a {
+            color: #d0d0d0;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.7rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .sidebar-nav a.active,
+        .sidebar-nav a:hover {
             background: #23263a;
-            padding: 0.75rem 2rem;
+            color: #facc15;
+            text-decoration: none;
+        }
+        .main-content {
+            flex: 1;
+            padding: 2.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .explore-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
-        .nav-brand {
-            font-size: 1.5rem;
+        .explore-title {
+            font-size: 2.5rem;
             font-weight: 700;
             background: linear-gradient(90deg, #8b0000, #b22222, #dc143c);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-decoration: none;
         }
-        .nav-links {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .nav-link {
+        .search-bar {
+            background: #23263a;
+            border-radius: 0.5rem;
             padding: 0.5rem 1rem;
-            color: #9ca3af;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s;
+            border: none;
+            color: #f0f0f0;
+            font-size: 1rem;
+            width: 300px;
         }
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #e5e7eb;
-        }
-        .nav-link.active {
-            background: rgba(250, 204, 21, 0.1);
-            color: #facc15;
-            border: 1px solid rgba(250, 204, 21, 0.2);
-        }
-        .login-btn {
-            padding: 0.4rem 1rem;
-            background: linear-gradient(90deg, #b22222, #ff3c38);
-            color: white !important;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-left: 0.5rem;
-        }
-        .login-btn:hover {
-            box-shadow: 0 0 15px rgba(255, 60, 56, 0.5);
-        }
-        
-        /* User Profile in Nav */
-        .nav-user {
+        .category-tabs {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.3rem 0.5rem;
-            border-radius: 0.5rem;
-            transition: background 0.2s;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
         }
-        .nav-user:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .nav-user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 2px solid #facc15;
-            object-fit: cover;
-        }
-        .nav-user-name {
-            color: #facc15;
+        .category-tab {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.1rem;
             font-weight: 600;
-            font-size: 0.9rem;
-        }
-        .hidden { display: none !important; }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        h1 .title-text {
-            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        h1 .title-icon {
-            font-style: normal;
-        }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 2rem;
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(90deg, #b22222, #ff3c38);
-            color: white;
-            text-decoration: none;
+            padding: 0.7rem 1.2rem;
             border-radius: 0.5rem;
-            font-weight: bold;
-            transition: transform 0.2s;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            text-decoration: none;
         }
-        .back-link:hover {
-            transform: translateY(-2px);
+        .category-tab.active,
+        .category-tab:hover {
+            background: #23263a;
+            color: #facc15;
         }
-        .section {
+        .explore-feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        .feed-card {
             background: linear-gradient(to bottom right, #1d2133, #292e44);
             border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        .section h2 {
-            color: #facc15;
-            margin-top: 0;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .tool-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.2s;
-        }
-        .tool-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-2px);
-        }
-        .tool-card h3 {
-            color: #facc15;
-            margin-top: 0;
-            font-size: 1.1rem;
-        }
-        .tool-card p {
-            color: #d0d0d0;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        .cta-button {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, #facc15, #f59e0b);
-            color: #1a1d2e;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            margin-top: 1rem;
-            transition: transform 0.2s;
-        }
-        .cta-button:hover {
-            transform: scale(1.05);
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            flex-direction: column;
             gap: 1rem;
-            margin-top: 1.5rem;
+            text-decoration: none;
         }
-        .stat-box {
-            background: rgba(250, 204, 21, 0.1);
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            text-align: center;
-            border: 1px solid rgba(250, 204, 21, 0.3);
+        .feed-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 6px #00eaff, 0 0 12px #ff00cc;
         }
-        .stat-box h3 {
-            font-size: 2rem;
+        .feed-card .card-title {
+            font-size: 1.3rem;
             color: #facc15;
             margin: 0;
         }
-        .stat-box p {
+        .feed-card .card-desc {
             color: #d0d0d0;
-            margin: 0.5rem 0 0 0;
+            font-size: 1rem;
+        }
+        .feed-card .card-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background: rgba(250,204,21,0.18);
+            color: #facc15;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.75rem;
+        }
+        @media (max-width: 900px) {
+            .explore-layout {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.07);
+                flex-direction: row;
+                gap: 2rem;
+                justify-content: center;
+            }
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .main-content {
+                padding: 1rem 0.5rem;
+            }
+            .explore-title {
+                font-size: 1.5rem;
+            }
+            .search-bar {
+                width: 100%;
+            }
+            .explore-feed {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-    <nav class="nav-header">
-        <a href="index.html" class="nav-brand">Noctive</a>
-        <div class="nav-links">
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="explore.html" class="nav-link">Explore</a>
-            <a href="messages.html" class="nav-link">Messages</a>
-            <a href="login.html" id="loginBtn" class="nav-link login-btn">Login / Sign Up</a>
-            <a href="profile.html" id="userProfile" class="nav-user hidden">
-                <img src="pngs/account.png" alt="Avatar" class="nav-user-avatar" id="navAvatar">
-                <span class="nav-user-name" id="navUsername">@user</span>
-            </a>
-        </div>
-    </nav>
-
-    <div class="container">
-        
-        <h1><span class="title-icon">🎨</span> <span class="title-text">Creator Hub</span></h1>
-        <p style="font-size: 1.2rem; color: #d0d0d0; margin-bottom: 2rem;">
-            Everything you need to create, share, and grow your gaming content
-        </p>
-
-        <div class="section">
-            <h2>📊 Your Creator Dashboard</h2>
-            <div class="stats">
-                <div class="stat-box">
-                    <h3>1,234</h3>
-                    <p>Total Followers</p>
+    <div class="explore-layout">
+        <aside class="sidebar">
+            <h2>Discover</h2>
+            <nav class="sidebar-nav">
+                <a href="explore.html">Explore</a>
+                <a href="creator-hub.html" class="active">Creators</a>
+                <a href="hubs.html">Communities</a>
+                <a href="hubs.html">Streams</a>
+                <a href="profile.html">Content Creator</a>
+            </nav>
+            <div class="sidebar-userbox" style="margin-top:auto;display:flex;align-items:center;gap:0.75rem;padding:1rem 0.5rem;background:rgba(36,39,59,0.85);border-radius:0.75rem;">
+                <img src="pngs/account.png" alt="Avatar" style="width:40px;height:40px;border-radius:50%;border:2px solid #facc15;object-fit:cover;">
+                <div style="flex:1;">
+                    <div style="font-weight:600;color:#facc15;font-size:1rem;">@Username</div>
+                    <a href="profile.html" style="color:#888;font-size:0.85rem;text-decoration:none;">View Profile</a>
                 </div>
-                <div class="stat-box">
-                    <h3>45.2k</h3>
-                    <p>Content Views</p>
-                </div>
-                <div class="stat-box">
-                    <h3>892</h3>
-                    <p>Engagements</p>
-                </div>
-                <div class="stat-box">
-                    <h3>24</h3>
-                    <p>Posts This Month</p>
-                </div>
+                <a href="settings.html" style="color:#facc15;font-size:1.2rem;text-decoration:none;">⚙️</a>
             </div>
-        </div>
-
-        <div class="section">
-            <h2>🛠️ Creator Tools</h2>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <h3>🎥 Stream Manager</h3>
-                    <p>Manage your live streams, schedule broadcasts, and engage with viewers in real-time.</p>
-                    <a href="#" class="cta-button">Launch</a>
-                </div>
-                <div class="tool-card">
-                    <h3>📹 Video Editor</h3>
-                    <p>Edit your gaming clips with our built-in video editor. Add effects, transitions, and music.</p>
-                    <a href="#" class="cta-button">Open Editor</a>
-                </div>
-                <div class="tool-card">
-                    <h3>📊 Analytics</h3>
-                    <p>Deep dive into your content performance with detailed analytics and insights.</p>
-                    <a href="#" class="cta-button">View Stats</a>
-                </div>
-                <div class="tool-card">
-                    <h3>💰 Monetization</h3>
-                    <p>Set up subscriptions, donations, and other revenue streams for your content.</p>
-                    <a href="#" class="cta-button">Get Started</a>
-                </div>
-                <div class="tool-card">
-                    <h3>🎨 Branding Kit</h3>
-                    <p>Create custom overlays, banners, and graphics for your channel.</p>
-                    <a href="#" class="cta-button">Design</a>
-                </div>
-                <div class="tool-card">
-                    <h3>📅 Content Calendar</h3>
-                    <p>Plan and schedule your content ahead of time with our calendar tool.</p>
-                    <a href="#" class="cta-button">Schedule</a>
-                </div>
+        </aside>
+        <main class="main-content">
+            <div class="explore-header">
+                <span class="explore-title">Creators</span>
+                <input class="search-bar" type="text" placeholder="Search creators..." />
             </div>
-        </div>
-
-        <div class="section">
-            <h2>🎓 Creator Resources</h2>
-            <p style="color: #d0d0d0; margin-bottom: 1rem;">Learn from the best and improve your content creation skills</p>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <h3>📚 Tutorials</h3>
-                    <p>Step-by-step guides on streaming, editing, and growing your audience.</p>
-                </div>
-                <div class="tool-card">
-                    <h3>🎤 Webinars</h3>
-                    <p>Live sessions with top creators sharing their tips and strategies.</p>
-                </div>
-                <div class="tool-card">
-                    <h3>💬 Creator Community</h3>
-                    <p>Connect with other creators, share ideas, and collaborate on projects.</p>
-                </div>
-                <div class="tool-card">
-                    <h3>🏆 Best Practices</h3>
-                    <p>Industry standards and proven methods to boost your content quality.</p>
-                </div>
+            <div class="category-tabs">
+                <a href="explore.html" class="category-tab">Explore</a>
+                <a href="creator-hub.html" class="category-tab active">Creators</a>
+                <a href="hubs.html" class="category-tab">Communities</a>
+                <a href="hubs.html" class="category-tab">Streams</a>
             </div>
-        </div>
+            <section class="explore-feed">
+                <div class="feed-card">
+                    <div class="card-title">🌟 Top Creators</div>
+                    <div class="card-desc">Follow the most active and engaging content creators on Noctive.</div>
+                    <div class="card-tags">
+                        <span class="tag">@NightHawk</span>
+                        <span class="tag">@GamerQueen</span>
+                        <span class="tag">@ProStreamer</span>
+                    </div>
+                </div>
+                <div class="feed-card">
+                    <div class="card-title">🎥 Featured Streams</div>
+                    <div class="card-desc">Watch live streams from top creators.</div>
+                    <div class="card-tags">
+                        <span class="tag">Live Now</span>
+                    </div>
+                </div>
+                <div class="feed-card">
+                    <div class="card-title">📝 Latest Posts</div>
+                    <div class="card-desc">See what creators are sharing right now.</div>
+                    <div class="card-tags">
+                        <span class="tag">#Tips</span>
+                        <span class="tag">#Highlights</span>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 
     <!-- Firebase Auth Script -->

@@ -10,270 +10,240 @@
             margin: 0;
             font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, #121524, #1e2242, #2b2d61, #383580, #453c9e);
-            background-attachment: fixed;
             color: #f0f0f0;
             min-height: 100vh;
-            padding: 2rem;
-            padding-top: 5rem;
         }
-        
-        /* Navigation Header */
-        .nav-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+        .explore-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background: #181a2b;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            border-right: 1px solid rgba(255,255,255,0.07);
+        }
+        .sidebar h2 {
+            font-size: 1.2rem;
+            color: #facc15;
+            margin-bottom: 1rem;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .sidebar-nav a {
+            color: #d0d0d0;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.7rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .sidebar-nav a.active, .sidebar-nav a:hover {
             background: #23263a;
-            padding: 0.75rem 2rem;
+            color: #facc15;
+            text-decoration: none;
+        }
+        .feed-card {
+            text-decoration: none;
+        }
+        .nav-link {
+            text-decoration: none;
+        }
+        .main-content {
+            flex: 1;
+            padding: 2.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .explore-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
-        .nav-brand {
-            font-size: 1.5rem;
+        .explore-title {
+            font-size: 2.5rem;
             font-weight: 700;
             background: linear-gradient(90deg, #8b0000, #b22222, #dc143c);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-decoration: none;
         }
-        .nav-links {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .nav-link {
+        .search-bar {
+            background: #23263a;
+            border-radius: 0.5rem;
             padding: 0.5rem 1rem;
-            color: #9ca3af;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s;
+            border: none;
+            color: #f0f0f0;
+            font-size: 1rem;
+            width: 300px;
         }
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #e5e7eb;
-        }
-        .nav-link.active {
-            background: rgba(250, 204, 21, 0.1);
-            color: #facc15;
-            border: 1px solid rgba(250, 204, 21, 0.2);
-        }
-        .login-btn {
-            padding: 0.4rem 1rem;
-            background: linear-gradient(90deg, #b22222, #ff3c38);
-            color: white !important;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-left: 0.5rem;
-        }
-        .login-btn:hover {
-            box-shadow: 0 0 15px rgba(255, 60, 56, 0.5);
-        }
-        
-        /* User Profile in Nav */
-        .nav-user {
+        .category-tabs {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.3rem 0.5rem;
-            border-radius: 0.5rem;
-            transition: background 0.2s;
-        }
-        .nav-user:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .nav-user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 2px solid #facc15;
-            object-fit: cover;
-        }
-        .nav-user-name {
-            color: #facc15;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        .hidden { display: none !important; }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        h1 .title-text {
-            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        h1 .title-icon {
-            font-style: normal;
-        }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 2rem;
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(90deg, #b22222, #ff3c38);
-            color: white;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            transition: transform 0.2s;
-        }
-        .back-link:hover {
-            transform: translateY(-2px);
-        }
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
-            margin-top: 2rem;
+            margin-bottom: 1rem;
         }
-        .card-link {
+        .category-tab {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.7rem 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
             text-decoration: none;
-            color: inherit;
-            display: block;
         }
-        .card {
+        .category-tab.active, .category-tab:hover {
+            background: #23263a;
+            color: #facc15;
+        }
+        .explore-feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        .feed-card {
             background: linear-gradient(to bottom right, #1d2133, #292e44);
             border-radius: 1rem;
             padding: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
             transition: transform 0.2s, box-shadow 0.2s;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
-        .card:hover {
+        .feed-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 0 6px #00eaff, 0 0 12px #ff00cc;
         }
-        .card h3 {
+        .feed-card .card-title {
+            font-size: 1.3rem;
             color: #facc15;
-            margin-top: 0;
+            margin: 0;
         }
-        .card p {
+        .feed-card .card-desc {
             color: #d0d0d0;
-            line-height: 1.6;
+            font-size: 1rem;
+        }
+        .feed-card .card-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
         .tag {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: rgba(250, 204, 21, 0.2);
+            background: rgba(250,204,21,0.18);
             color: #facc15;
             border-radius: 1rem;
             font-size: 0.85rem;
-            margin-right: 0.5rem;
-            margin-top: 0.5rem;
+            padding: 0.25rem 0.75rem;
+        }
+        @media (max-width: 900px) {
+            .explore-layout { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); flex-direction: row; gap: 2rem; justify-content: center; }
+            .main-content { padding: 1.5rem 1rem; }
+        }
+        @media (max-width: 600px) {
+            .main-content { padding: 1rem 0.5rem; }
+            .explore-title { font-size: 1.5rem; }
+            .search-bar { width: 100%; }
+            .explore-feed { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-    <nav class="nav-header">
-        <a href="index.html" class="nav-brand">Noctive</a>
-        <div class="nav-links">
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="explore.html" class="nav-link active">Explore</a>
-            <a href="messages.html" class="nav-link">Messages</a>
-            <a href="login.html" id="loginBtn" class="nav-link login-btn">Login / Sign Up</a>
-            <a href="profile.html" id="userProfile" class="nav-user hidden">
-                <img src="pngs/account.png" alt="Avatar" class="nav-user-avatar" id="navAvatar">
-                <span class="nav-user-name" id="navUsername">@user</span>
-            </a>
-        </div>
-    </nav>
-
-    <div class="container">
-        
-        <h1><span class="title-icon">🔍</span> <span class="title-text">Explore</span></h1>
-        <p style="font-size: 1.2rem; color: #d0d0d0; margin-bottom: 2rem;">
-            Discover trending games, communities, and content across Noctive
-        </p>
-
-        <div class="content-grid">
-            <a href="hubs.html" class="card-link">
-                <div class="card">
-                    <h3>🎮 Trending Games</h3>
-                    <p>Check out the most popular games in the community right now.</p>
-                    <div>
+    <div class="explore-layout">
+        <aside class="sidebar">
+            <h2>Discover</h2>
+            <nav class="sidebar-nav">
+                <a href="explore.html" class="active">Explore</a>
+                <a href="creator-hub.html">Creators</a>
+                <a href="hubs.html">Communities</a>
+                <a href="hubs.html">Streams</a>
+                <a href="profile.html">Content Creator</a>
+            </nav>
+            <div class="sidebar-userbox" style="margin-top:auto;display:flex;align-items:center;gap:0.75rem;padding:1rem 0.5rem;background:rgba(36,39,59,0.85);border-radius:0.75rem;">
+                <img src="pngs/account.png" alt="Avatar" style="width:40px;height:40px;border-radius:50%;border:2px solid #facc15;object-fit:cover;">
+                <div style="flex:1;">
+                    <div style="font-weight:600;color:#facc15;font-size:1rem;">@Username</div>
+                    <a href="profile.html" style="color:#888;font-size:0.85rem;text-decoration:none;">View Profile</a>
+                </div>
+                <a href="settings.html" style="color:#facc15;font-size:1.2rem;text-decoration:none;">⚙️</a>
+            </div>
+        </aside>
+        <main class="main-content">
+            <div class="explore-header">
+                <span class="explore-title">Explore</span>
+                <input class="search-bar" type="text" placeholder="Search games, creators, communities..." />
+            </div>
+            <div class="category-tabs">
+                <a href="hubs.html" class="category-tab active">Explore</a>
+                <a href="creator-hub.html" class="category-tab">Creators</a>
+                <a href="hubs.html" class="category-tab">Communities</a>
+                <a href="hubs.html" class="category-tab">Streams</a>
+            </div>
+            <section class="explore-feed">
+                <a href="hubs.html" class="feed-card">
+                    <div class="card-title">🎮 Trending Games</div>
+                    <div class="card-desc">Check out the most popular games in the community right now.</div>
+                    <div class="card-tags">
                         <span class="tag">Rainbow Six Siege</span>
                         <span class="tag">Valorant</span>
                         <span class="tag">Apex Legends</span>
                     </div>
-                </div>
-            </a>
-
-            <a href="creator-hub.html" class="card-link">
-                <div class="card">
-                    <h3>🌟 Top Creators</h3>
-                    <p>Follow the most active and engaging content creators on Noctive.</p>
-                    <div>
+                </a>
+                <a href="creator-hub.html" class="feed-card">
+                    <div class="card-title">🌟 Top Creators</div>
+                    <div class="card-desc">Follow the most active and engaging content creators on Noctive.</div>
+                    <div class="card-tags">
                         <span class="tag">@NightHawk</span>
                         <span class="tag">@GamerQueen</span>
                         <span class="tag">@ProStreamer</span>
                     </div>
-                </div>
-            </a>
-
-            <a href="index.html#feed" class="card-link">
-                <div class="card">
-                    <h3>🔥 Hot Topics</h3>
-                    <p>Join the conversation on the most discussed topics this week.</p>
-                    <div>
+                </a>
+                <a href="index.html#feed" class="feed-card">
+                    <div class="card-title">🔥 Hot Topics</div>
+                    <div class="card-desc">Join the conversation on the most discussed topics this week.</div>
+                    <div class="card-tags">
                         <span class="tag">#NightGaming</span>
                         <span class="tag">#TeamUp</span>
                         <span class="tag">#ProTips</span>
                     </div>
-                </div>
-            </a>
-
-            <a href="hubs.html" class="card-link">
-                <div class="card">
-                    <h3>📺 Live Streams</h3>
-                    <p>Watch live gaming sessions from the Noctive community.</p>
-                    <div>
+                </a>
+                <a href="hubs.html" class="feed-card">
+                    <div class="card-title">📺 Live Streams</div>
+                    <div class="card-desc">Watch live gaming sessions from the Noctive community.</div>
+                    <div class="card-tags">
                         <span class="tag">12 Live Now</span>
                     </div>
-                </div>
-            </a>
-
-            <a href="hubs.html" class="card-link">
-                <div class="card">
-                    <h3>🎯 Communities</h3>
-                    <p>Find and join gaming communities that match your interests.</p>
-                    <div>
+                </a>
+                <a href="hubs.html" class="feed-card">
+                    <div class="card-title">🎯 Communities</div>
+                    <div class="card-desc">Find and join gaming communities that match your interests.</div>
+                    <div class="card-tags">
                         <span class="tag">FPS Squad</span>
                         <span class="tag">RPG Guild</span>
                         <span class="tag">Indie Lovers</span>
                     </div>
-                </div>
-            </a>
-
-            <a href="hubs.html" class="card-link">
-                <div class="card">
-                    <h3>⚡ Quick Matches</h3>
-                    <p>Find teammates for quick gaming sessions right now.</p>
-                    <div>
+                </a>
+                <a href="hubs.html" class="feed-card">
+                    <div class="card-title">⚡ Quick Matches</div>
+                    <div class="card-desc">Find teammates for quick gaming sessions right now.</div>
+                    <div class="card-tags">
                         <span class="tag">8 Players Looking</span>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </section>
+        </main>
     </div>
 
     <!-- Firebase Auth Script -->

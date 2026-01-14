@@ -884,8 +884,8 @@ a.glitchy:hover {
   justify-content: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 1rem;
-  margin-top: 2rem; /* Added top margin for breathing room */
-  padding-top: 1rem; /* Added top padding for extra space */
+  margin-top: 0;
+  padding-top: 0;
   position: sticky;
   top: 0;
   background: rgba(18, 21, 36, 0.95);
@@ -1656,10 +1656,15 @@ a.glitchy:hover {
 
       /* ─── MOBILE HAMBURGER MENU ─── */
       .mobile-menu-wrapper {
-        display: block;
+        display: none;
         position: relative;
         z-index: 1005;
       }
+@media (max-width: 768px) {
+  .mobile-menu-wrapper {
+    display: block;
+  }
+}
 
       .hamburger-btn {
         background: transparent !important;
@@ -1805,6 +1810,7 @@ a.glitchy:hover {
         font-weight: 600;
         font-size: 1.1rem;
         cursor: pointer;
+        text-decoration: none;
       }
 
       .mobile-user-actions {
@@ -1821,6 +1827,9 @@ a.glitchy:hover {
         border: none;
         font-weight: 600;
         transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
       }
 
       .mobile-profile-btn {
@@ -2094,10 +2103,6 @@ a.glitchy:hover {
         transform: translateY(-1px);
       }
 
-      /* Show hamburger menu on all screen sizes */
-      .mobile-menu-wrapper {
-        display: block;
-      }
 
       /* ─── TICKER BAR ─── */
       .ticker-bar {
@@ -2563,18 +2568,18 @@ a.glitchy:hover {
 }
 
 .avatar-wrapper .avatar-status.gaming {
-  background: #8b5cf6;
-  box-shadow: 0 0 6px rgba(139, 92, 246, 0.7);
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
 }
 
 .avatar-wrapper .avatar-status.streaming {
-  background: #ec4899;
-  box-shadow: 0 0 6px rgba(236, 72, 153, 0.7);
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
 }
 
 .avatar-wrapper .avatar-status.invisible {
-  background: #6b7280;
-  box-shadow: none;
+  background: #ef4444;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
 }
 
 .avatar-link img {
@@ -2908,10 +2913,10 @@ a.glitchy:hover {
           <!-- User Profile Section in Mobile Menu -->
           <div id="mobileUserInfo" class="mobile-user-section hidden">
             <div class="mobile-user-profile">
-              <span id="mobileUserEmail" onclick="window.location.href='profile.html'" class="mobile-user-name">@NoctiveHQ</span>
+              <a id="mobileUserEmail" href="profile.html" class="mobile-user-name">@NoctiveHQ</a>
               <div class="mobile-user-actions">
-                <button onclick="window.location.href='profile.html'" class="mobile-profile-btn">View Profile</button>
-                <button onclick="signOutUser()" class="mobile-signout-btn">Sign Out</button>
+                <a href="profile.html" class="mobile-profile-btn">View Profile</a>
+                <button type="button" onclick="signOutUser()" class="mobile-signout-btn">Sign Out</button>
               </div>
             </div>
             <div class="mobile-menu-divider"></div>
@@ -3089,7 +3094,7 @@ a.glitchy:hover {
     <div class="user">
       <div class="avatar-wrapper">
         <a href="profile/Hijinxx.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" /></a>
-        <span class="avatar-status gaming" title="Gaming"></span>
+        <span class="avatar-status online" title="Online"></span>
       </div>
       <div class="user-info">
         <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="profile/Hijinxx.html" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a><span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span></strong>
@@ -3170,7 +3175,7 @@ a.glitchy:hover {
     <div class="user">
       <div class="avatar-wrapper">
         <a href="profile/WakeBakeWes.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=WakeBakeWes&background=004080&color=fff&rounded=true" alt="User Avatar" /></a>
-        <span class="avatar-status gaming" title="Gaming"></span>
+        <span class="avatar-status online" title="Online"></span>
       </div>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/WakeBakeWes.html" class="glitchy" data-text="@WakeBakeWes">@WakeBakeWes</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span></strong>
@@ -3224,7 +3229,7 @@ a.glitchy:hover {
     <div class="user">
       <div class="avatar-wrapper">
         <a href="profile/LoriPie.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar" /></a>
-        <span class="avatar-status streaming" title="Streaming"></span>
+        <span class="avatar-status online" title="Online"></span>
       </div>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/LoriPie.html" class="glitchy" data-text="@LoriPie">@LoriPie</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span></strong>
@@ -3302,7 +3307,7 @@ a.glitchy:hover {
       <div class="user">
         <div class="avatar-wrapper">
           <a href="profile/Hijinxx.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" /></a>
-          <span class="avatar-status gaming" title="Gaming"></span>
+          <span class="avatar-status online" title="Online"></span>
         </div>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
@@ -3394,7 +3399,7 @@ a.glitchy:hover {
       <div class="user">
         <div class="avatar-wrapper">
           <a href="profile/SquadLeader.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=SquadLeader&background=ff6600&color=fff&rounded=true" alt="User Avatar" /></a>
-          <span class="avatar-status gaming" title="Gaming"></span>
+          <span class="avatar-status online" title="Online"></span>
         </div>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
