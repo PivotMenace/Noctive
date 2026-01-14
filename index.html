@@ -88,6 +88,12 @@
 
     <style>
       /* ─── GLOBAL & LAYOUT ─── */
+      
+      /* Status dropdown hidden class */
+      .status-dropdown-menu.hidden {
+        display: none;
+      }
+      
       body {
   margin: 0;
   font-family: 'Nunito', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif !important;
@@ -3005,18 +3011,15 @@ a.glitchy:hover {
       <span id="createPostUserStatus" style="display: block; font-size: 0.75rem; margin-top: 0.15rem; color: #ffbd2e;">
         🌙 Idle
       </span>
-      <span id="createPostStatus" class="currently-playing" style="display: block; font-size: 0.75rem; margin-top: 0.25rem;">
-        🎮 Currently playing: Rainbow Six Siege
-      </span>
     </div>
     <!-- Status Dropdown -->
-    <div class="status-dropdown-wrapper" style="position: relative;">
-      <button id="statusDropdownBtn" class="status-dropdown-btn" onclick="toggleStatusDropdown(event)" style="display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.5rem; color: #f0f0f0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">
+    <div class="status-dropdown-wrapper" style="position: relative; z-index: 50;">
+      <button id="statusDropdownBtn" type="button" class="status-dropdown-btn" onclick="toggleStatusDropdown(event)" style="display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.5rem; color: #f0f0f0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; position: relative; z-index: 51;">
         <span id="currentStatusDot" class="status-dot-small online"></span>
         <span id="currentStatusText">Online</span>
         <span style="font-size: 0.6rem;">▼</span>
       </button>
-      <div id="statusDropdownMenu" class="status-dropdown-menu hidden" style="position: absolute; top: 100%; right: 0; margin-top: 0.5rem; background: linear-gradient(to bottom right, #1a1d2e, #23263a); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.5rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4); min-width: 150px; z-index: 100; overflow: hidden;">
+      <div id="statusDropdownMenu" class="status-dropdown-menu hidden" style="position: absolute; top: 100%; right: 0; margin-top: 0.5rem; background: linear-gradient(to bottom right, #1a1d2e, #23263a); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.5rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4); min-width: 150px; z-index: 200; overflow: hidden;">
         <div class="status-option" onclick="setUserStatus('online')" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem; cursor: pointer; transition: background 0.2s;">
           <span class="status-dot-small online"></span>
           <span>Online</span>
@@ -4498,7 +4501,7 @@ a.glitchy:hover {
         }
         
         // Update status
-        status.textContent = profile.status ? `🎮 ${profile.status}` : '🌙 Idle';
+        status.textContent = profile.status ? `🎮 ${profile.status}` :
         
         // Update avatar
         if (profile.avatar) {
