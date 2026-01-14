@@ -2094,11 +2094,9 @@ a.glitchy:hover {
         transform: translateY(-1px);
       }
 
-      /* Hide hamburger on desktop */
-      @media (min-width: 769px) {
-        .mobile-menu-wrapper {
-          display: none;
-        }
+      /* Show hamburger menu on all screen sizes */
+      .mobile-menu-wrapper {
+        display: block;
       }
 
       /* ─── TICKER BAR ─── */
@@ -2529,6 +2527,54 @@ a.glitchy:hover {
 .avatar-link:hover {
   transform: scale(1.1);
   box-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
+}
+
+/* Avatar wrapper with status indicator */
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.avatar-wrapper .avatar-status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid #1a1d2e;
+  z-index: 2;
+}
+
+.avatar-wrapper .avatar-status.online {
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
+}
+
+.avatar-wrapper .avatar-status.idle {
+  background: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.7);
+}
+
+.avatar-wrapper .avatar-status.busy {
+  background: #ef4444;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
+}
+
+.avatar-wrapper .avatar-status.gaming {
+  background: #8b5cf6;
+  box-shadow: 0 0 6px rgba(139, 92, 246, 0.7);
+}
+
+.avatar-wrapper .avatar-status.streaming {
+  background: #ec4899;
+  box-shadow: 0 0 6px rgba(236, 72, 153, 0.7);
+}
+
+.avatar-wrapper .avatar-status.invisible {
+  background: #6b7280;
+  box-shadow: none;
 }
 
 .avatar-link img {
@@ -3012,27 +3058,13 @@ a.glitchy:hover {
         🌙 Idle
       </span>
     </div>
-    <!-- Status Dropdown -->
+    <!-- Status Dropdown - Click to open full status picker -->
     <div class="status-dropdown-wrapper" style="position: relative; z-index: 50;">
-      <button id="statusDropdownBtn" type="button" class="status-dropdown-btn" onclick="toggleStatusDropdown(event)" style="display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.5rem; color: #f0f0f0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; position: relative; z-index: 51;">
+      <button id="statusDropdownBtn" type="button" class="status-dropdown-btn" onclick="openStatusPicker()" style="display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.5rem; color: #f0f0f0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; position: relative; z-index: 51;">
         <span id="currentStatusDot" class="status-dot-small online"></span>
         <span id="currentStatusText">Online</span>
         <span style="font-size: 0.6rem;">▼</span>
       </button>
-      <div id="statusDropdownMenu" class="status-dropdown-menu hidden" style="position: absolute; top: 100%; right: 0; margin-top: 0.5rem; background: linear-gradient(to bottom right, #1a1d2e, #23263a); border: 1px solid rgba(255,255,255,0.15); border-radius: 0.5rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4); min-width: 150px; z-index: 200; overflow: hidden;">
-        <div class="status-option" onclick="setUserStatus('online')" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem; cursor: pointer; transition: background 0.2s;">
-          <span class="status-dot-small online"></span>
-          <span>Online</span>
-        </div>
-        <div class="status-option" onclick="setUserStatus('idle')" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem; cursor: pointer; transition: background 0.2s;">
-          <span class="status-dot-small idle"></span>
-          <span>Idle</span>
-        </div>
-        <div class="status-option" onclick="setUserStatus('busy')" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem; cursor: pointer; transition: background 0.2s;">
-          <span class="status-dot-small busy"></span>
-          <span>Do Not Disturb</span>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -3055,7 +3087,10 @@ a.glitchy:hover {
 <div class="post" data-post-id="hijinxx">
   <div class="post-header">
     <div class="user">
-      <a href="profile/Hijinxx.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" /></a>
+      <div class="avatar-wrapper">
+        <a href="profile/Hijinxx.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" /></a>
+        <span class="avatar-status gaming" title="Gaming"></span>
+      </div>
       <div class="user-info">
         <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="profile/Hijinxx.html" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a><span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Valorant</span>
@@ -3079,7 +3114,10 @@ a.glitchy:hover {
 <div class="post" data-post-id="belt181">
   <div class="post-header">
     <div class="user">
-      <a href="profile/Belt181.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" /></a>
+      <div class="avatar-wrapper">
+        <a href="profile/Belt181.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Belt181&background=003366&color=fff&rounded=true" alt="User Avatar" /></a>
+        <span class="avatar-status online" title="Online"></span>
+      </div>
       <div class="user-info">
         <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="profile/Belt181.html" class="glitchy" data-text="@Belt181">@Belt181</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Apex Legends</span>
@@ -3103,7 +3141,10 @@ a.glitchy:hover {
 <div class="post" data-post-id="cardboard-box">
   <div class="post-header">
     <div class="user">
-      <a href="profile/cardboard-box.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=cardboard+box&background=222244&color=fff&rounded=true" alt="User Avatar" /></a>
+      <div class="avatar-wrapper">
+        <a href="profile/cardboard-box.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=cardboard+box&background=222244&color=fff&rounded=true" alt="User Avatar" /></a>
+        <span class="avatar-status idle" title="Idle"></span>
+      </div>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/cardboard-box.html" class="glitchy" data-text="@cardboard box">@cardboard box</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(my fav bestie)</span></strong>
         <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
@@ -3127,7 +3168,10 @@ a.glitchy:hover {
 <div class="post" data-post-id="WakeBakeWes">
   <div class="post-header">
     <div class="user">
-      <a href="profile/WakeBakeWes.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=WakeBakeWes&background=004080&color=fff&rounded=true" alt="User Avatar" /></a>
+      <div class="avatar-wrapper">
+        <a href="profile/WakeBakeWes.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=WakeBakeWes&background=004080&color=fff&rounded=true" alt="User Avatar" /></a>
+        <span class="avatar-status gaming" title="Gaming"></span>
+      </div>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/WakeBakeWes.html" class="glitchy" data-text="@WakeBakeWes">@WakeBakeWes</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Dreamer)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: The Sims</span>
@@ -3151,7 +3195,10 @@ a.glitchy:hover {
 <div class="post" data-post-id="UnDiscoverableTalent">
   <div class="post-header">
     <div class="user">
-      <a href="profile/UnDiscoverableTalent.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=UnDiscoverableTalent&background=660066&color=fff&rounded=true" alt="User Avatar" /></a>
+      <div class="avatar-wrapper">
+        <a href="profile/UnDiscoverableTalent.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=UnDiscoverableTalent&background=660066&color=fff&rounded=true" alt="User Avatar" /></a>
+        <span class="avatar-status idle" title="Idle"></span>
+      </div>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/UnDiscoverableTalent.html" class="glitchy" data-text="@UnDiscoverableTalent">@UnDiscoverableTalent</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill)</span></strong>
         <span style="font-size: 0.75rem;">🌙 Currently: Just vibing</span>
@@ -3175,7 +3222,10 @@ a.glitchy:hover {
 <div class="post" data-post-id="loripie">
   <div class="post-header">
     <div class="user">
-      <a href="profile/LoriPie.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar" /></a>
+      <div class="avatar-wrapper">
+        <a href="profile/LoriPie.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=LoriPie&background=ff6600&color=fff&rounded=true" alt="User Avatar" /></a>
+        <span class="avatar-status streaming" title="Streaming"></span>
+      </div>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/LoriPie.html" class="glitchy" data-text="@LoriPie">@LoriPie</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Sweetheart)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Stardew Valley</span>
@@ -3199,7 +3249,10 @@ a.glitchy:hover {
 <div class="post" data-post-id="hypurly">
   <div class="post-header">
     <div class="user">
-      <a href="profile/Hypurly.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hypurly&background=9333ea&color=fff&rounded=true" alt="User Avatar" /></a>
+      <div class="avatar-wrapper">
+        <a href="profile/Hypurly.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hypurly&background=9333ea&color=fff&rounded=true" alt="User Avatar" /></a>
+        <span class="avatar-status online" title="Online"></span>
+      </div>
       <div class="user-info">
         <strong style="font-size: 1rem;"><a href="profile/Hypurly.html" class="glitchy" data-text="@Hypurly">@Hypurly</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Chill Vibes)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Minecraft</span>
@@ -3247,7 +3300,10 @@ a.glitchy:hover {
           <div class="post" data-post-id="hijinxx-following">
     <div class="post-header">
       <div class="user">
-        <a href="profile/Hijinxx.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" /></a>
+        <div class="avatar-wrapper">
+          <a href="profile/Hijinxx.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Hijinxx&background=800080&color=fff&rounded=true" alt="User Avatar" /></a>
+          <span class="avatar-status gaming" title="Gaming"></span>
+        </div>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
             <a href="profile/Hijinxx.html" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a>
@@ -3274,7 +3330,10 @@ a.glitchy:hover {
   <div class="post" data-post-id="belt181-following">
     <div class="post-header">
       <div class="user">
-        <a href="profile/Belt181.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Belt181&background=004080&color=fff&rounded=true" alt="User Avatar" /></a>
+        <div class="avatar-wrapper">
+          <a href="profile/Belt181.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=Belt181&background=004080&color=fff&rounded=true" alt="User Avatar" /></a>
+          <span class="avatar-status online" title="Online"></span>
+        </div>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
             <a href="profile/Belt181.html" class="glitchy" data-text="@Belt181" style="margin-right: 0.1rem;">@Belt181</a>
@@ -3303,7 +3362,10 @@ a.glitchy:hover {
   <div class="post" data-post-id="lounge-tournament">
     <div class="post-header">
       <div class="user">
-        <a href="profile/NightCrewHub.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=NightCrewHub&background=facc15&color=1a1d2e&rounded=true" alt="User Avatar" /></a>
+        <div class="avatar-wrapper">
+          <a href="profile/NightCrewHub.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=NightCrewHub&background=facc15&color=1a1d2e&rounded=true" alt="User Avatar" /></a>
+          <span class="avatar-status online" title="Online"></span>
+        </div>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
             <a href="/profile/NightCrewHub" class="glitchy" data-text="@NightCrewHub" style="margin-right: 0.1rem;">@NightCrewHub</a>
@@ -3330,7 +3392,10 @@ a.glitchy:hover {
   <div class="post" data-post-id="lounge-squad">
     <div class="post-header">
       <div class="user">
-        <a href="profile/SquadLeader.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=SquadLeader&background=ff6600&color=fff&rounded=true" alt="User Avatar" /></a>
+        <div class="avatar-wrapper">
+          <a href="profile/SquadLeader.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=SquadLeader&background=ff6600&color=fff&rounded=true" alt="User Avatar" /></a>
+          <span class="avatar-status gaming" title="Gaming"></span>
+        </div>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
             <a href="/profile/SquadLeader" class="glitchy" data-text="@SquadLeader" style="margin-right: 0.1rem;">@SquadLeader</a>
@@ -3357,7 +3422,10 @@ a.glitchy:hover {
   <div class="post" data-post-id="lounge-tips">
     <div class="post-header">
       <div class="user">
-        <a href="profile/ProTips.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=ProTips&background=222244&color=fff&rounded=true" alt="User Avatar" /></a>
+        <div class="avatar-wrapper">
+          <a href="profile/ProTips.html" class="avatar-link"><img src="https://ui-avatars.com/api/?name=ProTips&background=222244&color=fff&rounded=true" alt="User Avatar" /></a>
+          <span class="avatar-status busy" title="Do Not Disturb"></span>
+        </div>
         <div class="user-info">
           <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
             <a href="/profile/ProTips" class="glitchy" data-text="@ProTips" style="margin-right: 0.1rem;">@ProTips</a>
@@ -3834,48 +3902,82 @@ a.glitchy:hover {
     }
   }
   
-  function setUserStatus(status) {
+  function setUserStatus(status, customMessage = '') {
     const statusDot = document.getElementById('currentStatusDot');
     const statusText = document.getElementById('currentStatusText');
     const userStatusDot = document.getElementById('userStatusDot');
     const userStatusDisplay = document.getElementById('userStatusDisplay');
-    const menu = document.getElementById('statusDropdownMenu');
+    const statusMenuIcon = document.getElementById('statusMenuIcon');
     
-    // Update the dropdown button
+    // Map for different status naming conventions
+    const statusMapping = {
+      'online': 'online',
+      'away': 'idle',
+      'idle': 'idle',
+      'busy': 'busy',
+      'gaming': 'online',
+      'streaming': 'online',
+      'invisible': 'busy'
+    };
+    
+    const dotStatus = statusMapping[status] || 'online';
+    
+    // Update the dropdown button dot
     if (statusDot) {
-      statusDot.className = 'status-dot-small ' + status;
+      statusDot.className = 'status-dot-small ' + dotStatus;
     }
     
     // Update the status text
     const statusLabels = {
       'online': 'Online',
+      'away': 'Away',
       'idle': 'Idle',
-      'busy': 'Do Not Disturb'
+      'busy': 'Do Not Disturb',
+      'gaming': 'Gaming',
+      'streaming': 'Streaming',
+      'invisible': 'Invisible'
     };
     const statusIcons = {
       'online': '🟢',
+      'away': '🟡',
       'idle': '🌙',
-      'busy': '⛔'
+      'busy': '🔴',
+      'gaming': '🎮',
+      'streaming': '📺',
+      'invisible': '⚫'
     };
     const statusColors = {
-      'online': '#27c93f',
+      'online': '#10b981',
+      'away': '#f59e0b',
       'idle': '#ffbd2e',
-      'busy': '#ff5f56'
+      'busy': '#ef4444',
+      'gaming': '#8b5cf6',
+      'streaming': '#ec4899',
+      'invisible': '#6b7280'
     };
     
+    const displayText = customMessage || statusLabels[status] || 'Online';
+    const icon = statusIcons[status] || '🟢';
+    const color = statusColors[status] || '#10b981';
+    
     if (statusText) {
-      statusText.textContent = statusLabels[status] || 'Online';
+      statusText.textContent = customMessage || statusLabels[status] || 'Online';
     }
     
     // Update the status display under the username
     if (userStatusDisplay) {
-      userStatusDisplay.textContent = `${statusIcons[status]} ${statusLabels[status]}`;
-      userStatusDisplay.style.color = statusColors[status];
+      userStatusDisplay.textContent = `${icon} ${displayText}`;
+      userStatusDisplay.style.color = color;
+    }
+    
+    // Update status menu icon
+    if (statusMenuIcon) {
+      statusMenuIcon.textContent = icon;
     }
     
     // Update the Night Crew widget status dot for current user
     if (userStatusDot) {
-      userStatusDot.className = 'status-dot ' + status;
+      userStatusDot.className = 'status-dot ' + dotStatus;
     }
     
     // Update the status label in Night Crew if it exists
@@ -3883,24 +3985,32 @@ a.glitchy:hover {
     if (venusLabel) {
       const labelClasses = {
         'online': 'green',
+        'away': 'yellow',
         'idle': 'yellow',
-        'busy': 'red'
+        'busy': 'red',
+        'gaming': 'green',
+        'streaming': 'green',
+        'invisible': 'red'
       };
-      venusLabel.className = 'status-label ' + labelClasses[status];
-      venusLabel.textContent = statusLabels[status];
+      venusLabel.className = 'status-label ' + (labelClasses[status] || 'green');
+      venusLabel.textContent = customMessage || statusLabels[status] || 'Online';
     }
     
     // Update the create post section status under username
     const createPostUserStatus = document.getElementById('createPostUserStatus');
     if (createPostUserStatus) {
-      createPostUserStatus.textContent = `${statusIcons[status]} ${statusLabels[status]}`;
-      createPostUserStatus.style.color = statusColors[status];
+      createPostUserStatus.textContent = `${icon} ${displayText}`;
+      createPostUserStatus.style.color = color;
     }
     
-    // Close the dropdown
-    if (menu) {
-      menu.classList.add('hidden');
-    }
+    // Save to localStorage
+    const statusData = {
+      status: status,
+      icon: icon,
+      text: statusLabels[status] || 'Online',
+      customMessage: customMessage
+    };
+    localStorage.setItem('noctive_user_status', JSON.stringify(statusData));
   }
   
   // Close status dropdown when clicking outside
@@ -4501,7 +4611,7 @@ a.glitchy:hover {
         }
         
         // Update status
-        status.textContent = profile.status ? `🎮 ${profile.status}` :
+        status.textContent = profile.status ? `🎮 ${profile.status}` : '🌙 Just vibing';
         
         // Update avatar
         if (profile.avatar) {
@@ -4902,8 +5012,6 @@ a.glitchy:hover {
           </div>
         </div>
         
-        <input type="text" class="status-custom-input" id="customStatusInput" placeholder="Add a custom status message..." maxlength="50">
-        
         <div class="status-picker-actions">
           <button class="status-picker-btn cancel" onclick="closeStatusPicker()">Cancel</button>
           <button class="status-picker-btn save" onclick="saveStatus()">Save</button>
@@ -4926,12 +5034,21 @@ a.glitchy:hover {
           const statusData = JSON.parse(savedStatus);
           selectedStatus = statusData.status;
           selectedIcon = statusData.icon;
-          document.getElementById('customStatusInput').value = statusData.customMessage || '';
           
-          // Highlight current status
-          document.querySelectorAll('.status-option').forEach(opt => {
+          // Highlight current status in the modal
+          document.querySelectorAll('#statusPickerOverlay .status-option').forEach(opt => {
             opt.classList.remove('active');
             if (opt.dataset.status === selectedStatus) {
+              opt.classList.add('active');
+            }
+          });
+        } else {
+          // Default to online if no saved status
+          selectedStatus = 'online';
+          selectedIcon = '🟢';
+          document.querySelectorAll('#statusPickerOverlay .status-option').forEach(opt => {
+            opt.classList.remove('active');
+            if (opt.dataset.status === 'online') {
               opt.classList.add('active');
             }
           });
@@ -4945,75 +5062,27 @@ a.glitchy:hover {
       }
       
       function selectStatus(element) {
-        document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('active'));
+        document.querySelectorAll('#statusPickerOverlay .status-option').forEach(opt => opt.classList.remove('active'));
         element.classList.add('active');
         selectedStatus = element.dataset.status;
         selectedIcon = element.dataset.icon;
       }
       
       function saveStatus() {
-        const customMessage = document.getElementById('customStatusInput').value.trim();
-        
-        // Get status text
-        const statusTexts = {
-          'online': 'Online',
-          'away': 'Away',
-          'busy': 'Do Not Disturb',
-          'gaming': 'Gaming',
-          'streaming': 'Streaming',
-          'invisible': 'Invisible'
-        };
-        
-        const statusData = {
-          status: selectedStatus,
-          icon: selectedIcon,
-          text: statusTexts[selectedStatus],
-          customMessage: customMessage
-        };
-        
-        // Save to localStorage
-        localStorage.setItem('noctive_user_status', JSON.stringify(statusData));
-        
-        // Update display
-        updateStatusDisplay(statusData);
+        // Use the unified setUserStatus function which handles all updates and saves to localStorage
+        setUserStatus(selectedStatus, '');
         
         // Close modal
         closeStatusPicker();
-      }
-      
-      function updateStatusDisplay(statusData) {
-        const statusDisplay = document.getElementById('userStatusDisplay');
-        const statusMenuIcon = document.getElementById('statusMenuIcon');
-        
-        if (statusDisplay) {
-          if (statusData.customMessage) {
-            statusDisplay.textContent = `${statusData.icon} ${statusData.customMessage}`;
-          } else {
-            statusDisplay.textContent = `${statusData.icon} ${statusData.text}`;
-          }
-          
-          // Update status color
-          const colors = {
-            'online': '#10b981',
-            'away': '#f59e0b',
-            'busy': '#ef4444',
-            'gaming': '#8b5cf6',
-            'streaming': '#ec4899',
-            'invisible': '#6b7280'
-          };
-          statusDisplay.style.color = colors[statusData.status] || '#10b981';
-        }
-        
-        if (statusMenuIcon) {
-          statusMenuIcon.textContent = statusData.icon;
-        }
       }
       
       // Load status on page load
       document.addEventListener('DOMContentLoaded', function() {
         const savedStatus = localStorage.getItem('noctive_user_status');
         if (savedStatus) {
-          updateStatusDisplay(JSON.parse(savedStatus));
+          const statusData = JSON.parse(savedStatus);
+          // Use setUserStatus to apply the saved status
+          setUserStatus(statusData.status, statusData.customMessage || '');
         }
       });
     </script>
