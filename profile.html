@@ -4,7 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Profile - Noctive</title>
-    <style>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Rounded:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+        .header-main {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background: transparent;
+            position: fixed;
+            top: 0;
+            z-index: 1001;
+        }
+        .brand-title {
+            font-weight: 700;
+            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+            -webkit-background-clip: text;
+        .nav-link {
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            font-family: 'Rubik', 'Roboto Condensed', sans-serif;
+            letter-spacing: 0.5px;
+            animation: subtleBreathing 4s ease-in-out infinite;
+            filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
+        }
+        .nav-link:hover {
+        @keyframes subtleBreathing {
+            0%, 100% {
+                background-position: 0% 50%;
+                filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
+        .nav-link.active {
+            }
+            50% {
+                background-position: 100% 50%;
+                filter: drop-shadow(0 2px 6px rgba(178, 34, 34, 0.5));
+            }
+        }
         * {
             margin: 0;
             padding: 0;
@@ -50,7 +88,6 @@
             align-items: center;
         }
         .nav-link {
-            padding: 0.5rem 1rem;
             color: #9ca3af;
             text-decoration: none;
             border-radius: 0.5rem;
@@ -64,6 +101,7 @@
         }
         .nav-link.active {
             background: rgba(250, 204, 21, 0.1);
+            <style>
             color: #facc15;
             border: 1px solid rgba(250, 204, 21, 0.2);
         }
@@ -78,6 +116,7 @@
         }
         .login-btn:hover {
             box-shadow: 0 0 15px rgba(255, 60, 56, 0.5);
+            .nav-link {
         }
         
         /* User Profile in Nav */
@@ -1043,11 +1082,10 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-    <nav class="nav-header">
-        <a href="index.html" class="nav-brand">Noctive</a>
-        <button class="nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle navigation">☰</button>
-        <div class="nav-overlay" onclick="toggleMobileNav()"></div>
+    <div class="header-main">
+        <div class="header-icon" style="position: relative;"></div>
+        <a href="index.html" style="text-decoration:none;"><span class="brand-title">Noctive</span></a>
+    </div>
         <div class="nav-links">
             <a href="index.html" class="nav-link">Home</a>
             <a href="explore.html" class="nav-link">Explore</a>

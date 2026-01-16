@@ -1,11 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Rubik+Rounded:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notifications - Noctive</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        .header-main {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: transparent;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+        .brand-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            font-family: 'Rubik', 'Roboto Condensed', sans-serif;
+            letter-spacing: 0.5px;
+            animation: subtleBreathing 4s ease-in-out infinite;
+            filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
+        }
+        @keyframes subtleBreathing {
+            0%, 100% {
+                background-position: 0% 50%;
+                filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
+            }
+            50% {
+                background-position: 100% 50%;
+                filter: drop-shadow(0 2px 6px rgba(178, 34, 34, 0.5));
+            }
+        }
         body {
             margin: 0;
             font-family: 'Nunito', sans-serif;
@@ -285,20 +324,10 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-    <nav class="nav-header">
-        <a href="index.html" class="nav-brand">Noctive</a>
-        <div class="nav-links">
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="explore.html" class="nav-link">Explore</a>
-            <a href="messages.html" class="nav-link">Messages</a>
-            <a href="login.html" id="loginBtn" class="nav-link login-btn">Login / Sign Up</a>
-            <a href="profile.html" id="userProfile" class="nav-user hidden">
-                <img src="pngs/account.png" alt="Avatar" class="nav-user-avatar" id="navAvatar">
-                <span class="nav-user-name" id="navUsername">@user</span>
-            </a>
-        </div>
-    </nav>
+    <div class="header-main">
+        <div class="header-icon" style="position: relative;"></div>
+        <a href="index.html" style="text-decoration:none;"><span class="brand-title">Noctive</span></a>
+    </div>
 
     <div class="container">
         

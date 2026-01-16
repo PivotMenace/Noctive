@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Rubik+Rounded:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Your Profile - Noctive</title>
-    <style>
         * {
             margin: 0;
             padding: 0;
@@ -28,6 +32,56 @@
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 2rem;
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .header-main {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: transparent;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+        .brand-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            font-family: 'Rubik', 'Roboto Condensed', sans-serif;
+            letter-spacing: 0.5px;
+            animation: subtleBreathing 4s ease-in-out infinite;
+            filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
+        }
+        @keyframes subtleBreathing {
+            0%, 100% {
+                background-position: 0% 50%;
+                filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
+            }
+            50% {
+                background-position: 100% 50%;
+                filter: drop-shadow(0 2px 6px rgba(178, 34, 34, 0.5));
+            }
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #121524, #1a1f3a, #2a1810);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
             backdrop-filter: blur(10px);
         }
 
@@ -230,6 +284,10 @@
     </style>
 </head>
 <body>
+    <div class="header-main">
+        <div class="header-icon" style="position: relative;"></div>
+        <a href="index.html" style="text-decoration:none;"><span class="brand-title">Noctive</span></a>
+    </div>
     <div class="wizard-container">
         <div class="wizard-header">
             <h1 class="wizard-title">Welcome to Noctive!</h1>
