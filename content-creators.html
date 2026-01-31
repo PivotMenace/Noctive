@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Creators - Noctive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Rounded:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ...copy all styles from explore.html... */
+    </style>
+</head>
+<body>
+    <div class="header-main">
+        <div class="header-icon" style="position: relative;"></div>
+        <a href="index.html" style="text-decoration:none;"><span class="brand-title">Noctive</span></a>
+    </div>
+    <div style="height: 2.5rem;"></div>
+    <div class="explore-layout">
+        <aside class="sidebar">
+            <div class="discover-dropdown">
+                <h2 id="discoverToggle">
+                    Discover
+                    <span class="sidebar-hamburger" id="sidebarHamburger">&#9776;</span>
+                </h2>
+                <ul id="sidebarNav" class="open">
+                    <li><a href="explore.html">Explore</a></li>
+                    <!-- <li><a href="creator-hub.html">Creators</a></li> -->
+                    <!-- <li><a href="hubs.html">Communities</a></li> -->
+                    <!-- <li><a href="hubs.html">Streams</a></li> -->
+                    <li><a href="profile.html" class="active">Content Creator</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-userbox" style="margin-top:auto;display:flex;align-items:center;gap:0.75rem;padding:1rem 0.5rem;background:rgba(36,39,59,0.85);border-radius:0.75rem;">
+                <img src="pngs/account.png" alt="Avatar" style="width:40px;height:40px;border-radius:50%;border:2px solid #facc15;object-fit:cover;">
+                <div style="flex:1;">
+                    <div style="font-weight:600;color:#facc15;font-size:1rem;">@Username</div>
+                    <a href="profile.html" style="color:#888;font-size:0.85rem;text-decoration:none;">View Profile</a>
+                </div>
+                <a href="settings.html" style="color:#facc15;font-size:1.2rem;text-decoration:none;">⚙️</a>
+            </div>
+        </aside>
+        <main class="main-content">
+            <script>
+                // Toggle logic for Discover dropdown list
+                const discoverToggle = document.getElementById('discoverToggle');
+                const discoverList = document.querySelector('.discover-dropdown ul');
+                const sidebarHamburger = document.getElementById('sidebarHamburger');
+                if (discoverToggle && discoverList && sidebarHamburger) {
+                    discoverToggle.addEventListener('click', function(e) {
+                        discoverList.classList.toggle('open');
+                        sidebarHamburger.style.transform = discoverList.classList.contains('open')
+                            ? 'translateY(-50%) rotate(90deg)'
+                            : 'translateY(-50%) rotate(0deg)';
+                        e.stopPropagation();
+                    });
+                    sidebarHamburger.style.transform = 'translateY(-50%) rotate(0deg)';
+                }
+            </script>
+            <div class="explore-header">
+                <span class="explore-title">Content Creator</span>
+                <input class="search-bar" type="text" placeholder="Search games, creators, communities..." />
+            </div>
+            <div class="category-tabs">
+                <!-- <a href="hubs.html" class="category-tab">Explore</a> -->
+                <!-- <a href="creator-hub.html" class="category-tab">Creators</a> -->
+                <!-- <a href="hubs.html" class="category-tab">Communities</a> -->
+                <!-- <a href="hubs.html" class="category-tab">Streams</a> -->
+                <a href="profile.html" class="category-tab active">Content Creator</a>
+            </div>
+            <section class="explore-feed">
+                <!-- You can customize the feed cards for content creators here -->
+                <a href="profile.html" class="feed-card">
+                    <div class="card-title">🌟 Top Creators</div>
+                    <div class="card-desc">Follow the most active and engaging content creators on Noctive.</div>
+                    <div class="card-tags">
+                        <span class="tag">@NightHawk</span>
+                        <span class="tag">@GamerQueen</span>
+                        <span class="tag">@ProStreamer</span>
+                    </div>
+                </a>
+            </section>
+        </main>
+    </div>
+    <!-- Firebase Auth Script (same as explore.html) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
+            authDomain: "noctive-41c22.firebaseapp.com",
+            projectId: "noctive-41c22",
+            storageBucket: "noctive-41c22.firebasestorage.app",
+            messagingSenderId: "617642134193",
+            appId: "1:617642134193:web:ea5f0c93e56c654f66f090"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        onAuthStateChanged(auth, (user) => {
+            const loginBtn = document.getElementById('loginBtn');
+            const userProfile = document.getElementById('userProfile');
+            const navUsername = document.getElementById('navUsername');
+            const navAvatar = document.getElementById('navAvatar');
+            if (user) {
+                loginBtn.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+                navUsername.textContent = '@' + (user.displayName || user.email.split('@')[0]);
+                if (user.photoURL) navAvatar.src = user.photoURL;
+            } else {
+                loginBtn.classList.remove('hidden');
+                userProfile.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
+                <a href="hubs.html" class="feed-card">
+                    <div class="card-title">🎮 Trending Games</div>
+                    <div class="card-desc">Check out the most popular games in the community right now.</div>
+                    <div class="card-tags">
+                        <span class="tag">Rainbow Six Siege</span>
+                        <span class="tag">Valorant</span>
+                        <span class="tag">Apex Legends</span>
+                    </div>
+                </a>
+                <a href="index.html#feed" class="feed-card">
+                    <div class="card-title">🔥 Hot Topics</div>
+                    <div class="card-desc">Join the conversation on the most discussed topics this week.</div>
+                    <div class="card-tags">
+                        <span class="tag">#NightGaming</span>
+                        <span class="tag">#TeamUp</span>
+                        <span class="tag">#ProTips</span>
+                    </div>
+                </a>
+                <a href="hubs.html" class="feed-card">
+                    <div class="card-title">📺 Live Streams</div>
+                    <div class="card-desc">Watch live gaming sessions from the Noctive community.</div>
+                    <div class="card-tags">
+                        <span class="tag">12 Live Now</span>
+                    </div>
+                </a>
+                <a href="hubs.html" class="feed-card">
+                    <div class="card-title">🎯 Communities</div>
+                    <div class="card-desc">Find and join gaming communities that match your interests.</div>
+                    <div class="card-tags">
+                        <span class="tag">FPS Squad</span>
+                        <span class="tag">RPG Guild</span>
+                        <span class="tag">Indie Lovers</span>
+                    </div>
+                </a>
+                <a href="hubs.html" class="feed-card">
+                    <div class="card-title">⚡ Quick Matches</div>
+                    <div class="card-desc">Find teammates for quick gaming sessions right now.</div>
+                    <div class="card-tags">
+                        <span class="tag">8 Players Looking</span>
+                    </div>
+                </a>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

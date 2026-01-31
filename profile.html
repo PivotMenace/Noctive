@@ -1,21 +1,50 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@Profile - Noctive Profile</title>
+    <!-- Fonts to match Noctive index.html -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Rounded:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
+                    .brand-title {
+                        font-size: 2rem;
+                        font-weight: 700;
+                        background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+                        -webkit-background-clip: text;
+                        background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        background-size: 200% 200%;
+                        font-family: 'Rubik', 'Roboto Condensed', sans-serif;
+                        letter-spacing: 0.5px;
+                        animation: subtleBreathing 4s ease-in-out infinite;
+                        filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
+                    }
+
+                    @keyframes subtleBreathing {
+                        0%, 100% {
+                            background-position: 0% 50%;
+                            filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
+                        }
+                        50% {
+                            background-position: 100% 50%;
+                            filter: drop-shadow(0 2px 6px rgba(178, 34, 34, 0.5));
+                        }
+                    }
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #121524, #1a1f3a, #2a1810);
-            color: #fff;
+            font-family: 'Nunito', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif !important;
+            background: linear-gradient(135deg, #121524, #1e2242, #2b2d61, #383580, #453c9e);
+            color: #f0f0f0;
             min-height: 100vh;
             padding: 2rem;
         }
@@ -387,12 +416,11 @@
 <body>
     <div class="header-main" style="width:100%;display:flex;align-items:center;padding:1rem 2rem;background:transparent;position:fixed;top:0;left:0;z-index:1001;">
         <div class="header-icon" style="position: relative;"></div>
-        <a href="index.html" style="text-decoration:none;"><span class="brand-title" style="font-size:2rem;font-weight:700;background:linear-gradient(90deg,#8b0000,#b22222,#dc143c,#b22222,#8b0000);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 200%;font-family:'Rubik','Roboto Condensed',sans-serif;letter-spacing:0.5px;">Noctive</span></a>
+        <a href="index.html" style="text-decoration:none;"><span class="brand-title">Noctive</span></a>
         <div id="userProfile" class="nav-user hidden" style="margin-left:auto;display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.3rem 0.5rem;border-radius:0.5rem;">
             <img id="navAvatar" class="nav-user-avatar" src="" alt="Profile" style="width:32px;height:32px;border-radius:50%;border:2px solid #facc15;object-fit:cover;">
             <span id="navUsername" class="nav-user-name" style="color:#facc15;font-weight:600;font-size:0.9rem;"></span>
         </div>
-        <button id="loginBtn" class="login-btn" style="margin-left:auto;padding:0.4rem 1rem;background:linear-gradient(90deg,#b22222,#ff3c38);color:white !important;border-radius:0.5rem;font-weight:bold;font-size:0.85rem;">Login</button>
     </div>
     <div style="height:4.5rem;"></div>
     <a href="index.html" class="back-button">← Back to Home</a>
@@ -419,11 +447,17 @@
             </div>
 
             <div class="profile-info">
-                <h1 style="display: flex; align-items: baseline; gap: 0.4rem; font-size: 2rem;">
-                    <span class="profile-username" id="profileUsername">@username</span>
-                    <span class="profile-title" id="profileTitle" style="font-size: 1.15rem; color: #aaa; font-style: italic; font-weight: 400; margin-top: 0.15em;">(Your Title)</span>
+                <h1 id="profileFirstName" style="font-size:2rem;font-weight:700;margin-bottom:0.2rem;">
+                    <!-- Username will be inserted here -->
                 </h1>
-                <div class="profile-status"><span class="status-dot"></span>Online</div>
+                <div style="font-size:1.1rem;color:#aaa;margin-bottom:0.5rem;">
+                    <span id="profileUsername">@username</span>
+                </div>
+                <span class="profile-title" id="profileTitle" style="font-size: 1.15rem; color: #aaa; font-style: italic; font-weight: 400; margin-top: 0.15em;">(Your Title)</span>
+                <div class="profile-status" id="profileStatus"><span class="status-dot"></span>Online</div>
+                <div style="font-size:0.95rem;color:#aaa;margin-top:0.2rem;">
+                  <span id="profileEmail">your@email.com</span>
+                </div>
             </div>
         </div>
 
@@ -459,7 +493,7 @@
                     📝 About Me
                 </h2>
                 <div class="section-content">
-                    <p class="bio-text">Tell us about yourself here!</p>
+                    <p class="bio-text" id="profileBio">Tell us about yourself here!</p>
                 </div>
             </div>
         </div>
@@ -471,11 +505,11 @@
                     🎮 Favorite Games
                 </h2>
                 <div class="section-content">
-                    <div class="games-grid">
-                        <div class="game-tag">Game 1</div>
-                        <div class="game-tag">Game 2</div>
-                        <div class="game-tag">Game 3</div>
-                        <div class="game-tag">Game 4</div>
+                    <div class="games-grid" id="gamesGrid">
+                        <!-- Games will be loaded here -->
+                    </div>
+                    <div style="margin-top:0.5rem;font-size:0.9rem;color:#aaa;">
+                      Total: <span id="gameCount">0</span>
                     </div>
                 </div>
             </div>
@@ -485,31 +519,36 @@
         <div class="action-row">
             <div class="action-buttons">
                 <a href="messages.html" class="btn btn-primary">💬 Send Message</a>
-                    <script>
-                    // Edit Profile button click handler: go to edit-profile.html
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const editBtn = document.getElementById('editProfileBtn');
-                        if (editBtn) {
-                            editBtn.onclick = function() {
-                                window.location.href = 'edit-profile.html';
-                            };
-                        }
-                    });
-                    </script>
             </div>
         </div>
     </div>
-</body>
-</html>
-                    <div class="upload-text" style="display:none;">Click to upload or drag & drop</div>
-                    <div class="upload-subtext" style="display:none;">Supports images and GIFs up to 5MB</div>
+        <!-- Avatar Modal -->
+        <div id="avatarModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:2000;align-items:center;justify-content:center;">
+            <div style="background:#181c2f;padding:2rem;border-radius:1rem;max-width:350px;width:100%;position:relative;">
+                <h2 style="margin-bottom:1rem;">Change Avatar</h2>
+                <div class="file-upload-area" style="border:2px dashed #444;padding:1rem;text-align:center;border-radius:0.75rem;margin-bottom:1rem;cursor:pointer;">
+                    <img id="avatarPreview" src="" alt="Avatar Preview" style="width:80px;height:80px;border-radius:50%;margin-bottom:0.5rem;display:block;margin-left:auto;margin-right:auto;">
+                    <input type="file" id="fileInput" accept="image/*" style="display:block;margin:0.5rem auto;">
+                    <input type="text" id="avatarUrl" placeholder="Paste image URL" style="width:100%;margin-top:0.5rem;padding:0.4rem;border-radius:0.4rem;border:1px solid #333;background:#23263a;color:#fff;">
+                    <button onclick="previewAvatarFromUrl()" style="margin-top:0.5rem;padding:0.4rem 1rem;border-radius:0.4rem;background:#10b981;color:#fff;border:none;">Preview URL</button>
+                </div>
+                <div style="display:flex;gap:0.5rem;justify-content:flex-end;">
+                    <button onclick="closeAvatarModal()" style="padding:0.5rem 1.2rem;border-radius:0.4rem;background:#444;color:#fff;border:none;">Cancel</button>
+                    <button onclick="saveNewAvatar()" style="padding:0.5rem 1.2rem;border-radius:0.4rem;background:#b22222;color:#fff;border:none;">Save</button>
                 </div>
             </div>
-
         </div>
-    </div>
 
-    <!-- Firebase Configuration (same as main app) -->
+        <!-- Mobile Navigation -->
+        <nav class="bottom-nav" style="display:flex;">
+            <a href="index.html" class="nav-item">🏠</a>
+            <a href="explore.html" class="nav-item">⭐</a>
+            <a href="hubs.html" class="nav-item">👥</a>
+            <a href="messages.html" class="nav-item">💬</a>
+            <a href="notifications.html" class="nav-item">🔔</a>
+        </nav>
+
+        <!-- Firebase Configuration (same as main app) -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import { getAuth, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -542,27 +581,56 @@
       };
 
       // Check authentication state
-            onAuthStateChanged(auth, (user) => {
-                // Update nav based on auth state
-                const loginBtn = document.getElementById('loginBtn');
-                const userProfile = document.getElementById('userProfile');
-                const navUsername = document.getElementById('navUsername');
-                const navAvatar = document.getElementById('navAvatar');
-                if (user) {
-                    // Update nav to show user profile
-                    if (loginBtn) loginBtn.classList.add('hidden');
-                    if (userProfile) userProfile.classList.remove('hidden');
-                    if (navUsername) navUsername.textContent = '@' + (user.displayName || user.email.split('@')[0]);
-                    if (navAvatar && user.photoURL) navAvatar.src = user.photoURL;
-                    loadUserProfile(user);
-                } else {
-                    // Update nav to show login button
-                    if (loginBtn) loginBtn.classList.remove('hidden');
-                    if (userProfile) userProfile.classList.add('hidden');
-                    // Redirect to main page if not authenticated
-                    window.location.href = 'index.html';
-                }
-            });
+      onAuthStateChanged(auth, (user) => {
+          // Update nav based on auth state
+          const loginBtn = document.getElementById('loginBtn');
+          const userProfile = document.getElementById('userProfile');
+          const navUsername = document.getElementById('navUsername');
+          const navAvatar = document.getElementById('navAvatar');
+          if (user) {
+              // Update nav to show user profile
+              if (loginBtn) loginBtn.classList.add('hidden'); // Ensure login button is hidden
+              if (userProfile) userProfile.classList.remove('hidden');
+              if (navUsername) navUsername.textContent = '@' + (user.displayName || user.email.split('@')[0]);
+
+              // --- Avatar logic start ---
+              // Try to get avatar from localStorage profile
+              let avatarUrl = "";
+              try {
+                  const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
+                  if (savedProfile) {
+                      const profile = JSON.parse(savedProfile);
+                      if (profile.avatar) {
+                          avatarUrl = profile.avatar;
+                      }
+                  }
+              } catch (e) {
+                  // ignore
+              }
+              // Fallback to Firebase photoURL
+              if (!avatarUrl && user.photoURL) {
+                  avatarUrl = user.photoURL;
+              }
+              // Fallback to generated avatar
+              if (!avatarUrl) {
+                  let initials = '';
+                  let source = user.displayName || user.email.split('@')[0] || '';
+                  const match = source.match(/[A-Za-z0-9]/);
+                  initials = match ? match[0].toUpperCase() : 'N';
+                  avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=004080&color=fff&rounded=true&size=120`;
+              }
+              if (navAvatar) navAvatar.src = avatarUrl;
+              // --- Avatar logic end ---
+
+              loadUserProfile(user);
+          } else {
+              // Update nav to show login button
+              if (loginBtn) loginBtn.classList.remove('hidden');
+              if (userProfile) userProfile.classList.add('hidden');
+              // Redirect to main page if not authenticated
+              window.location.href = 'index.html';
+          }
+      });
     </script>
 
     <script>
@@ -650,6 +718,20 @@
                 gamesGrid.innerHTML = '<div class="empty-state">No games added yet.</div>';
                 gameCountEl.textContent = '0';
             }
+
+            // Set first name (before @ or first word of displayName)
+            let firstName = '';
+            if (user.displayName && user.displayName.trim().length > 0) {
+                firstName = user.displayName.trim().split(' ')[0];
+            } else if (profile.username && profile.username.trim().length > 0) {
+                firstName = profile.username.trim();
+            } else if (user.email && user.email.length > 0) {
+                firstName = user.email.split('@')[0].trim();
+            }
+            document.getElementById('profileFirstName').textContent = firstName;
+
+            // Set @username
+            document.getElementById('profileUsername').textContent = `@${profile.username || user.email.split('@')[0]}`;
         }
 
         function editProfile() {

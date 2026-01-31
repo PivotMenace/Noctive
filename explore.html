@@ -11,6 +11,62 @@
     <title>Explore - Noctive</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
+                /* Discover Dropdown Styles */
+                .discover-dropdown {
+                    width: 100%;
+                }
+                .discover-dropdown h2 {
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    user-select: none;
+                    color: #facc15;
+                    font-size: 1.2rem;
+                    margin-bottom: 0;
+                }
+                .sidebar-hamburger {
+                    margin-left: 0.5rem;
+                    font-size: 1.5rem;
+                    color: #facc15;
+                    transition: transform 0.3s;
+                }
+                .discover-dropdown ul {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                    background: #23263a;
+                    border-radius: 0.5rem;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                    border: 1px solid rgba(255,255,255,0.07);
+                    position: relative;
+                    top: 0.5rem;
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+                .discover-dropdown ul.open {
+                    max-height: 500px;
+                    padding: 0.5rem 0.5rem;
+                }
+                .discover-dropdown ul li a {
+                    color: #f0f0f0;
+                    text-decoration: none;
+                    font-size: 1rem;
+                    padding: 0.7rem 1rem;
+                    border-radius: 0.5rem;
+                    display: block;
+                    width: 100%;
+                    background: none;
+                    margin: 0.2rem 0;
+                    text-align: left;
+                    box-sizing: border-box;
+                    font-family: inherit;
+                    transition: background 0.2s, color 0.2s;
+                }
+                .discover-dropdown ul li a.active, .discover-dropdown ul li a:hover {
+                    background: #181a2b;
+                    color: #facc15;
+                }
         .header-main {
             width: 100%;
             display: flex;
@@ -69,11 +125,112 @@
             font-size: 1.2rem;
             color: #facc15;
             margin-bottom: 1rem;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+        .sidebar-hamburger {
+            display: none;
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            font-size: 1.5rem;
+            color: #facc15;
+            pointer-events: auto;
+            transition: transform 0.3s;
+        }
+        @media (max-width: 700px) {
+                        .discover-dropdown {
+                            margin-top: 0 !important;
+                            margin-bottom: 0 !important;
+                        }
+                        .sidebar-userbox {
+                            margin-top: 0 !important;
+                        }
+            .sidebar-nav {
+                display: block !important;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                padding: 0 !important;
+                margin: 0 !important;
+                opacity: 0;
+            }
+            .sidebar-nav.open {
+                max-height: 500px;
+                padding: 0.5rem 0.5rem !important;
+                opacity: 1;
+            }
+            .sidebar-hamburger {
+                display: inline;
+                pointer-events: auto;
+            }
+        }
         }
         .sidebar-nav {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            align-items: flex-start;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            opacity: 0;
+            padding: 0.5rem 0.5rem !important;
+            margin-top: 0.5rem !important;
+            background: #23263a;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.07);
+            position: relative;
+        }
+        }
+        .sidebar-nav.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+        }
+        .sidebar-hamburger {
+            display: inline;
+            pointer-events: auto;
+            transition: transform 0.3s;
+        }
+        }
+        .sidebar-nav a {
+            color: #f0f0f0;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.7rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s, color 0.2s;
+            display: block;
+            width: 100%;
+            background: none;
+            margin: 0.2rem 0;
+            text-align: left;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        }
+        .sidebar-nav a.active, .sidebar-nav a:hover {
+            background: #181a2b;
+            color: #facc15;
+        }
+        }
+        @media (max-width: 700px) {
+            .sidebar-nav {
+                display: block !important;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                padding: 0;
+            }
+            .sidebar-nav.open {
+                max-height: 500px;
+                padding: 0.5rem 0.5rem;
+            }
+        }
+        }
         }
         .sidebar-nav a {
             color: #d0d0d0;
@@ -188,8 +345,25 @@
         }
         @media (max-width: 900px) {
             .explore-layout { flex-direction: column; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); flex-direction: row; gap: 2rem; justify-content: center; }
-            .main-content { padding: 1.5rem 1rem; }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.07);
+                flex-direction: column;
+                gap: 1.5rem;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 1.5rem 0.5rem;
+            }
+            .sidebar-nav {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            .sidebar-userbox {
+                margin-top: 0 !important;
+            }
+            .main-content { padding: 2rem 1rem; }
         }
         @media (max-width: 600px) {
             .main-content { padding: 1rem 0.5rem; }
@@ -208,14 +382,19 @@
     <div style="height: 2.5rem;"></div>
     <div class="explore-layout">
         <aside class="sidebar">
-            <h2>Discover</h2>
-            <nav class="sidebar-nav">
-                <a href="explore.html" class="active">Explore</a>
-                <a href="creator-hub.html">Creators</a>
-                <a href="hubs.html">Communities</a>
-                <a href="hubs.html">Streams</a>
-                <a href="profile.html">Content Creator</a>
-            </nav>
+            <div class="discover-dropdown">
+                <h2 id="discoverToggle">
+                    Discover
+                    <span class="sidebar-hamburger" id="sidebarHamburger">&#9776;</span>
+                </h2>
+                <ul id="sidebarNav" class="open">
+                    <li><a href="explore.html" class="active">Explore</a></li>
+                    <!-- <li><a href="creator-hub.html">Creators</a></li> -->
+                    <!-- <li><a href="hubs.html">Communities</a></li> -->
+                    <!-- <li><a href="hubs.html">Streams</a></li> -->
+                    <li><a href="profile.html">Content Creator</a></li>
+                </ul>
+            </div>
             <div class="sidebar-userbox" style="margin-top:auto;display:flex;align-items:center;gap:0.75rem;padding:1rem 0.5rem;background:rgba(36,39,59,0.85);border-radius:0.75rem;">
                 <img src="pngs/account.png" alt="Avatar" style="width:40px;height:40px;border-radius:50%;border:2px solid #facc15;object-fit:cover;">
                 <div style="flex:1;">
@@ -226,18 +405,34 @@
             </div>
         </aside>
         <main class="main-content">
+                <script>
+                // Toggle logic for Discover dropdown list
+                const discoverToggle = document.getElementById('discoverToggle');
+                const discoverList = document.querySelector('.discover-dropdown ul');
+                const sidebarHamburger = document.getElementById('sidebarHamburger');
+                if (discoverToggle && discoverList && sidebarHamburger) {
+                    discoverToggle.addEventListener('click', function(e) {
+                        discoverList.classList.toggle('open');
+                        sidebarHamburger.style.transform = discoverList.classList.contains('open')
+                            ? 'translateY(-50%) rotate(90deg)'
+                            : 'translateY(-50%) rotate(0deg)';
+                        e.stopPropagation();
+                    });
+                    sidebarHamburger.style.transform = 'translateY(-50%) rotate(0deg)';
+                }
+                </script>
             <div class="explore-header">
                 <span class="explore-title">Explore</span>
                 <input class="search-bar" type="text" placeholder="Search games, creators, communities..." />
             </div>
             <div class="category-tabs">
-                <a href="hubs.html" class="category-tab active">Explore</a>
-                <a href="creator-hub.html" class="category-tab">Creators</a>
-                <a href="hubs.html" class="category-tab">Communities</a>
-                <a href="hubs.html" class="category-tab">Streams</a>
+                <!-- <a href="hubs.html" class="category-tab active">Explore</a> -->
+                <!-- <a href="creator-hub.html" class="category-tab">Creators</a> -->
+                <!-- <a href="hubs.html" class="category-tab">Communities</a> -->
+                <!-- <a href="hubs.html" class="category-tab">Streams</a> -->
             </div>
             <section class="explore-feed">
-                <a href="hubs.html" class="feed-card">
+                <!-- <a href="hubs.html" class="feed-card"> -->
                     <div class="card-title">🎮 Trending Games</div>
                     <div class="card-desc">Check out the most popular games in the community right now.</div>
                     <div class="card-tags">
@@ -264,23 +459,8 @@
                         <span class="tag">#ProTips</span>
                     </div>
                 </a>
-                <a href="hubs.html" class="feed-card">
-                    <div class="card-title">📺 Live Streams</div>
-                    <div class="card-desc">Watch live gaming sessions from the Noctive community.</div>
-                    <div class="card-tags">
-                        <span class="tag">12 Live Now</span>
-                    </div>
-                </a>
-                <a href="hubs.html" class="feed-card">
-                    <div class="card-title">🎯 Communities</div>
-                    <div class="card-desc">Find and join gaming communities that match your interests.</div>
-                    <div class="card-tags">
-                        <span class="tag">FPS Squad</span>
-                        <span class="tag">RPG Guild</span>
-                        <span class="tag">Indie Lovers</span>
-                    </div>
-                </a>
-                <a href="hubs.html" class="feed-card">
+                <!-- Live Streams and Communities feed cards removed -->
+                <!-- <a href="hubs.html" class="feed-card"> -->
                     <div class="card-title">⚡ Quick Matches</div>
                     <div class="card-desc">Find teammates for quick gaming sessions right now.</div>
                     <div class="card-tags">

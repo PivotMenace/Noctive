@@ -65,29 +65,61 @@
             gap: 1.5rem;
             border-right: 1px solid rgba(255,255,255,0.07);
         }
-        .sidebar h2 {
-            font-size: 1.2rem;
-            color: #facc15;
-            margin-bottom: 1rem;
+        /* Discover Dropdown Styles */
+        .discover-dropdown {
+            width: 100%;
         }
-        .sidebar-nav {
+        .discover-dropdown h2 {
+            cursor: pointer;
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            align-items: center;
+            user-select: none;
+            color: #facc15;
+            font-size: 1.2rem;
+            margin-bottom: 0;
         }
-        .sidebar-nav a {
-            color: #d0d0d0;
+        .sidebar-hamburger {
+            margin-left: 0.5rem;
+            font-size: 1.5rem;
+            color: #facc15;
+            transition: transform 0.3s;
+        }
+        .discover-dropdown ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            background: #23263a;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.07);
+            position: relative;
+            top: 0.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .discover-dropdown ul.open {
+            max-height: 500px;
+            padding: 0.5rem 0.5rem;
+        }
+        .discover-dropdown ul li a {
+            color: #f0f0f0;
             text-decoration: none;
             font-size: 1rem;
             padding: 0.7rem 1rem;
             border-radius: 0.5rem;
+            display: block;
+            width: 100%;
+            background: none;
+            margin: 0.2rem 0;
+            text-align: left;
+            box-sizing: border-box;
+            font-family: inherit;
             transition: background 0.2s, color 0.2s;
         }
-        .sidebar-nav a.active,
-        .sidebar-nav a:hover {
-            background: #23263a;
+        .discover-dropdown ul li a.active, .discover-dropdown ul li a:hover {
+            background: #181a2b;
             color: #facc15;
-            text-decoration: none;
         }
         .main-content {
             flex: 1;
@@ -220,17 +252,23 @@
         <div class="header-icon" style="position: relative;"></div>
         <a href="index.html" style="text-decoration:none;"><span class="brand-title">Noctive</span></a>
     </div>
+    <div style="height: 2.5rem;"></div>
     <div class="explore-layout">
         <aside class="sidebar">
-            <h2>Discover</h2>
-            <nav class="sidebar-nav">
-                <a href="explore.html">Explore</a>
-                <a href="creator-hub.html" class="active">Creators</a>
-                <a href="hubs.html">Communities</a>
-                <a href="hubs.html">Streams</a>
-                <a href="profile.html">Content Creator</a>
-            </nav>
-            <div class="sidebar-userbox" style="margin-top:auto;display:flex;align-items:center;gap:0.75rem;padding:1rem 0.5rem;background:rgba(36,39,59,0.85);border-radius:0.75rem;">
+            <div class="discover-dropdown">
+                <h2 id="discoverToggle">
+                  Discover
+                  <span class="sidebar-hamburger" id="sidebarHamburger">&#9776;</span>
+                </h2>
+                <ul id="sidebarNav" class="open">
+                  <li><a href="explore.html" class="active">Explore</a></li>
+                  <li><a href="creator-hub.html">Creators</a></li>
+                  <!-- <li><a href="hubs.html">Communities</a></li> -->
+                  <!-- <li><a href="hubs.html">Streams</a></li> -->
+                  <li><a href="profile.html">Content Creator</a></li>
+                </ul>
+              </div>
+              <div class="sidebar-userbox" style="margin-top:auto;display:flex;align-items:center;gap:0.75rem;padding:1rem 0.5rem;background:rgba(36,39,59,0.85);border-radius:0.75rem;">
                 <img src="pngs/account.png" alt="Avatar" style="width:40px;height:40px;border-radius:50%;border:2px solid #facc15;object-fit:cover;">
                 <div style="flex:1;">
                     <div style="font-weight:600;color:#facc15;font-size:1rem;">@Username</div>
@@ -241,40 +279,54 @@
         </aside>
         <main class="main-content">
             <div class="explore-header">
-                <span class="explore-title">Creators</span>
-                <input class="search-bar" type="text" placeholder="Search creators..." />
+                <span class="explore-title">Explore</span>
+                <input class="search-bar" type="text" placeholder="Search games, creators, communities..." />
             </div>
             <div class="category-tabs">
-                <a href="explore.html" class="category-tab">Explore</a>
-                <a href="creator-hub.html" class="category-tab active">Creators</a>
-                <a href="hubs.html" class="category-tab">Communities</a>
-                <a href="hubs.html" class="category-tab">Streams</a>
+                <a href="explore.html" class="category-tab active">Explore</a>
             </div>
             <section class="explore-feed">
-                <div class="feed-card">
-                    <div class="card-title">🌟 Top Creators</div>
-                    <div class="card-desc">Follow the most active and engaging content creators on Noctive.</div>
+                <!-- <a href="hubs.html" class="feed-card"> -->
+                    <div class="card-title">🎮 Trending Games</div>
+                    <div class="card-desc">Check out the most popular games in the community right now.</div>
                     <div class="card-tags">
-                        <span class="tag">@NightHawk</span>
-                        <span class="tag">@GamerQueen</span>
-                        <span class="tag">@ProStreamer</span>
+                        <span class="tag">Rainbow Six Siege</span>
+                        <span class="tag">Valorant</span>
+                        <span class="tag">Apex Legends</span>
                     </div>
-                </div>
-                <div class="feed-card">
-                    <div class="card-title">🎥 Featured Streams</div>
-                    <div class="card-desc">Watch live streams from top creators.</div>
+                </a>
+                <a href="index.html#feed" class="feed-card">
+                    <div class="card-title">🔥 Hot Topics</div>
+                    <div class="card-desc">Join the conversation on the most discussed topics this week.</div>
                     <div class="card-tags">
-                        <span class="tag">Live Now</span>
+                        <span class="tag">#NightGaming</span>
+                        <span class="tag">#TeamUp</span>
+                        <span class="tag">#ProTips</span>
                     </div>
-                </div>
-                <div class="feed-card">
-                    <div class="card-title">📝 Latest Posts</div>
-                    <div class="card-desc">See what creators are sharing right now.</div>
+                </a>
+                <!-- <a href="hubs.html" class="feed-card"> -->
+                    <div class="card-title">📺 Live Streams</div>
+                    <div class="card-desc">Watch live gaming sessions from the Noctive community.</div>
                     <div class="card-tags">
-                        <span class="tag">#Tips</span>
-                        <span class="tag">#Highlights</span>
+                        <span class="tag">12 Live Now</span>
                     </div>
-                </div>
+                </a>
+                <!-- <a href="hubs.html" class="feed-card"> -->
+                    <div class="card-title">🎯 Communities</div>
+                    <div class="card-desc">Find and join gaming communities that match your interests.</div>
+                    <div class="card-tags">
+                        <span class="tag">FPS Squad</span>
+                        <span class="tag">RPG Guild</span>
+                        <span class="tag">Indie Lovers</span>
+                    </div>
+                </a>
+                <!-- <a href="hubs.html" class="feed-card"> -->
+                    <div class="card-title">⚡ Quick Matches</div>
+                    <div class="card-desc">Find teammates for quick gaming sessions right now.</div>
+                    <div class="card-tags">
+                        <span class="tag">8 Players Looking</span>
+                    </div>
+                </a>
             </section>
         </main>
     </div>

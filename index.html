@@ -1501,7 +1501,11 @@ a.glitchy:hover {
           0 8px 32px rgba(0, 0, 0, 0.3),
           inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         color: #f0f0f0 !important;
-        transition: box-shadow 1.2s cubic-bezier(.4,2,.6,1), border-color 1.2s cubic-bezier(.4,2,.6,1), transform 0.2s ease-out, color 0.2s;
+        transition:
+          box-shadow 1.2s cubic-bezier(.4,2,.6,1),
+          border-color 1.2s cubic-bezier(.4,2,.6,1),
+          transform 0.2s ease-out,
+          color 0.2s;
         position: relative;
         width: 100%;
         max-width: 100%;
@@ -2934,7 +2938,7 @@ a.glitchy:hover {
             <span class="mobile-nav-icon">⭐</span>
             <span class="mobile-nav-text">Explore</span>
           </a>
-          <a href="hubs.html" class="mobile-nav-item">
+          <!-- <a href="hubs.html" class="mobile-nav-item"> -->
             <span class="mobile-nav-icon">👥</span>
             <span class="mobile-nav-text">Hubs</span>
           </a>
@@ -2972,7 +2976,7 @@ a.glitchy:hover {
         <div class="user-menu-divider"></div>
         <div class="user-menu-item" onclick="window.location.href='profile.html'; document.getElementById('userMenuDropdown').classList.add('hidden');">
           <span class="user-menu-icon">👤</span>
-          <span class="user-menu-text">Profile Settings</span>
+          <span class="user-menu-text">Profile</span>
         </div>
         <div class="user-menu-item" onclick="window.location.href='edit-profile.html'; document.getElementById('userMenuDropdown').classList.add('hidden');">
           <span class="user-menu-icon">⚙️</span>
@@ -2995,14 +2999,78 @@ a.glitchy:hover {
     </div>
   </header>
 
+  <script>
+  // Toggle user menu dropdown on avatar/name click
+  document.addEventListener('DOMContentLoaded', function() {
+    const sidebarUser = document.getElementById('sidebarUser');
+    const userMenuDropdown = document.getElementById('userMenuDropdown');
+    if (sidebarUser && userMenuDropdown) {
+      sidebarUser.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        userMenuDropdown.classList.toggle('hidden');
+          // Position dropdown below avatar, but keep it within viewport
+          const rect = sidebarUser.getBoundingClientRect();
+          const dropdown = userMenuDropdown;
+          dropdown.style.position = 'absolute';
+          dropdown.style.zIndex = 2000;
+          // Default position: below and left-aligned with avatar
+          let top = rect.bottom + window.scrollY + 8;
+          // Slide dropdown a bit more to the left for better spacing
+          let left = rect.left + window.scrollX - 24; // 24px left offset
+          // Get dropdown dimensions (temporarily show if hidden)
+          let wasHidden = dropdown.classList.contains('hidden');
+          if (wasHidden) {
+            dropdown.style.visibility = 'hidden';
+            dropdown.classList.remove('hidden');
+          }
+          const ddRect = dropdown.getBoundingClientRect();
+          // Restore hidden state if needed
+          if (wasHidden) {
+            dropdown.classList.add('hidden');
+            dropdown.style.visibility = '';
+          }
+          // Adjust if dropdown would go off right edge
+          if (left + ddRect.width > window.innerWidth - 12) {
+            left = window.innerWidth - ddRect.width - 12;
+          }
+          // Adjust if dropdown would go off left edge
+          if (left < 12) {
+            left = 12;
+          }
+          // Adjust if dropdown would go off bottom edge
+          if (top + ddRect.height > window.innerHeight - 12) {
+            // Try placing above avatar if not enough space below
+            if (rect.top - ddRect.height - 8 > 0) {
+              top = rect.top + window.scrollY - ddRect.height - 8;
+            } else {
+              // Clamp to bottom
+              top = window.innerHeight - ddRect.height - 12 + window.scrollY;
+            }
+          }
+          dropdown.style.top = top + 'px';
+          dropdown.style.left = left + 'px';
+      });
+      // Hide dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!userMenuDropdown.classList.contains('hidden')) {
+          if (!userMenuDropdown.contains(e.target) && e.target !== sidebarUser && !sidebarUser.contains(e.target)) {
+            userMenuDropdown.classList.add('hidden');
+          }
+        }
+      });
+    }
+  });
+  </script>
+
     <p class="slogan-blink">"Built for the ones who never log off."</p>
     
     <div class="star-background" id="starBg"></div>
 
     <!-- Night Crew Widget -->
-    <button class="night-crew-toggle" onclick="toggleSidebar()" title="Toggle Night Crew" id="nightCrewToggle">🌙</button>
+    <button class="night-crew-toggle" onclick="toggleSidebar()" title="Toggle Night Crew" id="nightCrewToggle" style="position: fixed; top: 8rem; right: 2rem; cursor: grab;">🌙</button>
 
-    <div id="nightCrewWidget" class="hidden">
+    <div id="nightCrewWidget" class="hidden" style="position: fixed;">
       <div class="retro-titlebar">
         <span>🌙 Night Crew</span>
         <div class="retro-buttons">
@@ -3688,6 +3756,7 @@ a.glitchy:hover {
     accent-color: #facc15;
   }
   
+  
   .remember-me-text {
     user-select: none;
   }
@@ -3877,6 +3946,96 @@ a.glitchy:hover {
   </style>
 
   <script>
+  // --- Draggable Night Crew Moon Button ---
+  (function() {
+    const moonBtn = document.getElementById('nightCrewToggle');
+    const nightCrewWidget = document.getElementById('nightCrewWidget');
+    let isDragging = false, offsetX = 0, offsetY = 0;
+    let moonPos = { top: 128, right: 32 }; // default position (px)
+
+    // Restore position from localStorage if available
+    function restoreMoonPos() {
+      const saved = localStorage.getItem('nightCrewMoonPos');
+      if (saved) {
+        try {
+          moonPos = JSON.parse(saved);
+        } catch {}
+      }
+      moonBtn.style.top = moonPos.top + 'px';
+      moonBtn.style.right = moonPos.right + 'px';
+    }
+    restoreMoonPos();
+
+    moonBtn.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      moonBtn.style.cursor = 'grabbing';
+      // Calculate offset from mouse to button corner
+      const rect = moonBtn.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+      document.body.style.userSelect = 'none';
+    });
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      // Calculate new position (fixed to viewport)
+      let newLeft = e.clientX - offsetX;
+      let newTop = e.clientY - offsetY;
+      // Clamp to viewport
+      const btnW = moonBtn.offsetWidth, btnH = moonBtn.offsetHeight;
+      newLeft = Math.max(0, Math.min(window.innerWidth - btnW, newLeft));
+      newTop = Math.max(0, Math.min(window.innerHeight - btnH, newTop));
+      // Convert to right/top for fixed positioning
+      moonBtn.style.left = '';
+      moonBtn.style.right = (window.innerWidth - newLeft - btnW) + 'px';
+      moonBtn.style.top = newTop + 'px';
+      // Save position
+      moonPos = { top: newTop, right: window.innerWidth - newLeft - btnW };
+      localStorage.setItem('nightCrewMoonPos', JSON.stringify(moonPos));
+    });
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+      moonBtn.style.cursor = 'grab';
+      document.body.style.userSelect = '';
+    });
+
+    // When opening the widget, position it at the moon's current position
+    window.toggleSidebar = function() {
+      if (nightCrewWidget.classList.contains('hidden')) {
+        // Show at moon's position, open left or right depending on moon position
+        const btnRect = moonBtn.getBoundingClientRect();
+        const widgetW = nightCrewWidget.offsetWidth || 250; // fallback width
+        const widgetH = nightCrewWidget.offsetHeight || 300; // fallback height
+        let top = btnRect.top;
+        let left, right;
+        // If moon is on left half, open to right; if on right half, open to left
+        if (btnRect.left < window.innerWidth / 2) {
+          // Open to right of moon
+          left = btnRect.right + 12;
+          // Clamp if would go off right edge
+          if (left + widgetW > window.innerWidth - 12) {
+            left = window.innerWidth - widgetW - 12;
+          }
+          right = '';
+        } else {
+          // Open to left of moon
+          left = btnRect.left - widgetW - 12;
+          if (left < 12) left = 12;
+          right = '';
+        }
+        // Clamp top if needed
+        if (top + widgetH > window.innerHeight - 12) {
+          top = window.innerHeight - widgetH - 12;
+        }
+        if (top < 12) top = 12;
+        nightCrewWidget.style.top = top + 'px';
+        nightCrewWidget.style.left = left + 'px';
+        nightCrewWidget.style.right = right;
+        nightCrewWidget.classList.remove('hidden');
+      } else {
+        nightCrewWidget.classList.add('hidden');
+      }
+    };
+  })();
   // ─── TOUCH DEVICE DETECTION ───
   (function() {
     // Detect touch device
@@ -4001,7 +4160,7 @@ a.glitchy:hover {
       venusLabel.textContent = customMessage || statusLabels[status] || 'Online';
     }
     
-    // Update the create post section status under username
+    // Update the create-post section status under username
     const createPostUserStatus = document.getElementById('createPostUserStatus');
     if (createPostUserStatus) {
       createPostUserStatus.textContent = `${icon} ${displayText}`;
