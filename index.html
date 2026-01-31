@@ -249,24 +249,24 @@ header {
     transition: all 0.2s;
 }
 .nav-link:hover {
-    background: rgba(139, 92, 246, 0.18);
-    color: #b8a5d6;
-    border: 1px solid rgba(139, 92, 246, 0.35);
-    box-shadow: 0 0 6px rgba(139, 92, 246, 0.5), 0 0 12px rgba(139, 92, 246, 0.3), 0 0 18px rgba(255, 60, 56, 0.25);
-    text-shadow: 0 0 5px rgba(196, 181, 253, 0.6), 0 0 10px rgba(255, 60, 56, 0.3);
+    background: rgba(255, 60, 56, 0.18);
+    color: #ffb3b3;
+    border: 1px solid rgba(255, 60, 56, 0.35);
+    box-shadow: 0 0 6px rgba(255, 60, 56, 0.5), 0 0 12px rgba(255, 60, 56, 0.3), 0 0 18px rgba(255, 60, 56, 0.25);
+    text-shadow: 0 0 5px rgba(255, 60, 56, 0.6), 0 0 10px rgba(255, 60, 56, 0.3);
 }
 .nav-link.active {
-    background: rgba(139, 92, 246, 0.1);
-    color: #9380b5;
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    background: rgba(255, 60, 56, 0.12);
+    color: #ffb3b3;
+    border: 1px solid rgba(255, 60, 56, 0.22);
     transition: all 0.3s ease;
 }
 .nav-link.active:hover {
-    background: rgba(139, 92, 246, 0.18);
-    color: #b8a5d6;
-    border: 1px solid rgba(139, 92, 246, 0.35);
-    box-shadow: 0 0 6px rgba(139, 92, 246, 0.5), 0 0 12px rgba(139, 92, 246, 0.3), 0 0 18px rgba(255, 60, 56, 0.25);
-    text-shadow: 0 0 5px rgba(196, 181, 253, 0.6), 0 0 10px rgba(255, 60, 56, 0.3);
+    background: rgba(255, 60, 56, 0.18);
+    color: #ffb3b3;
+    border: 1px solid rgba(255, 60, 56, 0.35);
+    box-shadow: 0 0 6px rgba(255, 60, 56, 0.5), 0 0 12px rgba(255, 60, 56, 0.3), 0 0 18px rgba(255, 60, 56, 0.25);
+    text-shadow: 0 0 5px rgba(255, 60, 56, 0.6), 0 0 10px rgba(255, 60, 56, 0.3);
 }
 .login-btn {
     padding: 0.4rem 1rem;
@@ -1654,7 +1654,9 @@ a.glitchy:hover {
       .post textarea:focus, .post input[type="text"]:focus {
         background: #252538 !important;
         border-color: #ff3c38 !important;
-        box-shadow: 0 0 0 3px rgba(255, 60, 56, 0.2), 0 4px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 
+          0 0 0 3px rgba(255, 60, 56, 0.2),
+          0 4px 15px rgba(0, 0, 0, 0.2);
         outline: none;
       }
 
@@ -2960,11 +2962,12 @@ a.glitchy:hover {
         <a href="index.html" class="nav-link active" data-page="home">Home</a>
         <a href="explore.html" class="nav-link" data-page="explore">Explore</a>
         <a href="messages.html" class="nav-link" data-page="messages">Messages</a>
-        <a href="login.html" id="loginSignupBtn" class="nav-link login-btn">Login / Sign Up</a>
-        <a href="profile.html" id="sidebarUser" class="nav-user hidden">
-          <img src="pngs/account.png" alt="Avatar" class="nav-user-avatar" id="sidebarAvatar" onerror="this.src='pngs/account.png'">
-          <span class="nav-user-name" id="sidebarUserName">@username</span>
+        <a href="profile.html" class="nav-link" data-page="profile" title="Profile">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user" style="vertical-align:middle;margin-right:6px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile
         </a>
+        <a href="login.html" id="loginSignupBtn" class="nav-link login-btn">Login / Sign Up</a>
+        <!-- Sidebar user will be injected dynamically after user data loads -->
       </div>
       
       <!-- User Menu Dropdown -->
@@ -3165,7 +3168,10 @@ a.glitchy:hover {
         <span class="avatar-status online" title="Online"></span>
       </div>
       <div class="user-info">
-        <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="profile/Hijinxx.html" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a><span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span></strong>
+        <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
+          <a href="profile/Hijinxx.html" class="glitchy" data-text="@Hijinxx" style="margin-right: 0.1rem;">@Hijinxx</a>
+          <span class="title" style="font-size: 0.8rem; color: #aaa;">(Night Owl)</span>
+        </strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Valorant</span>
       </div>
     </div>
@@ -3192,7 +3198,8 @@ a.glitchy:hover {
         <span class="avatar-status online" title="Online"></span>
       </div>
       <div class="user-info">
-        <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;"><a href="profile/Belt181.html" class="glitchy" data-text="@Belt181">@Belt181</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span></strong>
+        <strong style="font-size: 1rem; display: flex; align-items: center; gap: 0.3rem;">
+          <a href="profile/Belt181.html" class="glitchy" data-text="@Belt181">@Belt181</a> <span class="title" style="font-size: 0.8rem; color: #aaa;">(Rookie)</span></strong>
         <span style="font-size: 0.75rem;">🎮 Currently playing: Apex Legends</span>
       </div>
     </div>
@@ -3542,9 +3549,9 @@ a.glitchy:hover {
       <h2 id="authTitle">Join Noctive</h2>
       
       <div id="authForm">
-        <input type="email" id="authEmail" placeholder="Email" required>
-        <input type="password" id="authPassword" placeholder="Password" required>
-        <input type="text" id="authUsername" placeholder="Username" required>
+        <input type="email" id="authEmail" placeholder="Email" required style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #444; border-radius: 0.5rem; background: #1e1e2e; color: #fff; font-size: 0.9rem;" />
+        <input type="password" id="authPassword" placeholder="Password" required style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #444; border-radius: 0.5rem; background: #1e1e2e; color: #fff; font-size: 0.9rem;" />
+        <input type="text" id="authUsername" placeholder="Username" required style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #444; border-radius: 0.5rem; background: #1e1e2e; color: #fff; font-size: 0.9rem;" />
         
         <div id="rememberMeContainer" class="remember-me-container" style="display: none;">
           <label class="remember-me-label">
@@ -4518,15 +4525,34 @@ a.glitchy:hover {
     const mobileUserEmail = document.getElementById('mobileUserEmail');
     
     // Sidebar user elements
-    const sidebarUser = document.getElementById('sidebarUser');
-    const sidebarAvatar = document.getElementById('sidebarAvatar');
-    const sidebarUserName = document.getElementById('sidebarUserName');
+    let sidebarUser = document.getElementById('sidebarUser');
+    let sidebarAvatar = null;
+    let sidebarUserName = null;
     
     // Navigation elements for auth-based visibility
     const horizontalNavItems = document.querySelectorAll('.horizontal-nav-item');
     const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
     
     if (user) {
+      // Inject sidebar user if not present
+      if (!sidebarUser) {
+        const navContainer = document.querySelector('.nav-header .nav-links');
+        if (navContainer) {
+          sidebarUser = document.createElement('a');
+          sidebarUser.href = 'profile.html';
+          sidebarUser.id = 'sidebarUser';
+          sidebarUser.className = 'nav-user';
+          sidebarUser.innerHTML = `
+            <img src="pngs/account.png" alt="Avatar" class="nav-user-avatar" id="sidebarAvatar" onerror="this.src='pngs/account.png'">
+            <span class="nav-user-name" id="sidebarUserName">@username</span>
+          `;
+          navContainer.appendChild(sidebarUser);
+        }
+      }
+      sidebarAvatar = document.getElementById('sidebarAvatar');
+      sidebarUserName = document.getElementById('sidebarUserName');
+      // Show sidebar user only after user data is loaded
+      if (sidebarUser) sidebarUser.style.display = 'flex';
       // User is logged in - show all navigation items
       
       // Show all horizontal nav items
@@ -4549,19 +4575,14 @@ a.glitchy:hover {
       
       // Update sidebar user with currentUser data
       if (sidebarUser && sidebarAvatar && sidebarUserName) {
-        // Show sidebar user section
-        sidebarUser.style.display = 'flex';
-        
         // Update avatar - use profile photo if available, otherwise use default
         const avatarUrl = user.photoURL || profileData?.avatarUrl || 'pngs/account.png';
         sidebarAvatar.src = avatarUrl;
         sidebarAvatar.alt = user.displayName || profileData?.username || 'User Avatar';
-        
         // Add fallback in case avatar URL fails to load
         sidebarAvatar.onerror = function() {
           this.src = 'pngs/account.png';
         };
-        
         // Update username
         sidebarUserName.textContent = displayText;
       }
@@ -4804,7 +4825,7 @@ a.glitchy:hover {
         // Update friends list
         userFriendLink.textContent = `@${emailName}`;
         userFriendLink.setAttribute('data-text', `@${emailName}`);
-        userStatusDot.className = 'status-dot online';
+        userStatusDot.className = 'status-dot busy'; // Show Venus as busy when logged out
       }
     } else {
       // User is logged out - show Venus

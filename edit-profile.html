@@ -823,19 +823,29 @@
 
         function loadCurrentProfile(user) {
             const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
-            
             if (savedProfile) {
                 const profile = JSON.parse(savedProfile);
-                
                 // Load current data
                 document.getElementById('username').value = profile.username || '';
                 document.getElementById('status').value = profile.status || '';
                 document.getElementById('bio').value = profile.bio || '';
-                
-                // Load avatar
-                const avatarUrl = profile.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.username || user.email.split('@')[0])}&background=004080&color=fff&rounded=true`;
+
+                // --- Avatar logic (match profile.html) ---
+                let avatarUrl = '';
+                if (profile.avatar) {
+                    avatarUrl = profile.avatar;
+                } else if (user.photoURL) {
+                    avatarUrl = user.photoURL;
+                } else {
+                    let initials = '';
+                    let source = profile.username || user.displayName || user.email.split('@')[0] || '';
+                    const match = source.match(/[A-Za-z0-9]/);
+                    initials = match ? match[0].toUpperCase() : 'N';
+                    avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=004080&color=fff&rounded=true&size=120`;
+                }
                 document.getElementById('currentAvatar').src = avatarUrl;
-                
+                // --- End avatar logic ---
+
                 // Load games
                 currentGames = profile.games || [];
                 updateGamesDisplay();
@@ -934,16 +944,30 @@
         function openAvatarModal() {
             const modal = document.getElementById('avatarModal');
             const preview = document.getElementById('avatarPreview');
-            const currentAvatar = document.getElementById('currentAvatar').src;
-            
-            preview.src = currentAvatar;
-            newAvatarUrl = currentAvatar;
-            
+            // Use the same avatar logic as currentAvatar
+            const user = window.firebaseAuth.currentUser;
+            let avatarUrl = '';
+            let profile = {};
+            try {
+                const savedProfile = localStorage.getItem(`noctive_profile_${user.uid}`);
+                if (savedProfile) profile = JSON.parse(savedProfile);
+            } catch (e) {}
+            if (profile.avatar) {
+                avatarUrl = profile.avatar;
+            } else if (user && user.photoURL) {
+                avatarUrl = user.photoURL;
+            } else {
+                let initials = '';
+                let source = profile.username || (user && user.displayName) || (user && user.email && user.email.split('@')[0]) || '';
+                const match = source.match(/[A-Za-z0-9]/);
+                initials = match ? match[0].toUpperCase() : 'N';
+                avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=004080&color=fff&rounded=true&size=120`;
+            }
+            preview.src = avatarUrl;
+            newAvatarUrl = avatarUrl;
             document.getElementById('avatarUrl').value = '';
             document.getElementById('fileInput').value = '';
-            
             modal.classList.add('active');
-            
             // Add escape key listener
             document.addEventListener('keydown', handleAvatarModalEscape);
         }

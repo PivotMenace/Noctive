@@ -417,10 +417,10 @@
     <div class="header-main" style="width:100%;display:flex;align-items:center;padding:1rem 2rem;background:transparent;position:fixed;top:0;left:0;z-index:1001;">
         <div class="header-icon" style="position: relative;"></div>
         <a href="index.html" style="text-decoration:none;"><span class="brand-title">Noctive</span></a>
-        <div id="userProfile" class="nav-user hidden" style="margin-left:auto;display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.3rem 0.5rem;border-radius:0.5rem;">
-            <img id="navAvatar" class="nav-user-avatar" src="" alt="Profile" style="width:32px;height:32px;border-radius:50%;border:2px solid #facc15;object-fit:cover;">
-            <span id="navUsername" class="nav-user-name" style="color:#facc15;font-weight:600;font-size:0.9rem;"></span>
-        </div>
+        <a href="profile.html" id="sidebarUser" class="nav-user hidden" style="margin-left:auto;display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.3rem 0.5rem;border-radius:0.5rem;">
+            <img src="https://ui-avatars.com/api/?name=U&background=10b981&color=fff&rounded=true&size=64" alt="Avatar" class="nav-user-avatar" id="sidebarAvatar" style="width:32px;height:32px;border-radius:50%;border:2px solid #facc15;object-fit:cover;">
+            <span class="nav-user-name" id="sidebarUserName" style="color:#facc15;font-weight:600;font-size:0.9rem;">@username</span>
+        </a>
     </div>
     <div style="height:4.5rem;"></div>
     <a href="index.html" class="back-button">← Back to Home</a>
@@ -587,11 +587,15 @@
           const userProfile = document.getElementById('userProfile');
           const navUsername = document.getElementById('navUsername');
           const navAvatar = document.getElementById('navAvatar');
+          const sidebarUserName = document.getElementById('sidebarUserName');
+          const sidebarAvatar = document.getElementById('sidebarAvatar');
           if (user) {
               // Update nav to show user profile
               if (loginBtn) loginBtn.classList.add('hidden'); // Ensure login button is hidden
               if (userProfile) userProfile.classList.remove('hidden');
-              if (navUsername) navUsername.textContent = '@' + (user.displayName || user.email.split('@')[0]);
+              const username = '@' + (user.displayName || user.email.split('@')[0]);
+              if (navUsername) navUsername.textContent = username;
+              if (sidebarUserName) sidebarUserName.textContent = username;
 
               // --- Avatar logic start ---
               // Try to get avatar from localStorage profile
@@ -620,6 +624,7 @@
                   avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=004080&color=fff&rounded=true&size=120`;
               }
               if (navAvatar) navAvatar.src = avatarUrl;
+              if (sidebarAvatar) sidebarAvatar.src = avatarUrl;
               // --- Avatar logic end ---
 
               loadUserProfile(user);
@@ -660,10 +665,13 @@
                 titleEl.textContent = profile.title || 'Noctive User';
             }
             
-            // Set avatar
+            // Set avatar (match right-hand corner logic)
             const avatarImg = document.getElementById('profileAvatar');
+            let avatarUrl = '';
             if (profile.avatar) {
-                avatarImg.src = profile.avatar;
+                avatarUrl = profile.avatar;
+            } else if (user.photoURL) {
+                avatarUrl = user.photoURL;
             } else {
                 // Use first valid letter from username or email
                 let initials = '';
@@ -681,8 +689,9 @@
                     initials = match ? match[0].toUpperCase() : '';
                 }
                 if (!initials || initials.length < 1) initials = 'N';
-                avatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=004080&color=fff&rounded=true&size=120`;
+                avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=004080&color=fff&rounded=true&size=120`;
             }
+            avatarImg.src = avatarUrl;
             
             // Set status
             const statusEl = document.getElementById('profileStatus');
