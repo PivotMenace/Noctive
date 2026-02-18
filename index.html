@@ -1,6 +1,6 @@
     <script>
-      // Redirect to garden.html unless a flag is set (optional: add logic for bypass if needed)
-      if (!window.location.pathname.endsWith('garden.html')) {
+      // Redirect to garden.html unless access is granted
+      if (!window.location.pathname.endsWith('garden.html') && localStorage.getItem('noctiveAccess') !== 'granted') {
         window.location.replace('garden.html');
       }
     </script>
