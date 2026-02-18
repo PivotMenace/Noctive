@@ -1,62 +1,65 @@
 <h1>Noctive</h1>
 
-<h2>💬 About Noctive</h2>
+<h2>About Noctive</h2>
 <p>
-  Hi, I’m Venus. I created Noctive because I wanted a space that feels simple, welcoming, and easy to use. The idea came from the way I connected with my closest friends online, and I wanted to build something that brings that same ease and authenticity to others.
+  Noctive is a private, members-focused network built for intentional communities. 
+  It was created to bring back what most platforms lost: clarity, culture, and real connection.
 </p>
 <p>
-  Most platforms push people to follow trends just to stay visible. Noctive takes a different approach. If you want to stream an older game at two in the morning, post a clip, or just hang out, it all matters here. No pressure, no chasing numbers.
+  Most platforms optimize for reach. Noctive optimizes for alignment. 
+  Stream an older title at 2AM. Post a clip. Start a focused discussion. 
+  Participation here is driven by interest, not trends.
 </p>
 
 <p><strong>Unfollow the algorithm. Noctive follows you.</strong></p>
 
-<h2>🌟 What Makes Noctive Different</h2>
+<h2>What Sets Noctive Apart</h2>
 <ul>
   <li>
-    <strong>Tag Based Profiles</strong><br>
-    Choose the games, roles, and interests that actually represent you so others can connect with you based on what you enjoy.
+    <strong>Tag-Based Profiles</strong><br>
+    Profiles built around actual interests. Discovery starts with identity, not volume.
   </li>
 
   <li>
-    <strong>Boards</strong><br>
-    Join focused spaces for specific games, discussions, or casual late night chats. It keeps conversations organized and meaningful.
+    <strong>Structured Boards</strong><br>
+    Focused spaces that organize conversations by topic, game, or purpose.
   </li>
 
   <li>
     <strong>Smart Duo Finder</strong><br>
-    Match with players based on skill level, mic preferences, region, or playstyle. No more random teammates who don’t fit your vibe.
+    Match based on playstyle, skill, region, and communication preference.
   </li>
 
   <li>
-    <strong>Post Feed + Upvotes</strong><br>
-    Share clips, screenshots, thoughts, or updates. Engage with the community and let people find you naturally.
+    <strong>Post Feed + Voting</strong><br>
+    Share clips, updates, or insights. Visibility is earned through engagement.
   </li>
 
   <li>
-    <strong>(Future) Game Stat Sync</strong><br>
-    Connect your game stats to show progress in real time without needing to explain anything.
+    <strong>Future: Game Stat Sync</strong><br>
+    Integrated stats to reflect real progress automatically.
   </li>
 
   <li>
-    <strong>Badges + Streaks</strong><br>
-    Earn recognition for being active, contributing quality posts, or showing up consistently.
+    <strong>Recognition System</strong><br>
+    Badges and streaks that reward contribution and consistency.
   </li>
 </ul>
 
-<h2>👾 Meet Steve</h2>
+<h2>Steve</h2>
 <p>
-  Steve is the face of Noctive. Straightforward, alert, and always around. A simple mascot with a recognizable look.
+  Steve represents the platform’s identity. Alert. Direct. Present.
 </p>
 
-<h2>🔗 Live Preview</h2>
+<h2>Live Preview</h2>
 <p>
-  <a href="https://pivotmenace.github.io/Noctive/" target="_blank">Click to enter Noctive</a>
+  <a href="https://pivotmenace.github.io/Noctive/" target="_blank">
+    Enter Noctive
+  </a>
 </p>
 
-<h2>📌 Note</h2>
+<h2>Project Status</h2>
 <p>
-  This is a front end prototype. Features are visual only for now.
-</p>
-<p>
-  Noctive was inspired by the platforms many of us grew up using, especially the ones that no longer exist. I wanted to build something modern that still keeps that community feeling.
+  This is an early-stage front-end prototype. Current features are visual. 
+  Backend infrastructure and controlled member onboarding are in development.
 </p>
