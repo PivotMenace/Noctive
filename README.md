@@ -2,7 +2,9 @@
 
 <h2>About</h2>
 <p>
-  Noctive is a private, members-only network built for curated communities and intentional creators. Access is limited by design.
+  Noctive is a private, members-only network built for curated communities and intentional creators. 
+  
+  Access is limited by design.
 </p>
 
 <p>
@@ -26,7 +28,7 @@ Alive After Dark.</p>
 <p>
   When that platform shut down, the friendships did not. 
   Noctive was built to preserve that feeling, a space where people can post without overthinking,
-  share wins, start conversations at 2AM, and feel like someone is actually there.
+  share wins, start conversations at 2AM, and feel like someone is actually there, and not just talking into an empty server.
 </p>
 
 <h2>Core Features</h2>
