@@ -94,6 +94,216 @@
     </script>
 
     <style>
+                                          .footer-links {
+                                            /* Default: center for mobile */
+                                            justify-content: center;
+                                          }
+                                          @media (min-width: 900px) {
+                                            .header-container {
+                                              position: relative;
+                                            }
+                                            .header-container .footer-links {
+                                              justify-content: flex-end;
+                                              position: absolute;
+                                              right: 0;
+                                              top: 50%;
+                                              transform: translateY(-50%);
+                                              margin-right: 0;
+                                            }
+                                          }
+                                      .header-container, .header-container nav {
+                                        background: none !important;
+                                        background-color: transparent !important;
+                                      }
+                                  .header-container {
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-between;
+                                    max-width: none;
+                                    width: 100vw;
+                                    margin: 0;
+                                    padding: 0;
+                                    box-sizing: border-box;
+                                    position: relative;
+                                  }
+                                  .brand-title {
+                                    position: fixed;
+                                    top: 0;
+                                    left: 0;
+                                    margin-left: 0;
+                                    margin-right: 48px;
+                                    flex-shrink: 0;
+                                    text-align: left;
+                                    display: block;
+                                    z-index: 2000;
+                                    background: transparent;
+                                    padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+                                    pointer-events: none;
+                                    user-select: none;
+                                    font-size: 4.5rem;
+                                    line-height: 1.1;
+                                  }
+                                  .header-container {
+                                    padding-left: 180px;
+                                  }
+                                  .brand-title {
+                                    margin-right: 48px;
+                                    margin-left: 0;
+                                    flex-shrink: 0;
+                                    text-align: left;
+                                    display: block;
+                                  }
+                              footer .footer-links, footer .footer-links nav {
+                                background: none !important;
+                                background-color: transparent !important;
+                              }
+                          /* --- Footer 3-column layout --- */
+                          footer {
+                            padding: 40px 0 32px 0;
+                            background: none;
+                            color: #eee;
+                            width: 100%;
+                          }
+                          .footer-container {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            justify-content: space-between;
+                            max-width: var(--container-width, 1200px);
+                            margin: 0 auto;
+                            padding: 0 24px;
+                            box-sizing: border-box;
+                            gap: 0;
+                          }
+                          .footer-brand {
+                            font-size: 1.3rem;
+                            font-family: 'Rubik', 'Montserrat', sans-serif;
+                            font-weight: 700;
+                            letter-spacing: 1px;
+                            margin: 0;
+                          }
+                          .footer-links {
+                            display: flex;
+                            flex-direction: row;
+                            gap: 32px;
+                            margin: 0 32px;
+                          }
+                          .footer-links a {
+                            color: #eee;
+                            text-decoration: none;
+                            font-size: 1rem;
+                            font-weight: 500;
+                            padding: 2px 0;
+                            border-bottom: 2px solid transparent;
+                            transition: color 0.2s, border-bottom 0.2s;
+                          }
+                          .footer-links a:hover {
+                            color: #ff3c38;
+                            border-bottom: 2px solid #ff3c38;
+                          }
+                          .footer-right {
+                            font-size: 0.95rem;
+                            text-align: right;
+                            min-width: 180px;
+                            opacity: 0.7;
+                          }
+                          .footer-social {
+                            display: none;
+                          }
+                          @media (max-width: 800px) {
+                            .footer-container {
+                              flex-direction: column;
+                              align-items: center;
+                              gap: 16px;
+                              padding: 0 8px;
+                            }
+                            .footer-links {
+                              margin: 12px 0;
+                            }
+                            .footer-right {
+                              text-align: center;
+                            }
+                          }
+                      html {
+                        scroll-behavior: smooth;
+                      }
+
+                      button:active {
+                        transform: scale(0.97);
+                      }
+
+                      .fade-in-section {
+                        opacity: 0;
+                        transform: translateY(32px);
+                        transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+                      }
+                      .fade-in-section.visible {
+                        opacity: 1;
+                        transform: none;
+                      }
+                  nav {
+                    position: sticky;
+                    top: 0;
+                    backdrop-filter: blur(12px);
+                    background: rgba(0, 0, 0, 0.9);
+                    z-index: 1002;
+                  }
+
+                  nav a {
+                    position: relative;
+                  }
+
+                  nav a::after {
+                    content: "";
+                    position: absolute;
+                    bottom: -4px;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background: crimson;
+                    transition: width 0.3s ease;
+                  }
+
+                  nav a:hover::after {
+                    width: 100%;
+                  }
+              /* --- Type Scale System --- */
+              h2 {
+                font-size: 2.2rem;
+                margin-bottom: 24px;
+              }
+
+              .card h3 {
+                font-size: 1.4rem;
+              }
+
+              p {
+                font-size: 1rem;
+                line-height: 1.6;
+              }
+          :root {
+            --section-padding: 36px;
+            --card-gap: 6px;
+            --container-width: 1200px;
+          }
+
+          .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+            box-sizing: border-box;
+          }
+
+          section {
+            padding: var(--section-padding) 0;
+          }
+
+          .feed {
+            display: flex;
+            flex-direction: column;
+            gap: var(--card-gap);
+          }
       /* ─── GLOBAL & LAYOUT ─── */
       
       /* Status dropdown hidden class */
@@ -2906,106 +3116,14 @@ a.glitchy:hover {
   </head>
   <body>
     <header>
-    <div class="header-top">
-      <div class="header-main">
-        <div class="header-icon" style="position: relative;"></div>
-        <span class="brand-title">Noctive</span>
-      </div>
-      
-      <!-- Mobile Hamburger Menu -->
-      <div class="mobile-menu-wrapper">
-        <button class="hamburger-btn" onclick="toggleMobileMenu(event)" 
-                aria-label="Toggle mobile navigation menu" 
-                aria-expanded="false" 
-                type="button">
-          <div class="hamburger-line"></div>
-          <div class="hamburger-line"></div>
-          <div class="hamburger-line"></div>
-        </button>
-        <div class="mobile-dropdown hidden" id="mobileDropdown">
-          <!-- User Profile Section in Mobile Menu -->
-          <div id="mobileUserInfo" class="mobile-user-section hidden">
-            <div class="mobile-user-profile">
-              <a id="mobileUserEmail" href="profile.html" class="mobile-user-name">@NoctiveHQ</a>
-              <div class="mobile-user-actions">
-                <a href="profile.html" class="mobile-profile-btn">View Profile</a>
-                <button type="button" onclick="signOutUser()" class="mobile-signout-btn">Sign Out</button>
-              </div>
-            </div>
-            <div class="mobile-menu-divider"></div>
-          </div>
-          
-          <a href="index.html" class="mobile-nav-item active">
-            <span class="mobile-nav-icon">🏠</span>
-            <span class="mobile-nav-text">Home</span>
-          </a>
-          <a href="creator-hub.html" class="mobile-nav-item">
-            <span class="mobile-nav-icon">🎨</span>
-            <span class="mobile-nav-text">Creator Hub</span>
-          </a>
-          <a href="explore.html" class="mobile-nav-item">
-            <span class="mobile-nav-icon">⭐</span>
-            <span class="mobile-nav-text">Explore</span>
-          </a>
-          <!-- <a href="hubs.html" class="mobile-nav-item"> -->
-            <span class="mobile-nav-icon">👥</span>
-            <span class="mobile-nav-text">Hubs</span>
-          </a>
-          <a href="messages.html" class="mobile-nav-item">
-            <span class="mobile-nav-icon">💬</span>
-            <span class="mobile-nav-text">Messages</span>
-          </a>
-          <a href="notifications.html" class="mobile-nav-item">
-            <span class="mobile-nav-icon">🔔</span>
-            <span class="mobile-nav-text">Notifications</span>
-          </a>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Horizontal Navigation -->
-    <div class="header-nav">
-      <div class="nav-links">
-        <a href="index.html" class="nav-link active" data-page="home">Home</a>
-        <a href="explore.html" class="nav-link" data-page="explore">Explore</a>
-        <a href="messages.html" class="nav-link" data-page="messages">Messages</a>
-        <a href="profile.html" class="nav-link" data-page="profile" title="Profile">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user" style="vertical-align:middle;margin-right:6px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Profile
-        </a>
-        <a href="login.html" id="loginSignupBtn" class="nav-link login-btn">Login / Sign Up</a>
-        <!-- Sidebar user will be injected dynamically after user data loads -->
-      </div>
-      
-      <!-- User Menu Dropdown -->
-      <div class="user-menu-dropdown hidden" id="userMenuDropdown">
-        <div class="user-menu-item" onclick="openStatusPicker(); document.getElementById('userMenuDropdown').classList.add('hidden');">
-          <span class="user-menu-icon" id="statusMenuIcon">🟢</span>
-          <span class="user-menu-text">Set Status</span>
-        </div>
-        <div class="user-menu-divider"></div>
-        <div class="user-menu-item" onclick="window.location.href='profile.html'; document.getElementById('userMenuDropdown').classList.add('hidden');">
-          <span class="user-menu-icon">👤</span>
-          <span class="user-menu-text">Profile</span>
-        </div>
-        <div class="user-menu-item" onclick="window.location.href='edit-profile.html'; document.getElementById('userMenuDropdown').classList.add('hidden');">
-          <span class="user-menu-icon">⚙️</span>
-          <span class="user-menu-text">Edit Profile</span>
-        </div>
-        <div class="user-menu-item" onclick="window.location.href='notifications.html'; document.getElementById('userMenuDropdown').classList.add('hidden');">
-          <span class="user-menu-icon">🔔</span>
-          <span class="user-menu-text">Notifications</span>
-        </div>
-        <div class="user-menu-item" onclick="window.location.href='messages.html'; document.getElementById('userMenuDropdown').classList.add('hidden');">
-          <span class="user-menu-icon">💬</span>
-          <span class="user-menu-text">Messages</span>
-        </div>
-        <div class="user-menu-divider"></div>
-        <div class="user-menu-item logout-item" onclick="signOutUser(); document.getElementById('userMenuDropdown').classList.add('hidden');">
-          <span class="user-menu-icon">🚪</span>
-          <span class="user-menu-text">Logout</span>
-        </div>
-      </div>
+    <div class="footer-container header-container">
+      <span class="brand-title">Noctive</span>
+      <nav class="footer-links">
+        <a href="/">Home</a>
+        <a href="/explore.html">Explore</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/profile.html">Profile</a>
+      </nav>
     </div>
   </header>
 
@@ -3117,8 +3235,9 @@ a.glitchy:hover {
     </div>
 
     <!-- Main Content Area -->
-    <div class="main-content">
-      <section class="feed">
+    <div class="container">
+      <div class="main-content">
+        <section class="feed">
         <!-- Feed Tabs -->
         <nav class="feed-tabs">
           <button class="tab active" data-tab="for-you">For you</button>
@@ -3546,7 +3665,16 @@ a.glitchy:hover {
     </div>
 
     <footer>
-      <p>&copy; 2025 Noctive. All rights reserved. built on silliness and a dream and a lil anger</p>
+      <div class="footer-container">
+        <div class="footer-brand">Noctive</div>
+        <nav class="footer-links">
+          <a href="/">Home</a>
+          <a href="/explore.html">Explore</a>
+          <a href="/faq.html">FAQ</a>
+          <a href="/profile.html">Profile</a>
+        </nav>
+        <div class="footer-right">&copy; 2025 Noctive</div>
+      </div>
     </footer>
 
     <!-- Authentication Modal -->
@@ -5096,6 +5224,22 @@ a.glitchy:hover {
         }
       }
     </style>
+    <script>
+      // Fade-in animation for sections using IntersectionObserver
+      document.addEventListener('DOMContentLoaded', function() {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => section.classList.add('fade-in-section'));
+        const observer = new window.IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+        sections.forEach(section => observer.observe(section));
+      });
+    </script>
 
     <script>
       // Owl companion functionality
