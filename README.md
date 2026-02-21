@@ -21,7 +21,7 @@ Alive After Dark.</p>
 
 <h2>About Venus!</h2>
 <p>
-  Noctive began in 2019, when I met two of my closest friends on a gaming platform that no longer exists.
+  Back in 2019, when I met two of my closest friends on a gaming platform that no longer exists.
   What stayed with us was not the interface, but the late-night conversations and real connections built across time zones.
 </p>
 
