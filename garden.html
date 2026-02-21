@@ -387,7 +387,7 @@
                 return;
             }
             if (normalize(entered) === normalize(VALID_KEY)) {
-                localStorage.setItem('noctiveAccess', 'granted');
+                sessionStorage.setItem('noctiveAccess', 'granted');
                 setStatus("Access granted.", "good");
                 setTimeout(() => {
                     window.location.href = "index.html";

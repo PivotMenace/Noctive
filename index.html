@@ -1,6 +1,6 @@
     <script>
-      // Redirect to garden.html unless access is granted
-      if (!window.location.pathname.endsWith('garden.html') && localStorage.getItem('noctiveAccess') !== 'granted') {
+      // Redirect to garden.html unless access is granted (session-based)
+      if (!window.location.pathname.endsWith('garden.html') && sessionStorage.getItem('noctiveAccess') !== 'granted') {
         window.location.replace('garden.html');
       }
     </script>
@@ -118,40 +118,55 @@
                                   .header-container {
                                     display: flex;
                                     align-items: center;
-                                    justify-content: space-between;
+                                    justify-content: center;
                                     max-width: none;
                                     width: 100vw;
                                     margin: 0;
                                     padding: 0;
                                     box-sizing: border-box;
                                     position: relative;
+                                    gap: 2rem;
                                   }
                                   .brand-title {
-                                    position: fixed;
-                                    top: 0;
-                                    left: 0;
+                                    position: static;
                                     margin-left: 0;
-                                    margin-right: 48px;
+                                    margin-right: 0;
                                     flex-shrink: 0;
-                                    text-align: left;
-                                    display: block;
+                                    text-align: center;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
                                     z-index: 2000;
                                     background: transparent;
                                     padding: 0.5rem 1.5rem 0.5rem 0.5rem;
-                                    pointer-events: none;
+                                    pointer-events: auto;
                                     user-select: none;
-                                    font-size: 4.5rem;
+                                    font-size: 3.5rem;
                                     line-height: 1.1;
                                   }
                                   .header-container {
-                                    padding-left: 180px;
+                                    padding-left: 0;
                                   }
                                   .brand-title {
-                                    margin-right: 48px;
+                                    margin-right: 0;
                                     margin-left: 0;
                                     flex-shrink: 0;
-                                    text-align: left;
-                                    display: block;
+                                    text-align: center;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                  @media (max-width: 700px) {
+                                    .header-container {
+                                      flex-direction: column;
+                                      align-items: center;
+                                      justify-content: center;
+                                      gap: 0.5rem;
+                                    }
+                                    .brand-title {
+                                      font-size: 3rem;
+                                      margin-bottom: 0.2rem;
+                                    }
+                                  }
                                   }
                               footer .footer-links, footer .footer-links nav {
                                 background: none !important;
