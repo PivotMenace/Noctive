@@ -1,6 +1,6 @@
 <h1>Noctive</h1>
 
-<h2>About</h2>
+<h2>About Noctive</h2>
 <p>
   Noctive is a private, members-only network built for curated communities and intentional creators. 
   
