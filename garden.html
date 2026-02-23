@@ -9,6 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
 
     <style>
+        .about-link {
+            font-size: 0.92em;
+            color: inherit;
+            text-decoration: none;
+            opacity: 0.7;
+            transition: text-shadow 0.2s, color 0.2s;
+        }
+        .about-link:hover {
+            color: var(--red3);
+            text-shadow: 0 0 8px var(--red3), 0 0 16px var(--red2);
+            opacity: 1;
+        }
         :root {
             --bg: #0c0f14;
             --red1: #8b0000;
@@ -338,15 +350,19 @@
                                 </div>
                         </div>
 
+
             <button class="btn" id="unlockBtn" type="button">Enter with your key</button>
+            <div style="text-align:center;margin-top:8px;">
+                <a class="about-link" href="https://github.com/PivotMenace/Noctive" target="_blank" rel="noopener noreferrer">You're not Venus</a>
+            </div>
 
             <div class="status" id="status"></div>
-            <!-- <div class="hint">Demo key: CIVET-9080-2270</div> -->
+            <!-- <div class="hint">Demo key: CIVET-908N-227O</div> -->
         </section>
     </main>
 
     <script>
-        const VALID_KEY = "CIVET-9080-2270";
+        const VALID_KEY = "CIVET-908N-227O";
 
         const pill = document.getElementById("pill");
         const status = document.getElementById("status");

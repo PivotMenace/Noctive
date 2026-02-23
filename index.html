@@ -1,3 +1,4 @@
+      
     <script>
       // Redirect to garden.html unless access is granted (session-based)
       if (!window.location.pathname.endsWith('garden.html') && sessionStorage.getItem('noctiveAccess') !== 'granted') {
@@ -162,8 +163,11 @@
                                       justify-content: center;
                                       gap: 0.5rem;
                                     }
+                                  }
+                                  /* Force Noctive logo bigger on mobile, override all previous rules */
+                                  @media (max-width: 768px) {
                                     .brand-title {
-                                      font-size: 3rem;
+                                      font-size: 4.5rem !important;
                                       margin-bottom: 0.2rem;
                                     }
                                   }
@@ -297,9 +301,11 @@
                 line-height: 1.6;
               }
           :root {
+              --tabs-height: 4.2rem;
             --section-padding: 36px;
             --card-gap: 6px;
             --container-width: 1200px;
+            --header-height: 3.2rem;
           }
 
           .container {
@@ -349,7 +355,7 @@ header {
   align-items: center;
   justify-content: space-between;
   height: auto;
-  min-height: 3rem;
+  min-height: var(--header-height);
   background: #23263a !important;
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -360,7 +366,7 @@ header {
   left: 0;
   width: 100%;
   padding: 0.4rem 1rem;
-  z-index: 1001;
+  z-index: 1100;
   box-sizing: border-box;
   gap: 1rem;
 }
@@ -1111,19 +1117,22 @@ a.glitchy:hover {
 }
 
 /* Feed Tabs Component */
-.feed-tabs {
-  display: flex;
-  justify-content: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 1rem;
-  margin-top: 0;
-  padding-top: 0;
-  position: sticky;
-  top: 0;
-  background: rgba(18, 21, 36, 0.95);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-}
+  .feed-tabs {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+    margin-top: 0;
+    padding-top: 0;
+    position: sticky;
+    top: var(--header-height);
+    background: transparent;
+    backdrop-filter: blur(10px);
+    z-index: 1050;
+    transition: transform 0.25s cubic-bezier(.4,1.4,.6,1), opacity 0.2s;
+  }
+
+  /* feed-tabs always visible on mobile; scroll-up mechanic removed */
 
 .feed-tabs .tab {
   background: transparent;
@@ -1171,8 +1180,9 @@ a.glitchy:hover {
 
 @media (max-width: 768px) {
   .feed-tabs {
-    margin-top: 1.5rem; /* Slightly less on mobile */
-    padding-top: 0.75rem; /* Reduced padding on mobile */
+    margin-top: 0 !important;
+    padding-top: 0.5rem;
+    top: var(--header-height) !important;
   }
   
   .feed-tabs .tab {
@@ -2864,7 +2874,7 @@ a.glitchy:hover {
   background: linear-gradient(to bottom right, #1a1d2e, #23263a) !important;
   color: #f0f0f0 !important;
   border-radius: 0.75rem;
-  padding: 1rem;
+  padding: calc(var(--header-height) + var(--tabs-height) + 1.5rem) 1rem 1rem 1rem;
   z-index: 999;
   font-size: 0.85rem;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -3145,6 +3155,9 @@ a.glitchy:hover {
   <script>
   // Toggle user menu dropdown on avatar/name click
   document.addEventListener('DOMContentLoaded', function() {
+    // (Scroll-up feed-tabs mechanic removed; tabs always visible)
+  
+  });
     const sidebarUser = document.getElementById('sidebarUser');
     const userMenuDropdown = document.getElementById('userMenuDropdown');
     if (sidebarUser && userMenuDropdown) {
@@ -3206,7 +3219,6 @@ a.glitchy:hover {
   });
   </script>
 
-    <p class="slogan-blink">"Built for the ones who never log off."</p>
     
     <div class="star-background" id="starBg"></div>
 
@@ -3252,7 +3264,7 @@ a.glitchy:hover {
     <!-- Main Content Area -->
     <div class="container">
       <div class="main-content">
-        <section class="feed">
+        <section class="feed" style="background: transparent;">
         <!-- Feed Tabs -->
         <nav class="feed-tabs">
           <button class="tab active" data-tab="for-you">For you</button>
@@ -3688,7 +3700,7 @@ a.glitchy:hover {
           <a href="/faq.html">FAQ</a>
           <a href="/profile.html">Profile</a>
         </nav>
-        <div class="footer-right">&copy; 2025 Noctive</div>
+        <div class="footer-right">&copy; 2026 Noctive (for Venus By Venus)</div>
       </div>
     </footer>
 
