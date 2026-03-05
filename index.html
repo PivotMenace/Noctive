@@ -4,9 +4,6 @@
     if (localStorage.getItem('noctiveAccess') !== 'granted') {
       window.location.replace('garden.html');
     }
-    window.addEventListener('unload', function() {
-      localStorage.removeItem('noctiveAccess');
-    });
 </script>
 <html lang="en">
 <head>
