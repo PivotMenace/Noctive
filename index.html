@@ -1,6 +1,10 @@
 <!doctype html>
 <script>
-  window.location.replace('garden.html');
+  // Redirect to garden.html on first visit, then show index.html on subsequent visits
+  if (!localStorage.getItem('visitedGarden')) {
+    localStorage.setItem('visitedGarden', 'true');
+    window.location.replace('garden.html');
+  }
 </script>
 <html lang="en">
 <head>
@@ -11,11 +15,12 @@
   <!-- Favicon (GitHub Pages friendly) -->
   <link rel="icon" type="image/png" href="pngs/Favicon.png" />
 
-  <!-- OG Fonts: Rubik + Roboto Condensed -->
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- OG Fonts: Rubik + Roboto Condensed + Nunito -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;900&family=Roboto+Condensed:wght@300;400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
+      --gold: #facc15;
       --bgTop: #05040a;
       --bgMid: #060415;
       --bgBot: #04040b;
@@ -37,12 +42,14 @@
 
       --good: #2ecc71;
 
+      --gold: #facc15;
+
       --shadow: 0 22px 75px rgba(0,0,0,0.46);
       --radius: 18px;
 
       /* Fonts */
-      --fontMain: "Roboto Condensed", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      --fontHead: "Rubik", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --fontMain: 'Nunito', sans-serif;
+      --fontHead: "Rubik", "Roboto Condensed", 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
     *{ box-sizing: border-box; }
@@ -50,14 +57,16 @@
 
     body{
       margin: 0;
-      font-family: var(--fontMain);
+      font-family: 'Nunito', sans-serif;
       color: var(--text);
-
-      background:
-        radial-gradient(1200px 650px at 15% 10%, rgba(125, 90, 255, 0.22), transparent 60%),
-        radial-gradient(900px 600px at 85% 25%, rgba(80, 140, 255, 0.20), transparent 55%),
-        radial-gradient(800px 520px at 40% 90%, rgba(160, 80, 255, 0.16), transparent 60%),
-        linear-gradient(180deg, #06061a 0%, #090a25 45%, #040412 100%);
+      font-weight: 400;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #181624, #1e1a2f, #23244a, #23244a, #181624);
+      background-size: 200% 200%;
+      animation: gradientShift 36s ease-in-out infinite;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-color: #121524;
     }
 
     a{ color: inherit; }
@@ -85,24 +94,26 @@
 
     /* Noctive breathing logo from explore.html */
     .brand-title{
-        text-decoration: none !important;
-        border: none !important;
-        display: inline-block;
-        text-decoration: none !important;
-        border: none !important;
-        display: inline-block;
+      text-decoration: none !important;
+      border: none !important;
+      display: inline-block;
       font-size: 2rem;
       font-weight: 700;
+      font-family: 'Rubik','Roboto Condensed',sans-serif;
+      letter-spacing: 0.5px;
       background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
       background-size: 200% 200%;
-      font-family: 'Rubik','Roboto Condensed',sans-serif;
-      letter-spacing: 0.5px;
       animation: subtleBreathing 4s ease-in-out infinite;
       filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
       line-height: 1;
+    }
+
+    /* Gold titles for h1, h2, h3, .rail-title */
+    h1, h2, h3, .rail-title, .drawer-title, .modal-title {
+      color: var(--gold);
     }
 
     @keyframes subtleBreathing{
@@ -127,10 +138,10 @@
       }
     }
 
-    @keyframes gradientShift{
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes gradientShift {
+      0% { background-position: 0% 60%; }
+      50% { background-position: 100% 40%; }
+      100% { background-position: 0% 60%; }
     }
 
     .topnav{
@@ -221,10 +232,10 @@
 
     .rail-title{
       font-family: var(--fontHead);
-      font-weight: 900;
+      font-weight: 400;
       letter-spacing: 0.2px;
       margin-bottom: 10px;
-      color: rgba(255,255,255,0.92);
+      color: var(--gold);
     }
 
     /* ============= Left Rail ============= */
@@ -287,7 +298,7 @@
       background: rgba(0,0,0,0.22);
       border: 1px solid var(--border);
       color: rgba(255,255,255,0.86);
-      font-weight: 900;
+      font-weight: 400;
       transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
     }
 
@@ -303,7 +314,7 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.10);
       color: #fff;
-      font-weight: 900;
+      font-weight: 400;
       padding: 10px 12px;
       border-radius: 12px;
       cursor: pointer;
@@ -340,6 +351,7 @@
       border: 1px solid var(--border);
       width: fit-content;
       margin-bottom: 14px;
+      font-weight: 400;
     }
 
     .tab-btn{
@@ -347,7 +359,7 @@
       border: 0;
       background: transparent;
       color: rgba(255,255,255,0.78);
-      font-weight: 900;
+      font-weight: 400;
       font-size: 0.92rem;
       padding: 10px 12px;
       border-radius: 999px;
@@ -364,6 +376,7 @@
     .tab-btn.active{
       background: rgba(255,255,255,0.14);
       color: #fff;
+      font-weight: 400;
     }
 
     .panel{ display: none; }
@@ -545,14 +558,14 @@
     }
 
     .hot-item{
-      font-family: var(--fontHead);
+      font-family: 'Nunito', sans-serif;
       border: 1px solid rgba(255,255,255,0.10);
       background: rgba(0,0,0,0.22);
       color: rgba(255,255,255,0.85);
       padding: 10px 12px;
       border-radius: 999px;
       cursor: pointer;
-      font-weight: 900;
+      font-weight: 700;
       transition: transform 140ms ease, background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
     }
 
@@ -610,14 +623,16 @@
     }
 
     .active-name{
-      font-family: var(--fontHead);
-      font-weight: 900;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .active-sub{
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
       font-size: 0.86rem;
       color: var(--muted);
       margin-top: 2px;
@@ -654,14 +669,16 @@
     }
 
     .friend-name{
-      font-family: var(--fontHead);
-      font-weight: 900;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .friend-status{
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
       font-size: 0.86rem;
       color: var(--muted);
       margin-top: 2px;
@@ -729,6 +746,7 @@
     .drawer-title{
       font-family: var(--fontHead);
       font-weight: 900;
+      color: var(--gold);
     }
 
     .xbtn{
@@ -778,6 +796,7 @@
     .modal-title{
       font-family: var(--fontHead);
       font-weight: 900;
+      color: var(--gold);
     }
 
     .modal-body{
@@ -1060,7 +1079,7 @@
               <span class="dot"></span>
             </div>
             <div style="min-width:0;">
-              <div class="active-name">MintyBoi and Wright</div>
+              <div class="active-name">Hijinxx & WakeBakeWes</div>
               <div class="active-sub">ARC Raiders · 2h</div>
             </div>
           </div>
@@ -1074,7 +1093,7 @@
               <span class="dot"></span>
             </div>
             <div style="min-width:0;">
-              <div class="active-name">ODSTMarine005</div>
+              <div class="active-name">SpaceNavis</div>
               <div class="active-sub">Minecraft · 2h</div>
             </div>
           </div>
@@ -1135,7 +1154,7 @@
                 <span class="dot"></span>
               </div>
               <div style="min-width:0;">
-                <div class="friend-name">cardboard</div>
+                <div class="friend-name">SpaceNavis</div>
                 <div class="friend-status">Watching clips</div>
               </div>
             </div>
@@ -1149,7 +1168,7 @@
                 <span class="dot"></span>
               </div>
               <div style="min-width:0;">
-                <div class="friend-name">MintyBoi</div>
+                <div class="friend-name">Hypurly</div>
                 <div class="friend-status">Grinding challenges</div>
               </div>
             </div>
@@ -1163,7 +1182,7 @@
                 <span class="dot"></span>
               </div>
               <div style="min-width:0;">
-                <div class="friend-name">Wright</div>
+                <div class="friend-name">WakeBakeWes</div>
                 <div class="friend-status">AFK, still online</div>
               </div>
             </div>

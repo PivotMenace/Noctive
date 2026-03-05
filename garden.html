@@ -377,6 +377,10 @@
             status.textContent = text || "";
             status.classList.remove("good", "bad");
             if (kind) status.classList.add(kind);
+            // Always clear 'Access granted' if not granted
+            if (text !== "Access granted.") {
+                status.classList.remove("good");
+            }
         }
 
         function shake() {
@@ -410,6 +414,8 @@
                 }, 900);
             } else {
                 setStatus("Invalid key.", "bad");
+                // Ensure 'Access granted' never persists
+                status.classList.remove("good");
                 shake();
             }
         }
