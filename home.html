@@ -1,0 +1,1603 @@
+<!doctype html>
+<script>
+  // Always redirect to garden.html on every visit
+  window.location.replace('garden.html');
+</script>
+<meta http-equiv="refresh" content="0; url=garden.html" />
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noctive | Alive After Dark</title>
+
+  <!-- Favicon (GitHub Pages friendly) -->
+  <link rel="icon" type="image/png" href="pngs/Favicon.png" />
+
+  <!-- OG Fonts: Rubik + Roboto Condensed + Nunito -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;900&family=Roboto+Condensed:wght@300;400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --gold: #facc15;
+      --bgTop: #05040a;
+      --bgMid: #060415;
+      --bgBot: #04040b;
+
+      --panel: rgba(255,255,255,0.055);
+      --panel2: rgba(0,0,0,0.26);
+      --border: rgba(255,255,255,0.09);
+
+      --text: rgba(255,255,255,0.93);
+      --muted: rgba(255,255,255,0.66);
+      --muted2: rgba(255,255,255,0.56);
+
+      --accent: #dc143c;            /* crimson */
+      --accentSoft: rgba(220,20,60,0.18);
+      --accentBorder: rgba(220,20,60,0.35);
+
+      --purpleGlow: rgba(155, 89, 255, 0.18);
+      --blueGlow: rgba(90, 140, 255, 0.14);
+
+      --good: #2ecc71;
+
+      --gold: #facc15;
+
+      --shadow: 0 22px 75px rgba(0,0,0,0.46);
+      --radius: 18px;
+
+      /* Fonts */
+      --fontMain: 'Nunito', sans-serif;
+      --fontHead: "Rubik", "Roboto Condensed", 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+
+    body{
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      color: var(--text);
+      font-weight: 400;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #181624, #1e1a2f, #23244a, #23244a, #181624);
+      background-size: 200% 200%;
+      animation: gradientShift 36s ease-in-out infinite;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-color: #121524;
+    }
+
+    a{ color: inherit; }
+    button{ font-family: inherit; }
+    img{ display: block; }
+
+    /* ============= Topbar ============= */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 6000;
+      backdrop-filter: blur(10px);
+      background: rgba(10,10,14,0.60);
+      /* border-bottom removed to eliminate white line under logo */
+    }
+
+    .topbar-inner{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Noctive breathing logo from explore.html */
+    .brand-title{
+      text-decoration: none !important;
+      border: none !important;
+      display: inline-block;
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: 'Rubik','Roboto Condensed',sans-serif;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: subtleBreathing 4s ease-in-out infinite;
+      filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
+      line-height: 1;
+    }
+
+    /* Gold titles for h1, h2, h3, .rail-title */
+    h1, h2, h3, .rail-title, .drawer-title, .modal-title {
+      color: var(--gold);
+    }
+
+    @keyframes subtleBreathing{
+      0%,100%{
+        background-position:0% 50%;
+        filter: drop-shadow(0 1px 3px rgba(139, 0, 0, 0.4));
+      }
+      50%{
+        background-position:100% 50%;
+        filter: drop-shadow(0 2px 6px rgba(178, 34, 34, 0.5));
+      }
+    }
+
+    @keyframes subtleBreathing{
+      0%, 100% {
+        transform: translateY(0);
+        filter: drop-shadow(0 1px 3px rgba(139,0,0,0.45));
+      }
+      50% {
+        transform: translateY(-1px);
+        filter: drop-shadow(0 2px 11px rgba(220,20,60,0.40));
+      }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 60%; }
+      50% { background-position: 100% 40%; }
+      100% { background-position: 0% 60%; }
+    }
+
+    .topnav{
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+    }
+
+    .topnav a{
+      font-family: var(--fontHead);
+      text-decoration: none;
+      color: rgba(255,255,255,0.80);
+      font-weight: 400;
+      font-size: 0.92rem;
+      padding: 10px 12px;
+      border-radius: 999px;
+      transition: transform 140ms ease, background 140ms ease, color 140ms ease, font-weight 140ms ease;
+    }
+
+    .topnav a:hover{
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      transform: translateY(-1px);
+      font-weight: 900;
+    }
+
+    .topnav a[aria-current="page"]{
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .topbar-right{
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ghost-btn{
+      font-family: var(--fontHead);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      font-weight: 400;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 140ms ease, background 140ms ease, border-color 140ms ease, font-weight 140ms ease;
+    }
+
+    .ghost-btn:hover{
+      background: rgba(255,255,255,0.10);
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.18);
+      font-weight: 900;
+    }
+
+    /* ============= Layout ============= */
+    .app-shell{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 280px 1fr 330px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card{
+      background: var(--panel);
+      border: none;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .rail{
+      position: sticky;
+      top: 86px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      height: fit-content;
+    }
+
+    .rail-title{
+      font-family: var(--fontHead);
+      font-weight: 400;
+      letter-spacing: 0.2px;
+      margin-bottom: 10px;
+      color: var(--gold);
+    }
+
+    /* ============= Left Rail ============= */
+    .user-card{
+      padding: 14px;
+    }
+
+    .user-row{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .avatar{
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.20);
+      flex-shrink: 0;
+    }
+
+    .avatar img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-meta{ min-width: 0; }
+    .user-name{
+      font-family: var(--fontHead);
+      font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .user-sub{
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 2px;
+    }
+
+    .dropdown{
+      margin-top: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .link-pill{
+      font-family: var(--fontHead);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 14px;
+      text-decoration: none;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid var(--border);
+      color: rgba(255,255,255,0.86);
+      font-weight: 400;
+      transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+    }
+
+    .link-pill:hover{
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    .rail-btn{
+      font-family: var(--fontHead);
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: #fff;
+      font-weight: 400;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+    }
+
+    .rail-btn:hover{
+      background: rgba(255,255,255,0.10);
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.16);
+    }
+
+    .quick-links{
+      padding: 14px;
+    }
+
+    .link-list{
+      display: grid;
+      gap: 10px;
+    }
+
+    /* ============= Feed ============= */
+    .feed-card{
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .feed-tabs{
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      width: fit-content;
+      margin-bottom: 14px;
+      font-weight: 400;
+    }
+
+    .tab-btn{
+      font-family: var(--fontHead);
+      border: 0;
+      background: transparent;
+      color: rgba(255,255,255,0.78);
+      font-weight: 400;
+      font-size: 0.92rem;
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 140ms ease, transform 140ms ease, color 140ms ease;
+    }
+
+    .tab-btn:hover{
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .tab-btn.active{
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      font-weight: 400;
+    }
+
+    .panel{ display: none; }
+    .panel.active{ display: block; }
+
+    .composer{
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .composer:focus-within{
+      border-color: rgba(220,20,60,0.28);
+      box-shadow: 0 0 0 1px rgba(220,20,60,0.16), 0 0 22px rgba(220,20,60,0.14);
+    }
+
+    .composer textarea{
+      width: 100%;
+      min-height: 84px;
+      resize: vertical;
+      background: transparent;
+      border: 0;
+      outline: none;
+      color: #fff;
+      font-size: 1rem;
+      line-height: 1.35;
+      font-family: var(--fontMain);
+    }
+
+    .composer-bar{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .count{
+      color: var(--muted2);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .post-btn{
+      font-family: var(--fontHead);
+      background: var(--accentSoft);
+      border: 1px solid var(--accentBorder);
+      color: #fff;
+      font-weight: 900;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease;
+    }
+
+    .post-btn:hover{
+      background: rgba(220,20,60,0.25);
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(220,20,60,0.20);
+    }
+
+    .post{
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+    }
+
+    .post:hover{
+      transform: translateY(-2px);
+      border-color: rgba(220,20,60,0.35);
+      box-shadow:
+        0 20px 70px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(220,20,60,0.18),
+        0 0 24px rgba(220,20,60,0.22);
+    }
+
+    .post-head{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .post-user{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .mini-avatar{
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.20);
+      flex-shrink: 0;
+    }
+
+    .mini-avatar img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .pname{
+      font-family: var(--fontHead);
+      font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ptime{
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 2px;
+    }
+
+    .tag{
+      font-family: var(--fontHead);
+      font-weight: 900;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.82);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      padding: 8px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .post-body{
+      color: rgba(255,255,255,0.90);
+      line-height: 1.38;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .post-actions{
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .action{
+      font-family: var(--fontHead);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.86);
+      font-weight: 900;
+      padding: 8px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+    }
+
+    .action:hover{
+      background: rgba(255,255,255,0.10);
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.16);
+    }
+
+    /* ============= Right Rail ============= */
+    .rail-card{ padding: 14px; }
+
+    .hot-list{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hot-item{
+      font-family: 'Nunito', sans-serif;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.22);
+      color: rgba(255,255,255,0.85);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 140ms ease, background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .hot-item:hover{
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-1px);
+      border-color: rgba(220,20,60,0.22);
+      box-shadow: 0 0 16px rgba(220,20,60,0.14);
+    }
+
+    .active-card{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+    }
+
+    .active-left{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .avatar-dot{
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.20);
+      flex-shrink: 0;
+    }
+
+    .avatar-dot img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .dot{
+      position: absolute;
+      right: 2px;
+      bottom: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--good);
+      border: 2px solid rgba(10,10,14,0.9);
+    }
+
+    .active-name{
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .active-sub{
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .friends{ display: grid; gap: 10px; }
+
+    .friend-row{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid var(--border);
+      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+    }
+
+    .friend-row:hover{
+      transform: translateY(-1px);
+      border-color: rgba(220,20,60,0.26);
+      box-shadow: 0 0 18px rgba(220,20,60,0.16);
+    }
+
+    .friend-left{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .friend-name{
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .friend-status{
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ============= Mobile Drawer ============= */
+    .night-fab{
+      display: none;
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 6500;
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      font-size: 20px;
+      transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .night-fab:hover{
+      transform: translateY(-1px);
+      border-color: rgba(220,20,60,0.25);
+      box-shadow: 0 0 26px rgba(220,20,60,0.18), var(--shadow);
+    }
+
+    .hidden{ display: none !important; }
+
+    .drawer{
+      position: fixed;
+      inset: 0;
+      z-index: 6400;
+      background: rgba(0,0,0,0.55);
+      display: grid;
+      justify-items: end;
+      padding: 14px;
+    }
+
+    .drawer-panel{
+      width: min(370px, 92vw);
+      height: calc(100vh - 28px);
+      overflow: auto;
+      border-radius: 18px;
+      background: rgba(10,10,14,0.92);
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    .drawer-head{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .drawer-title{
+      font-family: var(--fontHead);
+      font-weight: 900;
+      color: var(--gold);
+    }
+
+    .xbtn{
+      font-family: var(--fontHead);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: transform 140ms ease, background 140ms ease;
+    }
+
+    .xbtn:hover{
+      background: rgba(255,255,255,0.10);
+      transform: translateY(-1px);
+    }
+
+    /* ============= Auth Modal ============= */
+    .modal-backdrop{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.60);
+      display: grid;
+      place-items: center;
+      z-index: 7000;
+      padding: 18px;
+    }
+
+    .modal{
+      width: min(520px, 100%);
+      border-radius: 18px;
+      background: rgba(10,10,14,0.92);
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .modal-head{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title{
+      font-family: var(--fontHead);
+      font-weight: 900;
+      color: var(--gold);
+    }
+
+    .modal-body{
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .field{ display: grid; gap: 6px; }
+
+    .field label{
+      font-family: var(--fontHead);
+      font-weight: 700;
+      color: rgba(255,255,255,0.86);
+      font-size: 0.92rem;
+    }
+
+    .field input{
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      outline: none;
+      font-family: var(--fontMain);
+    }
+
+    .field input:focus{
+      border-color: rgba(220,20,60,0.26);
+      box-shadow: 0 0 0 1px rgba(220,20,60,0.14), 0 0 18px rgba(220,20,60,0.14);
+    }
+
+    .modal-actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+      align-items: center;
+    }
+
+    .primary{
+      font-family: var(--fontHead);
+      background: var(--accentSoft);
+      border: 1px solid var(--accentBorder);
+      color: #fff;
+      font-weight: 900;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease;
+    }
+
+    .primary:hover{
+      background: rgba(220,20,60,0.26);
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(220,20,60,0.18);
+    }
+
+    .textlink{
+      font-family: var(--fontHead);
+      border: 0;
+      background: transparent;
+      color: rgba(255,255,255,0.76);
+      font-weight: 900;
+      cursor: pointer;
+      padding: 10px 0;
+      text-align: left;
+    }
+
+    .small{ color: var(--muted); font-size: 0.92rem; }
+
+    /* ============= Footer ============= */
+    .bottombar{
+      margin-top: 28px;
+      border-top: 1px solid var(--border);
+      background: rgba(10,10,14,0.55);
+    }
+
+    .bottombar-inner{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: rgba(255,255,255,0.78);
+    }
+
+    .footnav{
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footnav a{
+      font-family: var(--fontHead);
+      color: rgba(255,255,255,0.72);
+      text-decoration: none;
+      font-weight: 900;
+      transition: color 140ms ease;
+    }
+
+    .footnav a:hover{ color: #fff; }
+
+    /* ============= Responsive ============= */
+    @media (max-width: 1050px){
+      .app-shell{ grid-template-columns: 260px 1fr; }
+      .right-rail{ display: none; }
+      .night-fab{ display: grid; place-items: center; }
+    }
+
+    @media (max-width: 760px){
+      .topbar-inner {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .brand-link {
+        order: 0;
+        flex-shrink: 0;
+      }
+      .topnav {
+        order: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1 1 auto;
+        gap: 1.5rem;
+        width: auto;
+        min-width: 0;
+      }
+      .topbar-right {
+        order: 2;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-shrink: 0;
+        margin-bottom: 0;
+      }
+      .app-shell{ grid-template-columns: 1fr; }
+      .rail{ position: static; }
+      .bottombar-inner{ flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand-link" href="index.html">
+        <span class="brand-title">Noctive</span>
+      </a>
+
+      <nav class="topnav" aria-label="Primary">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="faq.html">FAQ</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+
+      <div class="topbar-right">
+        <button class="ghost-btn" type="button" id="authOpenBtn">Sign in</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <div class="app-shell">
+    <!-- Left rail -->
+    <aside class="rail">
+      <section class="card user-card">
+        <div class="user-row" id="sidebarUser">
+          <div class="avatar">
+            <img src="pngs/account.png" alt="User avatar" onerror="this.style.display='none'" />
+          </div>
+
+          <div class="user-meta">
+            <div class="user-name" id="userDisplayName">Guest</div>
+            <div class="user-sub" id="userDisplaySub">Not signed in</div>
+          </div>
+        </div>
+
+        <div id="userMenuDropdown" class="dropdown hidden">
+          <a class="link-pill" href="profile.html">View profile <span>→</span></a>
+          <a class="link-pill" href="explore.html">Explore hubs <span>→</span></a>
+          <button class="rail-btn" type="button" id="signOutBtn">Sign out</button>
+        </div>
+      </section>
+
+      <section class="card quick-links">
+        <div class="rail-title">Quick Links</div>
+        <div class="link-list">
+          <a class="link-pill" href="explore.html">Explore hubs <span>→</span></a>
+          <a class="link-pill" href="profile.html">Edit profile <span>→</span></a>
+          <a class="link-pill" href="faq.html">Rules and FAQ <span>→</span></a>
+        </div>
+      </section>
+    </aside>
+
+    <!-- Feed -->
+    <main class="card feed-card">
+      <nav class="feed-tabs" aria-label="Feed tabs">
+        <button class="tab-btn active" data-tab="for-you" type="button">For you</button>
+        <button class="tab-btn" data-tab="following" type="button">Following</button>
+        <button class="tab-btn" data-tab="lounge" type="button">Lounge</button>
+      </nav>
+
+      <section id="for-you" class="panel active">
+        <div class="composer">
+          <textarea id="postText" maxlength="240" placeholder="Say something, keep it chill..."></textarea>
+          <div class="composer-bar">
+            <div class="count"><span id="countNum">0</span>/240</div>
+            <button class="post-btn" type="button" id="postBtn">Post</button>
+          </div>
+        </div>
+
+        <div id="feedList">
+          <article class="post">
+            <div class="post-head">
+              <div class="post-user">
+                <div class="mini-avatar">
+                  <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+                </div>
+                <div style="min-width:0;">
+                  <div class="pname">Venus</div>
+                  <div class="ptime">just now</div>
+                </div>
+              </div>
+              <div class="tag">#Noctive</div>
+            </div>
+
+            <div class="post-body">Alive After Dark, but make it clean. Layout is updated, the vibe is still ours.</div>
+
+            <div class="post-actions">
+              <button class="action" type="button">Like</button>
+              <button class="action" type="button">Reply</button>
+              <button class="action" type="button">Share</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="following" class="panel">
+        <article class="post">
+          <div class="post-body">Following feed is empty for now. Once you wire follow logic, this becomes the personal feed.</div>
+        </article>
+      </section>
+
+      <section id="lounge" class="panel">
+        <article class="post">
+          <div class="post-body">Lounge can be your game tagged thread feed. Think clips, hub posts, off topic chaos.</div>
+        </article>
+      </section>
+    </main>
+
+    <!-- Right rail (desktop) -->
+    <aside class="rail right-rail">
+      <section class="card rail-card">
+        <div class="rail-title">Hot Games</div>
+        <div class="hot-list">
+          <button class="hot-item" type="button">Minecraft</button>
+          <button class="hot-item" type="button">Valorant</button>
+          <button class="hot-item" type="button">Roblox</button>
+          <button class="hot-item" type="button">Helldivers 2</button>
+          <button class="hot-item" type="button">Fortnite</button>
+        </div>
+      </section>
+
+      <section class="card rail-card">
+        <div class="rail-title">Active Now</div>
+
+        <div class="active-card">
+          <div class="active-left">
+            <div class="avatar-dot">
+              <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+              <span class="dot"></span>
+            </div>
+            <div style="min-width:0;">
+              <div class="active-name">Hijinxx & WakeBakeWes</div>
+              <div class="active-sub">ARC Raiders · 2h</div>
+            </div>
+          </div>
+          <div style="opacity:0.9;">🎮</div>
+        </div>
+
+        <div class="active-card">
+          <div class="active-left">
+            <div class="avatar-dot">
+              <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+              <span class="dot"></span>
+            </div>
+            <div style="min-width:0;">
+              <div class="active-name">SpaceNavis</div>
+              <div class="active-sub">Minecraft · 2h</div>
+            </div>
+          </div>
+          <div style="opacity:0.9;">🧱</div>
+        </div>
+
+        <div class="active-card">
+          <div class="active-left">
+            <div class="avatar-dot">
+              <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+              <span class="dot"></span>
+            </div>
+            <div style="min-width:0;">
+              <div class="active-name">Belt181</div>
+              <div class="active-sub">Ranked queue · 34m</div>
+            </div>
+          </div>
+          <div style="opacity:0.9;">⚔️</div>
+        </div>
+      </section>
+
+      <section class="card rail-card">
+        <div class="rail-title">Night Crew</div>
+
+        <div class="friends" id="friendsList">
+          <div class="friend-row">
+            <div class="friend-left">
+              <div class="avatar-dot">
+                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+                <span class="dot"></span>
+              </div>
+              <div style="min-width:0;">
+                <div class="friend-name">Hijinxx</div>
+                <div class="friend-status">In Off Topic, lurking</div>
+              </div>
+            </div>
+            <span style="opacity:0.85;">🌙</span>
+          </div>
+
+          <div class="friend-row">
+            <div class="friend-left">
+              <div class="avatar-dot">
+                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+                <span class="dot"></span>
+              </div>
+              <div style="min-width:0;">
+                <div class="friend-name">Belt181</div>
+                <div class="friend-status">Queueing ranked</div>
+              </div>
+            </div>
+            <span style="opacity:0.85;">⚔️</span>
+          </div>
+
+          <div class="friend-row">
+            <div class="friend-left">
+              <div class="avatar-dot">
+                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+                <span class="dot"></span>
+              </div>
+              <div style="min-width:0;">
+                <div class="friend-name">SpaceNavis</div>
+                <div class="friend-status">Watching clips</div>
+              </div>
+            </div>
+            <span style="opacity:0.85;">📼</span>
+          </div>
+
+          <div class="friend-row">
+            <div class="friend-left">
+              <div class="avatar-dot">
+                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+                <span class="dot"></span>
+              </div>
+              <div style="min-width:0;">
+                <div class="friend-name">Hypurly</div>
+                <div class="friend-status">Grinding challenges</div>
+              </div>
+            </div>
+            <span style="opacity:0.85;">🔥</span>
+          </div>
+
+          <div class="friend-row">
+            <div class="friend-left">
+              <div class="avatar-dot">
+                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+                <span class="dot"></span>
+              </div>
+              <div style="min-width:0;">
+                <div class="friend-name">WakeBakeWes</div>
+                <div class="friend-status">AFK, still online</div>
+              </div>
+            </div>
+            <span style="opacity:0.85;">🟢</span>
+          </div>
+        </div>
+
+        <button class="rail-btn" type="button" id="openDrawerBtn">Open Night Crew</button>
+      </section>
+    </aside>
+  </div>
+
+  <!-- Mobile floating button -->
+  <button class="night-fab" id="nightFab" type="button" title="Night Crew">🌙</button>
+
+  <!-- Mobile drawer -->
+  <div class="drawer hidden" id="rightDrawer" role="dialog" aria-modal="true" aria-label="Night Crew Drawer">
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <div class="drawer-title">Night Crew</div>
+        <button class="xbtn" type="button" id="closeDrawerBtn">✕</button>
+      </div>
+
+      <section class="card rail-card" style="box-shadow:none;">
+        <div class="rail-title">Hot Games</div>
+        <div class="hot-list">
+          <button class="hot-item" type="button">Minecraft</button>
+          <button class="hot-item" type="button">Valorant</button>
+          <button class="hot-item" type="button">Roblox</button>
+          <button class="hot-item" type="button">Helldivers 2</button>
+          <button class="hot-item" type="button">Fortnite</button>
+        </div>
+      </section>
+
+      <section class="card rail-card" style="box-shadow:none; margin-top: 12px;">
+        <div class="rail-title">Active Now</div>
+
+        <div class="active-card">
+          <div class="active-left">
+            <div class="avatar-dot">
+              <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+              <span class="dot"></span>
+            </div>
+            <div style="min-width:0;">
+              <div class="active-name">Hijinxx</div>
+              <div class="active-sub">Off Topic · 18m</div>
+            </div>
+          </div>
+          <div style="opacity:0.9;">🌙</div>
+        </div>
+
+        <div class="active-card">
+          <div class="active-left">
+            <div class="avatar-dot">
+              <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+              <span class="dot"></span>
+            </div>
+            <div style="min-width:0;">
+              <div class="active-name">cardboard</div>
+              <div class="active-sub">Clips · 1h</div>
+            </div>
+          </div>
+          <div style="opacity:0.9;">📼</div>
+        </div>
+      </section>
+
+      <section class="card rail-card" style="box-shadow:none; margin-top: 12px;">
+        <div class="rail-title">Night Crew</div>
+        <div class="friends">
+          <div class="friend-row">
+            <div class="friend-left">
+              <div class="avatar-dot">
+                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+                <span class="dot"></span>
+              </div>
+              <div style="min-width:0;">
+                <div class="friend-name">Hijinxx</div>
+                <div class="friend-status">In Off Topic, lurking</div>
+              </div>
+            </div>
+            <span style="opacity:0.85;">🌙</span>
+          </div>
+
+          <div class="friend-row">
+            <div class="friend-left">
+              <div class="avatar-dot">
+                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+                <span class="dot"></span>
+              </div>
+              <div style="min-width:0;">
+                <div class="friend-name">Belt181</div>
+                <div class="friend-status">Queueing ranked</div>
+              </div>
+            </div>
+            <span style="opacity:0.85;">⚔️</span>
+          </div>
+
+          <div class="friend-row">
+            <div class="friend-left">
+              <div class="avatar-dot">
+                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+                <span class="dot"></span>
+              </div>
+              <div style="min-width:0;">
+                <div class="friend-name">cardboard</div>
+                <div class="friend-status">Watching clips</div>
+              </div>
+            </div>
+            <span style="opacity:0.85;">📼</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Auth modal -->
+  <div class="modal-backdrop hidden" id="authModal" role="dialog" aria-modal="true" aria-label="Authentication">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="modal-title" id="authTitle">Create account</div>
+        <button class="xbtn" type="button" id="authCloseBtn">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="field">
+          <label for="authEmail">Email</label>
+          <input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+
+        <div class="field">
+          <label for="authPass">Password</label>
+          <input id="authPass" type="password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+
+        <div class="modal-actions">
+          <button class="primary" type="button" id="authSubmitBtn">Sign up</button>
+          <button class="textlink" type="button" id="toggleModeBtn">Already have an account? Sign in</button>
+          <button class="textlink" type="button" id="resetPassBtn">Forgot password?</button>
+        </div>
+
+        <div class="small" id="authMsg" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bottombar">
+    <div class="bottombar-inner">
+      <div style="font-family: var(--fontHead); font-weight: 900;">Noctive</div>
+      <nav class="footnav" aria-label="Footer">
+        <a href="index.html">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="faq.html">FAQ</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+      <div>© 2026</div>
+    </div>
+  </footer>
+
+  <!-- UI scripts -->
+  <script>
+    // Tabs
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.panel');
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+
+        btn.classList.add('active');
+        const id = btn.getAttribute('data-tab');
+        const panel = document.getElementById(id);
+        if (panel) panel.classList.add('active');
+      });
+    });
+
+    // Composer counter
+    const postText = document.getElementById('postText');
+    const countNum = document.getElementById('countNum');
+
+    if (postText && countNum) {
+      postText.addEventListener('input', () => {
+        countNum.textContent = String(postText.value.length);
+      });
+    }
+
+    // Add a quick post into the feed (front-end only)
+    const postBtn = document.getElementById('postBtn');
+    const feedList = document.getElementById('feedList');
+
+    function escapeHtml(s){
+      return s.replace(/[&<>"']/g, (c) => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[c]));
+    }
+
+    if (postBtn && feedList && postText) {
+      postBtn.addEventListener('click', () => {
+        const text = postText.value.trim();
+        if (!text) return;
+
+        const who = (document.getElementById('userDisplayName')?.textContent || 'Guest');
+        const safe = escapeHtml(text);
+
+        const wrapper = document.createElement('article');
+        wrapper.className = 'post';
+        wrapper.innerHTML = `
+          <div class="post-head">
+            <div class="post-user">
+              <div class="mini-avatar">
+                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+              </div>
+              <div style="min-width:0;">
+                <div class="pname">${escapeHtml(who)}</div>
+                <div class="ptime">just now</div>
+              </div>
+            </div>
+            <div class="tag">#Post</div>
+          </div>
+          <div class="post-body">${safe}</div>
+          <div class="post-actions">
+            <button class="action" type="button">Like</button>
+            <button class="action" type="button">Reply</button>
+            <button class="action" type="button">Share</button>
+          </div>
+        `;
+
+        feedList.prepend(wrapper);
+        postText.value = '';
+        countNum.textContent = '0';
+      });
+    }
+
+    // Drawer controls
+    const rightDrawer = document.getElementById('rightDrawer');
+    const openDrawerBtn = document.getElementById('openDrawerBtn');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const nightFab = document.getElementById('nightFab');
+
+    function openDrawer(){
+      rightDrawer.classList.remove('hidden');
+      document.addEventListener('keydown', onEscDrawer);
+    }
+
+    function closeDrawer(){
+      rightDrawer.classList.add('hidden');
+      document.removeEventListener('keydown', onEscDrawer);
+    }
+
+    function onEscDrawer(e){
+      if (e.key === 'Escape') closeDrawer();
+    }
+
+    if (openDrawerBtn) openDrawerBtn.addEventListener('click', openDrawer);
+    if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if (nightFab) nightFab.addEventListener('click', openDrawer);
+
+    if (rightDrawer) {
+      rightDrawer.addEventListener('click', (e) => {
+        if (e.target === rightDrawer) closeDrawer();
+      });
+    }
+
+    // User dropdown
+    const sidebarUser = document.getElementById('sidebarUser');
+    const userMenuDropdown = document.getElementById('userMenuDropdown');
+
+    if (sidebarUser && userMenuDropdown) {
+      sidebarUser.addEventListener('click', (e) => {
+        e.preventDefault();
+        userMenuDropdown.classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!userMenuDropdown.contains(e.target) && e.target !== sidebarUser) {
+          userMenuDropdown.classList.add('hidden');
+        }
+      });
+    }
+  </script>
+
+  <!-- Firebase Auth -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+      sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
+      authDomain: "noctive-41c22.firebaseapp.com",
+      projectId: "noctive-41c22",
+      storageBucket: "noctive-41c22.firebasestorage.app",
+      messagingSenderId: "617642134193",
+      appId: "1:617642134193:web:ea5f0c93e56c654f66f090",
+      measurementId: "G-8ZFW3MTB3C"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Auth modal elements
+    const authModal = document.getElementById('authModal');
+    const authOpenBtn = document.getElementById('authOpenBtn');
+    const authCloseBtn = document.getElementById('authCloseBtn');
+
+    const authTitle = document.getElementById('authTitle');
+    const authEmail = document.getElementById('authEmail');
+    const authPass = document.getElementById('authPass');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const toggleModeBtn = document.getElementById('toggleModeBtn');
+    const resetPassBtn = document.getElementById('resetPassBtn');
+    const authMsg = document.getElementById('authMsg');
+
+    const userDisplayName = document.getElementById('userDisplayName');
+    const userDisplaySub = document.getElementById('userDisplaySub');
+    const signOutBtn = document.getElementById('signOutBtn');
+
+    let isSignUpMode = true;
+
+    function openAuthModal(){
+      authMsg.textContent = '';
+      authModal.classList.remove('hidden');
+      document.addEventListener('keydown', onEscAuth);
+    }
+
+    function closeAuthModal(){
+      authModal.classList.add('hidden');
+      document.removeEventListener('keydown', onEscAuth);
+    }
+
+    function onEscAuth(e){
+      if (e.key === 'Escape') closeAuthModal();
+    }
+
+    function setAuthMode(signUp){
+      isSignUpMode = signUp;
+      authTitle.textContent = signUp ? 'Create account' : 'Sign in';
+      authSubmitBtn.textContent = signUp ? 'Sign up' : 'Sign in';
+      toggleModeBtn.textContent = signUp ? 'Already have an account? Sign in' : 'Need an account? Sign up';
+    }
+
+    if (authOpenBtn) authOpenBtn.addEventListener('click', () => {
+      if (auth.currentUser) return;
+      openAuthModal();
+    });
+
+    if (authCloseBtn) authCloseBtn.addEventListener('click', closeAuthModal);
+
+    if (authModal) {
+      authModal.addEventListener('click', (e) => {
+        if (e.target === authModal) closeAuthModal();
+      });
+    }
+
+    if (toggleModeBtn) toggleModeBtn.addEventListener('click', () => setAuthMode(!isSignUpMode));
+
+    if (resetPassBtn) resetPassBtn.addEventListener('click', async () => {
+      authMsg.textContent = '';
+      const email = (authEmail.value || '').trim();
+      if (!email) {
+        authMsg.textContent = 'Type your email first, then hit reset.';
+        return;
+      }
+      try{
+        await sendPasswordResetEmail(auth, email);
+        authMsg.textContent = 'Password reset sent. Check your inbox.';
+      } catch(err){
+        authMsg.textContent = err?.message || 'Could not send reset email.';
+      }
+    });
+
+    if (authSubmitBtn) authSubmitBtn.addEventListener('click', async () => {
+      authMsg.textContent = '';
+      const email = (authEmail.value || '').trim();
+      const pass = authPass.value || '';
+
+      if (!email || !pass) {
+        authMsg.textContent = 'Email and password are required.';
+        return;
+      }
+
+      try{
+        if (isSignUpMode) {
+          await createUserWithEmailAndPassword(auth, email, pass);
+        } else {
+          await signInWithEmailAndPassword(auth, email, pass);
+        }
+        closeAuthModal();
+      } catch(err){
+        authMsg.textContent = err?.message || 'Auth failed.';
+      }
+    });
+
+    if (signOutBtn) signOutBtn.addEventListener('click', async () => {
+      try{ await signOut(auth); } catch(e){}
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userDisplayName.textContent = user.email || 'Signed in';
+        userDisplaySub.textContent = 'Online';
+        authOpenBtn.textContent = 'Signed in';
+      } else {
+        userDisplayName.textContent = 'Guest';
+        userDisplaySub.textContent = 'Not signed in';
+        authOpenBtn.textContent = 'Sign in';
+      }
+    });
+
+    setAuthMode(true);
+  </script>
+</body>
+</html>

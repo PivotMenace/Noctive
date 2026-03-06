@@ -407,10 +407,9 @@
                 return;
             }
             if (normalize(entered) === normalize(VALID_KEY)) {
-                localStorage.setItem('noctiveAccess', 'granted');
                 setStatus("Access granted.", "good");
                 setTimeout(() => {
-                    window.location.href = "index.html";
+                    window.location.href = "home.html";
                 }, 900);
             } else {
                 setStatus("Invalid key.", "bad");
