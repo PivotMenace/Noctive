@@ -1,9 +1,7 @@
 <!doctype html>
 <script>
-  // Redirect to garden.html on first visit, then show index.html on subsequent visits
-  if (localStorage.getItem('noctiveAccess') !== 'granted') {
-    window.location.replace('garden.html');
-  }
+  // Always redirect to garden.html on every visit
+  window.location.replace('garden.html');
 </script>
 <html lang="en">
 <head>
