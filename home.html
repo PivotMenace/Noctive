@@ -1,3 +1,4 @@
+<!-- MAIN FEED PAGE -->
 <!doctype html>
 
 <html lang="en">
@@ -260,6 +261,50 @@
       height: 100%;
       object-fit: cover;
     }
+      /* Initials Avatar Styles */
+      .initials-avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Roboto Condensed', 'Nunito', var(--fontMain), system-ui, sans-serif;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        color: #fff;
+        text-transform: uppercase;
+        user-select: none;
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(135deg, #444, #222);
+      }
+
+      .theme-green {
+        background: linear-gradient(135deg, #10b981, #047857, #064e3b);
+      }
+
+      .theme-blue {
+        background: linear-gradient(135deg, #004080, #0066cc, #002050);
+      }
+
+      .theme-purple {
+        background: linear-gradient(135deg, #660066, #9333ea, #4c0066);
+      }
+
+      .theme-orange {
+        background: linear-gradient(135deg, #fb923c, #f97316, #ea580c);
+      }
+
+      .theme-pink {
+        background: linear-gradient(135deg, #ec4899, #f472b6, #c026d3);
+      }
+
+      .theme-violet {
+        background: linear-gradient(135deg, #660066, #8b1a8b, #4a004a);
+      }
+
+      .theme-default {
+        background: linear-gradient(135deg, #374151, #1f2937, #111827);
+      }
 
     .user-meta{ min-width: 0; }
     .user-name{
@@ -967,9 +1012,7 @@
     <aside class="rail">
       <section class="card user-card">
         <div class="user-row" id="sidebarUser">
-          <div class="avatar">
-            <img src="pngs/account.png" alt="User avatar" onerror="this.style.display='none'" />
-          </div>
+          <div class="avatar user-avatar" id="sidebarAvatarBox" data-name="Guest" data-theme="default" data-avatar=""></div>
 
           <div class="user-meta">
             <div class="user-name" id="userDisplayName">Guest</div>
@@ -1016,7 +1059,7 @@
             <div class="post-head">
               <div class="post-user">
                 <div class="mini-avatar">
-                  <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+                  <div class="mini-avatar user-avatar" data-name="Venus" data-theme="pink" data-avatar=""></div>
                 </div>
                 <div style="min-width:0;">
                   <div class="pname">Venus</div>
@@ -1068,12 +1111,11 @@
 
         <div class="active-card">
           <div class="active-left">
-            <div class="avatar-dot">
-              <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+            <div class="avatar-dot user-avatar" data-name="Hijinxx" data-theme="green" data-avatar="">
               <span class="dot"></span>
             </div>
             <div style="min-width:0;">
-              <div class="active-name">Hijinxx & WakeBakeWes</div>
+              <div class="active-name">Hijinxx</div>
               <div class="active-sub">ARC Raiders · 2h</div>
             </div>
           </div>
@@ -1082,8 +1124,20 @@
 
         <div class="active-card">
           <div class="active-left">
-            <div class="avatar-dot">
-              <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+            <div class="avatar-dot user-avatar" data-name="WakeBakeWes" data-theme="blue" data-avatar="">
+              <span class="dot"></span>
+            </div>
+            <div style="min-width:0;">
+              <div class="active-name">WakeBakeWes</div>
+              <div class="active-sub">ARC Raiders · 2h</div>
+            </div>
+          </div>
+          <div style="opacity:0.9;">🎮</div>
+        </div>
+
+        <div class="active-card">
+          <div class="active-left">
+            <div class="avatar-dot user-avatar" data-name="SpaceNavis" data-theme="pink" data-avatar="">
               <span class="dot"></span>
             </div>
             <div style="min-width:0;">
@@ -1096,8 +1150,7 @@
 
         <div class="active-card">
           <div class="active-left">
-            <div class="avatar-dot">
-              <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
+            <div class="avatar-dot user-avatar" data-name="Belt181" data-theme="orange" data-avatar="">
               <span class="dot"></span>
             </div>
             <div style="min-width:0;">
@@ -1116,8 +1169,9 @@
           <div class="friend-row">
             <div class="friend-left">
               <div class="avatar-dot">
-                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-                <span class="dot"></span>
+                <div class="avatar-dot user-avatar" data-name="Hijinxx" data-theme="green" data-avatar="">
+                  <span class="dot"></span>
+                </div>
               </div>
               <div style="min-width:0;">
                 <div class="friend-name">Hijinxx</div>
@@ -1130,8 +1184,9 @@
           <div class="friend-row">
             <div class="friend-left">
               <div class="avatar-dot">
-                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-                <span class="dot"></span>
+                <div class="avatar-dot user-avatar" data-name="Belt181" data-theme="orange" data-avatar="">
+                  <span class="dot"></span>
+                </div>
               </div>
               <div style="min-width:0;">
                 <div class="friend-name">Belt181</div>
@@ -1144,8 +1199,9 @@
           <div class="friend-row">
             <div class="friend-left">
               <div class="avatar-dot">
-                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-                <span class="dot"></span>
+                <div class="avatar-dot user-avatar" data-name="SpaceNavis" data-theme="pink" data-avatar="">
+                  <span class="dot"></span>
+                </div>
               </div>
               <div style="min-width:0;">
                 <div class="friend-name">SpaceNavis</div>
@@ -1158,8 +1214,9 @@
           <div class="friend-row">
             <div class="friend-left">
               <div class="avatar-dot">
-                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-                <span class="dot"></span>
+                <div class="avatar-dot user-avatar" data-name="Hypurly" data-theme="purple" data-avatar="">
+                  <span class="dot"></span>
+                </div>
               </div>
               <div style="min-width:0;">
                 <div class="friend-name">Hypurly</div>
@@ -1172,8 +1229,9 @@
           <div class="friend-row">
             <div class="friend-left">
               <div class="avatar-dot">
-                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-                <span class="dot"></span>
+                <div class="avatar-dot user-avatar" data-name="WakeBakeWes" data-theme="blue" data-avatar="">
+                  <span class="dot"></span>
+                </div>
               </div>
               <div style="min-width:0;">
                 <div class="friend-name">WakeBakeWes</div>
@@ -1217,8 +1275,9 @@
         <div class="active-card">
           <div class="active-left">
             <div class="avatar-dot">
-              <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-              <span class="dot"></span>
+              <div class="avatar-dot user-avatar" data-name="Hijinxx" data-theme="green" data-avatar="">
+                <span class="dot"></span>
+              </div>
             </div>
             <div style="min-width:0;">
               <div class="active-name">Hijinxx</div>
@@ -1231,8 +1290,9 @@
         <div class="active-card">
           <div class="active-left">
             <div class="avatar-dot">
-              <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-              <span class="dot"></span>
+              <div class="avatar-dot user-avatar" data-name="cardboard" data-theme="orange" data-avatar="">
+                <span class="dot"></span>
+              </div>
             </div>
             <div style="min-width:0;">
               <div class="active-name">cardboard</div>
@@ -1249,8 +1309,9 @@
           <div class="friend-row">
             <div class="friend-left">
               <div class="avatar-dot">
-                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-                <span class="dot"></span>
+                <div class="avatar-dot user-avatar" data-name="Hijinxx" data-theme="green" data-avatar="">
+                  <span class="dot"></span>
+                </div>
               </div>
               <div style="min-width:0;">
                 <div class="friend-name">Hijinxx</div>
@@ -1263,8 +1324,9 @@
           <div class="friend-row">
             <div class="friend-left">
               <div class="avatar-dot">
-                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-                <span class="dot"></span>
+                <div class="avatar-dot user-avatar" data-name="Belt181" data-theme="orange" data-avatar="">
+                  <span class="dot"></span>
+                </div>
               </div>
               <div style="min-width:0;">
                 <div class="friend-name">Belt181</div>
@@ -1277,8 +1339,9 @@
           <div class="friend-row">
             <div class="friend-left">
               <div class="avatar-dot">
-                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-                <span class="dot"></span>
+                <div class="avatar-dot user-avatar" data-name="cardboard" data-theme="orange" data-avatar="">
+                  <span class="dot"></span>
+                </div>
               </div>
               <div style="min-width:0;">
                 <div class="friend-name">cardboard</div>
@@ -1293,6 +1356,86 @@
   </div>
 
   <!-- Auth modal -->
+    <script>
+      function getInitials(name) {
+        if (!name) return 'N';
+
+        const cleanName = name.trim();
+        if (!cleanName) return 'N';
+
+        const parts = cleanName.split(/\s+/).filter(Boolean);
+
+        if (parts.length === 1) {
+          return parts[0].slice(0, 1).toUpperCase();
+        }
+
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+      }
+
+      function buildInitialsAvatar(element) {
+        const existingDot = element.querySelector('.dot');
+        const name = element.dataset.name || 'Noctive';
+        const theme = element.dataset.theme || 'default';
+        const avatarUrl = element.dataset.avatar || '';
+
+        const oldImg = element.querySelector('img');
+        const oldInitials = element.querySelector('.initials-avatar');
+
+        if (oldImg) oldImg.remove();
+        if (oldInitials) oldInitials.remove();
+
+        if (avatarUrl.trim()) {
+          const img = document.createElement('img');
+          img.src = avatarUrl;
+          img.alt = `${name} avatar`;
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+          img.onerror = function () {
+            img.remove();
+            insertInitials(element, name, theme, existingDot);
+          };
+
+          if (existingDot) {
+            element.insertBefore(img, existingDot);
+          } else {
+            element.appendChild(img);
+          }
+          return;
+        }
+
+        insertInitials(element, name, theme, existingDot);
+      }
+
+      function insertInitials(element, name, theme, existingDot) {
+        const initials = document.createElement('div');
+        initials.className = `initials-avatar theme-${theme}`;
+        initials.textContent = getInitials(name);
+
+        if (element.classList.contains('avatar')) {
+          initials.style.fontSize = '1rem';
+        } else if (element.classList.contains('mini-avatar')) {
+          initials.style.fontSize = '0.9rem';
+        } else if (element.classList.contains('avatar-dot')) {
+          initials.style.fontSize = '0.9rem';
+        } else {
+          initials.style.fontSize = '1rem';
+        }
+
+        if (existingDot) {
+          element.insertBefore(initials, existingDot);
+        } else {
+          element.appendChild(initials);
+        }
+      }
+
+      function applyGeneratedAvatars() {
+        const avatars = document.querySelectorAll('.user-avatar');
+        avatars.forEach(buildInitialsAvatar);
+      }
+
+      document.addEventListener('DOMContentLoaded', applyGeneratedAvatars);
+    </script>
   <div class="modal-backdrop hidden" id="authModal" role="dialog" aria-modal="true" aria-label="Authentication">
     <div class="modal">
       <div class="modal-head">
@@ -1387,9 +1530,7 @@
         wrapper.innerHTML = `
           <div class="post-head">
             <div class="post-user">
-              <div class="mini-avatar">
-                <img src="pngs/account.png" alt="avatar" onerror="this.style.display='none'" />
-              </div>
+              <div class="mini-avatar user-avatar" data-name="${escapeHtml(who)}" data-theme="default" data-avatar=""></div>
               <div style="min-width:0;">
                 <div class="pname">${escapeHtml(who)}</div>
                 <div class="ptime">just now</div>
@@ -1406,6 +1547,7 @@
         `;
 
         feedList.prepend(wrapper);
+        applyGeneratedAvatars();
         postText.value = '';
         countNum.textContent = '0';
       });
@@ -1586,6 +1728,29 @@
         userDisplayName.textContent = user.email || 'Signed in';
         userDisplaySub.textContent = 'Online';
         authOpenBtn.textContent = 'Signed in';
+
+        const sidebarAvatarBox = document.getElementById('sidebarAvatarBox');
+        if (sidebarAvatarBox) {
+          const displayName = user.displayName || user.email?.split('@')[0] || 'User';
+          let savedTheme = 'default';
+          let savedAvatar = '';
+
+          try {
+            const raw = localStorage.getItem(`noctive_profile_${user.uid}`);
+            if (raw) {
+              const profile = JSON.parse(raw);
+              savedTheme = profile.theme || 'default';
+              savedAvatar = profile.avatar || '';
+            }
+          } catch (e) {
+            console.error('Could not load saved profile theme/avatar:', e);
+          }
+
+          sidebarAvatarBox.dataset.name = displayName;
+          sidebarAvatarBox.dataset.theme = savedTheme;
+          sidebarAvatarBox.dataset.avatar = savedAvatar;
+        }
+        applyGeneratedAvatars();
       } else {
         userDisplayName.textContent = 'Guest';
         userDisplaySub.textContent = 'Not signed in';
