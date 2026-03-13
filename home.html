@@ -744,6 +744,11 @@
   </footer>
 
   <script>
+    const ACCESS_SESSION_KEY = 'noctive_site_access';
+    if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
+      window.location.replace('index.html');
+    }
+
     const HOME_TEMPLATE = {
       hotGames: ["Minecraft", "Valorant", "Roblox", "Helldivers 2", "Fortnite"],
       posts: [

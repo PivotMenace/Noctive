@@ -364,6 +364,7 @@
 
     <script>
         const VALID_KEY = "CIVET-908N-227O";
+        const ACCESS_SESSION_KEY = "noctive_site_access";
 
         const pill = document.getElementById("pill");
         const status = document.getElementById("status");
@@ -400,6 +401,10 @@
             return code.replace(/-$/, '');
         }
 
+        if (sessionStorage.getItem(ACCESS_SESSION_KEY) === "granted") {
+            window.location.replace("home.html");
+        }
+
         function tryUnlock() {
             const entered = getCodeFromInputs();
             if (!entered || entered.length < 15) {
@@ -409,8 +414,9 @@
             }
             if (normalize(entered) === normalize(VALID_KEY)) {
                 setStatus("Access granted.", "good");
+                sessionStorage.setItem(ACCESS_SESSION_KEY, "granted");
                 setTimeout(() => {
-                    window.location.href = "home.html";
+                    window.location.replace("home.html");
                 }, 900);
             } else {
                 setStatus("Invalid key.", "bad");
