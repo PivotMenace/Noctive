@@ -38,6 +38,8 @@ Alive After Dark.</p>
   <li><strong>Duo Matching</strong> – Connect based on playstyle, region, and preference.</li>
   <li><strong>Post Feed</strong> – Share clips and ideas with earned visibility.</li>
   <li><strong>Recognition System</strong> – Badges for contribution and consistency.</li>
+
+  https://pivotmenace.github.io/Noctive/
 </ul>
 
 <h2>Project Status</h2>
