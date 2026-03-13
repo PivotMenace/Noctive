@@ -212,6 +212,15 @@
 
     .user-row{cursor:pointer;user-select:none;}
 
+    .avatar-status-wrap{
+      position:relative;
+      display:inline-flex;
+      align-items:flex-end;
+      flex-shrink:0;
+      padding-right:4px;
+      padding-bottom:4px;
+    }
+
     .avatar,
     .mini-avatar,
     .avatar-dot{
@@ -219,7 +228,6 @@
       overflow:hidden;
       border:1px solid rgba(255,255,255,0.10);
       background:rgba(0,0,0,0.20);
-      flex-shrink:0;
       position:relative;
     }
 
@@ -256,14 +264,71 @@
 
     .dot{
       position:absolute;
-      right:2px;
-      bottom:2px;
-      width:12px;
-      height:12px;
+      right:-4px;
+      bottom:-2px;
+      width:13px;
+      height:13px;
       border-radius:999px;
       background:var(--good);
-      border:2px solid rgba(10,10,14,0.9);
-      z-index:2;
+      border:2px solid rgba(10,10,14,0.96);
+      box-shadow:0 0 0 3px rgba(10,10,14,0.45);
+      z-index:3;
+    }
+
+    .dot.presence-online{background:#43c581;}
+    .dot.presence-idle{background:#f0b232;}
+    .dot.presence-dnd{background:#f23f43;}
+    .dot.presence-invisible{background:#8e9297;}
+
+    .presence-label{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-family:var(--fontHead);
+      font-size:0.84rem;
+      color:rgba(255,255,255,0.86);
+      white-space:nowrap;
+    }
+
+    .presence-label::before{
+      content:'';
+      width:9px;
+      height:9px;
+      border-radius:999px;
+      background:currentColor;
+      box-shadow:0 0 0 2px rgba(255,255,255,0.06);
+      flex:0 0 auto;
+    }
+
+    .presence-online{color:#85efb1;}
+    .presence-idle{color:#ffd36b;}
+    .presence-dnd{color:#ff8b92;}
+    .presence-invisible{color:#c2c6cc;}
+
+    .friend-meta{
+      display:grid;
+      gap:4px;
+      min-width:0;
+    }
+
+    .friend-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .friend-remove{
+      padding:8px 10px;
+      font-size:0.8rem;
+    }
+
+    .crew-actions{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
     }
 
     .user-meta,.meta-stack{min-width:0;}
@@ -441,6 +506,117 @@
 
     .post-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
 
+    .vote-action{
+      min-width:44px;
+      padding:6px 12px;
+      font-size:1.3rem;
+      line-height:1;
+      font-weight:700;
+      color:#fff;
+      background:rgba(220,20,60,0.14);
+      border-color:rgba(220,20,60,0.28);
+      box-shadow:0 0 0 1px rgba(220,20,60,0.06) inset;
+    }
+
+    .vote-action:hover{
+      background:rgba(250,204,21,0.16);
+      border-color:rgba(250,204,21,0.34);
+      color:#ffe28a;
+      box-shadow:0 0 14px rgba(250,204,21,0.20), 0 10px 20px rgba(0,0,0,0.18);
+    }
+
+    .vote-action.is-active{
+      background:rgba(250,204,21,0.18);
+      border-color:rgba(250,204,21,0.40);
+      color:#ffe28a;
+      box-shadow:0 0 16px rgba(250,204,21,0.22);
+    }
+
+    .vote-count{
+      font-family:var(--fontHead);
+      font-size:0.86rem;
+      color:rgba(255,255,255,0.78);
+      min-width:1ch;
+      text-align:center;
+      align-self:center;
+    }
+
+    .comments-shell{
+      margin-top:14px;
+      padding-top:14px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      display:grid;
+      gap:12px;
+    }
+
+    .comments-shell[hidden]{
+      display:none !important;
+    }
+
+    .comment-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .comment-item{
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(0,0,0,0.18);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .comment-head{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-bottom:4px;
+      color:rgba(255,255,255,0.72);
+      font-size:0.82rem;
+    }
+
+    .comment-name{
+      font-family:var(--fontHead);
+      color:#fff;
+      font-size:0.88rem;
+    }
+
+    .comment-body{
+      color:rgba(255,255,255,0.88);
+      line-height:1.4;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .comment-form{
+      display:grid;
+      gap:8px;
+    }
+
+    .comment-input{
+      width:100%;
+      min-height:78px;
+      resize:vertical;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(0,0,0,0.20);
+      color:#fff;
+      padding:10px 12px;
+      outline:none;
+    }
+
+    .comment-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .comment-hint{
+      color:rgba(255,255,255,0.56);
+      font-size:0.8rem;
+    }
+
     .hot-list{display:flex;flex-wrap:wrap;gap:10px;}
 
     .hot-item{
@@ -538,6 +714,26 @@
       color:#fff;
       outline:none;
       font-family:var(--fontMain);
+    }
+
+    .field textarea,
+    .field select{
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.06);
+      color:#fff;
+      outline:none;
+      font-family:var(--fontMain);
+    }
+
+    .field textarea{
+      min-height:84px;
+      resize:vertical;
+    }
+
+    .field select option{
+      color:#111827;
     }
 
     .small{color:var(--muted);font-size:0.92rem;}
@@ -670,7 +866,10 @@
       <section class="card rail-card">
         <div class="rail-title">Night Crew</div>
         <div class="friends" id="friendsList"></div>
-        <button class="rail-btn" type="button" id="openDrawerBtn">Open Night Crew</button>
+        <div class="crew-actions">
+          <button class="rail-btn" type="button" id="openFriendModalBtn">Add Friend</button>
+          <button class="rail-btn" type="button" id="openDrawerBtn">Open Night Crew</button>
+        </div>
       </section>
     </aside>
   </div>
@@ -697,7 +896,59 @@
       <section class="card rail-card" style="box-shadow:none; margin-top:12px;">
         <div class="rail-title">Night Crew</div>
         <div class="friends" id="drawerFriendsList"></div>
+        <div class="crew-actions">
+          <button class="rail-btn" type="button" id="drawerOpenFriendModalBtn">Add Friend</button>
+        </div>
       </section>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="friendModal" role="dialog" aria-modal="true" aria-label="Add Night Crew Friend" hidden>
+    <div class="modal">
+      <div class="modal-head">
+        <div class="modal-title">Add To Night Crew</div>
+        <button class="xbtn" type="button" id="friendModalCloseBtn">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="field">
+          <label for="friendName">Display Name</label>
+          <input id="friendName" type="text" maxlength="30" placeholder="Who should show up in Night Crew?" />
+        </div>
+
+        <div class="field">
+          <label for="friendStatus">Status</label>
+          <select id="friendStatus">
+            <option value="online">Online</option>
+            <option value="idle">Idle</option>
+            <option value="dnd">Do Not Disturb</option>
+            <option value="invisible">Invisible</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="friendActivity">Activity Note</label>
+          <textarea id="friendActivity" maxlength="100" placeholder="Queueing ranked, lurking in chat, watching clips..."></textarea>
+        </div>
+
+        <div class="field">
+          <label for="friendTheme">Avatar Style</label>
+          <select id="friendTheme">
+            <option value="default">Default</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+            <option value="purple">Purple</option>
+            <option value="orange">Orange</option>
+            <option value="pink">Pink</option>
+            <option value="violet">Violet</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button class="primary" type="button" id="friendSaveBtn">Save Friend</button>
+          <div class="small" id="friendMsg" aria-live="polite">Give your Night Crew a few people that feel like yours.</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -739,15 +990,18 @@
         <a href="faq.html">FAQ</a>
         <a href="profile.html">Profile</a>
       </nav>
-      <div>© 2026</div>
+      <div>© 2026 love venus by venus</div>
     </div>
   </footer>
 
   <script>
     const ACCESS_SESSION_KEY = 'noctive_site_access';
+    const NIGHT_CREW_STORAGE_PREFIX = 'noctive_night_crew_';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('index.html');
     }
+
+    window.noctiveViewerKey = 'guest';
 
     const HOME_TEMPLATE = {
       hotGames: ["Minecraft", "Valorant", "Roblox", "Helldivers 2", "Fortnite"],
@@ -759,23 +1013,31 @@
           avatar: "",
           time: "just now",
           tag: "#Noctive",
-          body: "Alive After Dark, but make it clean. Layout is updated, the vibe is still ours."
+          body: "Alive After Dark, but make it clean. Layout is updated, the vibe is still ours.",
+          votes: {
+            up: 1,
+            down: 0
+          },
+          comments: []
         }
       ],
-      activeNow: [
-        { name: "Hijinxx", theme: "green", avatar: "", sub: "ARC Raiders · 2h", icon: "🎮" },
-        { name: "WakeBakeWes", theme: "blue", avatar: "", sub: "ARC Raiders · 2h", icon: "🎮" },
-        { name: "SpaceNavis", theme: "pink", avatar: "", sub: "Minecraft · 2h", icon: "🧱" },
-        { name: "Belt181", theme: "orange", avatar: "", sub: "Ranked queue · 34m", icon: "⚔️" }
-      ],
       friends: [
-        { name: "Hijinxx", theme: "green", avatar: "", status: "In Off Topic, lurking", icon: "🌙" },
-        { name: "Belt181", theme: "orange", avatar: "", status: "Queueing ranked", icon: "⚔️" },
-        { name: "cardboard box", theme: "purple", avatar: "", status: "Watching clips", icon: "📼" },
-        { name: "Hypurly", theme: "orange", avatar: "", status: "Grinding challenges", icon: "🔥" },
-        { name: "WakeBakeWes", theme: "blue", avatar: "", status: "AFK, still online", icon: "🟢" }
+        { id: "friend-1", name: "Hijinxx", theme: "green", avatar: "", presence: "online", activity: "In Off Topic, lurking" },
+        { id: "friend-2", name: "Belt181", theme: "orange", avatar: "", presence: "dnd", activity: "Queueing ranked" },
+        { id: "friend-3", name: "cardboard box", theme: "purple", avatar: "", presence: "idle", activity: "Watching clips" },
+        { id: "friend-4", name: "Hypurly", theme: "orange", avatar: "", presence: "online", activity: "Grinding challenges" },
+        { id: "friend-5", name: "WakeBakeWes", theme: "blue", avatar: "", presence: "invisible", activity: "AFK, still online" }
       ]
     };
+
+    const PRESENCE_META = {
+      online: { label: 'Online', className: 'presence-online', activityFallback: 'Hanging in Noctive' },
+      idle: { label: 'Idle', className: 'presence-idle', activityFallback: 'Away for a minute' },
+      dnd: { label: 'Do Not Disturb', className: 'presence-dnd', activityFallback: 'Locked in' },
+      invisible: { label: 'Invisible', className: 'presence-invisible', activityFallback: 'Appearing offline' }
+    };
+
+    let nightCrewFriends = [];
 
     function escapeHtml(value) {
       return String(value).replace(/[&<>"']/g, (char) => ({
@@ -796,18 +1058,79 @@
       return (parts[0][0] + parts[1][0]).toUpperCase();
     }
 
+    function normalizePresence(value) {
+      const raw = String(value || '').trim().toLowerCase();
+      if (raw === 'busy') return 'dnd';
+      if (raw === 'away') return 'idle';
+      if (raw === 'offline' || raw === 'hidden') return 'invisible';
+      return PRESENCE_META[raw] ? raw : 'online';
+    }
+
+    function getPresenceMeta(value) {
+      return PRESENCE_META[normalizePresence(value)] || PRESENCE_META.online;
+    }
+
+    function buildNightCrewStorageKey() {
+      return `${NIGHT_CREW_STORAGE_PREFIX}${window.noctiveViewerKey || 'guest'}`;
+    }
+
+    function getDefaultNightCrew() {
+      return HOME_TEMPLATE.friends.map((friend) => ({
+        ...friend,
+        presence: normalizePresence(friend.presence),
+        activity: friend.activity || ''
+      }));
+    }
+
+    function loadNightCrewFriends() {
+      try {
+        const raw = localStorage.getItem(buildNightCrewStorageKey());
+        if (!raw) return getDefaultNightCrew();
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || !parsed.length) return getDefaultNightCrew();
+        return parsed.map((friend, index) => ({
+          id: friend.id || `friend-custom-${index + 1}`,
+          name: friend.name || `Night Crew ${index + 1}`,
+          theme: friend.theme || 'default',
+          avatar: friend.avatar || '',
+          presence: normalizePresence(friend.presence),
+          activity: friend.activity || ''
+        }));
+      } catch (error) {
+        console.error('Could not load Night Crew:', error);
+        return getDefaultNightCrew();
+      }
+    }
+
+    function saveNightCrewFriends() {
+      try {
+        localStorage.setItem(buildNightCrewStorageKey(), JSON.stringify(nightCrewFriends));
+      } catch (error) {
+        console.error('Could not save Night Crew:', error);
+      }
+    }
+
+    function getActiveNowFriends() {
+      return nightCrewFriends.filter((friend) => normalizePresence(friend.presence) !== 'invisible').slice(0, 4);
+    }
+
     function buildAvatarMarkup(user, sizeClass = 'avatar-dot', withDot = false) {
       const safeName = escapeHtml(user.name || user.author || 'Noctive');
       const safeTheme = escapeHtml(user.theme || 'default');
       const safeAvatar = escapeHtml(user.avatar || '');
+      const dotMeta = getPresenceMeta(user.presence);
       return `
-        <div class="${sizeClass} user-avatar" data-name="${safeName}" data-theme="${safeTheme}" data-avatar="${safeAvatar}">
-          ${withDot ? '<span class="dot"></span>' : ''}
+        <div class="avatar-status-wrap">
+          <div class="${sizeClass} user-avatar" data-name="${safeName}" data-theme="${safeTheme}" data-avatar="${safeAvatar}"></div>
+          ${withDot ? `<span class="dot ${dotMeta.className}" aria-hidden="true"></span>` : ''}
         </div>
       `;
     }
 
     function buildPostMarkup(post) {
+      const upVotes = Number(post.votes?.up ?? 0);
+      const downVotes = Number(post.votes?.down ?? 0);
+      const commentsCount = Array.isArray(post.comments) ? post.comments.length : 0;
       return `
         <article class="post" data-post-id="${escapeHtml(post.id)}">
           <div class="post-head">
@@ -822,60 +1145,90 @@
           </div>
           <div class="post-body">${escapeHtml(post.body)}</div>
           <div class="post-actions">
-            <button class="action" type="button">Like</button>
-            <button class="action" type="button">Reply</button>
+            <button class="action vote-action" type="button" data-vote="up" aria-label="Upvote post">▴</button>
+            <span class="vote-count" data-vote-count="up">${upVotes}</span>
+            <button class="action vote-action" type="button" data-vote="down" aria-label="Downvote post">▾</button>
+            <span class="vote-count" data-vote-count="down">${downVotes}</span>
+            <button class="action" type="button" data-reply-toggle="true" aria-expanded="false">Reply</button>
+            <span class="vote-count" data-comment-count="true">${commentsCount}</span>
             <button class="action" type="button">Share</button>
+          </div>
+          <div class="comments-shell" data-comments-shell="true" hidden>
+            <div class="comment-list" data-comment-list="true"></div>
+            <div class="comment-form">
+              <textarea class="comment-input" data-comment-input="true" placeholder="Write a reply..."></textarea>
+              <div class="comment-row">
+                <span class="comment-hint">Keep it chill, keep it noctive.</span>
+                <button class="action" type="button" data-comment-submit="true">Comment</button>
+              </div>
+            </div>
           </div>
         </article>
       `;
     }
 
     function buildActiveMarkup(user) {
+      const presence = getPresenceMeta(user.presence);
       return `
         <div class="active-card">
           <div class="active-left">
             ${buildAvatarMarkup(user, 'avatar-dot', true)}
             <div class="meta-stack" style="min-width:0;">
               <div class="active-name">${escapeHtml(user.name)}</div>
-              <div class="active-sub">${escapeHtml(user.sub)}</div>
+              <div class="active-sub">${escapeHtml(user.activity || presence.activityFallback)}</div>
             </div>
           </div>
-          <div style="opacity:0.9;">${escapeHtml(user.icon || '🌙')}</div>
+          <span class="presence-label ${presence.className}">${presence.label}</span>
         </div>
       `;
     }
 
     function buildFriendMarkup(user) {
+      const presence = getPresenceMeta(user.presence);
       return `
         <div class="friend-row">
           <div class="friend-left">
             ${buildAvatarMarkup(user, 'avatar-dot', true)}
-            <div class="meta-stack" style="min-width:0;">
+            <div class="friend-meta">
               <div class="friend-name">${escapeHtml(user.name)}</div>
-              <div class="friend-status">${escapeHtml(user.status)}</div>
+              <div class="friend-status">${escapeHtml(user.activity || presence.activityFallback)}</div>
             </div>
           </div>
-          <span style="opacity:0.85;">${escapeHtml(user.icon || '🌙')}</span>
+          <div class="friend-actions">
+            <span class="presence-label ${presence.className}">${presence.label}</span>
+            ${String(user.id || '').startsWith('friend-custom-') ? `<button class="action friend-remove" type="button" data-remove-friend="${escapeHtml(user.id)}">Remove</button>` : ''}
+          </div>
         </div>
       `;
+    }
+
+    function renderNightCrew() {
+      const activeNowList = document.getElementById('activeNowList');
+      const drawerActiveNowList = document.getElementById('drawerActiveNowList');
+      const friendsList = document.getElementById('friendsList');
+      const drawerFriendsList = document.getElementById('drawerFriendsList');
+      const activeFriends = getActiveNowFriends();
+
+      if (activeNowList) activeNowList.innerHTML = activeFriends.length ? activeFriends.map(buildActiveMarkup).join('') : '<div class="small">Your crew will show up here once someone is active.</div>';
+      if (drawerActiveNowList) drawerActiveNowList.innerHTML = activeFriends.length ? activeFriends.slice(0, 3).map(buildActiveMarkup).join('') : '<div class="small">No visible crew online yet.</div>';
+      if (friendsList) friendsList.innerHTML = nightCrewFriends.length ? nightCrewFriends.map(buildFriendMarkup).join('') : '<div class="small">Add a few people to make Night Crew feel like yours.</div>';
+      if (drawerFriendsList) drawerFriendsList.innerHTML = nightCrewFriends.length ? nightCrewFriends.map(buildFriendMarkup).join('') : '<div class="small">Add a few people to make Night Crew feel like yours.</div>';
     }
 
     function renderTemplateData() {
       const feedList = document.getElementById('feedList');
       const hotGamesList = document.getElementById('hotGamesList');
       const drawerHotGamesList = document.getElementById('drawerHotGamesList');
-      const activeNowList = document.getElementById('activeNowList');
-      const drawerActiveNowList = document.getElementById('drawerActiveNowList');
-      const friendsList = document.getElementById('friendsList');
-      const drawerFriendsList = document.getElementById('drawerFriendsList');
 
+      seedPostVotes();
+      seedPostComments();
+      if (!nightCrewFriends.length) nightCrewFriends = loadNightCrewFriends();
       if (feedList) feedList.innerHTML = HOME_TEMPLATE.posts.map(buildPostMarkup).join('');
+      if (feedList) feedList.querySelectorAll('.post').forEach(syncPostVoteUI);
+      if (feedList) feedList.querySelectorAll('.post').forEach(syncPostCommentsUI);
       if (hotGamesList) hotGamesList.innerHTML = HOME_TEMPLATE.hotGames.map((game) => `<button class="hot-item" type="button">${escapeHtml(game)}</button>`).join('');
       if (drawerHotGamesList) drawerHotGamesList.innerHTML = HOME_TEMPLATE.hotGames.map((game) => `<button class="hot-item" type="button">${escapeHtml(game)}</button>`).join('');
-      if (activeNowList) activeNowList.innerHTML = HOME_TEMPLATE.activeNow.map(buildActiveMarkup).join('');
-      if (drawerActiveNowList) drawerActiveNowList.innerHTML = HOME_TEMPLATE.activeNow.slice(0, 2).map(buildActiveMarkup).join('');
-      if (friendsList) friendsList.innerHTML = HOME_TEMPLATE.friends.map(buildFriendMarkup).join('');
-      if (drawerFriendsList) drawerFriendsList.innerHTML = HOME_TEMPLATE.friends.slice(0, 3).map(buildFriendMarkup).join('');
+      renderNightCrew();
     }
 
     function insertInitials(element, name, theme, existingDot) {
@@ -931,6 +1284,102 @@
       if (el) el.textContent = value;
     }
 
+    const postVoteState = new Map();
+    const postCommentState = new Map();
+
+    function syncPostVoteUI(postEl) {
+      if (!postEl) return;
+      const upBtn = postEl.querySelector('[data-vote="up"]');
+      const downBtn = postEl.querySelector('[data-vote="down"]');
+      const upCount = postEl.querySelector('[data-vote-count="up"]');
+      const downCount = postEl.querySelector('[data-vote-count="down"]');
+      const voteState = postVoteState.get(postEl.dataset.postId) || { up: 0, down: 0, userVote: null };
+
+      if (upCount) upCount.textContent = String(voteState.up);
+      if (downCount) downCount.textContent = String(voteState.down);
+      upBtn?.classList.toggle('is-active', voteState.userVote === 'up');
+      downBtn?.classList.toggle('is-active', voteState.userVote === 'down');
+    }
+
+    function syncPostCommentsUI(postEl) {
+      if (!postEl) return;
+      const list = postEl.querySelector('[data-comment-list="true"]');
+      const count = postEl.querySelector('[data-comment-count="true"]');
+      const comments = postCommentState.get(postEl.dataset.postId) || [];
+      if (count) count.textContent = String(comments.length);
+      if (!list) return;
+      list.innerHTML = comments.length ? comments.map((comment) => `
+        <div class="comment-item">
+          <div class="comment-head">
+            <span class="comment-name">${escapeHtml(comment.author)}</span>
+            <span>${escapeHtml(comment.time)}</span>
+          </div>
+          <div class="comment-body">${escapeHtml(comment.body)}</div>
+        </div>
+      `).join('') : '<div class="comment-hint">No replies yet. Start the thread.</div>';
+    }
+
+    function seedPostVotes() {
+      HOME_TEMPLATE.posts.forEach((post) => {
+        if (!postVoteState.has(post.id)) {
+          postVoteState.set(post.id, {
+            up: Number(post.votes?.up ?? 0),
+            down: Number(post.votes?.down ?? 0),
+            userVote: null
+          });
+        }
+      });
+    }
+
+    function seedPostComments() {
+      HOME_TEMPLATE.posts.forEach((post) => {
+        if (!postCommentState.has(post.id)) {
+          postCommentState.set(post.id, Array.isArray(post.comments) ? post.comments : []);
+        }
+      });
+    }
+
+    function registerPostVote(postId, direction) {
+      const current = postVoteState.get(postId) || { up: 0, down: 0, userVote: null };
+
+      if (current.userVote === direction) {
+        return current;
+      }
+
+      const next = { ...current };
+      if (current.userVote === 'up') next.up = Math.max(0, next.up - 1);
+      if (current.userVote === 'down') next.down = Math.max(0, next.down - 1);
+
+      if (direction === 'up') next.up += 1;
+      if (direction === 'down') next.down += 1;
+      next.userVote = direction;
+
+      postVoteState.set(postId, next);
+      return next;
+    }
+
+    function toggleComments(postEl) {
+      const shell = postEl?.querySelector('[data-comments-shell="true"]');
+      const replyBtn = postEl?.querySelector('[data-reply-toggle="true"]');
+      if (!shell) return;
+      const isHidden = shell.hasAttribute('hidden');
+      if (isHidden) {
+        shell.removeAttribute('hidden');
+        replyBtn?.setAttribute('aria-expanded', 'true');
+        shell.querySelector('[data-comment-input="true"]')?.focus();
+      } else {
+        shell.setAttribute('hidden', 'hidden');
+        replyBtn?.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function addComment(postId, comment) {
+      const current = postCommentState.get(postId) || [];
+      const next = [...current, comment];
+      postCommentState.set(postId, next);
+      return next;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       renderTemplateData();
       applyGeneratedAvatars();
@@ -963,17 +1412,24 @@
           const text = postText.value.trim();
           if (!text) return;
           const who = document.getElementById('userDisplayName')?.textContent || 'Guest';
+          const postId = `post-${Date.now()}`;
           const wrapper = document.createElement('div');
           wrapper.innerHTML = buildPostMarkup({
-            id: `post-${Date.now()}`,
+            id: postId,
             author: who,
             theme: document.getElementById('sidebarAvatarBox')?.dataset.theme || 'default',
             avatar: document.getElementById('sidebarAvatarBox')?.dataset.avatar || '',
             time: 'just now',
             tag: '#Post',
-            body: text
+            body: text,
+            votes: { up: 0, down: 0 },
+            comments: []
           });
           feedList.prepend(wrapper.firstElementChild);
+          postVoteState.set(postId, { up: 0, down: 0, userVote: null });
+          postCommentState.set(postId, []);
+          syncPostVoteUI(feedList.firstElementChild);
+          syncPostCommentsUI(feedList.firstElementChild);
           postText.value = '';
           countNum.textContent = '0';
           applyGeneratedAvatars();
@@ -983,14 +1439,74 @@
       const rightDrawer = document.getElementById('rightDrawer');
       const openDrawerBtn = document.getElementById('openDrawerBtn');
       const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+      const openFriendModalBtn = document.getElementById('openFriendModalBtn');
+      const drawerOpenFriendModalBtn = document.getElementById('drawerOpenFriendModalBtn');
+      const friendModal = document.getElementById('friendModal');
+      const friendModalCloseBtn = document.getElementById('friendModalCloseBtn');
+      const friendSaveBtn = document.getElementById('friendSaveBtn');
+      const friendNameInput = document.getElementById('friendName');
+      const friendStatusInput = document.getElementById('friendStatus');
+      const friendActivityInput = document.getElementById('friendActivity');
+      const friendThemeInput = document.getElementById('friendTheme');
+      const friendMsg = document.getElementById('friendMsg');
       const nightFab = document.getElementById('nightFab');
       const openDrawer = () => rightDrawer?.removeAttribute('hidden');
       const closeDrawer = () => rightDrawer?.setAttribute('hidden', 'hidden');
+      const openFriendModal = () => {
+        if (friendMsg) friendMsg.textContent = 'Give your Night Crew a few people that feel like yours.';
+        friendModal?.removeAttribute('hidden');
+        friendNameInput?.focus();
+      };
+      const closeFriendModal = () => friendModal?.setAttribute('hidden', 'hidden');
       openDrawerBtn?.addEventListener('click', openDrawer);
       closeDrawerBtn?.addEventListener('click', closeDrawer);
+      openFriendModalBtn?.addEventListener('click', openFriendModal);
+      drawerOpenFriendModalBtn?.addEventListener('click', openFriendModal);
+      friendModalCloseBtn?.addEventListener('click', closeFriendModal);
+      friendModal?.addEventListener('click', (e) => {
+        if (e.target === friendModal) closeFriendModal();
+      });
       nightFab?.addEventListener('click', openDrawer);
       rightDrawer?.addEventListener('click', (e) => {
         if (e.target === rightDrawer) closeDrawer();
+      });
+
+      friendSaveBtn?.addEventListener('click', () => {
+        const name = friendNameInput?.value.trim();
+        const activity = friendActivityInput?.value.trim() || '';
+        const presence = normalizePresence(friendStatusInput?.value);
+        const theme = friendThemeInput?.value || 'default';
+
+        if (!name) {
+          if (friendMsg) friendMsg.textContent = 'Give your crew member a name first.';
+          friendNameInput?.focus();
+          return;
+        }
+
+        nightCrewFriends = [
+          ...nightCrewFriends,
+          {
+            id: `friend-custom-${Date.now()}`,
+            name,
+            theme,
+            avatar: '',
+            presence,
+            activity
+          }
+        ];
+        saveNightCrewFriends();
+        renderNightCrew();
+        applyGeneratedAvatars();
+
+        if (friendMsg) friendMsg.textContent = `${name} just joined your Night Crew.`;
+        if (friendNameInput) friendNameInput.value = '';
+        if (friendActivityInput) friendActivityInput.value = '';
+        if (friendStatusInput) friendStatusInput.value = 'online';
+        if (friendThemeInput) friendThemeInput.value = 'default';
+
+        window.setTimeout(() => {
+          closeFriendModal();
+        }, 500);
       });
 
       const sidebarUser = document.getElementById('sidebarUser');
@@ -1004,10 +1520,80 @@
         }
       });
       document.addEventListener('click', (e) => {
+        const voteBtn = e.target.closest('[data-vote]');
+        if (voteBtn) {
+          const postEl = voteBtn.closest('.post');
+          const postId = postEl?.dataset.postId;
+          const direction = voteBtn.getAttribute('data-vote');
+          if (postEl && postId && direction) {
+            registerPostVote(postId, direction);
+            syncPostVoteUI(postEl);
+          }
+          return;
+        }
+
+        const replyBtn = e.target.closest('[data-reply-toggle="true"]');
+        if (replyBtn) {
+          const postEl = replyBtn.closest('.post');
+          if (postEl) toggleComments(postEl);
+          return;
+        }
+
+        const commentBtn = e.target.closest('[data-comment-submit="true"]');
+        if (commentBtn) {
+          const postEl = commentBtn.closest('.post');
+          const postId = postEl?.dataset.postId;
+          const input = postEl?.querySelector('[data-comment-input="true"]');
+          const body = input?.value.trim();
+          if (postEl && postId && body) {
+            const author = document.getElementById('userDisplayName')?.textContent || 'Guest';
+            addComment(postId, {
+              author,
+              time: 'just now',
+              body
+            });
+            input.value = '';
+            syncPostCommentsUI(postEl);
+          }
+          return;
+        }
+
+        const removeFriendBtn = e.target.closest('[data-remove-friend]');
+        if (removeFriendBtn) {
+          const friendId = removeFriendBtn.getAttribute('data-remove-friend');
+          if (friendId) {
+            nightCrewFriends = nightCrewFriends.filter((friend) => friend.id !== friendId);
+            saveNightCrewFriends();
+            renderNightCrew();
+            applyGeneratedAvatars();
+          }
+          return;
+        }
+
         if (!userMenuDropdown || !sidebarUser) return;
         if (!userMenuDropdown.contains(e.target) && !sidebarUser.contains(e.target)) {
           userMenuDropdown.setAttribute('hidden', 'hidden');
         }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        const commentInput = e.target.closest('[data-comment-input="true"]');
+        if (!commentInput || !(e.ctrlKey || e.metaKey) || e.key !== 'Enter') return;
+
+        const postEl = commentInput.closest('.post');
+        const postId = postEl?.dataset.postId;
+        const body = commentInput.value.trim();
+        if (!postEl || !postId || !body) return;
+
+        e.preventDefault();
+        const author = document.getElementById('userDisplayName')?.textContent || 'Guest';
+        addComment(postId, {
+          author,
+          time: 'just now',
+          body
+        });
+        commentInput.value = '';
+        syncPostCommentsUI(postEl);
       });
     });
   </script>
@@ -1140,6 +1726,7 @@
         setText('userDisplayName', displayName);
         setText('userDisplaySub', 'Online');
         if (authOpenBtn) authOpenBtn.textContent = 'Signed in';
+        window.noctiveViewerKey = user.uid;
 
         if (sidebarAvatarBox) {
           sidebarAvatarBox.dataset.name = displayName;
@@ -1150,12 +1737,15 @@
         setText('userDisplayName', 'Guest');
         setText('userDisplaySub', 'Not signed in');
         if (authOpenBtn) authOpenBtn.textContent = 'Sign in';
+        window.noctiveViewerKey = 'guest';
         if (sidebarAvatarBox) {
           sidebarAvatarBox.dataset.name = 'Guest';
           sidebarAvatarBox.dataset.theme = 'default';
           sidebarAvatarBox.dataset.avatar = '';
         }
       }
+      nightCrewFriends = loadNightCrewFriends();
+      renderNightCrew();
       applyGeneratedAvatars();
     });
 
@@ -1163,3 +1753,5 @@
   </script>
 </body>
 </html>
+
+
