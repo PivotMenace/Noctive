@@ -350,7 +350,10 @@
   <header class="topbar">
     <div class="topbar-inner">
       <a href="home.html"><span class="brand-title">Noctive</span></a>
-      <a class="btn-secondary" href="profile.html" data-leave-link="true">Back to Profile</a>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-secondary" href="messages.html" data-leave-link="true">Messages</a>
+        <a class="btn-secondary" href="profile.html" data-leave-link="true">Back to Profile</a>
+      </div>
     </div>
   </header>
 
@@ -909,6 +912,14 @@
       if (!hasUnsavedChanges) return;
       event.preventDefault();
       event.returnValue = '';
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      const mediaModal = document.getElementById('mediaModal');
+      if (mediaModal && !mediaModal.hasAttribute('hidden')) {
+        closeMediaModal();
+      }
     });
 
     onAuthStateChanged(auth, (user) => {

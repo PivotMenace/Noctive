@@ -783,6 +783,7 @@
         <a href="home.html" aria-current="page">Home</a>
         <a href="explore.html">Explore</a>
         <a href="faq.html">FAQ</a>
+        <a href="messages.html">Messages</a>
         <a href="profile.html">Profile</a>
       </nav>
 
@@ -1579,6 +1580,28 @@
       });
 
       document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (friendModal && !friendModal.hasAttribute('hidden')) {
+            closeFriendModal();
+            return;
+          }
+
+          if (authModal && !authModal.hasAttribute('hidden')) {
+            closeAuthModal();
+            return;
+          }
+
+          if (rightDrawer && !rightDrawer.hasAttribute('hidden')) {
+            closeDrawer();
+            return;
+          }
+
+          if (userMenuDropdown && !userMenuDropdown.hasAttribute('hidden')) {
+            userMenuDropdown.setAttribute('hidden', 'hidden');
+            return;
+          }
+        }
+
         const commentInput = e.target.closest('[data-comment-input="true"]');
         if (!commentInput || !(e.ctrlKey || e.metaKey) || e.key !== 'Enter') return;
 
