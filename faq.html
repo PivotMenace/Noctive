@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noctive FAQ</title>
+  <link rel="icon" type="image/png" href="pngs/Favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;900&family=Roboto+Condensed:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #facc15;
+      --bg-1: #161327;
+      --bg-2: #1c1733;
+      --bg-3: #262751;
+      --panel: rgba(255,255,255,0.055);
+      --panel-dark: rgba(0,0,0,0.24);
+      --border: rgba(255,255,255,0.10);
+      --text: rgba(255,255,255,0.94);
+      --muted: rgba(255,255,255,0.66);
+      --muted-2: rgba(255,255,255,0.54);
+      --accent-soft: rgba(220,20,60,0.16);
+      --accent-border: rgba(220,20,60,0.34);
+      --shadow: 0 22px 75px rgba(0,0,0,0.44);
+      --radius: 20px;
+      --font-main: 'Nunito', sans-serif;
+      --font-head: 'Rubik', 'Roboto Condensed', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font-main);
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(250,204,21,0.08), transparent 24%),
+        radial-gradient(circle at left center, rgba(220,20,60,0.10), transparent 20%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3), var(--bg-2), var(--bg-1));
+      background-size: 100% 100%, 100% 100%, 220% 220%;
+      background-attachment: fixed;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: rgba(10,10,14,0.60);
+    }
+
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-title {
+      display: inline-block;
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--font-head);
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+
+    .topnav {
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .topnav a {
+      font-family: var(--font-head);
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.80);
+      padding: 10px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: 0.16s ease;
+    }
+
+    .topnav a:hover,
+    .topnav a[aria-current="page"] {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ghost-btn,
+    .primary-btn {
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      transition: 0.16s ease;
+    }
+
+    .ghost-btn:hover,
+    .primary-btn:hover,
+    .faq-item:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-btn {
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+      font-family: var(--font-head);
+      font-weight: 700;
+    }
+
+    .page-wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 30px 18px 46px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .hero,
+    .faq-shell,
+    .info-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      font-family: var(--font-head);
+      color: rgba(255,255,255,0.86);
+      margin-bottom: 14px;
+      width: fit-content;
+    }
+
+    h1,
+    .section-title,
+    .faq-question {
+      font-family: var(--font-head);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.02;
+      color: #fff;
+      margin-bottom: 12px;
+      max-width: 12ch;
+    }
+
+    .hero p,
+    .faq-answer,
+    .info-card p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .hero-side,
+    .faq-layout {
+      display: grid;
+      gap: 16px;
+    }
+
+    .info-card {
+      padding: 16px 18px;
+    }
+
+    .section-title {
+      color: var(--gold);
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .faq-layout {
+      grid-template-columns: minmax(0, 1fr) 320px;
+      align-items: start;
+    }
+
+    .faq-shell {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .faq-item {
+      background: var(--panel-dark);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: 0.16s ease;
+    }
+
+    .faq-button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      padding: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .faq-question {
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .faq-icon {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--gold);
+      font-size: 1rem;
+      transition: transform 0.16s ease;
+    }
+
+    .faq-item.is-open .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer-wrap {
+      padding: 0 18px 18px;
+    }
+
+    .faq-answer {
+      color: rgba(255,255,255,0.80);
+      font-size: 0.96rem;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 92px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .mini-pill {
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.86);
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+    }
+
+    .about-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 20px;
+    }
+
+    .about-block {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .about-block p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .about-highlight {
+      color: rgba(255,255,255,0.88);
+      font-size: 1.02rem;
+    }
+
+    .about-quote {
+      border-left: 3px solid rgba(250,204,21,0.32);
+      padding-left: 14px;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.6;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .feature-item {
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.86);
+    }
+
+    .feature-item strong {
+      color: #fff;
+      font-family: var(--font-head);
+    }
+
+    .honor-card {
+      padding: 24px;
+      display: grid;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(250,204,21,0.08), rgba(220,20,60,0.10), rgba(255,255,255,0.03)),
+        rgba(255,255,255,0.055);
+      border-color: rgba(250,204,21,0.22);
+      box-shadow: 0 0 0 1px rgba(250,204,21,0.08) inset, 0 22px 75px rgba(0,0,0,0.44);
+    }
+
+    .honor-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.06), transparent 32%);
+      pointer-events: none;
+    }
+
+    .honor-card p {
+      color: var(--muted);
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+    }
+
+    .honor-names {
+      color: rgba(255,255,255,0.96);
+      font-family: var(--font-head);
+      font-size: 1.08rem;
+      line-height: 1.65;
+      text-wrap: balance;
+      position: relative;
+      z-index: 1;
+    }
+
+    .honor-card .eyebrow,
+    .honor-card .section-title {
+      position: relative;
+      z-index: 1;
+    }
+
+    .honor-card .section-title {
+      font-size: 1.2rem;
+      color: #ffe68a;
+    }
+
+    .honor-lead {
+      color: rgba(255,255,255,0.90) !important;
+      font-size: 1.02rem;
+    }
+
+    .honor-roll {
+      display: grid;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+      margin-top: 4px;
+    }
+
+    .honor-name {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.96);
+      font-family: var(--font-head);
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .faq-layout,
+      .about-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .topbar-right {
+        margin-left: 0;
+      }
+
+      .topnav {
+        width: 100%;
+      }
+
+      .hero,
+      .faq-shell,
+      .info-card {
+        padding: 16px;
+      }
+
+      .faq-button,
+      .faq-answer-wrap {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="home.html"><span class="brand-title">Noctive</span></a>
+      <nav class="topnav" aria-label="Primary">
+        <a href="home.html">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="faq.html" aria-current="page">FAQ</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+      <div class="topbar-right">
+        <a class="ghost-btn" href="edit-profile.html">Edit Profile</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Need a quick answer?</div>
+        <h1>Answers to the questions people ask first.</h1>
+        <p>This page covers the basics: how access works, what the current profile system saves, how hubs and lounges are meant to function, and where the platform is headed next.</p>
+      </div>
+
+      <div class="hero-side">
+        <div class="info-card">
+          <div class="section-title">What Noctive is</div>
+          <p>A private social platform built around shared interests, strong communities, and late-night connection.</p>
+        </div>
+        <div class="info-card">
+          <div class="section-title">Current phase</div>
+          <p>Noctive is still in its early build stage, so some areas are placeholders while the core experience is being refined.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-shell">
+      <article class="info-card about-block">
+        <div class="eyebrow">About Us!</div>
+        <div class="section-title">About Noctive</div>
+        <p class="about-highlight">Private, members-only network built for curated communities and intentional creators. Structured discovery, focused Hubs, and deliberate growth. Quality over scale. Alive After Dark.</p>
+        <p>Noctive is a private, members-only network built for curated communities and intentional creators.</p>
+        <p>Access is limited by design.</p>
+        <p>Content lives inside focused Hubs designed for clear discovery, meaningful interaction, and creative freedom. Instead of relying on open algorithms or endless feeds, Noctive is built around shared interests and intentional participation.</p>
+        <p>Growth is deliberate. Visibility is earned. Quality comes before scale.</p>
+        <p class="about-quote">Not bigger. Better.<br>Alive After Dark.</p>
+      </article>
+
+      <aside class="hero-side">
+        <div class="info-card about-block">
+          <div class="section-title">About Venus!</div>
+          <p>In 2019, I met two of my closest friends on a gaming platform that no longer exists. What stayed with us was never the interface. It was the late-night conversations, the familiarity, and the real connection built across time zones.</p>
+          <p>Noctive started as an idea in one of my best friend's bedrooms. It was the kind of idea that could have stayed just a conversation, but it kept pushing me forward and reminding me that if there is a will, there is a way.</p>
+          <p>When that original platform shut down, the friendships remained. Noctive was built to preserve that feeling: a place where people can post without overthinking, share a win, start a conversation at 2AM, and feel like someone is genuinely there.</p>
+        </div>
+
+        <div class="info-card about-block">
+          <div class="section-title">Project Status</div>
+          <p>Early-stage front-end prototype. Backend and controlled onboarding in progress.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="faq-layout">
+      <div class="info-card about-block">
+        <div class="section-title">Core Features</div>
+        <div class="feature-list">
+          <div class="feature-item"><strong>Tag-Based Profiles</strong> - Identity-driven discovery.</div>
+          <div class="feature-item"><strong>Focused Hubs</strong> - Structured spaces for games and discussions.</div>
+          <div class="feature-item"><strong>Duo Matching</strong> - Connect based on playstyle, region, and preference.</div>
+          <div class="feature-item"><strong>Post Feed</strong> - Share clips and ideas with earned visibility.</div>
+          <div class="feature-item"><strong>Recognition System</strong> - Badges for contribution and consistency.</div>
+        </div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="info-card">
+          <div class="section-title">Noctive Direction</div>
+          <p>Noctive is being built around structured discovery, meaningful interaction, and deliberate growth rather than open algorithms or scale for its own sake.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="info-card honor-card">
+      <div class="eyebrow">Honorable Mentions</div>
+      <div class="section-title">Foundational Recognition</div>
+      <p class="honor-lead">Some people deserve to be recognized as part of the foundation, not as an afterthought. Their support, trust, and belief mattered early, and that deserves to be acknowledged clearly.</p>
+      <p>Noctive did not begin as a finished product. It began as an idea that kept moving because the right people stood behind it. Their support is part of the reason this project exists in any real way today.</p>
+      <div class="honor-roll" aria-label="Honorable mentions">
+        <div class="honor-name">Alexander C.</div>
+        <div class="honor-name">Debroah C.</div>
+        <div class="honor-name">Dylan J.</div>
+        <div class="honor-name">Evan H.</div>
+        <div class="honor-name">Donald P.</div>
+        <div class="honor-name">Westin W.</div>
+      </div>
+    </section>
+
+    <section class="faq-layout">
+      <div class="faq-shell" id="faqShell"></div>
+
+      <aside class="sidebar">
+        <div class="info-card">
+          <div class="section-title">Quick Links</div>
+          <div class="mini-list">
+            <a class="mini-pill" href="explore.html">Browse hubs and lounges</a>
+            <a class="mini-pill" href="profile.html">See your profile template</a>
+            <a class="mini-pill" href="edit-profile.html">Customize your profile</a>
+            <a class="mini-pill" href="hubs.html">Open hub directory</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="section-title">Heads up</div>
+          <p>Some areas still use placeholder content while the account, community, and hub systems are being built out more fully.</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const ACCESS_SESSION_KEY = 'noctive_site_access';
+    if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
+      window.location.replace('index.html');
+    }
+
+    const FAQ_ITEMS = [
+      {
+        question: 'Why do I sometimes get sent back to index.html?',
+        answer: 'Noctive uses a session access gate. On a first visit, or after closing the tab and coming back later, you are meant to re-enter through index.html before moving deeper into the site.'
+      },
+      {
+        question: 'Does my profile save changes yet?',
+        answer: 'Yes. Profile edits and some interface choices are currently saved in local storage for this browser, so they persist across refreshes and usually across repeat visits on the same device.'
+      },
+      {
+        question: 'Can I change my status?',
+        answer: 'Yes. The profile page includes a status picker, and the Night Crew area on the home page uses matching presence styling so the label, dot, and activity line stay consistent.'
+      },
+      {
+        question: 'What are hubs and lounges supposed to be?',
+        answer: 'Hubs are the main community spaces built around specific games or interests. Lounges are the more social side rooms around those spaces, where conversation can be looser and more casual. Explore is where that structure is taking shape first.'
+      },
+      {
+        question: 'Are the users on the site real right now?',
+        answer: 'Some are placeholders for now. The current focus is on building the structure, interactions, and overall flow so real user data can fit into the experience cleanly later.'
+      },
+      {
+        question: 'Why do some sections still feel like mockups?',
+        answer: 'Because parts of the platform are still being actively developed. The layout, profile system, hub browsing, and social interactions are being established first, with more complete systems to follow.'
+      }
+    ];
+
+    function renderFaq() {
+      const shell = document.getElementById('faqShell');
+      if (!shell) return;
+      shell.innerHTML = FAQ_ITEMS.map((item, index) => `
+        <article class="faq-item ${index === 0 ? 'is-open' : ''}">
+          <button class="faq-button" type="button" aria-expanded="${index === 0 ? 'true' : 'false'}">
+            <span class="faq-question">${item.question}</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer-wrap" ${index === 0 ? '' : 'hidden'}>
+            <p class="faq-answer">${item.answer}</p>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest('.faq-button');
+      if (!button) return;
+
+      const item = button.closest('.faq-item');
+      const answer = item?.querySelector('.faq-answer-wrap');
+      const isOpen = button.getAttribute('aria-expanded') === 'true';
+
+      document.querySelectorAll('.faq-item').forEach((faqItem) => {
+        faqItem.classList.remove('is-open');
+        faqItem.querySelector('.faq-button')?.setAttribute('aria-expanded', 'false');
+        faqItem.querySelector('.faq-answer-wrap')?.setAttribute('hidden', 'hidden');
+      });
+
+      if (item && answer && !isOpen) {
+        item.classList.add('is-open');
+        button.setAttribute('aria-expanded', 'true');
+        answer.removeAttribute('hidden');
+      }
+    });
+
+    renderFaq();
+  </script>
+</body>
+</html>

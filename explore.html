@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noctive Explore</title>
+  <link rel="icon" type="image/png" href="pngs/Favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;900&family=Roboto+Condensed:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #facc15;
+      --bg-1: #141224;
+      --bg-2: #1a1730;
+      --bg-3: #23244a;
+      --panel: rgba(255,255,255,0.055);
+      --panel-dark: rgba(0,0,0,0.24);
+      --panel-soft: rgba(255,255,255,0.045);
+      --border: rgba(255,255,255,0.10);
+      --text: rgba(255,255,255,0.94);
+      --muted: rgba(255,255,255,0.66);
+      --muted-2: rgba(255,255,255,0.54);
+      --accent: #dc143c;
+      --accent-soft: rgba(220,20,60,0.16);
+      --accent-border: rgba(220,20,60,0.34);
+      --shadow: 0 22px 75px rgba(0,0,0,0.44);
+      --radius: 20px;
+      --font-main: 'Nunito', sans-serif;
+      --font-head: 'Rubik', 'Roboto Condensed', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    body {
+      font-family: var(--font-main);
+      color: var(--text);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top right, rgba(250,204,21,0.10), transparent 24%),
+        radial-gradient(circle at 20% 20%, rgba(220,20,60,0.12), transparent 22%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3), var(--bg-2), var(--bg-1));
+      background-size: 100% 100%, 100% 100%, 220% 220%;
+      animation: gradientShift 30s ease-in-out infinite;
+      background-attachment: fixed;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes subtleBreathing {
+      0%, 100% { transform: translateY(0); filter: drop-shadow(0 1px 3px rgba(139,0,0,0.45)); }
+      50% { transform: translateY(-1px); filter: drop-shadow(0 2px 11px rgba(220,20,60,0.40)); }
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: rgba(10,10,14,0.60);
+    }
+
+    .topbar-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-title {
+      display: inline-block;
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--font-head);
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: subtleBreathing 4s ease-in-out infinite;
+      line-height: 1;
+    }
+
+    .topnav {
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .topnav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .topnav a {
+      font-family: var(--font-head);
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.80);
+      padding: 10px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: 0.16s ease;
+    }
+
+    .topnav a:hover,
+    .topnav a[aria-current="page"] {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ghost-btn,
+    .primary-btn,
+    .filter-btn,
+    .hub-action {
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      transition: 0.16s ease;
+    }
+
+    .ghost-btn:hover,
+    .primary-btn:hover,
+    .filter-btn:hover,
+    .hub-action:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-btn {
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+      font-family: var(--font-head);
+      font-weight: 700;
+    }
+
+    .page-wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 28px 18px 44px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .hero,
+    .panel-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 18px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(125deg, rgba(255,255,255,0.02), transparent 42%),
+        linear-gradient(135deg, rgba(220,20,60,0.08), rgba(250,204,21,0.05), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-copy,
+    .hero-side {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      font-family: var(--font-head);
+      color: rgba(255,255,255,0.86);
+      margin-bottom: 14px;
+    }
+
+    .hero h1,
+    .section-title,
+    .hub-title,
+    .lounge-title {
+      font-family: var(--font-head);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.02;
+      margin-bottom: 12px;
+      color: #fff;
+      max-width: 12ch;
+    }
+
+    .hero p {
+      max-width: 60ch;
+      line-height: 1.55;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .hero-chips,
+    .meta-row,
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .hero-chips {
+      margin-top: 18px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 9px 13px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.88);
+      font-family: var(--font-head);
+      font-size: 0.86rem;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .spotlight-card {
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(0,0,0,0.18));
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .spotlight-label {
+      font-family: var(--font-head);
+      color: var(--gold);
+      font-size: 0.88rem;
+      margin-bottom: 8px;
+    }
+
+    .spotlight-card strong {
+      display: block;
+      font-size: 1.15rem;
+      font-family: var(--font-head);
+      margin-bottom: 6px;
+    }
+
+    .spotlight-card p {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.94rem;
+    }
+
+    .leaderboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel-card {
+      padding: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    .section-sub {
+      color: var(--muted-2);
+      margin-top: 4px;
+      font-size: 0.92rem;
+    }
+
+    .filter-btn {
+      font-family: var(--font-head);
+      font-size: 0.86rem;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .filter-btn.is-active {
+      background: rgba(250,204,21,0.13);
+      border-color: rgba(250,204,21,0.26);
+      color: #ffe68a;
+      box-shadow: 0 0 18px rgba(250,204,21,0.10);
+    }
+
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .hub-card {
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.20);
+      border: 1px solid rgba(255,255,255,0.10);
+      display: grid;
+      min-width: 0;
+    }
+
+    .hub-banner {
+      min-height: 150px;
+      padding: 18px;
+      display: flex;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .hub-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,14,0.65), rgba(10,10,14,0.18));
+      pointer-events: none;
+    }
+
+    .hub-banner > div {
+      position: relative;
+      z-index: 1;
+    }
+
+    .theme-siege { background: linear-gradient(135deg, #0f172a, #1e3a5f, #1f5b72); }
+    .theme-rv { background: linear-gradient(135deg, #23131f, #6d1f38, #d04b2a); }
+    .theme-cs2 { background: linear-gradient(135deg, #24160c, #7a3e13, #d88724); }
+    .theme-arc { background: linear-gradient(135deg, #0d1f22, #135063, #37a4a0); }
+    .theme-apex { background: linear-gradient(135deg, #241111, #7f1d1d, #d97706); }
+    .theme-fortnite { background: linear-gradient(135deg, #101c40, #2355d6, #22c3f3); }
+    .theme-roblox { background: linear-gradient(135deg, #161616, #404040, #9ca3af); }
+    .theme-lol { background: linear-gradient(135deg, #0c2230, #0e5c72, #d4a33d); }
+    .theme-offtopic { background: linear-gradient(135deg, #1d1635, #52348e, #a15cff); }
+
+    .hub-kicker {
+      font-family: var(--font-head);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 8px;
+    }
+
+    .hub-title {
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 6px;
+      overflow-wrap: anywhere;
+    }
+
+    .hub-description {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.96rem;
+    }
+
+    .hub-body {
+      padding: 18px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .meta-row {
+      align-items: stretch;
+    }
+
+    .meta-pill {
+      flex: 1 1 140px;
+      min-width: 0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: var(--panel-soft);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .meta-pill strong {
+      display: block;
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .meta-pill span {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .sub-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .mini-panel {
+      border-radius: 16px;
+      padding: 16px 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .mini-label {
+      font-family: var(--font-head);
+      color: var(--gold);
+      font-size: 0.88rem;
+      margin-bottom: 8px;
+    }
+
+    .mini-panel p {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.92rem;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .lounge-card {
+      border-radius: 16px;
+      padding: 16px 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.15));
+      border: 1px solid rgba(255,255,255,0.08);
+      display: grid;
+      gap: 12px;
+    }
+
+    .lounge-title {
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .lounge-stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .lounge-stats span {
+      border-radius: 999px;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.82);
+      font-size: 0.82rem;
+      font-family: var(--font-head);
+    }
+
+    .lounge-card p {
+      color: rgba(255,255,255,0.88);
+      line-height: 1.5;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .actions-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .hub-action {
+      font-family: var(--font-head);
+      font-size: 0.88rem;
+    }
+
+    .hub-action.primary {
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+    }
+
+    .empty-state {
+      border-radius: 18px;
+      padding: 36px 20px;
+      background: rgba(0,0,0,0.18);
+      border: 1px dashed rgba(255,255,255,0.14);
+      text-align: center;
+      color: var(--muted);
+      font-family: var(--font-head);
+    }
+
+    .leaderboard-card {
+      display: grid;
+      gap: 12px;
+      position: sticky;
+      top: 92px;
+      align-self: start;
+    }
+
+    .leaderboard-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .leaderboard-item {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .leaderboard-rank {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-head);
+      font-size: 1rem;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(250,204,21,0.18), rgba(220,20,60,0.18));
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .leaderboard-name {
+      font-family: var(--font-head);
+      color: #fff;
+      font-size: 0.96rem;
+      margin-bottom: 3px;
+    }
+
+    .leaderboard-sub {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .leaderboard-score {
+      text-align: right;
+      min-width: 72px;
+    }
+
+    .leaderboard-score strong {
+      display: block;
+      font-family: var(--font-head);
+      font-size: 1.02rem;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .leaderboard-score span {
+      color: var(--muted-2);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 1024px) {
+      .hero,
+      .hub-grid,
+      .leaderboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .leaderboard-card {
+        position: static;
+      }
+
+      .sub-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .topbar-right {
+        margin-left: 0;
+      }
+
+      .topnav {
+        width: 100%;
+      }
+
+      .hero,
+      .panel-card {
+        padding: 16px;
+      }
+
+      .hub-banner,
+      .hub-body {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="home.html"><span class="brand-title">Noctive</span></a>
+      <nav class="topnav" aria-label="Primary">
+        <a href="home.html">Home</a>
+        <a href="explore.html" aria-current="page">Explore</a>
+        <a href="faq.html">FAQ</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+      <div class="topbar-right">
+        <a class="ghost-btn" href="profile.html">View Profile</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">Explore Noctive</div>
+        <h1>Hubs and lounges built around what everyone is actually playing.</h1>
+        <p>Drop into the hottest games first, then slip sideways into the late-night lounges where the real personality of each community shows up. Rainbow Six Siege leads this wave, with RV We There Yet, Counter-Strike 2, and a pure chaos Off Topic space close behind.</p>
+        <div class="hero-chips" id="trendingChips"></div>
+      </div>
+
+      <div class="hero-side">
+        <div class="spotlight-card">
+          <div class="spotlight-label">Tonight's Fastest Moving Hub</div>
+          <strong>Rainbow Six Siege</strong>
+          <p>Ranked stacks, operator debates, patch reactions, and clip reviews are moving harder than anything else on the board right now.</p>
+        </div>
+        <div class="spotlight-card">
+          <div class="spotlight-label">Always Open Lounge</div>
+          <strong>Off Topic</strong>
+          <p>The fallback room for memes, side quests, weird internet finds, and whatever the crew is talking about after midnight.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-card">
+      <div class="leaderboard-grid">
+        <div>
+          <div class="section-head">
+            <div>
+              <div class="section-title">Trending Hubs</div>
+              <div class="section-sub">Filter between shooters, chaos rooms, and the most active late-night hangouts.</div>
+            </div>
+            <div class="filters" id="filterBar"></div>
+          </div>
+          <div class="hub-grid" id="hubGrid"></div>
+        </div>
+
+        <aside class="leaderboard-card">
+          <div class="section-head">
+            <div>
+              <div class="section-title">Hub Leaderboard</div>
+              <div class="section-sub">A compact pulse check on what is climbing fastest.</div>
+            </div>
+          </div>
+          <div class="leaderboard-list" id="leaderboardList"></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ACCESS_SESSION_KEY = 'noctive_site_access';
+    if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
+      window.location.replace('index.html');
+    }
+
+    const FILTERS = [
+      { id: 'all', label: 'All' },
+      { id: 'fps', label: 'FPS' },
+      { id: 'trending', label: 'Trending' },
+      { id: 'lounge', label: 'Lounges' }
+    ];
+
+    const HUBS = [
+      {
+        id: 'siege',
+        category: ['all', 'fps', 'trending', 'lounge'],
+        theme: 'theme-siege',
+        name: 'Rainbow Six Siege',
+        kicker: 'Featured First',
+        tagline: 'Breach plans, stack calls, operator talk, and ranked stress all in one place.',
+        population: '24.8k in hub',
+        trendScore: 98,
+        momentum: '+31% tonight',
+        peakRoom: 'Ranked clip reviews',
+        loungeName: 'Siege After Dark',
+        loungeMood: 'The place for stack-finding, controller vs MnK debates, patch rage, and late queue coping.',
+        loungeStats: ['3.9k listening', 'Tactical clips', 'Stack requests'],
+        hubLink: 'hubs/fps-hub.html'
+      },
+      {
+        id: 'rv-we-there-yet',
+        category: ['all', 'trending', 'lounge'],
+        theme: 'theme-rv',
+        name: 'RV We There Yet',
+        kicker: 'Roadtrip Chaos',
+        tagline: 'A rising lounge-first game space where shared moments, jokes, and crew energy matter as much as the match.',
+        population: '8.4k in hub',
+        trendScore: 76,
+        momentum: '+19% tonight',
+        peakRoom: 'Co-op chaos stories',
+        loungeName: 'RV Midnight Lounge',
+        loungeMood: 'For people trading runs, inside jokes, and “one more stop” energy until the night gets weird.',
+        loungeStats: ['1.6k hanging out', 'Storytime', 'Crew banter'],
+        hubLink: '#'
+      },
+      {
+        id: 'cs2',
+        category: ['all', 'fps', 'trending', 'lounge'],
+        theme: 'theme-cs2',
+        name: 'Counter-Strike 2',
+        kicker: 'Precision Queue',
+        tagline: 'Aim talk, util breakdowns, map pool meta, and every kind of “how did we lose that round?” post.',
+        population: '19.7k in hub',
+        trendScore: 91,
+        momentum: '+22% tonight',
+        peakRoom: 'Premier grind talk',
+        loungeName: 'Dust & Debrief',
+        loungeMood: 'Low-pressure side room for warmup clips, highlight drops, and post-match decompression.',
+        loungeStats: ['2.7k hanging out', 'Lineup swaps', 'Clip reactions'],
+        hubLink: '#'
+      },
+      {
+        id: 'off-topic',
+        category: ['all', 'lounge'],
+        theme: 'theme-offtopic',
+        name: 'Off Topic',
+        kicker: 'No Game Required',
+        tagline: 'The extra lounge for memes, music links, random thoughts, and whatever the Night Crew drifts into.',
+        population: 'Always moving',
+        trendScore: 73,
+        momentum: 'Pure chaos',
+        peakRoom: 'Late-night spiral',
+        loungeName: 'Off Topic Lounge',
+        loungeMood: 'The social spillover room when everyone stops pretending they came here to stay on one subject.',
+        loungeStats: ['Open all night', 'Memes', 'Side conversations'],
+        hubLink: '#'
+      },
+      {
+        id: 'arc-raiders',
+        category: ['all', 'fps', 'trending', 'lounge'],
+        theme: 'theme-arc',
+        name: 'ARC Raiders',
+        kicker: 'Extraction Wave',
+        tagline: 'Loadout talk, raid stories, build crafting, and the kind of tactical panic that only happens in a hot extraction game.',
+        population: '14.2k in hub',
+        trendScore: 88,
+        momentum: '+27% tonight',
+        peakRoom: 'Raid squad forming',
+        loungeName: 'Raid Debrief',
+        loungeMood: 'Late-night regroup space for losses, big pulls, and “we should have extracted sooner” stories.',
+        loungeStats: ['2.1k regrouping', 'Loadout swaps', 'Squad finder'],
+        hubLink: '#'
+      },
+      {
+        id: 'apex-legends',
+        category: ['all', 'fps', 'trending', 'lounge'],
+        theme: 'theme-apex',
+        name: 'Apex Legends',
+        kicker: 'Movement Fever',
+        tagline: 'Rotation calls, legend comps, ranked climbs, and highlight clips from players who absolutely should have healed first.',
+        population: '21.3k in hub',
+        trendScore: 89,
+        momentum: '+18% tonight',
+        peakRoom: 'Ranked trio talk',
+        loungeName: 'Drop Ship Lounge',
+        loungeMood: 'A more relaxed corner for clips, comp talk, and finding people who actually ping before sprinting away.',
+        loungeStats: ['3.2k hanging out', 'Legend talk', 'Clip reviews'],
+        hubLink: '#'
+      },
+      {
+        id: 'fortnite',
+        category: ['all', 'trending', 'lounge'],
+        theme: 'theme-fortnite',
+        name: 'Fortnite',
+        kicker: 'Constantly Moving',
+        tagline: 'Events, builds, zero build sweats, cosmetics, and whatever new collab is detonating the timeline tonight.',
+        population: '33.6k in hub',
+        trendScore: 94,
+        momentum: '+24% tonight',
+        peakRoom: 'Zero Build squads',
+        loungeName: 'Island Night Shift',
+        loungeMood: 'For event reactions, squad invites, and quick chatter between chaotic matches.',
+        loungeStats: ['4.8k hanging out', 'Event watch', 'Squad invites'],
+        hubLink: '#'
+      },
+      {
+        id: 'roblox',
+        category: ['all', 'trending', 'lounge'],
+        theme: 'theme-roblox',
+        name: 'Roblox',
+        kicker: 'Infinite Modes',
+        tagline: 'A giant catch-all hub for game discoveries, creator finds, weird trends, and hopping between ten different vibes in one night.',
+        population: '28.1k in hub',
+        trendScore: 87,
+        momentum: '+21% tonight',
+        peakRoom: 'Game discovery thread',
+        loungeName: 'Roblox Rooftop',
+        loungeMood: 'A lighter lounge for recommendations, creator talk, and the surprisingly specific experiences people keep finding.',
+        loungeStats: ['4.1k hanging out', 'Creator finds', 'Game recs'],
+        hubLink: '#'
+      },
+      {
+        id: 'league-of-legends',
+        category: ['all', 'trending', 'lounge'],
+        theme: 'theme-lol',
+        name: 'League of Legends',
+        kicker: 'Classic Spiral',
+        tagline: 'Champion takes, lane salt, patch reactions, and enough ranked venting to power the whole site overnight.',
+        population: '26.4k in hub',
+        trendScore: 86,
+        momentum: '+17% tonight',
+        peakRoom: 'Patch and meta talk',
+        loungeName: 'Summoner After Hours',
+        loungeMood: 'The place for post-match decompression, duo hunting, and “one more game” lies.',
+        loungeStats: ['3.5k hanging out', 'Duo finder', 'Meta debate'],
+        hubLink: '#'
+      }
+    ];
+
+    let activeFilter = 'all';
+
+    function renderTrendingChips() {
+      const chips = document.getElementById('trendingChips');
+      if (!chips) return;
+      chips.innerHTML = HUBS.map((hub) => `<span class="chip">${hub.name}</span>`).join('');
+    }
+
+    function renderFilters() {
+      const bar = document.getElementById('filterBar');
+      if (!bar) return;
+      bar.innerHTML = FILTERS.map((filter) => `
+        <button class="filter-btn ${filter.id === activeFilter ? 'is-active' : ''}" type="button" data-filter="${filter.id}">
+          ${filter.label}
+        </button>
+      `).join('');
+    }
+
+    function buildHubCard(hub) {
+      return `
+        <article class="hub-card">
+          <div class="hub-banner ${hub.theme}">
+            <div>
+              <div class="hub-kicker">${hub.kicker}</div>
+              <div class="hub-title">${hub.name}</div>
+              <div class="hub-description">${hub.tagline}</div>
+            </div>
+          </div>
+
+          <div class="hub-body">
+            <div class="meta-row">
+              <div class="meta-pill">
+                <strong>${hub.population}</strong>
+                <span>Current activity</span>
+              </div>
+              <div class="meta-pill">
+                <strong>${hub.momentum}</strong>
+                <span>Momentum</span>
+              </div>
+              <div class="meta-pill">
+                <strong>${hub.peakRoom}</strong>
+                <span>Busiest lane</span>
+              </div>
+            </div>
+
+            <div class="sub-grid">
+              <div class="mini-panel">
+                <div class="mini-label">Hub Mood</div>
+                <p>${hub.tagline}</p>
+              </div>
+
+              <div class="lounge-card">
+                <div class="mini-label">Featured Lounge</div>
+                <div class="lounge-title">${hub.loungeName}</div>
+                <p>${hub.loungeMood}</p>
+                <div class="lounge-stats">
+                  ${hub.loungeStats.map((stat) => `<span>${stat}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div class="actions-row">
+              <a class="hub-action primary" href="${hub.hubLink}">Open Hub</a>
+              <button class="hub-action" type="button">Enter Lounge</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderLeaderboard() {
+      const leaderboard = document.getElementById('leaderboardList');
+      if (!leaderboard) return;
+
+      const ranked = [...HUBS]
+        .sort((a, b) => (b.trendScore || 0) - (a.trendScore || 0))
+        .slice(0, 6);
+
+      leaderboard.innerHTML = ranked.map((hub, index) => `
+        <div class="leaderboard-item">
+          <div class="leaderboard-rank">#${index + 1}</div>
+          <div>
+            <div class="leaderboard-name">${hub.name}</div>
+            <div class="leaderboard-sub">${hub.population} • ${hub.momentum}</div>
+          </div>
+          <div class="leaderboard-score">
+            <strong>${hub.trendScore}</strong>
+            <span>trend</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderHubGrid() {
+      const grid = document.getElementById('hubGrid');
+      if (!grid) return;
+      const visible = HUBS.filter((hub) => hub.category.includes(activeFilter));
+      if (!visible.length) {
+        grid.innerHTML = '<div class="empty-state">No hubs match that filter yet.</div>';
+        return;
+      }
+      grid.innerHTML = visible.map(buildHubCard).join('');
+    }
+
+    document.addEventListener('click', (event) => {
+      const filterBtn = event.target.closest('[data-filter]');
+      if (!filterBtn) return;
+      activeFilter = filterBtn.getAttribute('data-filter') || 'all';
+      renderFilters();
+      renderHubGrid();
+    });
+
+    renderTrendingChips();
+    renderFilters();
+    renderHubGrid();
+    renderLeaderboard();
+  </script>
+</body>
+</html>
