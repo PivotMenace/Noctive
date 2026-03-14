@@ -289,6 +289,37 @@
       border-color: rgba(250,204,21,0.28);
       color: #ffe68a;
     }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+    }
+    .badge-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 900;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.22);
+      overflow: hidden;
+    }
+    .badge-icon.badge-crescent-moon { background: linear-gradient(135deg, #c084fc, #60a5fa); }
+    .badge-icon.badge-fortnite { background: linear-gradient(135deg, #60a5fa, #2563eb); }
+    .badge-icon.badge-roblox { background: linear-gradient(135deg, #f87171, #dc2626); }
+    .badge-icon.badge-r6 { background: linear-gradient(135deg, #111827, #374151); }
+    .badge-icon.badge-arc-raiders { background: linear-gradient(135deg, #34d399, #14b8a6); }
+    .badge-icon.badge-star { background: linear-gradient(135deg, #facc15, #fb7185); }
+    .badge-icon.badge-police-car { background: linear-gradient(135deg, #93c5fd, #1d4ed8); }
+    .badge-label {
+      line-height: 1;
+    }
 
     .game-chip {
       background: rgba(220,20,60,0.12);
@@ -510,6 +541,11 @@
       box-shadow: 0 24px 48px rgba(0,0,0,0.42);
       backdrop-filter: blur(16px);
       z-index: 20;
+    }
+    .status-control.is-readonly .status-pill {
+      cursor: default;
+      pointer-events: none;
+      opacity: 0.94;
     }
 
     .status-option {
@@ -850,10 +886,11 @@
         <a href="explore.html">Explore</a>
         <a href="faq.html">FAQ</a>
         <a href="messages.html">Messages</a>
+        <a href="store.html">Night Market</a>
         <a href="profile.html" aria-current="page">Profile</a>
       </nav>
       <div class="topbar-right">
-        <a class="ghost-btn" href="edit-profile.html">Edit Profile</a>
+        <a class="ghost-btn" href="edit-profile.html" id="topbarEditBtn">Edit Profile</a>
       </div>
     </div>
   </header>
@@ -897,7 +934,7 @@
                 </div>
 
                 <div class="sub-row">
-                  <div class="status-control">
+                  <div class="status-control" id="statusControl">
                     <button class="status-pill status-offline" id="statusPill" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="statusMenu">
                       <span class="status-dot"></span>
                       <span id="profileStatus">Offline</span>
@@ -944,8 +981,9 @@
             </div>
 
             <div class="identity-actions">
-              <a class="primary-btn" href="edit-profile.html">Edit Profile</a>
-              <button class="secondary-btn" type="button">Share</button>
+              <a class="primary-btn" href="edit-profile.html" id="profileEditBtn">Edit Profile</a>
+              <button class="secondary-btn" type="button" id="profileShareBtn">Share</button>
+              <button class="secondary-btn" type="button" id="profileMessageBtn" hidden>Message</button>
             </div>
           </div>
 
@@ -1088,6 +1126,8 @@
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
+    const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
+    const requestedProfileUid = new URLSearchParams(window.location.search).get('uid') || '';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('index.html');
     }
@@ -1134,12 +1174,192 @@
       activity: ['No activity yet. Your profile updates will start showing here.'],
       featuredHub: 'Pick a favorite hub to feature it here.',
       currentObsession: 'Add what you are currently into.',
-      badges: ['Newcomer'],
+      badges: ['crescent-moon'],
       quickFacts: [
         { label: 'Favorite Genre', value: 'Add this in your profile setup' },
         { label: 'Best Active Hours', value: 'Late night by default' },
         { label: 'Go-To Hub', value: 'Choose a hub to pin it here' }
       ]
+    };
+
+    const BADGE_LIBRARY = {
+      'crescent-moon': { label: 'Crescent Moon', icon: '☾', className: 'badge-crescent-moon' },
+      fortnite: { label: 'Fortnite', icon: 'F', className: 'badge-fortnite' },
+      roblox: { label: 'Roblox', icon: '◈', className: 'badge-roblox' },
+      r6: { label: 'R6', icon: '6', className: 'badge-r6' },
+      'arc-raiders': { label: 'Arc Raiders', icon: 'A', className: 'badge-arc-raiders' },
+      star: { label: 'Star', icon: '✦', className: 'badge-star' },
+      'police-car': { label: 'Police Car', icon: '🚓', className: 'badge-police-car' }
+    };
+
+    const BADGE_ALIASES = {
+      newcomer: 'crescent-moon',
+      'night crew': 'crescent-moon',
+      'clutch energy': 'r6',
+      'highlight hunter': 'star',
+      'late night': 'crescent-moon',
+      'after hours': 'crescent-moon',
+      'off topic core': 'police-car',
+      'concept cook': 'arc-raiders',
+      'quiet genius': 'star',
+      builder: 'arc-raiders',
+      'founder energy': 'crescent-moon',
+      unconfigured: 'crescent-moon',
+      moon: 'crescent-moon',
+      crescent: 'crescent-moon'
+    };
+
+    const PUBLIC_PROFILE_SEEDS = {
+      hijinxx: {
+        username: 'hijinxx',
+        displayName: 'Hijinxx',
+        title: 'Night Queue Instigator',
+        status: 'Online',
+        bio: 'Usually somewhere between late-night ranked queues, lurking in off-topic, and pulling friends into one more round.',
+        theme: 'green',
+        bannerTitle: 'Queue first, sleep later.',
+        bannerText: 'Hijinxx treats every night like there is still time for one more game, one more clip, and one more chaotic detour.',
+        bannerTags: ['Night Crew', 'Ranked', 'Always Around'],
+        games: ['Rainbow Six Siege', 'Valorant', 'Fortnite'],
+        stats: { posts: 18, followers: 41, following: 29, games: 3, hubs: 5, clips: 12 },
+        pinnedPost: {
+          badge: 'Pinned Thought',
+          time: 'Pinned tonight',
+          text: 'If the squad says one more match, the answer is yes.',
+          likes: 14,
+          comments: 6,
+          shares: 2
+        },
+        activity: ['Queued into Siege hub after midnight.', 'Dropped a clip in the Night Crew chat.', 'Still online somehow.'],
+        featuredHub: 'Siege Hub',
+        currentObsession: 'Perfecting the “one more game” lie.',
+        badges: ['crescent-moon', 'r6'],
+        quickFacts: [
+          { label: 'Favorite Genre', value: 'Tactical shooters' },
+          { label: 'Best Active Hours', value: '11 PM to 3 AM' },
+          { label: 'Go-To Hub', value: 'Siege Hub' }
+        ]
+      },
+      loripie: {
+        username: 'loripie',
+        displayName: 'LoriPie',
+        title: 'Clip Dealer',
+        status: 'Idle',
+        bio: 'If something funny happened in chat or in game, LoriPie probably already clipped it and sent it around.',
+        theme: 'pink',
+        bannerTitle: 'Clips, chaos, and catching the best moments.',
+        bannerText: 'LoriPie keeps the receipts and the funniest five seconds from every night online.',
+        bannerTags: ['Clips', 'Reaction Queen'],
+        games: ['Valorant', 'Roblox', 'Minecraft'],
+        stats: { posts: 11, followers: 33, following: 22, games: 3, hubs: 4, clips: 27 },
+        pinnedPost: {
+          badge: 'Pinned Clip Note',
+          time: 'Pinned earlier',
+          text: 'If you say “clip that” near me, it is already saved.',
+          likes: 19,
+          comments: 4,
+          shares: 7
+        },
+        activity: ['Sent three clips to friends tonight.', 'Watching everyone embarrass themselves in queue.', 'Hovering in chat with tabs open.'],
+        featuredHub: 'Clips + Highlights',
+        currentObsession: 'Finding the exact frame that makes a clip legendary.',
+        badges: ['roblox', 'star'],
+        quickFacts: [
+          { label: 'Favorite Genre', value: 'Party chaos and shooters' },
+          { label: 'Best Active Hours', value: 'After midnight' },
+          { label: 'Go-To Hub', value: 'Clips + Highlights' }
+        ]
+      },
+      wakebakewes: {
+        username: 'wakebakewes',
+        displayName: 'WakeBakeWes',
+        title: 'After-Hours Loungekeeper',
+        status: 'Do Not Disturb',
+        theme: 'blue',
+        bio: 'Keeps the late-night rooms alive, the off-topic chats weird, and the energy exactly where it should be.',
+        bannerTitle: 'The lounge is open.',
+        bannerText: 'WakeBakeWes is always one tab away from drifting a conversation into something unexpectedly hilarious.',
+        bannerTags: ['Off Topic', 'Late Night Lounge'],
+        games: ['Helldivers 2', 'Minecraft'],
+        stats: { posts: 9, followers: 26, following: 18, games: 2, hubs: 3, clips: 5 },
+        pinnedPost: {
+          badge: 'Pinned Thought',
+          time: 'Pinned yesterday',
+          text: 'Every good chat eventually derails. That is how you know it is working.',
+          likes: 12,
+          comments: 9,
+          shares: 1
+        },
+        activity: ['Holding down Off Topic.', 'Trying not to queue right now.', 'Half AFK, still somehow present.'],
+        featuredHub: 'Off Topic',
+        currentObsession: 'Keeping the lounge weird but welcoming.',
+        badges: ['police-car', 'fortnite'],
+        quickFacts: [
+          { label: 'Favorite Genre', value: 'Co-op chaos' },
+          { label: 'Best Active Hours', value: 'Very late' },
+          { label: 'Go-To Hub', value: 'Off Topic' }
+        ]
+      },
+      undiscoverabletalent: {
+        username: 'undiscoverabletalent',
+        displayName: 'UnDiscoverableTalent',
+        title: 'Feature Brainstormer',
+        status: 'Invisible',
+        theme: 'violet',
+        bio: 'Always quietly cooking up ideas that probably deserve their own full feature by the next week.',
+        bannerTitle: 'Ideas first, polish later.',
+        bannerText: 'UnDiscoverableTalent is the kind of person who turns a throwaway thought into an actual roadmap.',
+        bannerTags: ['Builder Mindset', 'Future Features'],
+        games: ['Roblox', 'Minecraft'],
+        stats: { posts: 7, followers: 21, following: 17, games: 2, hubs: 6, clips: 2 },
+        pinnedPost: {
+          badge: 'Pinned Idea',
+          time: 'Pinned recently',
+          text: 'If the idea keeps growing in your head, it probably wants to be built.',
+          likes: 16,
+          comments: 5,
+          shares: 3
+        },
+        activity: ['Sketching future hub ideas.', 'Hovering between tabs and notes.', 'Appearing offline, still thinking.'],
+        featuredHub: 'Builder Notes',
+        currentObsession: 'Turning rough ideas into real pages.',
+        badges: ['arc-raiders', 'star'],
+        quickFacts: [
+          { label: 'Favorite Genre', value: 'Sandbox + builder spaces' },
+          { label: 'Best Active Hours', value: 'Whenever inspiration hits' },
+          { label: 'Go-To Hub', value: 'Builder Notes' }
+        ]
+      },
+      venus: {
+        username: 'venus',
+        displayName: 'Venus',
+        title: 'Alive After Dark',
+        status: 'Online',
+        theme: 'pink',
+        bio: 'Building Noctive into the kind of late-night internet space that feels personal, weird, playful, and actually worth hanging around in.',
+        bannerTitle: 'Alive After Dark.',
+        bannerText: 'Venus is shaping the vibe, the visuals, and the strange little corners that make Noctive feel like its own world.',
+        bannerTags: ['Noctive', 'Builder', 'Late Night'],
+        games: ['Minecraft', 'Roblox', 'Fortnite'],
+        stats: { posts: 24, followers: 52, following: 30, games: 3, hubs: 8, clips: 11 },
+        pinnedPost: {
+          badge: 'Pinned Thought',
+          time: 'Pinned tonight',
+          text: 'Alive After Dark, but make it feel like ours.',
+          likes: 31,
+          comments: 10,
+          shares: 6
+        },
+        activity: ['Refining the home feed.', 'Polishing DMs and quick messenger.', 'Still tweaking the vibe.'],
+        featuredHub: 'Noctive Core',
+        currentObsession: 'Making the UI feel more playful and personal.',
+        badges: ['crescent-moon', 'arc-raiders'],
+        quickFacts: [
+          { label: 'Favorite Genre', value: 'Creative sandbox spaces' },
+          { label: 'Best Active Hours', value: 'After dark, always' },
+          { label: 'Go-To Hub', value: 'Noctive Core' }
+        ]
+      }
     };
 
     const app = initializeApp(firebaseConfig);
@@ -1155,6 +1375,10 @@
     function setText(id, value) {
       const el = document.getElementById(id);
       if (el) el.textContent = value ?? '';
+    }
+
+    function normalizeUid(value) {
+      return String(value || '').trim().toLowerCase();
     }
 
     function deepMerge(base, override) {
@@ -1220,6 +1444,121 @@
       });
     }
 
+    function getPublicProfileDirectory() {
+      try {
+        const raw = localStorage.getItem(PUBLIC_PROFILE_DIRECTORY_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return { ...PUBLIC_PROFILE_SEEDS, ...(parsed || {}) };
+      } catch (error) {
+        console.error('Could not load public profile directory:', error);
+        return { ...PUBLIC_PROFILE_SEEDS };
+      }
+    }
+
+    function savePublicProfileDirectory(directory) {
+      try {
+        localStorage.setItem(PUBLIC_PROFILE_DIRECTORY_KEY, JSON.stringify(directory));
+      } catch (error) {
+        console.error('Could not save public profile directory:', error);
+      }
+    }
+
+    function syncPublicProfile(uid, profile, user) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid || !profile) return;
+      const directory = getPublicProfileDirectory();
+      directory[normalizedUid] = normalizeProfileBadges(deepMerge(PROFILE_TEMPLATE, {
+        ...profile,
+        username: profile.username || user?.email?.split('@')[0] || normalizedUid,
+        displayName: profile.displayName || user?.displayName || normalizedUid,
+        profileUid: normalizedUid
+      }));
+      savePublicProfileDirectory(directory);
+    }
+
+    function getPublicProfile(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return null;
+      const directory = getPublicProfileDirectory();
+      return directory[normalizedUid] ? normalizeProfileBadges(deepMerge(PROFILE_TEMPLATE, directory[normalizedUid])) : null;
+    }
+
+    function createUnknownPublicProfile(uid) {
+      const safeUid = normalizeUid(uid) || 'unknown';
+      const displayName = safeUid.replace(/[-_]+/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+      return deepMerge(PROFILE_TEMPLATE, {
+        username: safeUid,
+        displayName,
+        title: 'Noctive User',
+        status: 'Invisible',
+        bio: 'This profile has not been fully set up yet, but the route is ready for it.',
+        bannerTitle: `${displayName} has not finished setting up their profile yet.`,
+        bannerText: 'Once this user creates or saves a profile, their public view can render here.',
+        bannerTags: ['Profile Pending'],
+        pinnedPost: {
+          ...PROFILE_TEMPLATE.pinnedPost,
+          text: 'Public profile placeholder. This is where their pinned vibe would show up.'
+        },
+        activity: ['No public activity available yet.'],
+        featuredHub: 'No featured hub yet',
+        currentObsession: 'No current obsession added yet',
+        badges: ['crescent-moon'],
+        quickFacts: [
+          { label: 'Favorite Genre', value: 'Not shared yet' },
+          { label: 'Best Active Hours', value: 'Unknown' },
+          { label: 'Go-To Hub', value: 'Not shared yet' }
+        ],
+        profileUid: safeUid
+      });
+    }
+
+    function resolveProfileView(user) {
+      const requestedUid = normalizeUid(requestedProfileUid);
+      const ownUid = normalizeUid(user?.uid);
+
+      if (!requestedUid || (ownUid && requestedUid === ownUid)) {
+        const ownProfile = getStoredProfile(user);
+        if (ownUid) {
+          syncPublicProfile(ownUid, ownProfile, user);
+        }
+        return {
+          isOwnProfile: true,
+          uid: ownUid || 'guest',
+          user,
+          profile: ownProfile
+        };
+      }
+
+      return {
+        isOwnProfile: false,
+        uid: requestedUid,
+        user: null,
+        profile: getPublicProfile(requestedUid) || createUnknownPublicProfile(requestedUid)
+      };
+    }
+
+    function setProfileMode(view) {
+      const topbarEditBtn = document.getElementById('topbarEditBtn');
+      const profileEditBtn = document.getElementById('profileEditBtn');
+      const profileMessageBtn = document.getElementById('profileMessageBtn');
+      const profileShareBtn = document.getElementById('profileShareBtn');
+      const statusControl = document.getElementById('statusControl');
+      const statusMenu = document.getElementById('statusMenu');
+
+      topbarEditBtn?.toggleAttribute('hidden', !view.isOwnProfile);
+      profileEditBtn?.toggleAttribute('hidden', !view.isOwnProfile);
+      profileMessageBtn?.toggleAttribute('hidden', view.isOwnProfile);
+      if (profileShareBtn) {
+        profileShareBtn.textContent = view.isOwnProfile ? 'Share' : 'Copy Link';
+      }
+      if (statusControl) {
+        statusControl.classList.toggle('is-readonly', !view.isOwnProfile);
+      }
+      if (!view.isOwnProfile) {
+        statusMenu?.setAttribute('hidden', 'hidden');
+      }
+    }
+
     function buildAvatar(containerId, profile, fallbackName) {
       const box = document.getElementById(containerId);
       if (!box) return;
@@ -1239,6 +1578,24 @@
       box.innerHTML = `<div class="initial-avatar theme-${profile.theme || 'default'}">${getInitials(fallbackName)}</div>`;
     }
 
+    function getBadgeMeta(badgeValue) {
+      const normalized = String(badgeValue || '').trim().toLowerCase();
+      return BADGE_LIBRARY[normalized] || null;
+    }
+
+    function normalizeBadgeValue(badgeValue) {
+      const normalized = String(badgeValue || '').trim().toLowerCase();
+      if (BADGE_LIBRARY[normalized]) return normalized;
+      return BADGE_ALIASES[normalized] || String(badgeValue || '').trim();
+    }
+
+    function normalizeProfileBadges(profile) {
+      const nextProfile = deepMerge(PROFILE_TEMPLATE, profile || {});
+      const badgeList = Array.isArray(nextProfile.badges) ? nextProfile.badges : PROFILE_TEMPLATE.badges;
+      nextProfile.badges = badgeList.map(normalizeBadgeValue);
+      return nextProfile;
+    }
+
     function renderTagList(containerId, items, className) {
       const container = document.getElementById(containerId);
       if (!container) return;
@@ -1246,7 +1603,19 @@
       items.forEach((item, index) => {
         const span = document.createElement('span');
         span.className = className + ((className === 'badge' && index === 0) ? ' gold' : '');
-        span.textContent = item;
+        if (className === 'badge') {
+          const badgeMeta = getBadgeMeta(item);
+          if (badgeMeta) {
+            span.innerHTML = `
+              <span class="badge-icon ${badgeMeta.className}" aria-hidden="true">${badgeMeta.icon}</span>
+              <span class="badge-label">${badgeMeta.label}</span>
+            `;
+          } else {
+            span.textContent = item;
+          }
+        } else {
+          span.textContent = item;
+        }
         container.appendChild(span);
       });
     }
@@ -1393,7 +1762,7 @@
         try {
           const raw = localStorage.getItem(GUEST_PROFILE_KEY);
           if (!raw) return JSON.parse(JSON.stringify(PROFILE_TEMPLATE));
-          return deepMerge(PROFILE_TEMPLATE, JSON.parse(raw));
+          return normalizeProfileBadges(deepMerge(PROFILE_TEMPLATE, JSON.parse(raw)));
         } catch (error) {
           console.error('Could not parse saved guest profile:', error);
           return JSON.parse(JSON.stringify(PROFILE_TEMPLATE));
@@ -1406,16 +1775,17 @@
         const raw = localStorage.getItem(`noctive_profile_${user.uid}`);
         if (!raw) return starter;
         const parsed = JSON.parse(raw);
-        return deepMerge(starter, parsed);
+        return normalizeProfileBadges(deepMerge(starter, parsed));
       } catch (error) {
         console.error('Could not parse saved profile:', error);
         return starter;
       }
     }
 
-    function renderProfile(user, profile) {
+    function renderProfile(view) {
+      const { user, profile, isOwnProfile, uid } = view;
       const displayName = profile.displayName || user?.displayName || profile.username || 'Guest';
-      const username = profile.username || user?.email?.split('@')[0] || 'guest';
+      const username = profile.username || user?.email?.split('@')[0] || uid || 'guest';
 
       const bannerFill = document.getElementById('bannerFill');
       if (bannerFill) {
@@ -1428,9 +1798,9 @@
       setText('bannerTitle', profile.bannerTitle || `${displayName} is alive after dark.`);
       setText('bannerText', profile.bannerText || profile.bio || 'Set up your profile to personalize this space.');
       setText('profileDisplayName', displayName);
-      setText('profileTitle', profile.title || (user ? 'Noctive Member' : 'Noctive User'));
+      setText('profileTitle', profile.title || (isOwnProfile && user ? 'Noctive Member' : 'Noctive User'));
       setText('profileUsername', `@${username}`);
-      setText('profileEmail', user?.email || 'Sign in to personalize your profile');
+      setText('profileEmail', isOwnProfile ? (user?.email || 'Sign in to personalize your profile') : 'Public profile');
       renderStatus(profile.status || (user ? 'Online' : 'Invisible'));
       setText('profileThemeTag', `${(profile.theme || 'default').charAt(0).toUpperCase()}${(profile.theme || 'default').slice(1)} Theme`);
       setText('profileBio', profile.bio || 'Add a bio to make this profile feel like yours.');
@@ -1462,13 +1832,14 @@
 
       buildAvatar('profileAvatar', profile, displayName);
       buildAvatar('pinnedAvatar', profile, displayName);
+      setProfileMode(view);
     }
 
     onAuthStateChanged(auth, (user) => {
       currentAuthUser = user;
       try {
-        const profile = getStoredProfile(user);
-        renderProfile(user, profile);
+        const view = resolveProfileView(user);
+        renderProfile(view);
         document.getElementById('loadingState')?.setAttribute('hidden', 'hidden');
         document.getElementById('errorState')?.setAttribute('hidden', 'hidden');
         document.getElementById('profileShell')?.removeAttribute('hidden');
@@ -1480,6 +1851,27 @@
     });
 
     initializeStatusMenu();
+    document.getElementById('profileMessageBtn')?.addEventListener('click', () => {
+      const uid = normalizeUid(requestedProfileUid);
+      if (!uid) return;
+      window.location.href = `messages.html?thread=${encodeURIComponent(uid)}`;
+    });
+    document.getElementById('profileShareBtn')?.addEventListener('click', async () => {
+      const link = window.location.href;
+      try {
+        await navigator.clipboard.writeText(link);
+        const button = document.getElementById('profileShareBtn');
+        if (button) {
+          const original = button.textContent;
+          button.textContent = 'Copied';
+          window.setTimeout(() => {
+            button.textContent = original || 'Share';
+          }, 1100);
+        }
+      } catch (error) {
+        console.error('Could not copy profile link:', error);
+      }
+    });
   </script>
 </body>
 </html>

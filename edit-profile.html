@@ -480,7 +480,7 @@
     <div class="media-dialog">
       <div>
         <div class="section-title" id="mediaModalTitle">Change Media</div>
-        <div class="section-sub">Use a direct image URL or upload a file. GIFs work for profile pictures and banners.</div>
+        <div class="section-sub" id="mediaModalSub">Use a direct image URL or upload a file. GIFs work for profile pictures and banners.</div>
       </div>
       <div class="media-preview-box" id="mediaPreviewBox">No media selected yet.</div>
       <div class="field">
@@ -505,6 +505,8 @@
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
+    const MARKET_OWNED_STORAGE_KEY = 'noctive_night_market_owned';
+    const GIF_PROFILE_COUPON_ID = 'upgrade-gif-profile';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('index.html');
     }
@@ -677,6 +679,28 @@
       setSaveMessage(message, 'remind');
     }
 
+    function getOwnedMarketItems() {
+      try {
+        const raw = localStorage.getItem(MARKET_OWNED_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.error('Could not read owned Night Market items:', error);
+        return [];
+      }
+    }
+
+    function hasGifProfileUnlock() {
+      return getOwnedMarketItems().includes(GIF_PROFILE_COUPON_ID);
+    }
+
+    function looksLikeGif(value) {
+      const trimmed = String(value || '').trim();
+      if (!trimmed) return false;
+      if (/^data:image\/gif/i.test(trimmed)) return true;
+      return /\.gif(?:$|[?#])/i.test(trimmed);
+    }
+
     function setInput(id, value) {
       const el = document.getElementById(id);
       if (el) el.value = value ?? '';
@@ -736,12 +760,14 @@
       const games = parseList(document.getElementById('games').value);
       const badges = parseList(document.getElementById('badges').value);
       const fallbackGameText = games.length ? games[0] : 'Add favorite games first';
+      const avatarValue = document.getElementById('avatar').value.trim();
+      const safeAvatarValue = looksLikeGif(avatarValue) && !hasGifProfileUnlock() ? '' : avatarValue;
 
       return deepMerge(starter, {
         displayName: document.getElementById('displayName').value.trim() || starter.displayName,
         username: document.getElementById('username').value.trim() || starter.username,
         status: document.getElementById('status').value,
-        avatar: document.getElementById('avatar').value.trim(),
+        avatar: safeAvatarValue,
         bannerImage: document.getElementById('bannerImage').value.trim(),
         bio: document.getElementById('bio').value.trim() || starter.bio,
         bannerTitle: document.getElementById('bannerTitle').value.trim() || starter.bannerTitle,
@@ -813,14 +839,27 @@
       activeMediaTarget = target;
       const modal = document.getElementById('mediaModal');
       const title = document.getElementById('mediaModalTitle');
+      const sub = document.getElementById('mediaModalSub');
       const fieldId = target === 'bannerImage' ? 'bannerImage' : 'avatar';
       const currentValue = document.getElementById(fieldId)?.value || '';
       if (title) {
         title.textContent = target === 'bannerImage' ? 'Change Banner' : 'Change Profile Picture';
       }
+      if (sub) {
+        if (target === 'bannerImage') {
+          sub.textContent = 'Use a direct image URL or upload a file. Banners can still be static or GIF.';
+        } else if (hasGifProfileUnlock()) {
+          sub.textContent = 'Use a direct image URL or upload a file. You unlocked GIF profile pictures, so still images and GIFs both work here.';
+        } else {
+          sub.textContent = 'Use a direct image URL or upload a file. Profile pictures stay still-image only until you unlock the GIF coupon in Night Market.';
+        }
+      }
       setInput('mediaUrl', currentValue);
       const mediaFile = document.getElementById('mediaFile');
-      if (mediaFile) mediaFile.value = '';
+      if (mediaFile) {
+        mediaFile.value = '';
+        mediaFile.accept = target === 'bannerImage' || hasGifProfileUnlock() ? 'image/*,image/gif' : 'image/png,image/jpeg,image/jpg,image/webp,image/avif';
+      }
       setMediaPreview(currentValue);
       modal?.removeAttribute('hidden');
     }
@@ -833,6 +872,10 @@
       const fieldId = activeMediaTarget === 'bannerImage' ? 'bannerImage' : 'avatar';
       const input = document.getElementById(fieldId);
       if (!input) return;
+      if (fieldId === 'avatar' && looksLikeGif(value) && !hasGifProfileUnlock()) {
+        shakeEditor('GIF profile pictures unlock after you buy the GIF coupon in Night Market first.');
+        return;
+      }
       input.value = value || '';
       markDirty();
       updatePreview(readFormProfile());
@@ -852,6 +895,11 @@
     document.getElementById('mediaFile')?.addEventListener('change', (event) => {
       const file = event.target.files?.[0];
       if (!file) return;
+      if (activeMediaTarget === 'avatar' && file.type === 'image/gif' && !hasGifProfileUnlock()) {
+        event.target.value = '';
+        shakeEditor('That GIF pfp is locked for now. Grab the GIF coupon in Night Market first.');
+        return;
+      }
       const reader = new FileReader();
       reader.onload = () => {
         const result = typeof reader.result === 'string' ? reader.result : '';
@@ -863,7 +911,11 @@
     document.getElementById('applyMediaBtn')?.addEventListener('click', () => {
       const value = document.getElementById('mediaUrl')?.value.trim() || '';
       applyMediaValue(value);
-      closeMediaModal();
+      const avatarValue = document.getElementById('avatar')?.value.trim() || '';
+      const bannerValue = document.getElementById('bannerImage')?.value.trim() || '';
+      if ((activeMediaTarget === 'avatar' && avatarValue === value) || (activeMediaTarget === 'bannerImage' && bannerValue === value) || !value) {
+        closeMediaModal();
+      }
     });
     document.getElementById('mediaModal')?.addEventListener('click', (event) => {
       if (event.target.id === 'mediaModal') closeMediaModal();

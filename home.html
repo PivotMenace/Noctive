@@ -532,6 +532,20 @@
       box-shadow:0 0 16px rgba(250,204,21,0.22);
     }
 
+    .vote-action[data-vote="down"]:hover{
+      background:rgba(220,20,60,0.18);
+      border-color:rgba(220,20,60,0.34);
+      color:#ff9fb0;
+      box-shadow:0 0 14px rgba(220,20,60,0.18), 0 10px 20px rgba(0,0,0,0.18);
+    }
+
+    .vote-action[data-vote="down"].is-active{
+      background:rgba(220,20,60,0.20);
+      border-color:rgba(220,20,60,0.40);
+      color:#ff9fb0;
+      box-shadow:0 0 16px rgba(220,20,60,0.22);
+    }
+
     .vote-count{
       font-family:var(--fontHead);
       font-size:0.86rem;
@@ -744,6 +758,267 @@
       background:rgba(10,10,14,0.55);
     }
 
+    .messenger-dock{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:6800;
+      display:flex;
+      align-items:flex-end;
+      gap:14px;
+      pointer-events:none;
+    }
+
+    .messenger-popup,
+    .messenger-tray{
+      pointer-events:auto;
+    }
+
+    .messenger-popup{
+      width:min(340px,calc(100vw - 32px));
+      border-radius:18px 18px 12px 12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.12);
+      background:linear-gradient(180deg,rgba(24,26,38,0.98),rgba(14,15,24,0.98));
+      box-shadow:0 24px 70px rgba(0,0,0,0.42);
+      display:grid;
+      grid-template-rows:auto minmax(0,1fr) auto;
+      min-height:420px;
+      max-height:min(520px,68vh);
+    }
+
+    .messenger-popup[hidden]{
+      display:none !important;
+    }
+
+    .messenger-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+      background:linear-gradient(135deg,rgba(236,72,153,0.18),rgba(96,165,250,0.14),rgba(139,92,246,0.16));
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .messenger-head-main{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .messenger-title{
+      font-family:var(--fontHead);
+      font-weight:700;
+      color:#fff;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .messenger-subline{
+      color:rgba(255,255,255,0.66);
+      font-size:0.84rem;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .messenger-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-shrink:0;
+    }
+
+    .messenger-mini-btn{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.08);
+      color:#fff;
+      cursor:pointer;
+      font-family:var(--fontHead);
+      transition:transform 140ms ease,background 140ms ease,border-color 140ms ease;
+    }
+
+    .messenger-mini-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,0.14);
+      border-color:rgba(255,255,255,0.18);
+    }
+
+    .messenger-body{
+      padding:14px 14px 10px;
+      overflow-y:auto;
+      display:grid;
+      gap:10px;
+      align-content:start;
+      background:
+        radial-gradient(circle at top right,rgba(255,255,255,0.04),transparent 22%),
+        linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0));
+    }
+
+    .messenger-msg{
+      max-width:88%;
+      padding:10px 12px;
+      border-radius:18px 18px 18px 10px;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.06);
+      color:rgba(255,255,255,0.92);
+      box-shadow:0 10px 24px rgba(0,0,0,0.14);
+    }
+
+    .messenger-msg.self{
+      margin-left:auto;
+      border-radius:18px 18px 10px 18px;
+      background:linear-gradient(135deg,rgba(251,113,133,0.24),rgba(96,165,250,0.24));
+      border-color:rgba(255,255,255,0.10);
+    }
+
+    .messenger-msg-meta{
+      color:rgba(255,255,255,0.48);
+      font-size:0.74rem;
+      margin-bottom:4px;
+      font-family:var(--fontHead);
+    }
+
+    .messenger-msg-copy{
+      line-height:1.45;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .messenger-compose{
+      padding:12px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      background:rgba(11,12,19,0.96);
+      display:grid;
+      gap:8px;
+    }
+
+    .messenger-compose textarea{
+      width:100%;
+      min-height:64px;
+      max-height:144px;
+      resize:vertical;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.06);
+      color:#fff;
+      padding:12px;
+      outline:none;
+      font-family:var(--fontMain);
+    }
+
+    .messenger-compose-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .messenger-hint{
+      color:rgba(255,255,255,0.5);
+      font-size:0.78rem;
+    }
+
+    .messenger-send{
+      font-family:var(--fontHead);
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:linear-gradient(135deg,rgba(236,72,153,0.94),rgba(96,165,250,0.92));
+      color:#fff;
+      cursor:pointer;
+      font-weight:700;
+      box-shadow:0 10px 24px rgba(59,130,246,0.18);
+    }
+
+    .messenger-tray{
+      display:flex;
+      align-items:flex-end;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(10,10,14,0.76);
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 18px 40px rgba(0,0,0,0.32);
+      backdrop-filter:blur(10px);
+    }
+
+    .messenger-chip{
+      width:46px;
+      height:46px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.04);
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      padding:0;
+      position:relative;
+      overflow:visible;
+      transition:transform 140ms ease,box-shadow 140ms ease,border-color 140ms ease;
+    }
+
+    .messenger-chip:hover{
+      transform:translateY(-2px) scale(1.02);
+      border-color:rgba(255,255,255,0.16);
+      box-shadow:0 10px 20px rgba(0,0,0,0.18);
+    }
+
+    .messenger-chip .avatar-status-wrap{
+      padding:0;
+      overflow:visible;
+    }
+
+    .messenger-chip .avatar-dot{
+      width:46px;
+      height:46px;
+      border:none;
+      background:transparent;
+      overflow:visible;
+    }
+
+    .messenger-chip .dot{
+      right:-3px;
+      bottom:-2px;
+      width:13px;
+      height:13px;
+      border:2px solid rgba(10,10,14,0.96);
+      box-shadow:0 0 0 1px rgba(10,10,14,0.42), 0 3px 8px rgba(0,0,0,0.22);
+      z-index:6;
+    }
+
+    .messenger-launcher{
+      min-width:50px;
+      height:50px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:linear-gradient(135deg,rgba(236,72,153,0.94),rgba(96,165,250,0.92));
+      color:#fff;
+      cursor:pointer;
+      font-size:1.2rem;
+      box-shadow:0 12px 24px rgba(59,130,246,0.18);
+      transition:transform 140ms ease,box-shadow 140ms ease,filter 140ms ease;
+    }
+
+    .messenger-launcher:hover{
+      transform:translateY(-2px) scale(1.03);
+      box-shadow:0 16px 28px rgba(59,130,246,0.24);
+      filter:saturate(1.08);
+    }
+
+    .messenger-empty{
+      padding:12px 14px;
+      color:rgba(255,255,255,0.68);
+      font-size:0.84rem;
+    }
+
     .bottombar-inner{
       max-width:1200px;
       margin:0 auto;
@@ -769,6 +1044,20 @@
       .app-shell{grid-template-columns:1fr;}
       .rail{position:static;}
       .bottombar-inner{flex-direction:column;text-align:center;}
+      .messenger-dock{
+        right:12px;
+        left:12px;
+        bottom:12px;
+        align-items:stretch;
+      }
+      .messenger-popup{
+        width:100%;
+        max-height:58vh;
+      }
+      .messenger-tray{
+        justify-content:center;
+        flex-wrap:wrap;
+      }
     }
   </style>
 </head>
@@ -784,6 +1073,7 @@
         <a href="explore.html">Explore</a>
         <a href="faq.html">FAQ</a>
         <a href="messages.html">Messages</a>
+        <a href="store.html">Night Market</a>
         <a href="profile.html">Profile</a>
       </nav>
 
@@ -995,9 +1285,42 @@
     </div>
   </footer>
 
+  <div class="messenger-dock" id="messengerDock">
+    <div class="messenger-popup" id="messengerPopup" hidden>
+      <div class="messenger-head">
+        <div class="messenger-head-main">
+          <div class="avatar-dot user-avatar" id="messengerPopupAvatar" data-name="Friend" data-theme="default" data-avatar=""></div>
+          <div style="min-width:0;">
+            <div class="messenger-title" id="messengerPopupTitle">Quick Chat</div>
+            <div class="messenger-subline" id="messengerPopupSubline">Messenger dock</div>
+          </div>
+        </div>
+        <div class="messenger-actions">
+          <button class="messenger-mini-btn" type="button" id="messengerMinimizeBtn" aria-label="Minimize chat">-</button>
+          <button class="messenger-mini-btn" type="button" id="messengerCloseBtn" aria-label="Close chat">✕</button>
+        </div>
+      </div>
+      <div class="messenger-body" id="messengerBody"></div>
+      <div class="messenger-compose">
+        <textarea id="messengerInput" placeholder="Type a quick message..."></textarea>
+        <div class="messenger-compose-row">
+          <div class="messenger-hint">Press Enter to send. Shift+Enter for a new line.</div>
+          <button class="messenger-send" type="button" id="messengerSendBtn">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="messenger-tray" id="messengerTray">
+      <button class="messenger-launcher" type="button" id="messengerLauncher" title="Quick Messenger">☾</button>
+      <div id="messengerTrayList" style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;"></div>
+    </div>
+  </div>
+
   <script>
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const NIGHT_CREW_STORAGE_PREFIX = 'noctive_night_crew_';
+    const QUICK_CHAT_STORAGE_PREFIX = 'noctive_quick_chat_';
+    const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('index.html');
     }
@@ -1009,6 +1332,7 @@
       posts: [
         {
           id: "post-1",
+          uid: "venus",
           author: "Venus",
           theme: "pink",
           avatar: "",
@@ -1041,6 +1365,8 @@
     };
 
     let nightCrewFriends = [];
+    let activeQuickChatId = '';
+    let isMessengerTrayExpanded = true;
 
     function escapeHtml(value) {
       return String(value).replace(/[&<>"']/g, (char) => ({
@@ -1050,6 +1376,11 @@
         '"': '&quot;',
         "'": '&#39;'
       }[char]));
+    }
+
+    function buildProfileHref(uid) {
+      const normalized = String(uid || '').trim();
+      return normalized ? `profile.html?uid=${encodeURIComponent(normalized)}` : 'profile.html';
     }
 
     function getInitials(name) {
@@ -1077,12 +1408,128 @@
       return `${NIGHT_CREW_STORAGE_PREFIX}${window.noctiveViewerKey || 'guest'}`;
     }
 
+    function buildQuickChatStorageKey(friendId) {
+      return `${QUICK_CHAT_STORAGE_PREFIX}${window.noctiveViewerKey || 'guest'}_${friendId}`;
+    }
+
     function getDefaultNightCrew() {
       return HOME_TEMPLATE.friends.map((friend) => ({
         ...friend,
         presence: normalizePresence(friend.presence),
         activity: friend.activity || ''
       }));
+    }
+
+    function findNightCrewFriend(friendId) {
+      return nightCrewFriends.find((friend) => friend.id === friendId) || null;
+    }
+
+    function getViewerQuickName() {
+      return document.getElementById('userDisplayName')?.textContent?.trim() || 'You';
+    }
+
+    function getSeedQuickMessages(friend) {
+      if (!friend) return [];
+      return [
+        {
+          author: friend.name,
+          time: 'just now',
+          body: `${friend.activity || 'Hovering around Noctive'}`
+        }
+      ];
+    }
+
+    function loadQuickChatMessages(friendId) {
+      const friend = findNightCrewFriend(friendId);
+      if (!friend) return [];
+      try {
+        const raw = localStorage.getItem(buildQuickChatStorageKey(friendId));
+        if (!raw) return getSeedQuickMessages(friend);
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || !parsed.length) return getSeedQuickMessages(friend);
+        return parsed.map((message) => ({
+          author: message.author || friend.name,
+          time: message.time || 'just now',
+          body: message.body || ''
+        }));
+      } catch (error) {
+        console.error('Could not load quick chat messages:', error);
+        return getSeedQuickMessages(friend);
+      }
+    }
+
+    function saveQuickChatMessages(friendId, messages) {
+      try {
+        localStorage.setItem(buildQuickChatStorageKey(friendId), JSON.stringify(messages));
+      } catch (error) {
+        console.error('Could not save quick chat messages:', error);
+      }
+    }
+
+    function appendQuickChatMessage(friendId, message) {
+      const current = loadQuickChatMessages(friendId);
+      const next = [...current, message];
+      saveQuickChatMessages(friendId, next);
+      return next;
+    }
+
+    function syncNightCrewPublicProfiles() {
+      try {
+        const raw = localStorage.getItem(PUBLIC_PROFILE_DIRECTORY_KEY);
+        const directory = raw ? JSON.parse(raw) : {};
+
+        nightCrewFriends.forEach((friend) => {
+          const uid = String(friend.id || '').trim().toLowerCase();
+          if (!uid) return;
+
+          const existing = directory[uid] || {};
+          const displayName = friend.name || existing.displayName || 'Noctive User';
+          directory[uid] = {
+            ...existing,
+            profileUid: uid,
+            username: existing.username || uid.replace(/^friend-custom-\d+$/, displayName.toLowerCase().replace(/\s+/g, '_')),
+            displayName,
+            title: existing.title || 'Night Crew Friend',
+            status: friend.presence || existing.status || 'online',
+            bio: existing.bio || `${displayName} is part of your Night Crew on Noctive.`,
+            theme: friend.theme || existing.theme || 'default',
+            avatar: friend.avatar || existing.avatar || '',
+            bannerTitle: existing.bannerTitle || `${displayName} is hanging around after dark.`,
+            bannerText: existing.bannerText || `${displayName} shows up in your Night Crew and quick messenger flow.`,
+            bannerTags: existing.bannerTags || ['Night Crew'],
+            games: existing.games || [],
+            stats: existing.stats || {
+              posts: 0,
+              followers: 0,
+              following: 0,
+              games: 0,
+              hubs: 0,
+              clips: 0
+            },
+            pinnedPost: existing.pinnedPost || {
+              badge: 'Pinned Thought',
+              time: 'Pinned recently',
+              text: `${displayName} has not set up a full public profile yet.`,
+              likes: 0,
+              comments: 0,
+              shares: 0
+            },
+            activity: existing.activity || [friend.activity || 'Hanging around Noctive'],
+            featuredHub: existing.featuredHub || 'Night Crew',
+            currentObsession: existing.currentObsession || (friend.activity || 'Late-night chats'),
+            badges: existing.badges || ['Night Crew'],
+            quickFacts: existing.quickFacts || [
+              { label: 'Favorite Genre', value: 'Not shared yet' },
+              { label: 'Best Active Hours', value: 'Usually late' },
+              { label: 'Go-To Hub', value: 'Night Crew' }
+            ]
+          };
+        });
+
+        localStorage.setItem(PUBLIC_PROFILE_DIRECTORY_KEY, JSON.stringify(directory));
+      } catch (error) {
+        console.error('Could not sync Night Crew public profiles:', error);
+      }
     }
 
     function loadNightCrewFriends() {
@@ -1134,15 +1581,18 @@
       const upVotes = Number(post.votes?.up ?? 0);
       const downVotes = Number(post.votes?.down ?? 0);
       const commentsCount = Array.isArray(post.comments) ? post.comments.length : 0;
+      const profileHref = buildProfileHref(post.uid || post.author);
       return `
         <article class="post" data-post-id="${escapeHtml(post.id)}">
           <div class="post-head">
             <div class="post-user">
-              ${buildAvatarMarkup({ name: post.author, theme: post.theme, avatar: post.avatar }, 'mini-avatar', false)}
-              <div class="meta-stack" style="min-width:0;">
+              <a href="${profileHref}" aria-label="Open ${escapeHtml(post.author)}'s profile">
+                ${buildAvatarMarkup({ name: post.author, theme: post.theme, avatar: post.avatar }, 'mini-avatar', false)}
+              </a>
+              <a class="meta-stack" href="${profileHref}" style="min-width:0;">
                 <div class="pname">${escapeHtml(post.author)}</div>
                 <div class="ptime">${escapeHtml(post.time)}</div>
-              </div>
+              </a>
             </div>
             <div class="tag">${escapeHtml(post.tag)}</div>
           </div>
@@ -1172,32 +1622,38 @@
 
     function buildActiveMarkup(user) {
       const presence = getPresenceMeta(user.presence);
+      const profileHref = buildProfileHref(user.id);
       return `
         <div class="active-card">
-          <div class="active-left">
+          <a class="active-left" href="${profileHref}" style="text-decoration:none;">
             ${buildAvatarMarkup(user, 'avatar-dot', true)}
             <div class="meta-stack" style="min-width:0;">
               <div class="active-name">${escapeHtml(user.name)}</div>
               <div class="active-sub">${escapeHtml(user.activity || presence.activityFallback)}</div>
             </div>
+          </a>
+          <div class="friend-actions">
+            <span class="presence-label ${presence.className}">${presence.label}</span>
+            <button class="action" type="button" data-open-chat="${escapeHtml(user.id)}">Message</button>
           </div>
-          <span class="presence-label ${presence.className}">${presence.label}</span>
         </div>
       `;
     }
 
     function buildFriendMarkup(user) {
       const presence = getPresenceMeta(user.presence);
+      const profileHref = buildProfileHref(user.id);
       return `
         <div class="friend-row">
-          <div class="friend-left">
+          <a class="friend-left" href="${profileHref}" style="text-decoration:none;">
             ${buildAvatarMarkup(user, 'avatar-dot', true)}
             <div class="friend-meta">
               <div class="friend-name">${escapeHtml(user.name)}</div>
               <div class="friend-status">${escapeHtml(user.activity || presence.activityFallback)}</div>
             </div>
-          </div>
+          </a>
           <div class="friend-actions">
+            <button class="action" type="button" data-open-chat="${escapeHtml(user.id)}">Message</button>
             <span class="presence-label ${presence.className}">${presence.label}</span>
             ${String(user.id || '').startsWith('friend-custom-') ? `<button class="action friend-remove" type="button" data-remove-friend="${escapeHtml(user.id)}">Remove</button>` : ''}
           </div>
@@ -1216,6 +1672,117 @@
       if (drawerActiveNowList) drawerActiveNowList.innerHTML = activeFriends.length ? activeFriends.slice(0, 3).map(buildActiveMarkup).join('') : '<div class="small">No visible crew online yet.</div>';
       if (friendsList) friendsList.innerHTML = nightCrewFriends.length ? nightCrewFriends.map(buildFriendMarkup).join('') : '<div class="small">Add a few people to make Night Crew feel like yours.</div>';
       if (drawerFriendsList) drawerFriendsList.innerHTML = nightCrewFriends.length ? nightCrewFriends.map(buildFriendMarkup).join('') : '<div class="small">Add a few people to make Night Crew feel like yours.</div>';
+      syncNightCrewPublicProfiles();
+      renderMessengerTray();
+      if (activeQuickChatId && !findNightCrewFriend(activeQuickChatId)) {
+        closeQuickMessenger();
+      } else if (activeQuickChatId) {
+        renderQuickMessenger();
+      }
+    }
+
+    function renderMessengerTray() {
+      const trayList = document.getElementById('messengerTrayList');
+      if (!trayList) return;
+      const trayFriends = nightCrewFriends
+        .filter((friend) => normalizePresence(friend.presence) !== 'invisible')
+        .slice(0, isMessengerTrayExpanded ? 4 : 0);
+
+      trayList.innerHTML = trayFriends.length
+        ? trayFriends.map((friend) => `
+            <button class="messenger-chip" type="button" data-quick-dock="${escapeHtml(friend.id)}" title="${escapeHtml(friend.name)}">
+              ${buildAvatarMarkup(friend, 'avatar-dot', true)}
+            </button>
+          `).join('')
+        : '<div class="messenger-empty">Add Night Crew friends to pop chats here.</div>';
+      applyGeneratedAvatars();
+    }
+
+    function renderQuickMessenger() {
+      const popup = document.getElementById('messengerPopup');
+      const body = document.getElementById('messengerBody');
+      const title = document.getElementById('messengerPopupTitle');
+      const subline = document.getElementById('messengerPopupSubline');
+      const avatar = document.getElementById('messengerPopupAvatar');
+      const input = document.getElementById('messengerInput');
+      const friend = findNightCrewFriend(activeQuickChatId);
+      if (!popup || !body || !title || !subline || !avatar) return;
+
+      if (!friend) {
+        closeQuickMessenger();
+        return;
+      }
+
+      const messages = loadQuickChatMessages(friend.id);
+      popup.removeAttribute('hidden');
+      title.textContent = friend.name;
+      subline.textContent = friend.activity || getPresenceMeta(friend.presence).activityFallback;
+      avatar.dataset.name = friend.name || 'Friend';
+      avatar.dataset.theme = friend.theme || 'default';
+      avatar.dataset.avatar = friend.avatar || '';
+      body.innerHTML = messages.map((message) => `
+        <div class="messenger-msg${message.author === getViewerQuickName() ? ' self' : ''}">
+          <div class="messenger-msg-meta">${escapeHtml(message.author)} • ${escapeHtml(message.time)}</div>
+          <div class="messenger-msg-copy">${escapeHtml(message.body)}</div>
+        </div>
+      `).join('');
+      applyGeneratedAvatars();
+      body.scrollTop = body.scrollHeight;
+      if (input) input.placeholder = `Message ${friend.name}...`;
+    }
+
+    function openQuickMessenger(friendId) {
+      const popup = document.getElementById('messengerPopup');
+      if (!findNightCrewFriend(friendId)) return;
+      if (activeQuickChatId === friendId && popup && !popup.hasAttribute('hidden')) {
+        closeQuickMessenger();
+        return;
+      }
+      activeQuickChatId = friendId;
+      renderQuickMessenger();
+    }
+
+    function closeQuickMessenger() {
+      activeQuickChatId = '';
+      document.getElementById('messengerPopup')?.setAttribute('hidden', 'hidden');
+    }
+
+    function sendQuickMessengerMessage() {
+      const input = document.getElementById('messengerInput');
+      const body = input?.value.trim();
+      const friend = findNightCrewFriend(activeQuickChatId);
+      if (!input || !body || !friend) return;
+
+      appendQuickChatMessage(friend.id, {
+        author: getViewerQuickName(),
+        time: 'just now',
+        body
+      });
+      input.value = '';
+      renderQuickMessenger();
+
+      window.setTimeout(() => {
+        const currentFriend = findNightCrewFriend(friend.id);
+        if (!currentFriend) return;
+        const replyPool = [
+          `i'm here, just half lurking`,
+          `wait that is actually funny`,
+          `give me a sec i'm mid ${currentFriend.activity || 'chaos'}`,
+          `okay wait tell me more`,
+          `lol yeah i saw that too`
+        ];
+        const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
+        appendQuickChatMessage(friend.id, {
+          author: currentFriend.name,
+          time: 'just now',
+          body: reply
+        });
+        if (activeQuickChatId === friend.id) {
+          renderQuickMessenger();
+        } else {
+          renderMessengerTray();
+        }
+      }, 650);
     }
 
     function renderTemplateData() {
@@ -1387,6 +1954,29 @@
       renderTemplateData();
       applyGeneratedAvatars();
 
+      const messengerLauncher = document.getElementById('messengerLauncher');
+      const messengerSendBtn = document.getElementById('messengerSendBtn');
+      const messengerInput = document.getElementById('messengerInput');
+      const messengerCloseBtn = document.getElementById('messengerCloseBtn');
+      const messengerMinimizeBtn = document.getElementById('messengerMinimizeBtn');
+
+      messengerLauncher?.addEventListener('click', () => {
+        isMessengerTrayExpanded = !isMessengerTrayExpanded;
+        renderMessengerTray();
+        if (!isMessengerTrayExpanded) {
+          closeQuickMessenger();
+        }
+      });
+
+      messengerSendBtn?.addEventListener('click', sendQuickMessengerMessage);
+      messengerCloseBtn?.addEventListener('click', closeQuickMessenger);
+      messengerMinimizeBtn?.addEventListener('click', closeQuickMessenger);
+      messengerInput?.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' || event.shiftKey) return;
+        event.preventDefault();
+        sendQuickMessengerMessage();
+      });
+
       const tabButtons = document.querySelectorAll('.tab-btn');
       const panels = document.querySelectorAll('.panel');
       tabButtons.forEach((btn) => {
@@ -1419,6 +2009,7 @@
           const wrapper = document.createElement('div');
           wrapper.innerHTML = buildPostMarkup({
             id: postId,
+            uid: window.noctiveViewerKey || 'guest',
             author: who,
             theme: document.getElementById('sidebarAvatarBox')?.dataset.theme || 'default',
             avatar: document.getElementById('sidebarAvatarBox')?.dataset.avatar || '',
@@ -1573,6 +2164,15 @@
           return;
         }
 
+        const chatOpenBtn = e.target.closest('[data-open-chat], [data-quick-dock]');
+        if (chatOpenBtn) {
+          const friendId = chatOpenBtn.getAttribute('data-open-chat') || chatOpenBtn.getAttribute('data-quick-dock');
+          if (friendId) {
+            openQuickMessenger(friendId);
+          }
+          return;
+        }
+
         if (!userMenuDropdown || !sidebarUser) return;
         if (!userMenuDropdown.contains(e.target) && !sidebarUser.contains(e.target)) {
           userMenuDropdown.setAttribute('hidden', 'hidden');
@@ -1598,6 +2198,11 @@
 
           if (userMenuDropdown && !userMenuDropdown.hasAttribute('hidden')) {
             userMenuDropdown.setAttribute('hidden', 'hidden');
+            return;
+          }
+
+          if (activeQuickChatId) {
+            closeQuickMessenger();
             return;
           }
         }

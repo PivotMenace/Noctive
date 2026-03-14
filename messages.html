@@ -24,6 +24,23 @@
       --radius: 20px;
       --font-main: 'Nunito', sans-serif;
       --font-head: 'Rubik', 'Roboto Condensed', sans-serif;
+      --discord-shell: rgba(17,18,22,0.92);
+      --discord-sidebar: rgba(28,30,34,0.98);
+      --discord-thread: rgba(34,36,41,0.92);
+      --discord-thread-hover: rgba(63,66,73,0.72);
+      --discord-thread-active: rgba(88,101,242,0.22);
+      --discord-chat: rgba(49,51,56,0.88);
+      --discord-chat-soft: rgba(54,57,63,0.65);
+      --discord-composer: rgba(56,58,64,0.92);
+      --discord-line: rgba(255,255,255,0.08);
+      --discord-blue: #5865f2;
+      --fun-shell: rgba(16,18,28,0.88);
+      --fun-sidebar: linear-gradient(180deg, rgba(28,22,43,0.98), rgba(20,23,38,0.98));
+      --fun-chat: linear-gradient(180deg, rgba(28,30,44,0.86), rgba(17,19,29,0.94));
+      --fun-thread-hover: rgba(255,255,255,0.09);
+      --fun-thread-active-a: rgba(255,140,102,0.22);
+      --fun-thread-active-b: rgba(93,92,222,0.22);
+      --fun-self: linear-gradient(135deg, rgba(255,133,122,0.20), rgba(108,99,255,0.22));
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,10 +49,27 @@
       font-family: var(--font-main);
       color: var(--text);
       background:
-        radial-gradient(circle at top right, rgba(220,20,60,0.10), transparent 24%),
-        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3), var(--bg-2), var(--bg-1));
-      background-size: 100% 100%, 220% 220%;
+        radial-gradient(circle at 12% 18%, rgba(255,155,122,0.17), transparent 22%),
+        radial-gradient(circle at 88% 14%, rgba(125,211,252,0.16), transparent 20%),
+        radial-gradient(circle at 72% 80%, rgba(159,140,255,0.14), transparent 24%),
+        linear-gradient(180deg, #13131d, #121521 40%, #0e1119 100%);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 220% 220%;
       background-attachment: fixed;
+      overflow-y: scroll;
+    }
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.04);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.18);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.24);
     }
     a { color: inherit; text-decoration: none; }
     button, textarea { font: inherit; }
@@ -176,31 +210,58 @@
     }
 
     .messages-shell {
-      padding: 18px;
+      padding: 0;
       display: grid;
       grid-template-columns: 320px minmax(0, 1fr);
-      gap: 18px;
+      gap: 0;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)),
+        var(--fun-shell);
+      min-height: 74vh;
+      border-radius: 28px;
+      position: relative;
+    }
+    .messages-shell::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.05), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(159,140,255,0.08), transparent 28%);
+      pointer-events: none;
     }
     .threads {
       display: grid;
-      gap: 10px;
+      gap: 2px;
       align-content: start;
+      padding: 14px 10px;
+      background: var(--fun-sidebar);
+      border-right: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      z-index: 1;
     }
     .thread-card {
-      border-radius: 16px;
-      padding: 14px;
-      background: var(--panel-dark);
-      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: transparent;
+      border: 1px solid transparent;
       display: grid;
       gap: 6px;
       cursor: pointer;
-      transition: 0.16s ease;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
     }
-    .thread-card:hover,
+    .thread-card:hover {
+      background: var(--fun-thread-hover);
+      border-color: rgba(255,255,255,0.08);
+      transform: translateX(3px);
+    }
     .thread-card.is-active {
-      border-color: rgba(220,20,60,0.24);
-      box-shadow: 0 0 18px rgba(220,20,60,0.14);
-      transform: translateY(-1px);
+      background:
+        linear-gradient(90deg, var(--fun-thread-active-a), var(--fun-thread-active-b)),
+        rgba(255,255,255,0.06);
+      border-color: rgba(159,140,255,0.22);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 10px 18px rgba(0,0,0,0.12);
     }
     .thread-main {
       display: grid;
@@ -270,7 +331,7 @@
     .thread-copy {
       min-width: 0;
       display: grid;
-      gap: 6px;
+      gap: 4px;
     }
     .thread-top {
       display: flex;
@@ -278,22 +339,37 @@
       gap: 12px;
       align-items: center;
     }
-    .thread-name { color: #fff; font-size: 0.98rem; }
-    .thread-time { color: rgba(255,255,255,0.54); font-size: 0.78rem; }
-    .thread-snippet { font-size: 0.9rem; }
+    .thread-name { color: #fff; font-size: 0.98rem; font-weight: 700; }
+    .thread-time { color: rgba(255,255,255,0.48); font-size: 0.76rem; }
+    .thread-snippet {
+      font-size: 0.88rem;
+      color: rgba(230,232,255,0.62);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
 
     .conversation {
       display: grid;
-      gap: 14px;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 0;
       min-width: 0;
+      background: var(--fun-chat);
+      position: relative;
+      z-index: 1;
     }
     .conversation-head {
       display: flex;
       justify-content: space-between;
       gap: 12px;
       align-items: center;
-      padding-bottom: 12px;
+      padding: 16px 18px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(90deg, rgba(255,155,122,0.06), rgba(125,211,252,0.05) 38%, rgba(159,140,255,0.07)),
+        rgba(20,22,33,0.84);
+      backdrop-filter: blur(10px);
     }
     .conversation-head-main {
       display: flex;
@@ -304,40 +380,71 @@
     .message-list {
       display: grid;
       gap: 10px;
+      padding: 18px 18px 22px;
+      align-content: start;
+      overflow-y: auto;
+      min-height: 420px;
     }
     .message-bubble {
-      max-width: 75%;
-      border-radius: 18px;
-      padding: 12px 14px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
+      max-width: min(680px, 100%);
+      border-radius: 22px 22px 22px 10px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.10);
+    }
+    .message-bubble:hover {
+      background: rgba(255,255,255,0.065);
+      border-color: rgba(255,255,255,0.09);
+      transform: translateY(-1px);
     }
     .message-bubble.self {
       margin-left: auto;
-      background: rgba(220,20,60,0.12);
-      border-color: rgba(220,20,60,0.24);
+      border-radius: 22px 22px 10px 22px;
+      background: var(--fun-self);
+      border-color: rgba(159,140,255,0.18);
+      box-shadow: 0 14px 30px rgba(39,24,84,0.20);
     }
     .message-meta {
-      color: rgba(255,255,255,0.52);
+      color: rgba(255,255,255,0.50);
       font-size: 0.76rem;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      font-family: var(--font-head);
+      letter-spacing: 0.01em;
+    }
+    .message-copy {
+      color: rgba(245,247,255,0.92);
+      font-size: 1rem;
+      line-height: 1.55;
     }
     .composer {
       display: grid;
       gap: 10px;
-      padding-top: 8px;
+      padding: 14px 16px 16px;
       border-top: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(90deg, rgba(255,155,122,0.05), rgba(159,140,255,0.06)),
+        linear-gradient(180deg, rgba(18,19,29,0.98), rgba(16,18,26,0.99));
     }
     .composer textarea {
       width: 100%;
-      min-height: 90px;
+      min-height: 72px;
       resize: vertical;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.18);
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)),
+        rgba(41,44,58,0.88);
       color: #fff;
-      padding: 12px 14px;
+      padding: 14px 16px;
       outline: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.10);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+    .composer textarea:focus {
+      border-color: rgba(159,140,255,0.42);
+      box-shadow: 0 0 0 3px rgba(159,140,255,0.12), 0 14px 30px rgba(0,0,0,0.12);
     }
     .composer-bar {
       display: flex;
@@ -357,6 +464,22 @@
       padding: 10px 12px;
       font-family: var(--font-head);
       font-size: 0.84rem;
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.08);
+      border-radius: 14px;
+    }
+    .pill-btn:hover,
+    .icon-btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.15);
+    }
+    .primary-btn {
+      background: linear-gradient(135deg, rgba(255,141,110,0.96), rgba(159,140,255,0.96));
+      border-color: rgba(255,255,255,0.14);
+      box-shadow: 0 12px 28px rgba(102,72,178,0.22);
+    }
+    .primary-btn:hover {
+      box-shadow: 0 16px 34px rgba(102,72,178,0.30);
     }
     .media-picker {
       display: grid;
@@ -366,7 +489,11 @@
       background: rgba(12,13,17,0.98);
       border: 1px solid rgba(255,255,255,0.08);
       overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.36);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.44);
+      animation: pickerRise 0.18s ease;
+    }
+    .media-picker.is-sticker {
+      background: rgba(16,17,21,0.99);
     }
     .media-picker[hidden] {
       display: none !important;
@@ -391,7 +518,7 @@
       transition: 0.16s ease;
     }
     .media-tab.is-active {
-      background: rgba(255,255,255,0.10);
+      background: linear-gradient(135deg, rgba(255,141,110,0.20), rgba(159,140,255,0.22));
       color: #fff;
     }
     .media-search-wrap {
@@ -408,8 +535,8 @@
       min-height: 54px;
       padding: 0 14px;
       border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(8,9,13,0.98);
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(32,34,37,0.98);
     }
     .media-search-icon {
       width: 18px;
@@ -479,7 +606,7 @@
     }
     .media-choice:hover {
       transform: translateY(-1px);
-      border-color: rgba(220,20,60,0.24);
+      border-color: rgba(159,140,255,0.30);
     }
     .media-choice img {
       width: 100%;
@@ -500,6 +627,344 @@
       font-family: var(--font-head);
       font-size: 0.98rem;
       text-shadow: 0 2px 16px rgba(0,0,0,0.66);
+    }
+    .sticker-browser {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      min-height: 420px;
+      max-height: 560px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .sticker-browser[hidden] {
+      display: none !important;
+    }
+    .sticker-sidebar {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      padding: 14px 10px;
+      background: rgba(7,8,11,0.92);
+      border-right: 1px solid rgba(255,255,255,0.07);
+      overflow-y: auto;
+    }
+    .sticker-pack-btn {
+      width: 50px;
+      min-height: 50px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      cursor: pointer;
+      transition: 0.16s ease;
+      overflow: hidden;
+    }
+    .sticker-pack-btn:hover,
+    .sticker-pack-btn.is-active {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.16);
+      transform: translateY(-1px);
+    }
+    .sticker-pack-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .sticker-pack-fallback {
+      font-family: var(--font-head);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.84);
+    }
+    .sticker-main {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      min-width: 0;
+      background: rgba(18,19,24,0.98);
+    }
+    .sticker-section-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px 10px;
+      color: #fff;
+      font-family: var(--font-head);
+      font-size: 0.94rem;
+      font-weight: 700;
+    }
+    .sticker-section-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .sticker-section-title::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border: 3px solid rgba(255,255,255,0.82);
+      border-top-color: transparent;
+      border-radius: 50%;
+      opacity: 0.9;
+    }
+    .sticker-section-chevron {
+      color: rgba(255,255,255,0.74);
+      font-size: 1rem;
+    }
+    .sticker-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px 16px;
+      align-content: start;
+      padding: 8px 16px 16px;
+      overflow-y: auto;
+    }
+    .sticker-grid[hidden] {
+      display: none !important;
+    }
+    .sticker-choice {
+      border: 0;
+      background: transparent;
+      border-radius: 22px;
+      min-height: 132px;
+      padding: 10px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: 0.16s ease;
+      position: relative;
+    }
+    .sticker-choice:hover,
+    .sticker-choice.is-selected {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+    .sticker-choice img {
+      width: 100%;
+      max-width: 158px;
+      aspect-ratio: 1;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.24));
+      user-select: none;
+      pointer-events: none;
+    }
+    .sticker-empty {
+      padding: 18px 16px 24px;
+      color: rgba(255,255,255,0.58);
+      font-size: 0.9rem;
+    }
+    .sticker-preview {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(6,7,10,0.96);
+    }
+    .sticker-preview[hidden] {
+      display: none !important;
+    }
+    .sticker-preview-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .sticker-preview-thumb {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+    .sticker-preview-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .sticker-preview-copy {
+      min-width: 0;
+    }
+    .sticker-preview-name {
+      font-family: var(--font-head);
+      color: #fff;
+      font-size: 1rem;
+      line-height: 1.05;
+    }
+    .sticker-preview-pack {
+      color: rgba(255,255,255,0.64);
+      font-size: 0.86rem;
+      margin-top: 4px;
+    }
+    .sticker-preview-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+    .sticker-preview-badge img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .emoji-browser {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      min-height: 420px;
+      max-height: 560px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .emoji-browser[hidden] {
+      display: none !important;
+    }
+    .emoji-sidebar {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      padding: 14px 10px;
+      background: rgba(7,8,11,0.92);
+      border-right: 1px solid rgba(255,255,255,0.07);
+      overflow-y: auto;
+    }
+    .emoji-pack-btn {
+      width: 50px;
+      min-height: 50px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 1.55rem;
+      cursor: pointer;
+      transition: 0.16s ease;
+    }
+    .emoji-pack-btn:hover,
+    .emoji-pack-btn.is-active {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.16);
+      transform: translateY(-1px);
+    }
+    .emoji-main {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      min-width: 0;
+      background: rgba(18,19,24,0.98);
+    }
+    .emoji-section-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px 10px;
+      color: #fff;
+      font-family: var(--font-head);
+      font-size: 0.94rem;
+      font-weight: 700;
+    }
+    .emoji-section-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .emoji-section-title::before {
+      content: '\263A';
+      color: rgba(255,255,255,0.8);
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 10px;
+      align-content: start;
+      padding: 8px 16px 16px;
+      overflow-y: auto;
+    }
+    .emoji-grid[hidden] {
+      display: none !important;
+    }
+    .emoji-choice {
+      min-height: 60px;
+      border: 0;
+      border-radius: 18px;
+      background: transparent;
+      display: grid;
+      place-items: center;
+      font-size: 2.45rem;
+      cursor: pointer;
+      transition: 0.16s ease;
+    }
+    .emoji-choice:hover,
+    .emoji-choice.is-selected {
+      background: rgba(255,255,255,0.10);
+      transform: translateY(-1px);
+    }
+    .emoji-empty {
+      padding: 18px 16px 24px;
+      color: rgba(255,255,255,0.58);
+      font-size: 0.9rem;
+    }
+    .emoji-preview {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(6,7,10,0.96);
+    }
+    .emoji-preview[hidden] {
+      display: none !important;
+    }
+    .emoji-preview-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .emoji-preview-glyph {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      display: grid;
+      place-items: center;
+      font-size: 1.85rem;
+      flex: 0 0 auto;
+    }
+    .emoji-preview-copy {
+      min-width: 0;
+    }
+    .emoji-preview-name {
+      font-family: var(--font-head);
+      color: #fff;
+      font-size: 1rem;
+      line-height: 1.05;
+    }
+    .emoji-preview-code {
+      color: rgba(255,255,255,0.64);
+      font-size: 0.86rem;
+      margin-top: 4px;
+    }
+    .emoji-preview-action {
+      border-radius: 16px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-family: var(--font-head);
+      font-weight: 700;
+      cursor: pointer;
     }
     .media-label {
       color: var(--gold);
@@ -527,15 +992,63 @@
       border: 1px solid rgba(255,255,255,0.08);
       background: rgba(0,0,0,0.16);
     }
-    .composer-help {
+    .message-sticker {
+      display: grid;
+      justify-items: start;
+      gap: 6px;
+    }
+    .message-sticker img {
+      width: min(164px, 100%);
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.22));
+    }
+    .message-sticker-caption {
       color: rgba(255,255,255,0.56);
       font-size: 0.78rem;
+    }
+    .message-emoji {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-head);
+      color: #fff;
+      font-size: 1.05rem;
+    }
+    .message-emoji-glyph {
+      font-size: 2.15rem;
+      line-height: 1;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.14));
+    }
+    .composer-help {
+      color: rgba(222,225,255,0.56);
+      font-size: 0.78rem;
       line-height: 1.4;
+    }
+    #composerHint {
+      color: rgba(222,225,255,0.46);
+      font-size: 0.8rem;
+    }
+    @keyframes pickerRise {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media (max-width: 980px) {
       .hero,
       .messages-shell { grid-template-columns: 1fr; }
+      .messages-shell {
+        min-height: auto;
+      }
+      .threads {
+        border-right: 0;
+        border-bottom: 1px solid var(--discord-line);
+      }
     }
     @media (max-width: 760px) {
       .topbar-inner {
@@ -544,9 +1057,40 @@
       }
       .topbar-right { margin-left: 0; }
       .topnav { width: 100%; }
-      .hero, .messages-shell, .panel { padding: 16px; }
+      .hero, .panel { padding: 16px; }
+      .messages-shell { border-radius: 20px; }
       .message-bubble { max-width: 100%; }
       .media-grid { grid-template-columns: 1fr 1fr; }
+      .sticker-browser {
+        grid-template-columns: 1fr;
+        min-height: 0;
+      }
+      .sticker-sidebar {
+        grid-auto-flow: column;
+        grid-auto-columns: 50px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+      }
+      .sticker-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .emoji-browser {
+        grid-template-columns: 1fr;
+        min-height: 0;
+      }
+      .emoji-sidebar {
+        grid-auto-flow: column;
+        grid-auto-columns: 50px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+      }
+      .emoji-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
     }
   </style>
 </head>
@@ -559,6 +1103,7 @@
         <a href="explore.html">Explore</a>
         <a href="faq.html">FAQ</a>
         <a href="messages.html" aria-current="page">Messages</a>
+        <a href="store.html">Night Market</a>
         <a href="profile.html">Profile</a>
       </nav>
       <div class="topbar-right">
@@ -653,14 +1198,16 @@
       <section class="conversation">
         <div class="conversation-head">
           <div class="conversation-head-main">
-            <div class="conversation-avatar-shell">
-              <div class="conversation-avatar" id="conversationAvatar">H</div>
-              <span class="presence-dot status-online" id="conversationStatusDot" aria-hidden="true"></span>
-            </div>
-            <div>
+            <a href="profile.html?uid=hijinxx" id="conversationProfileLink" style="display:flex; align-items:center; gap:12px; min-width:0; text-decoration:none;">
+              <div class="conversation-avatar-shell">
+                <div class="conversation-avatar" id="conversationAvatar">H</div>
+                <span class="presence-dot status-online" id="conversationStatusDot" aria-hidden="true"></span>
+              </div>
+              <div>
               <div class="section-title" id="conversationTitle" style="margin-bottom: 4px;">Hijinxx</div>
               <p id="conversationSubline">Placeholder conversation preview</p>
-            </div>
+              </div>
+            </a>
           </div>
           <button class="pill-btn" type="button">New Message</button>
         </div>
@@ -682,7 +1229,47 @@
               </div>
               <div class="media-note" id="mediaPickerNote"></div>
             </div>
+            <div class="sticker-browser" id="stickerBrowser" hidden>
+              <div class="sticker-sidebar" id="stickerSidebar"></div>
+              <div class="sticker-main">
+                <div class="sticker-section-bar">
+                  <div class="sticker-section-title" id="stickerSectionTitle">Frequently Used</div>
+                  <span class="sticker-section-chevron" aria-hidden="true">⌄</span>
+                </div>
+                <div class="sticker-grid" id="stickerPickerGrid"></div>
+              </div>
+            </div>
+            <div class="emoji-browser" id="emojiBrowser" hidden>
+              <div class="emoji-sidebar" id="emojiSidebar"></div>
+              <div class="emoji-main">
+                <div class="emoji-section-bar">
+                  <div class="emoji-section-title" id="emojiSectionTitle">People</div>
+                  <span class="sticker-section-chevron" aria-hidden="true">⌄</span>
+                </div>
+                <div class="emoji-grid" id="emojiPickerGrid"></div>
+              </div>
+            </div>
             <div class="media-grid" id="mediaPickerGrid"></div>
+            <div class="sticker-preview" id="stickerPreview" hidden>
+              <div class="sticker-preview-main">
+                <div class="sticker-preview-thumb" id="stickerPreviewThumb"></div>
+                <div class="sticker-preview-copy">
+                  <div class="sticker-preview-name" id="stickerPreviewName">Sticker</div>
+                  <div class="sticker-preview-pack" id="stickerPreviewPack">from Pack</div>
+                </div>
+              </div>
+              <div class="sticker-preview-badge" id="stickerPreviewBadge"></div>
+            </div>
+            <div class="emoji-preview" id="emojiPreview" hidden>
+              <div class="emoji-preview-main">
+                <div class="emoji-preview-glyph" id="emojiPreviewGlyph">😀</div>
+                <div class="emoji-preview-copy">
+                  <div class="emoji-preview-name" id="emojiPreviewName">grinning_face</div>
+                  <div class="emoji-preview-code" id="emojiPreviewCode">:grinning_face:</div>
+                </div>
+              </div>
+              <button class="emoji-preview-action" type="button" id="emojiPreviewAction">Add Emoji</button>
+            </div>
           </div>
           <textarea id="messageInput" placeholder="Message placeholders live here for now..."></textarea>
           <p class="composer-help" id="composerHelp">Open GIFs, Stickers, or Emoji right inside the composer and send them without leaving the page.</p>
@@ -691,6 +1278,7 @@
             <div class="composer-tools">
               <button class="pill-btn icon-btn" type="button" id="stickerBtn">Sticker</button>
               <button class="pill-btn icon-btn" type="button" id="gifBtn">GIF</button>
+              <button class="pill-btn icon-btn" type="button" id="emojiBtn">Emoji</button>
               <button class="primary-btn" type="button" id="sendMessageBtn">Send</button>
             </div>
           </div>
@@ -709,6 +1297,7 @@
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
+    const requestedThreadId = new URLSearchParams(window.location.search).get('thread') || '';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('index.html');
     }
@@ -727,13 +1316,163 @@
     const auth = getAuth(app);
     const TENOR_API_KEY = window.NOCTIVE_TENOR_API_KEY || '';
     const TENOR_CLIENT_KEY = window.NOCTIVE_TENOR_CLIENT_KEY || 'noctive_web';
+    function createStickerSvg(options) {
+      const {
+        emoji = ':-)',
+        bg = '#2f3136',
+        accent = '#facc15',
+        text = '',
+        textColor = '#ffffff',
+        shape = 'rounded'
+      } = options || {};
+
+      const baseShape = shape === 'circle'
+        ? `<circle cx="96" cy="96" r="58" fill="${bg}" />
+           <circle cx="78" cy="78" r="8" fill="rgba(255,255,255,0.15)" />
+           <circle cx="116" cy="68" r="6" fill="${accent}" opacity="0.8" />`
+        : `<rect x="26" y="22" width="140" height="140" rx="34" fill="${bg}" />
+           <circle cx="68" cy="64" r="10" fill="rgba(255,255,255,0.12)" />
+           <circle cx="125" cy="56" r="8" fill="${accent}" opacity="0.75" />`;
+
+      const banner = text
+        ? `<rect x="92" y="28" width="44" height="44" rx="12" fill="rgba(255,255,255,0.28)" />
+           <text x="114" y="58" text-anchor="middle" font-family="Rubik, sans-serif" font-size="26" font-weight="700" fill="${textColor}">${text}</text>`
+        : '';
+
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+          <rect width="192" height="192" fill="transparent"/>
+          ${baseShape}
+          ${banner}
+          <text x="96" y="120" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="72">${emoji}</text>
+        </svg>
+      `;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+
+    function createStickerPackBadge(label, bg) {
+      const short = String(label || '').trim().slice(0, 2).toUpperCase() || 'ST';
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84">
+          <rect width="84" height="84" rx="24" fill="${bg}" />
+          <text x="42" y="49" text-anchor="middle" font-family="Rubik, sans-serif" font-size="24" font-weight="700" fill="#ffffff">${short}</text>
+        </svg>
+      `;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+
+    function buildSticker(config) {
+      const pack = config.pack || 'Sticker Pack';
+      return {
+        label: config.label,
+        body: `Sticker: ${config.label}`,
+        alt: config.label,
+        keywords: config.keywords || '',
+        pack,
+        packKey: config.packKey,
+        section: config.section || 'Frequently Used',
+        previewUrl: createStickerSvg(config.art),
+        packPreviewUrl: createStickerPackBadge(config.packKey || pack, config.packColor || '#30323b')
+      };
+    }
+
     const STICKERS = [
-      { label: 'Night Owl', body: 'Sticker: Night Owl energy unlocked.', background: 'linear-gradient(135deg, #553c9a, #2e1065)' },
-      { label: 'GG', body: 'Sticker: Clean round. GG.', background: 'linear-gradient(135deg, #0f766e, #134e4a)' },
-      { label: 'Locked In', body: 'Sticker: Fully locked in right now.', background: 'linear-gradient(135deg, #7c2d12, #431407)' },
-      { label: 'Chaos', body: 'Sticker: This went off the rails fast.', background: 'linear-gradient(135deg, #991b1b, #4c0519)' },
-      { label: 'W', body: 'Sticker: Certified W moment.', background: 'linear-gradient(135deg, #1d4ed8, #172554)' },
-      { label: 'Mood', body: 'Sticker: That is the whole mood.', background: 'linear-gradient(135deg, #5b21b6, #312e81)' }
+      buildSticker({
+        label: 'Glare',
+        pack: 'Frequently Used',
+        packKey: 'FR',
+        packColor: '#3a3b42',
+        keywords: 'glare mad annoyed side eye hamster',
+        art: { emoji: '🐹', bg: '#37383f', accent: '#ffcf99' }
+      }),
+      buildSticker({
+        label: 'Bean Count',
+        pack: 'Frequently Used',
+        packKey: 'FR',
+        packColor: '#3a3b42',
+        keywords: 'bean number one meme',
+        art: { emoji: '🫘', bg: '#27292f', accent: '#a5b4fc', text: '1' }
+      }),
+      buildSticker({
+        label: 'Peach Please',
+        pack: 'Fruit Mood',
+        packKey: 'FM',
+        packColor: '#f97316',
+        keywords: 'cute peach blush think',
+        art: { emoji: '🍑', bg: '#2f333a', accent: '#fdba74' }
+      }),
+      buildSticker({
+        label: 'Absolute W',
+        pack: 'Night Hype',
+        packKey: 'NH',
+        packColor: '#0f766e',
+        keywords: 'w win celebrate flex',
+        art: { emoji: '🏆', bg: '#2a3035', accent: '#fde68a', text: 'W' }
+      }),
+      buildSticker({
+        label: 'Skull Mood',
+        pack: 'Meme Vault',
+        packKey: 'MV',
+        packColor: '#52525b',
+        keywords: 'dead skull funny laugh',
+        art: { emoji: '💀', bg: '#31323a', accent: '#d4d4d8', shape: 'circle' }
+      }),
+      buildSticker({
+        label: 'Buff Frog',
+        pack: 'Meme Vault',
+        packKey: 'MV',
+        packColor: '#52525b',
+        keywords: 'frog buff meme flex',
+        art: { emoji: '🐸', bg: '#34363f', accent: '#86efac' }
+      }),
+      buildSticker({
+        label: 'Sleepy Owl',
+        pack: 'Night Owls',
+        packKey: 'NO',
+        packColor: '#4338ca',
+        keywords: 'owl sleepy late night tired',
+        art: { emoji: '🦉', bg: '#2f3152', accent: '#facc15' }
+      }),
+      buildSticker({
+        label: 'Locked In',
+        pack: 'Night Hype',
+        packKey: 'NH',
+        packColor: '#0f766e',
+        keywords: 'focus locked in sweat grind',
+        art: { emoji: '🎯', bg: '#26343a', accent: '#67e8f9' }
+      }),
+      buildSticker({
+        label: 'Crying',
+        pack: 'Reaction Loop',
+        packKey: 'RL',
+        packColor: '#2563eb',
+        keywords: 'crying tears sad reaction',
+        art: { emoji: '😭', bg: '#2f3445', accent: '#93c5fd', shape: 'circle' }
+      }),
+      buildSticker({
+        label: 'Side Eye',
+        pack: 'Reaction Loop',
+        packKey: 'RL',
+        packColor: '#2563eb',
+        keywords: 'side eye suspicious look reaction',
+        art: { emoji: '😒', bg: '#363840', accent: '#c4b5fd' }
+      }),
+      buildSticker({
+        label: 'GG',
+        pack: 'Night Hype',
+        packKey: 'NH',
+        packColor: '#0f766e',
+        keywords: 'gg good game clean round',
+        art: { emoji: '🎮', bg: '#21353a', accent: '#6ee7b7', text: 'GG', textColor: '#f8fafc' }
+      }),
+      buildSticker({
+        label: 'Chaos',
+        pack: 'Glitch Pack',
+        packKey: 'GP',
+        packColor: '#be123c',
+        keywords: 'chaos cursed wild broken',
+        art: { emoji: '🫠', bg: '#3b2630', accent: '#fb7185' }
+      })
     ];
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
     const GIFS = [
@@ -899,15 +1638,57 @@
       }
     ];
     const EMOJIS = [
-      { label: '🔥 Fire', body: 'Emoji: 🔥' },
-      { label: '😭 Crying', body: 'Emoji: 😭' },
-      { label: '💀 Dead', body: 'Emoji: 💀' },
-      { label: '😂 Laughing', body: 'Emoji: 😂' },
-      { label: '❤️ Love', body: 'Emoji: ❤️' },
-      { label: '😮 Shocked', body: 'Emoji: 😮' },
-      { label: '👏 Clap', body: 'Emoji: 👏' },
-      { label: '🎉 Party', body: 'Emoji: 🎉' }
-    ];
+      { glyph: '\uD83D\uDE00', label: 'grinning_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'happy smile grin' },
+      { glyph: '\uD83D\uDE03', label: 'smiley_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'smile happy open mouth' },
+      { glyph: '\uD83D\uDE04', label: 'laughing_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'laugh grin joy' },
+      { glyph: '\uD83D\uDE05', label: 'sweat_smile', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'nervous relief sweat' },
+      { glyph: '\uD83D\uDE02', label: 'face_with_tears_of_joy', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'cry laugh lol lmao' },
+      { glyph: '\uD83E\uDD79', label: 'teary_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'sad emotional soft' },
+      { glyph: '\uD83D\uDE09', label: 'winking_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'wink playful' },
+      { glyph: '\uD83D\uDE0C', label: 'relieved_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'relief calm' },
+      { glyph: '\uD83E\uDD70', label: 'smiling_face_with_hearts', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'love hearts adore' },
+      { glyph: '\uD83D\uDE18', label: 'face_blowing_a_kiss', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'kiss love cute' },
+      { glyph: '\uD83D\uDE1B', label: 'face_with_tongue', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'tongue goofy silly' },
+      { glyph: '\uD83D\uDE1D', label: 'stuck_out_tongue_closed_eyes', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'tongue closed eyes goofy silly' },
+      { glyph: '\uD83E\uDD2A', label: 'zany_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'crazy goofy wild' },
+      { glyph: '\uD83E\uDD2F', label: 'mind_blown', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'wow shocked insane' },
+      { glyph: '\uD83D\uDE10', label: 'neutral_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'neutral blank meh' },
+      { glyph: '\uD83D\uDE12', label: 'unamused_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'side eye annoyed' },
+      { glyph: '\uD83D\uDE2D', label: 'loudly_crying_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'cry sob tears' },
+      { glyph: '\uD83E\uDD2C', label: 'grimacing_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'awkward yikes tense' },
+      { glyph: '\uD83D\uDE24', label: 'face_with_steam_from_nose', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'angry mad huff' },
+      { glyph: '\uD83D\uDE21', label: 'pouting_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'angry rage upset' },
+      { glyph: '\uD83D\uDC4B', label: 'waving_hand', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'wave hello hi' },
+      { glyph: '\uD83D\uDC4F', label: 'clapping_hands', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'clap applause nice' },
+      { glyph: '\uD83D\uDD25', label: 'fire', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'fire hot lit' },
+      { glyph: '\u2728', label: 'sparkles', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'sparkles shine magic' },
+      { glyph: '\u2B50', label: 'star', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'star favorite highlight' },
+      { glyph: '\uD83C\uDF19', label: 'crescent_moon', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'moon night late' },
+      { glyph: '\u26A1', label: 'zap', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'energy electric fast' },
+      { glyph: '\uD83C\uDF3F', label: 'herb', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'leaf nature chill' },
+      { glyph: '\uD83C\uDF51', label: 'peach', category: 'food', categoryLabel: 'Food', categoryIcon: '\uD83C\uDF51', keywords: 'fruit peach cute' },
+      { glyph: '\uD83C\uDF55', label: 'pizza', category: 'food', categoryLabel: 'Food', categoryIcon: '\uD83C\uDF51', keywords: 'pizza food slice' },
+      { glyph: '\uD83E\uDD64', label: 'cup_with_straw', category: 'food', categoryLabel: 'Food', categoryIcon: '\uD83C\uDF51', keywords: 'drink soda boba' },
+      { glyph: '\u2615', label: 'hot_beverage', category: 'food', categoryLabel: 'Food', categoryIcon: '\uD83C\uDF51', keywords: 'coffee tea late night' },
+      { glyph: '\uD83C\uDF7F', label: 'popcorn', category: 'food', categoryLabel: 'Food', categoryIcon: '\uD83C\uDF51', keywords: 'snack movie' },
+      { glyph: '\uD83C\uDFAE', label: 'video_game', category: 'activity', categoryLabel: 'Activities', categoryIcon: '\uD83C\uDFAE', keywords: 'game gaming controller' },
+      { glyph: '\uD83C\uDFC6', label: 'trophy', category: 'activity', categoryLabel: 'Activities', categoryIcon: '\uD83C\uDFAE', keywords: 'win trophy victory' },
+      { glyph: '\uD83C\uDF89', label: 'party_popper', category: 'activity', categoryLabel: 'Activities', categoryIcon: '\uD83C\uDFAE', keywords: 'party celebration hype' },
+      { glyph: '\uD83C\uDFA7', label: 'headphones', category: 'activity', categoryLabel: 'Activities', categoryIcon: '\uD83C\uDFAE', keywords: 'music headphones audio' },
+      { glyph: '\uD83D\uDE80', label: 'rocket', category: 'travel', categoryLabel: 'Travel', categoryIcon: '\uD83D\uDE80', keywords: 'rocket launch fast' },
+      { glyph: '\uD83D\uDE97', label: 'car', category: 'travel', categoryLabel: 'Travel', categoryIcon: '\uD83D\uDE80', keywords: 'car drive ride' },
+      { glyph: '\u2708\uFE0F', label: 'airplane', category: 'travel', categoryLabel: 'Travel', categoryIcon: '\uD83D\uDE80', keywords: 'flight plane travel' },
+      { glyph: '\uD83D\uDC8E', label: 'gem_stone', category: 'objects', categoryLabel: 'Objects', categoryIcon: '\uD83D\uDC8E', keywords: 'gem shiny rare' },
+      { glyph: '\uD83D\uDC80', label: 'skull', category: 'objects', categoryLabel: 'Objects', categoryIcon: '\uD83D\uDC8E', keywords: 'dead skull funny' },
+      { glyph: '\uD83D\uDCAF', label: 'hundred_points', category: 'objects', categoryLabel: 'Objects', categoryIcon: '\uD83D\uDC8E', keywords: '100 perfect facts' },
+      { glyph: '\u2764\uFE0F', label: 'red_heart', category: 'symbols', categoryLabel: 'Symbols', categoryIcon: '\u2764\uFE0F', keywords: 'heart love red' },
+      { glyph: '\uD83D\uDC9C', label: 'purple_heart', category: 'symbols', categoryLabel: 'Symbols', categoryIcon: '\u2764\uFE0F', keywords: 'heart purple vibe' },
+      { glyph: '\uD83D\uDCAF', label: 'hundred_symbol', category: 'symbols', categoryLabel: 'Symbols', categoryIcon: '\u2764\uFE0F', keywords: '100 score symbol' }
+    ].map((item) => ({
+      ...item,
+      body: `Emoji: ${item.glyph}`,
+      code: `:${item.label}:`
+    }));
     const THREADS = {
       hijinxx: {
         name: 'Hijinxx',
@@ -962,8 +1743,22 @@
     let activeThreadId = 'hijinxx';
     let activeMediaMode = '';
     let activeGifQuery = '';
+    let activeStickerQuery = '';
+    let activeStickerPack = 'all';
+    let activeEmojiQuery = '';
+    let activeEmojiCategory = 'people';
+    let activeEmojiSelection = null;
     let gifSearchTimer = null;
     let currentAuthUser = null;
+
+    function normalizeUid(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function buildProfileHref(uid) {
+      const normalized = normalizeUid(uid);
+      return normalized ? `profile.html?uid=${encodeURIComponent(normalized)}` : 'profile.html';
+    }
 
     function appendMessageToThread(threadId, message) {
       const thread = THREADS[threadId];
@@ -1056,6 +1851,158 @@
       }).join('');
     }
 
+    function getStickerPacks() {
+      const packs = new Map();
+      STICKERS.forEach((item) => {
+        if (!packs.has(item.packKey)) {
+          packs.set(item.packKey, {
+            key: item.packKey,
+            label: item.pack,
+            previewUrl: item.packPreviewUrl
+          });
+        }
+      });
+      return [
+        {
+          key: 'all',
+          label: 'Frequently Used',
+          previewUrl: createStickerPackBadge('FR', '#3a3b42')
+        },
+        ...Array.from(packs.values())
+      ];
+    }
+
+    function searchStickers(query = '', pack = 'all') {
+      const normalized = String(query || '').trim().toLowerCase();
+      const packFiltered = pack === 'all'
+        ? STICKERS
+        : STICKERS.filter((item) => item.packKey === pack);
+
+      if (!normalized) return packFiltered;
+
+      return packFiltered.filter((item) => {
+        const haystack = `${item.label} ${item.pack} ${item.keywords || ''}`.toLowerCase();
+        return haystack.includes(normalized);
+      });
+    }
+
+    function renderStickerSidebar(activePack = 'all') {
+      const sidebar = document.getElementById('stickerSidebar');
+      if (!sidebar) return;
+      sidebar.innerHTML = getStickerPacks().map((pack) => `
+        <button
+          class="sticker-pack-btn${pack.key === activePack ? ' is-active' : ''}"
+          type="button"
+          data-sticker-pack="${pack.key}"
+          aria-label="${pack.label}"
+          title="${pack.label}"
+        >
+          ${pack.previewUrl ? `<img src="${pack.previewUrl}" alt="${pack.label}">` : `<span class="sticker-pack-fallback">${pack.label.slice(0, 2)}</span>`}
+        </button>
+      `).join('');
+    }
+
+    function renderStickerPreview(item) {
+      const preview = document.getElementById('stickerPreview');
+      const thumb = document.getElementById('stickerPreviewThumb');
+      const name = document.getElementById('stickerPreviewName');
+      const pack = document.getElementById('stickerPreviewPack');
+      const badge = document.getElementById('stickerPreviewBadge');
+      if (!preview || !thumb || !name || !pack || !badge || !item) return;
+
+      thumb.innerHTML = item.previewUrl ? `<img src="${item.previewUrl}" alt="${item.label}">` : '';
+      badge.innerHTML = item.packPreviewUrl ? `<img src="${item.packPreviewUrl}" alt="${item.pack}">` : '';
+      name.textContent = item.label;
+      pack.textContent = `from ${item.pack}`;
+      preview.removeAttribute('hidden');
+    }
+
+    function renderStickerChoices(items) {
+      return items.map((item, index) => `
+        <button class="sticker-choice${index === 0 ? ' is-selected' : ''}" type="button" data-sticker-index="${index}">
+          <img src="${item.previewUrl}" alt="${item.label}">
+        </button>
+      `).join('');
+    }
+
+    function getEmojiCategories() {
+      const categories = new Map();
+      EMOJIS.forEach((item) => {
+        if (!categories.has(item.category)) {
+          categories.set(item.category, {
+            key: item.category,
+            label: item.categoryLabel,
+            icon: item.categoryIcon
+          });
+        }
+      });
+      return Array.from(categories.values());
+    }
+
+    function searchEmojis(query = '', category = 'people') {
+      const normalized = String(query || '').trim().toLowerCase();
+      const categoryFiltered = category === 'all'
+        ? EMOJIS
+        : EMOJIS.filter((item) => item.category === category);
+
+      if (!normalized) return categoryFiltered;
+
+      return categoryFiltered.filter((item) => {
+        const haystack = `${item.label} ${item.keywords || ''} ${item.categoryLabel}`.toLowerCase();
+        return haystack.includes(normalized);
+      });
+    }
+
+    function renderEmojiSidebar(activeCategory = 'people') {
+      const sidebar = document.getElementById('emojiSidebar');
+      if (!sidebar) return;
+      sidebar.innerHTML = getEmojiCategories().map((category) => `
+        <button
+          class="emoji-pack-btn${category.key === activeCategory ? ' is-active' : ''}"
+          type="button"
+          data-emoji-category="${category.key}"
+          aria-label="${category.label}"
+          title="${category.label}"
+        >${category.icon}</button>
+      `).join('');
+    }
+
+    function renderEmojiChoices(items) {
+      return items.map((item, index) => `
+        <button class="emoji-choice${index === 0 ? ' is-selected' : ''}" type="button" data-emoji-index="${index}" aria-label="${item.label}" title="${item.code}">
+          ${item.glyph}
+        </button>
+      `).join('');
+    }
+
+    function renderEmojiPreview(item) {
+      const preview = document.getElementById('emojiPreview');
+      const glyph = document.getElementById('emojiPreviewGlyph');
+      const name = document.getElementById('emojiPreviewName');
+      const code = document.getElementById('emojiPreviewCode');
+      if (!preview || !glyph || !name || !code || !item) return;
+
+      glyph.textContent = item.glyph;
+      name.textContent = item.label;
+      code.textContent = item.code;
+      activeEmojiSelection = item;
+      preview.removeAttribute('hidden');
+    }
+
+    function sendEmojiSelection(item) {
+      if (!item) return;
+      appendMessageToThread(activeThreadId, {
+        author: 'You',
+        time: 'just now',
+        body: '',
+        glyph: item.glyph,
+        alt: item.label,
+        self: true,
+        kind: 'emoji'
+      });
+      closeMediaPicker();
+    }
+
     function extractGifUrl(value) {
       const text = String(value || '').trim();
       if (!text) return '';
@@ -1140,19 +2087,27 @@
       const picker = document.getElementById('mediaPicker');
       const label = document.getElementById('mediaPickerLabel');
       const grid = document.getElementById('mediaPickerGrid');
+      const stickerBrowser = document.getElementById('stickerBrowser');
+      const emojiBrowser = document.getElementById('emojiBrowser');
       const searchInput = document.getElementById('mediaSearchInput');
       const searchRow = document.getElementById('mediaSearchRow');
       const note = document.getElementById('mediaPickerNote');
-      if (!picker || !label || !grid || !searchInput || !searchRow || !note) return;
+      if (!picker || !label || !grid || !stickerBrowser || !emojiBrowser || !searchInput || !searchRow || !note) return;
 
       const normalizedQuery = String(query || '').trim();
 
       setActiveMediaTab('gif');
+      picker.classList.remove('is-sticker');
       label.textContent = normalizedQuery ? 'Search Results' : 'Trending GIFs';
       searchRow.removeAttribute('hidden');
       searchInput.value = query;
       searchInput.placeholder = 'Search GIFs';
       note.removeAttribute('hidden');
+      stickerBrowser.setAttribute('hidden', 'hidden');
+      emojiBrowser.setAttribute('hidden', 'hidden');
+      document.getElementById('stickerPreview')?.setAttribute('hidden', 'hidden');
+      document.getElementById('emojiPreview')?.setAttribute('hidden', 'hidden');
+      grid.removeAttribute('hidden');
       note.textContent = TENOR_API_KEY
         ? 'Powered by Tenor'
         : 'Live Tenor search needs window.NOCTIVE_TENOR_API_KEY. For now, the built-in GIF set filters as you type.';
@@ -1190,48 +2145,80 @@
       const picker = document.getElementById('mediaPicker');
       const label = document.getElementById('mediaPickerLabel');
       const grid = document.getElementById('mediaPickerGrid');
+      const stickerBrowser = document.getElementById('stickerBrowser');
+      const emojiBrowser = document.getElementById('emojiBrowser');
+      const stickerGrid = document.getElementById('stickerPickerGrid');
       const searchInput = document.getElementById('mediaSearchInput');
       const searchRow = document.getElementById('mediaSearchRow');
       const note = document.getElementById('mediaPickerNote');
-      if (!picker || !label || !grid || !searchInput || !searchRow || !note) return;
+      const sectionTitle = document.getElementById('stickerSectionTitle');
+      const results = searchStickers(activeStickerQuery, activeStickerPack);
+      if (!picker || !label || !grid || !stickerBrowser || !emojiBrowser || !stickerGrid || !searchInput || !searchRow || !note || !sectionTitle) return;
 
       setActiveMediaTab('sticker');
-      label.textContent = 'Pick a sticker';
-      searchInput.value = '';
-      searchRow.setAttribute('hidden', 'hidden');
-      note.removeAttribute('hidden');
-      note.textContent = 'Quick stickers for reactions, memes, and late-night chat energy.';
-      grid.innerHTML = renderMediaChoices(STICKERS, 'sticker');
-      picker.dataset.items = JSON.stringify(STICKERS);
+      picker.classList.add('is-sticker');
+      label.textContent = 'Stickers';
+      searchRow.removeAttribute('hidden');
+      searchInput.value = activeStickerQuery;
+      searchInput.placeholder = 'Search stickers';
+      note.setAttribute('hidden', 'hidden');
+      grid.setAttribute('hidden', 'hidden');
+      stickerBrowser.removeAttribute('hidden');
+      emojiBrowser.setAttribute('hidden', 'hidden');
+      document.getElementById('emojiPreview')?.setAttribute('hidden', 'hidden');
+      renderStickerSidebar(activeStickerPack);
+      sectionTitle.textContent = activeStickerPack === 'all'
+        ? 'Frequently Used'
+        : getStickerPacks().find((pack) => pack.key === activeStickerPack)?.label || 'Sticker Pack';
+      stickerGrid.innerHTML = results.length
+        ? renderStickerChoices(results)
+        : '<div class="sticker-empty">No stickers matched that search yet.</div>';
+      picker.dataset.items = JSON.stringify(results);
+      if (results.length) {
+        renderStickerPreview(results[0]);
+      } else {
+        document.getElementById('stickerPreview')?.setAttribute('hidden', 'hidden');
+      }
     }
 
     function populateEmojiPicker() {
       const picker = document.getElementById('mediaPicker');
       const label = document.getElementById('mediaPickerLabel');
       const grid = document.getElementById('mediaPickerGrid');
+      const stickerBrowser = document.getElementById('stickerBrowser');
+      const emojiBrowser = document.getElementById('emojiBrowser');
+      const emojiGrid = document.getElementById('emojiPickerGrid');
       const searchInput = document.getElementById('mediaSearchInput');
       const searchRow = document.getElementById('mediaSearchRow');
       const note = document.getElementById('mediaPickerNote');
-      if (!picker || !label || !grid || !searchInput || !searchRow || !note) return;
+      const sectionTitle = document.getElementById('emojiSectionTitle');
+      const results = searchEmojis(activeEmojiQuery, activeEmojiCategory);
+      if (!picker || !label || !grid || !stickerBrowser || !emojiBrowser || !emojiGrid || !searchInput || !searchRow || !note || !sectionTitle) return;
 
       setActiveMediaTab('emoji');
-      label.textContent = 'Pick an emoji';
-      searchInput.value = '';
-      searchRow.setAttribute('hidden', 'hidden');
-      note.removeAttribute('hidden');
-      note.textContent = 'Quick emoji reactions for fast replies.';
-      const emojiOptions = [
-        { label: '\uD83D\uDD25 Fire', body: 'Emoji: \uD83D\uDD25', background: 'linear-gradient(135deg, #b91c1c, #7c2d12)' },
-        { label: '\uD83D\uDE2D Crying', body: 'Emoji: \uD83D\uDE2D', background: 'linear-gradient(135deg, #2563eb, #1d4ed8)' },
-        { label: '\uD83D\uDC80 Dead', body: 'Emoji: \uD83D\uDC80', background: 'linear-gradient(135deg, #3f3f46, #18181b)' },
-        { label: '\uD83D\uDE02 Laughing', body: 'Emoji: \uD83D\uDE02', background: 'linear-gradient(135deg, #f59e0b, #b45309)' },
-        { label: '\u2764\uFE0F Love', body: 'Emoji: \u2764\uFE0F', background: 'linear-gradient(135deg, #be123c, #881337)' },
-        { label: '\uD83D\uDE2E Shocked', body: 'Emoji: \uD83D\uDE2E', background: 'linear-gradient(135deg, #7c3aed, #4c1d95)' },
-        { label: '\uD83D\uDC4F Clap', body: 'Emoji: \uD83D\uDC4F', background: 'linear-gradient(135deg, #0f766e, #115e59)' },
-        { label: '\uD83C\uDF89 Party', body: 'Emoji: \uD83C\uDF89', background: 'linear-gradient(135deg, #db2777, #7e22ce)' }
-      ];
-      grid.innerHTML = renderMediaChoices(emojiOptions, 'emoji');
-      picker.dataset.items = JSON.stringify(emojiOptions);
+      picker.classList.remove('is-sticker');
+      label.textContent = 'Emoji';
+      searchInput.value = activeEmojiQuery;
+      searchInput.placeholder = 'Search emoji';
+      searchRow.removeAttribute('hidden');
+      note.setAttribute('hidden', 'hidden');
+      stickerBrowser.setAttribute('hidden', 'hidden');
+      emojiBrowser.removeAttribute('hidden');
+      document.getElementById('stickerPreview')?.setAttribute('hidden', 'hidden');
+      document.getElementById('emojiPreview')?.setAttribute('hidden', 'hidden');
+      grid.setAttribute('hidden', 'hidden');
+      renderEmojiSidebar(activeEmojiCategory);
+      sectionTitle.textContent = getEmojiCategories().find((category) => category.key === activeEmojiCategory)?.label || 'Emoji';
+      emojiGrid.innerHTML = results.length
+        ? renderEmojiChoices(results)
+        : '<div class="emoji-empty">No emoji matched that search yet.</div>';
+      picker.dataset.items = JSON.stringify(results);
+      if (results.length) {
+        renderEmojiPreview(results[0]);
+      } else {
+        activeEmojiSelection = null;
+        document.getElementById('emojiPreview')?.setAttribute('hidden', 'hidden');
+      }
     }
 
     async function openMediaTab(mode) {
@@ -1241,12 +2228,18 @@
       picker.removeAttribute('hidden');
       activeMediaMode = mode;
       if (mode === 'gif') {
+        picker.classList.remove('is-sticker');
+        document.getElementById('stickerBrowser')?.setAttribute('hidden', 'hidden');
+        document.getElementById('stickerPreview')?.setAttribute('hidden', 'hidden');
+        document.getElementById('mediaPickerGrid')?.removeAttribute('hidden');
         await populateGifPicker(activeGifQuery);
         document.getElementById('mediaSearchInput')?.focus();
       } else if (mode === 'sticker') {
         populateStickerPicker();
+        document.getElementById('mediaSearchInput')?.focus();
       } else {
         populateEmojiPicker();
+        document.getElementById('mediaSearchInput')?.focus();
       }
     }
 
@@ -1267,6 +2260,7 @@
       const picker = document.getElementById('mediaPicker');
       if (!picker) return;
       picker.setAttribute('hidden', 'hidden');
+      picker.classList.remove('is-sticker');
       activeMediaMode = '';
     }
 
@@ -1277,10 +2271,14 @@
       const list = document.getElementById('messageList');
       const conversationAvatar = document.getElementById('conversationAvatar');
       const conversationStatusDot = document.getElementById('conversationStatusDot');
+      const conversationProfileLink = document.getElementById('conversationProfileLink');
       activeThreadId = threadId;
 
       if (title) title.textContent = thread.name;
       if (subline) subline.textContent = isSignedInViewer ? thread.signedInSubline : thread.guestSubline;
+      if (conversationProfileLink) {
+        conversationProfileLink.href = buildProfileHref(threadId);
+      }
       renderAvatarBox(conversationAvatar, thread.name, thread.avatar || '');
       if (conversationStatusDot) {
         conversationStatusDot.className = `presence-dot status-${getStatusMeta(thread.status).key}`;
@@ -1288,10 +2286,14 @@
       if (list) {
         list.innerHTML = thread.messages.map((message) => `
           <div class="message-bubble${message.self ? ' self' : ''}">
-            <div class="message-meta">${message.author} &bull; ${message.time}</div>
+            <div class="message-meta"><a href="${message.self ? 'profile.html' : buildProfileHref(threadId)}" style="color:inherit; text-decoration:none;">${message.author}</a> &bull; ${message.time}</div>
             ${
               message.kind === 'gif' && message.mediaUrl
                 ? `<div class="message-gif"><img src="${message.mediaUrl}" alt="${message.alt || 'GIF'}"></div>`
+                : message.kind === 'sticker' && message.mediaUrl
+                  ? `<div class="message-sticker"><img src="${message.mediaUrl}" alt="${message.alt || 'Sticker'}"><div class="message-sticker-caption">${message.body}</div></div>`
+                : message.kind === 'emoji'
+                  ? `<div class="message-emoji"><span class="message-emoji-glyph">${message.glyph || ''}</span></div>`
                 : `<div class="message-copy${message.kind === 'media' ? ' media-post' : ''}">${message.body}</div>`
             }
           </div>
@@ -1310,6 +2312,9 @@
       const messageInput = document.getElementById('messageInput');
       const composerHelp = document.getElementById('composerHelp');
       const viewerProfile = getStoredViewerProfile(currentAuthUser);
+      const preferredThreadId = THREADS[normalizeUid(requestedThreadId)]
+        ? normalizeUid(requestedThreadId)
+        : (document.querySelector('.thread-card.is-active')?.getAttribute('data-thread-id') || 'hijinxx');
       isSignedInViewer = isSignedIn;
 
       if (viewerProfile) {
@@ -1337,7 +2342,7 @@
         if (composerHelp) {
           composerHelp.textContent = 'Open GIFs, Stickers, or Emoji right inside the composer and send them without leaving the page.';
         }
-        renderConversation(document.querySelector('.thread-card.is-active')?.getAttribute('data-thread-id') || 'hijinxx');
+        renderConversation(preferredThreadId);
         return;
       }
 
@@ -1352,13 +2357,13 @@
       if (composerHelp) {
         composerHelp.textContent = 'Open GIFs, Stickers, or Emoji right inside the composer and send them without leaving the page.';
       }
-      renderConversation(document.querySelector('.thread-card.is-active')?.getAttribute('data-thread-id') || 'hijinxx');
+      renderConversation(preferredThreadId);
     }
 
     document.addEventListener('click', (event) => {
       const picker = document.getElementById('mediaPicker');
       const openedFromPicker = event.target.closest('#mediaPicker');
-      const openedFromTools = event.target.closest('#gifBtn, #stickerBtn');
+      const openedFromTools = event.target.closest('#gifBtn, #stickerBtn, #emojiBtn');
       if (picker && !picker.hasAttribute('hidden') && !openedFromPicker && !openedFromTools) {
         closeMediaPicker();
       }
@@ -1375,6 +2380,10 @@
 
     document.getElementById('gifBtn')?.addEventListener('click', async () => {
       await toggleMediaPicker('gif');
+    });
+
+    document.getElementById('emojiBtn')?.addEventListener('click', async () => {
+      await toggleMediaPicker('emoji');
     });
 
     document.getElementById('mediaPickerGrid')?.addEventListener('click', (event) => {
@@ -1399,6 +2408,88 @@
       closeMediaPicker();
     });
 
+    document.getElementById('stickerSidebar')?.addEventListener('click', (event) => {
+      const packButton = event.target.closest('[data-sticker-pack]');
+      if (!packButton) return;
+      activeStickerPack = packButton.getAttribute('data-sticker-pack') || 'all';
+      populateStickerPicker();
+    });
+
+    document.getElementById('stickerPickerGrid')?.addEventListener('mousemove', (event) => {
+      const stickerButton = event.target.closest('[data-sticker-index]');
+      if (!stickerButton) return;
+      const index = Number(stickerButton.getAttribute('data-sticker-index'));
+      const picker = document.getElementById('mediaPicker');
+      const collection = JSON.parse(picker?.dataset.items || '[]');
+      const item = collection[index];
+      if (!item) return;
+
+      document.querySelectorAll('.sticker-choice').forEach((node, position) => {
+        node.classList.toggle('is-selected', position === index);
+      });
+      renderStickerPreview(item);
+    });
+
+    document.getElementById('stickerPickerGrid')?.addEventListener('click', (event) => {
+      const stickerButton = event.target.closest('[data-sticker-index]');
+      if (!stickerButton) return;
+      const index = Number(stickerButton.getAttribute('data-sticker-index'));
+      const picker = document.getElementById('mediaPicker');
+      const collection = JSON.parse(picker?.dataset.items || '[]');
+      const item = collection[index];
+      if (!item) return;
+
+      appendMessageToThread(activeThreadId, {
+        author: 'You',
+        time: 'just now',
+        body: item.body,
+        alt: item.alt || item.label || 'Sticker',
+        self: true,
+        kind: 'sticker',
+        mediaUrl: item.previewUrl || ''
+      });
+      closeMediaPicker();
+    });
+
+    document.getElementById('emojiSidebar')?.addEventListener('click', (event) => {
+      const categoryButton = event.target.closest('[data-emoji-category]');
+      if (!categoryButton) return;
+      activeEmojiCategory = categoryButton.getAttribute('data-emoji-category') || 'people';
+      populateEmojiPicker();
+    });
+
+    document.getElementById('emojiPickerGrid')?.addEventListener('mousemove', (event) => {
+      const emojiButton = event.target.closest('[data-emoji-index]');
+      if (!emojiButton) return;
+      const index = Number(emojiButton.getAttribute('data-emoji-index'));
+      const picker = document.getElementById('mediaPicker');
+      const collection = JSON.parse(picker?.dataset.items || '[]');
+      const item = collection[index];
+      if (!item) return;
+
+      document.querySelectorAll('.emoji-choice').forEach((node, position) => {
+        node.classList.toggle('is-selected', position === index);
+      });
+      renderEmojiPreview(item);
+    });
+
+    document.getElementById('emojiPickerGrid')?.addEventListener('click', (event) => {
+      const emojiButton = event.target.closest('[data-emoji-index]');
+      if (!emojiButton) return;
+      const index = Number(emojiButton.getAttribute('data-emoji-index'));
+      const picker = document.getElementById('mediaPicker');
+      const collection = JSON.parse(picker?.dataset.items || '[]');
+      const item = collection[index];
+      if (!item) return;
+
+      renderEmojiPreview(item);
+      sendEmojiSelection(item);
+    });
+
+    document.getElementById('emojiPreviewAction')?.addEventListener('click', () => {
+      sendEmojiSelection(activeEmojiSelection);
+    });
+
     document.querySelectorAll('[data-media-tab]').forEach((tab) => {
       tab.addEventListener('click', async () => {
         const mode = tab.getAttribute('data-media-tab');
@@ -1411,16 +2502,39 @@
       if (event.key !== 'Enter') return;
       event.preventDefault();
       const query = event.target.value.trim();
-      await populateGifPicker(query);
+      if (activeMediaMode === 'gif') {
+        await populateGifPicker(query);
+        return;
+      }
+      if (activeMediaMode === 'sticker') {
+        activeStickerQuery = query;
+        populateStickerPicker();
+        return;
+      }
+      if (activeMediaMode === 'emoji') {
+        activeEmojiQuery = query;
+        populateEmojiPicker();
+      }
     });
 
     document.getElementById('mediaSearchInput')?.addEventListener('input', (event) => {
-      if (activeMediaMode !== 'gif') return;
       const query = event.target.value.trim();
-      window.clearTimeout(gifSearchTimer);
-      gifSearchTimer = window.setTimeout(() => {
-        populateGifPicker(query);
-      }, 260);
+      if (activeMediaMode === 'gif') {
+        window.clearTimeout(gifSearchTimer);
+        gifSearchTimer = window.setTimeout(() => {
+          populateGifPicker(query);
+        }, 260);
+        return;
+      }
+      if (activeMediaMode === 'sticker') {
+        activeStickerQuery = query;
+        populateStickerPicker();
+        return;
+      }
+      if (activeMediaMode === 'emoji') {
+        activeEmojiQuery = query;
+        populateEmojiPicker();
+      }
     });
 
     document.getElementById('sendMessageBtn')?.addEventListener('click', () => {
@@ -1453,7 +2567,7 @@
     });
 
     document.getElementById('messageInput')?.addEventListener('keydown', (event) => {
-      if (!(event.ctrlKey || event.metaKey) || event.key !== 'Enter') return;
+      if (event.key !== 'Enter' || event.shiftKey) return;
       event.preventDefault();
       document.getElementById('sendMessageBtn')?.click();
     });
@@ -1464,7 +2578,7 @@
     });
 
     renderAllThreadPresence();
-    renderConversation('hijinxx');
+    renderConversation(THREADS[normalizeUid(requestedThreadId)] ? normalizeUid(requestedThreadId) : 'hijinxx');
 
     onAuthStateChanged(auth, (user) => {
       currentAuthUser = user;
