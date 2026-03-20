@@ -323,7 +323,7 @@
         <div class="private">PRIVATE GARDEN</div>
         <p class="sub">This is a private club.</p>
 
-        <section class="code-row">
+        <form class="code-row" id="unlockForm">
                         <div class="code-pill" id="pill">
                                 <div class="spark">✶</div>
                                 <div id="codeInputs" class="code-inputs" style="display: flex; gap: 8px;">
@@ -352,14 +352,14 @@
                         </div>
 
 
-            <button class="btn" id="unlockBtn" type="button">Enter with your key</button>
+            <button class="btn" id="unlockBtn" type="submit">Enter with your key</button>
             <div style="text-align:center;margin-top:8px;">
                 <a class="about-link" href="https://github.com/PivotMenace/Noctive" target="_blank" rel="noopener noreferrer">You're not Venus</a>
             </div>
 
             <div class="status" id="status"></div>
             <!-- <div class="hint">Demo key: CIVET-908N-227O</div> -->
-        </section>
+        </form>
     </main>
 
     <script>
@@ -368,7 +368,7 @@
 
         const pill = document.getElementById("pill");
         const status = document.getElementById("status");
-        const unlockBtn = document.getElementById("unlockBtn");
+        const unlockForm = document.getElementById("unlockForm");
         const codeInputs = document.querySelectorAll("#codeInputs input.code-char");
 
         function normalize(v) {
@@ -406,6 +406,10 @@
         }
 
         function tryUnlock() {
+            if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+            }
+
             const entered = getCodeFromInputs();
             if (!entered || entered.length < 15) {
                 setStatus("Type your key.", "bad");
@@ -426,7 +430,10 @@
             }
         }
 
-        unlockBtn.addEventListener("click", tryUnlock);
+        unlockForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            tryUnlock();
+        });
 
         codeInputs.forEach((input, idx) => {
             input.addEventListener("input", (e) => {
