@@ -880,17 +880,17 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <a href="home.html"><span class="brand-title">Noctive</span></a>
+      <a href="https://www.noctive.us/pages/home.html"><span class="brand-title">Noctive</span></a>
       <nav class="topnav" aria-label="Primary">
-        <a href="home.html">Home</a>
-        <a href="explore.html">Explore</a>
-        <a href="faq.html">FAQ</a>
-        <a href="messages.html">Messages</a>
-        <a href="store.html">Night Market</a>
-        <a href="profile.html" aria-current="page">Profile</a>
+        <a href="https://www.noctive.us/pages/home.html">Home</a>
+        <a href="https://www.noctive.us/pages/explore.html">Explore</a>
+        <a href="https://www.noctive.us/pages/faq.html">FAQ</a>
+        <a href="https://www.noctive.us/pages/messages.html">Messages</a>
+        <a href="https://www.noctive.us/pages/store.html">Night Market</a>
+        <a href="https://www.noctive.us/pages/profile.html" aria-current="page">Profile</a>
       </nav>
       <div class="topbar-right">
-        <a class="ghost-btn" href="edit-profile.html" id="topbarEditBtn">Edit Profile</a>
+        <a class="ghost-btn" href="https://www.noctive.us/pages/edit-profile.html" id="topbarEditBtn">Edit Profile</a>
       </div>
     </div>
   </header>
@@ -981,7 +981,7 @@
             </div>
 
             <div class="identity-actions">
-              <a class="primary-btn" href="edit-profile.html" id="profileEditBtn">Edit Profile</a>
+              <a class="primary-btn" href="https://www.noctive.us/pages/edit-profile.html" id="profileEditBtn">Edit Profile</a>
               <button class="secondary-btn" type="button" id="profileShareBtn">Share</button>
               <button class="secondary-btn" type="button" id="profileMessageBtn" hidden>Message</button>
             </div>
@@ -1129,7 +1129,7 @@
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     const requestedProfileUid = new URLSearchParams(window.location.search).get('uid') || '';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
-      window.location.replace('index.html');
+      window.location.replace('https://www.noctive.us');
     }
 
     const firebaseConfig = {
@@ -1854,7 +1854,7 @@
     document.getElementById('profileMessageBtn')?.addEventListener('click', () => {
       const uid = normalizeUid(requestedProfileUid);
       if (!uid) return;
-      window.location.href = `messages.html?thread=${encodeURIComponent(uid)}`;
+      window.location.href = `https://www.noctive.us/pages/messages.html?thread=${encodeURIComponent(uid)}`;
     });
     document.getElementById('profileShareBtn')?.addEventListener('click', async () => {
       const link = window.location.href;

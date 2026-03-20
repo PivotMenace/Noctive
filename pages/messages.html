@@ -1097,17 +1097,17 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <a href="home.html"><span class="brand-title">Noctive</span></a>
+      <a href="https://www.noctive.us/pages/home.html"><span class="brand-title">Noctive</span></a>
       <nav class="topnav" aria-label="Primary">
-        <a href="home.html">Home</a>
-        <a href="explore.html">Explore</a>
-        <a href="faq.html">FAQ</a>
-        <a href="messages.html" aria-current="page">Messages</a>
-        <a href="store.html">Night Market</a>
-        <a href="profile.html">Profile</a>
+        <a href="https://www.noctive.us/pages/home.html">Home</a>
+        <a href="https://www.noctive.us/pages/explore.html">Explore</a>
+        <a href="https://www.noctive.us/pages/faq.html">FAQ</a>
+        <a href="https://www.noctive.us/pages/messages.html" aria-current="page">Messages</a>
+        <a href="https://www.noctive.us/pages/store.html">Night Market</a>
+        <a href="https://www.noctive.us/pages/profile.html">Profile</a>
       </nav>
       <div class="topbar-right">
-        <a class="ghost-btn" href="profile.html">View Profile</a>
+        <a class="ghost-btn" href="https://www.noctive.us/pages/profile.html">View Profile</a>
       </div>
     </div>
   </header>
@@ -1198,7 +1198,7 @@
       <section class="conversation">
         <div class="conversation-head">
           <div class="conversation-head-main">
-            <a href="profile.html?uid=hijinxx" id="conversationProfileLink" style="display:flex; align-items:center; gap:12px; min-width:0; text-decoration:none;">
+            <a href="https://www.noctive.us/pages/profile.html?uid=hijinxx" id="conversationProfileLink" style="display:flex; align-items:center; gap:12px; min-width:0; text-decoration:none;">
               <div class="conversation-avatar-shell">
                 <div class="conversation-avatar" id="conversationAvatar">H</div>
                 <span class="presence-dot status-online" id="conversationStatusDot" aria-hidden="true"></span>
@@ -1299,7 +1299,7 @@
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const requestedThreadId = new URLSearchParams(window.location.search).get('thread') || '';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
-      window.location.replace('index.html');
+      window.location.replace('https://www.noctive.us');
     }
 
     const firebaseConfig = {
@@ -1757,7 +1757,7 @@
 
     function buildProfileHref(uid) {
       const normalized = normalizeUid(uid);
-      return normalized ? `profile.html?uid=${encodeURIComponent(normalized)}` : 'profile.html';
+      return normalized ? `https://www.noctive.us/pages/profile.html?uid=${encodeURIComponent(normalized)}` : 'https://www.noctive.us/pages/profile.html';
     }
 
     function appendMessageToThread(threadId, message) {
@@ -2286,7 +2286,7 @@
       if (list) {
         list.innerHTML = thread.messages.map((message) => `
           <div class="message-bubble${message.self ? ' self' : ''}">
-            <div class="message-meta"><a href="${message.self ? 'profile.html' : buildProfileHref(threadId)}" style="color:inherit; text-decoration:none;">${message.author}</a> &bull; ${message.time}</div>
+            <div class="message-meta"><a href="${message.self ? 'https://www.noctive.us/pages/profile.html' : buildProfileHref(threadId)}" style="color:inherit; text-decoration:none;">${message.author}</a> &bull; ${message.time}</div>
             ${
               message.kind === 'gif' && message.mediaUrl
                 ? `<div class="message-gif"><img src="${message.mediaUrl}" alt="${message.alt || 'GIF'}"></div>`

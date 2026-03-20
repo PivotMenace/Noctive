@@ -354,7 +354,7 @@
 
             <button class="btn" id="unlockBtn" type="button">Enter with your key</button>
             <div style="text-align:center;margin-top:8px;">
-                <a class="about-link" href="https://github.com/PivotMenace/Noctive" target="_blank" rel="noopener noreferrer">You're not Venus</a>
+                <a class="about-link" href="https://www.noctive.us" target="_blank" rel="noopener noreferrer">You're not Venus</a>
             </div>
 
             <div class="status" id="status"></div>
@@ -402,7 +402,7 @@
         }
 
         if (sessionStorage.getItem(ACCESS_SESSION_KEY) === "granted") {
-            window.location.replace("home.html");
+            window.location.replace("https://www.noctive.us/pages/home.html");
         }
 
         function tryUnlock() {
@@ -416,7 +416,7 @@
                 setStatus("Access granted.", "good");
                 sessionStorage.setItem(ACCESS_SESSION_KEY, "granted");
                 setTimeout(() => {
-                    window.location.replace("home.html");
+                    window.location.replace("https://www.noctive.us/pages/home.html");
                 }, 900);
             } else {
                 setStatus("Invalid key.", "bad");

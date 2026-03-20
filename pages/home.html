@@ -1064,17 +1064,17 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <a class="brand-link" href="home.html">
+      <a class="brand-link" href="https://www.noctive.us/pages/home.html">
         <span class="brand-title">Noctive</span>
       </a>
 
       <nav class="topnav" aria-label="Primary">
-        <a href="home.html" aria-current="page">Home</a>
-        <a href="explore.html">Explore</a>
-        <a href="faq.html">FAQ</a>
-        <a href="messages.html">Messages</a>
-        <a href="store.html">Night Market</a>
-        <a href="profile.html">Profile</a>
+        <a href="https://www.noctive.us/pages/home.html" aria-current="page">Home</a>
+        <a href="https://www.noctive.us/pages/explore.html">Explore</a>
+        <a href="https://www.noctive.us/pages/faq.html">FAQ</a>
+        <a href="https://www.noctive.us/pages/messages.html">Messages</a>
+        <a href="https://www.noctive.us/pages/store.html">Night Market</a>
+        <a href="https://www.noctive.us/pages/profile.html">Profile</a>
       </nav>
 
       <div class="topbar-right">
@@ -1095,8 +1095,8 @@
         </div>
 
         <div id="userMenuDropdown" class="dropdown" hidden>
-          <a class="link-pill" href="profile.html">View profile <span>→</span></a>
-          <a class="link-pill" href="explore.html">Explore hubs <span>→</span></a>
+          <a class="link-pill" href="https://www.noctive.us/pages/profile.html">View profile <span>→</span></a>
+          <a class="link-pill" href="https://www.noctive.us/pages/explore.html">Explore hubs <span>→</span></a>
           <button class="rail-btn" type="button" id="signOutBtn">Sign out</button>
         </div>
       </section>
@@ -1104,9 +1104,9 @@
       <section class="card quick-links">
         <div class="rail-title">Quick Links</div>
         <div class="link-list">
-          <a class="link-pill" href="explore.html">Explore hubs <span>→</span></a>
-          <a class="link-pill" href="profile.html">Edit profile <span>→</span></a>
-          <a class="link-pill" href="faq.html">Rules and FAQ <span>→</span></a>
+          <a class="link-pill" href="https://www.noctive.us/pages/explore.html">Explore hubs <span>→</span></a>
+          <a class="link-pill" href="https://www.noctive.us/pages/profile.html">Edit profile <span>→</span></a>
+          <a class="link-pill" href="https://www.noctive.us/pages/faq.html">Rules and FAQ <span>→</span></a>
         </div>
       </section>
     </aside>
@@ -1276,10 +1276,10 @@
     <div class="bottombar-inner">
       <div style="font-family:var(--fontHead); font-weight:700;">Noctive</div>
       <nav class="footnav" aria-label="Footer">
-        <a href="home.html">Home</a>
-        <a href="explore.html">Explore</a>
-        <a href="faq.html">FAQ</a>
-        <a href="profile.html">Profile</a>
+        <a href="https://www.noctive.us/pages/home.html">Home</a>
+        <a href="https://www.noctive.us/pages/explore.html">Explore</a>
+        <a href="https://www.noctive.us/pages/faq.html">FAQ</a>
+        <a href="https://www.noctive.us/pages/profile.html">Profile</a>
       </nav>
       <div>© 2026 love venus by venus</div>
     </div>
@@ -1322,7 +1322,7 @@
     const QUICK_CHAT_STORAGE_PREFIX = 'noctive_quick_chat_';
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
-      window.location.replace('index.html');
+      window.location.replace('https://www.noctive.us');
     }
 
     window.noctiveViewerKey = 'guest';
@@ -1380,7 +1380,7 @@
 
     function buildProfileHref(uid) {
       const normalized = String(uid || '').trim();
-      return normalized ? `profile.html?uid=${encodeURIComponent(normalized)}` : 'profile.html';
+      return normalized ? `https://www.noctive.us/pages/profile.html?uid=${encodeURIComponent(normalized)}` : 'https://www.noctive.us/pages/profile.html';
     }
 
     function getInitials(name) {
