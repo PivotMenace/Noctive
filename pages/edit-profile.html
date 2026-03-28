@@ -381,16 +381,6 @@
         </section>
 
         <section class="section">
-          <div class="section-title">Banner</div>
-          <div class="section-sub">Top-of-page copy and tags.</div>
-          <div class="grid">
-            <div class="field full"><label for="bannerTitle">Banner Title</label><input id="bannerTitle" type="text" maxlength="90" /></div>
-            <div class="field full"><label for="bannerText">Banner Text</label><textarea id="bannerText"></textarea></div>
-            <div class="field full"><label for="bannerTags">Banner Tags</label><input id="bannerTags" type="text" placeholder="Alive After Dark, Profile Starter" /></div>
-          </div>
-        </section>
-
-        <section class="section">
           <div class="section-title">Showcase</div>
           <div class="section-sub">Favorite games and profile highlights.</div>
           <div class="grid">
@@ -480,15 +470,11 @@
     <div class="media-dialog">
       <div>
         <div class="section-title" id="mediaModalTitle">Change Media</div>
-        <div class="section-sub" id="mediaModalSub">Use a direct image URL or upload a file. GIFs work for profile pictures and banners.</div>
+        <div class="section-sub" id="mediaModalSub">Upload an image file only. No pasted links or text fields here.</div>
       </div>
       <div class="media-preview-box" id="mediaPreviewBox">No media selected yet.</div>
       <div class="field">
-        <label for="mediaUrl">Image or GIF URL</label>
-        <input id="mediaUrl" type="url" placeholder="https://example.com/animated.gif" />
-      </div>
-      <div class="field">
-        <label for="mediaFile">Upload Image or GIF</label>
+        <label for="mediaFile">Upload Image</label>
         <input id="mediaFile" type="file" accept="image/*,image/gif" />
       </div>
       <div class="actions">
@@ -558,6 +544,7 @@
     const auth = getAuth(app);
     let currentAuthUser = null;
     let activeMediaTarget = 'avatar';
+    let pendingMediaValue = '';
     let hasUnsavedChanges = false;
 
     try {
@@ -741,9 +728,6 @@
       setInput('avatar', profile.avatar || '');
       setInput('bannerImage', profile.bannerImage || '');
       setInput('bio', profile.bio);
-      setInput('bannerTitle', profile.bannerTitle);
-      setInput('bannerText', profile.bannerText);
-      setInput('bannerTags', (profile.bannerTags || []).join(', '));
       setInput('featuredHub', profile.featuredHub);
       setInput('currentObsession', profile.currentObsession);
       setInput('games', (profile.games || []).join(', '));
@@ -756,7 +740,6 @@
 
     function readFormProfile() {
       const starter = createStarterProfile(currentAuthUser);
-      const bannerTags = parseList(document.getElementById('bannerTags').value);
       const games = parseList(document.getElementById('games').value);
       const badges = parseList(document.getElementById('badges').value);
       const fallbackGameText = games.length ? games[0] : 'Add favorite games first';
@@ -770,9 +753,9 @@
         avatar: safeAvatarValue,
         bannerImage: document.getElementById('bannerImage').value.trim(),
         bio: document.getElementById('bio').value.trim() || starter.bio,
-        bannerTitle: document.getElementById('bannerTitle').value.trim() || starter.bannerTitle,
-        bannerText: document.getElementById('bannerText').value.trim() || starter.bannerText,
-        bannerTags: bannerTags.length ? bannerTags : starter.bannerTags,
+        bannerTitle: starter.bannerTitle,
+        bannerText: starter.bannerText,
+        bannerTags: starter.bannerTags,
         featuredHub: document.getElementById('featuredHub').value.trim() || starter.featuredHub,
         currentObsession: document.getElementById('currentObsession').value.trim() || starter.currentObsession,
         games,
@@ -847,14 +830,14 @@
       }
       if (sub) {
         if (target === 'bannerImage') {
-          sub.textContent = 'Use a direct image URL or upload a file. Banners can still be static or GIF.';
+          sub.textContent = 'Upload a banner image file. Banners can still be static or GIF.';
         } else if (hasGifProfileUnlock()) {
-          sub.textContent = 'Use a direct image URL or upload a file. You unlocked GIF profile pictures, so still images and GIFs both work here.';
+          sub.textContent = 'Upload a profile image file. You unlocked GIF profile pictures, so still images and GIFs both work here.';
         } else {
-          sub.textContent = 'Use a direct image URL or upload a file. Profile pictures stay still-image only until you unlock the GIF coupon in Night Market.';
+          sub.textContent = 'Upload a profile image file. Profile pictures stay still-image only until you unlock the GIF coupon in Night Market.';
         }
       }
-      setInput('mediaUrl', currentValue);
+      pendingMediaValue = currentValue;
       const mediaFile = document.getElementById('mediaFile');
       if (mediaFile) {
         mediaFile.value = '';
@@ -885,12 +868,10 @@
     document.getElementById('changeBannerBtn')?.addEventListener('click', () => openMediaModal('bannerImage'));
     document.getElementById('closeMediaBtn')?.addEventListener('click', closeMediaModal);
     document.getElementById('removeMediaBtn')?.addEventListener('click', () => {
+      pendingMediaValue = '';
       applyMediaValue('');
       setMediaPreview('');
       closeMediaModal();
-    });
-    document.getElementById('mediaUrl')?.addEventListener('input', (event) => {
-      setMediaPreview(event.target.value.trim());
     });
     document.getElementById('mediaFile')?.addEventListener('change', (event) => {
       const file = event.target.files?.[0];
@@ -903,13 +884,13 @@
       const reader = new FileReader();
       reader.onload = () => {
         const result = typeof reader.result === 'string' ? reader.result : '';
-        setInput('mediaUrl', result);
+        pendingMediaValue = result;
         setMediaPreview(result);
       };
       reader.readAsDataURL(file);
     });
     document.getElementById('applyMediaBtn')?.addEventListener('click', () => {
-      const value = document.getElementById('mediaUrl')?.value.trim() || '';
+      const value = pendingMediaValue.trim();
       applyMediaValue(value);
       const avatarValue = document.getElementById('avatar')?.value.trim() || '';
       const bannerValue = document.getElementById('bannerImage')?.value.trim() || '';

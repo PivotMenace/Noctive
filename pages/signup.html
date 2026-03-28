@@ -154,6 +154,14 @@
       transform: translateY(-1px);
       opacity: 0.92;
     }
+    .divider {
+      margin: 14px 0 10px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
 
     .status {
       min-height: 24px;
@@ -170,11 +178,16 @@
   <main class="shell">
     <div class="brand">NOCTIVE</div>
     <h1>Sign Up</h1>
-    <p>Create your account first, then step into the private garden.</p>
+    <p>Create your account to enter the private garden.</p>
 
     <div class="field">
       <label for="email">Email</label>
       <input id="email" type="email" autocomplete="email" placeholder="you@example.com" />
+    </div>
+
+    <div class="field">
+      <label for="username">Username</label>
+      <input id="username" type="text" autocomplete="username" placeholder="pick a username" />
     </div>
 
     <div class="field">
@@ -192,6 +205,8 @@
     </div>
 
     <button class="primary" id="signUpActionBtn" type="button">Create Account</button>
+    <div class="divider">or</div>
+    <button class="secondary" id="googleSignUpBtn" type="button">Continue with Google</button>
     <a class="secondary" href="../index.html">Back to the gate</a>
     <div class="status" id="status" aria-live="polite"></div>
   </main>
@@ -207,9 +222,34 @@
   <script src="https://www.google.com/recaptcha/api.js?onload=noctiveRecaptchaOnload&render=explicit" async defer></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { createUserWithEmailAndPassword, getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      createUserWithEmailAndPassword,
+      deleteUser,
+      getAdditionalUserInfo,
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signOut,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      doc,
+      getFirestore,
+      runTransaction,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const ACCESS_SESSION_KEY = "noctive_site_access";
+    const GOOGLE_SIGNUP_PENDING_KEY = "noctive_google_signup_pending";
+    const OWNER_UIDS = ["TljwjuBuKvd6VG9e0Mz81y7ZRgi1"];
+    const RESERVED_USERNAMES = [
+      "noctive",
+      "noctivehq",
+      "noctiveofficial",
+      "noctivestaff",
+      "noctiveadmin",
+      "venus"
+    ];
     const firebaseConfig = {
       apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
       authDomain: "noctive-41c22.firebaseapp.com",
@@ -221,14 +261,46 @@
     };
 
     const emailInput = document.getElementById("email");
+    const usernameInput = document.getElementById("username");
     const passwordInput = document.getElementById("password");
     const captchaNote = document.getElementById("captchaNote");
     const signUpActionBtn = document.getElementById("signUpActionBtn");
+    const googleSignUpBtn = document.getElementById("googleSignUpBtn");
     const status = document.getElementById("status");
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
     let recaptchaWidgetId = null;
     let recaptchaRetryCount = 0;
+    const blockedUsernameTerms = [
+      "admin",
+      "administrator",
+      "mod",
+      "moderator",
+      "owner",
+      "support",
+      "staff",
+      "official",
+      "fuck",
+      "shit",
+      "bitch",
+      "asshole",
+      "slut",
+      "whore",
+      "nigger",
+      "nigga",
+      "fag",
+      "faggot",
+      "kike",
+      "tranny",
+      "rape",
+      "rapist",
+      "kill",
+      "suicide",
+      "naz",
+      "hitler"
+    ];
 
     function getCaptchaToken() {
       if (!window.grecaptcha || recaptchaWidgetId === null) return "";
@@ -284,15 +356,175 @@
       status.className = `status ${kind}`.trim();
     }
 
+    function normalizeUsername(value) {
+      return String(value || "")
+        .trim()
+        .replace(/\s+/g, "")
+        .replace(/[^a-zA-Z0-9._-]/g, "")
+        .toLowerCase();
+    }
+
+    function validateUsername(username) {
+      if (!username) {
+        return "Username is required.";
+      }
+
+      if (username.length < 3) {
+        return "Username must be at least 3 characters.";
+      }
+
+      if (username.length > 20) {
+        return "Username must be 20 characters or fewer.";
+      }
+
+      if (!/^[a-z0-9._-]+$/.test(username)) {
+        return "Username can only use letters, numbers, dots, dashes, or underscores.";
+      }
+
+      if (/^[._-]/.test(username) || /[._-]$/.test(username)) {
+        return "Username cannot start or end with punctuation.";
+      }
+
+      if (/[._-]{2,}/.test(username)) {
+        return "Username cannot stack punctuation like .. or __.";
+      }
+
+      const blockedTerm = blockedUsernameTerms.find((term) => username.includes(term));
+      if (blockedTerm) {
+        return "Please choose a different username.";
+      }
+
+      return "";
+    }
+
+    function validatePassword(password, username, email) {
+      if (!password) {
+        return "Password is required.";
+      }
+
+      if (password.length < 10) {
+        return "Password must be at least 10 characters.";
+      }
+
+      if (!/[A-Z]/.test(password)) {
+        return "Password needs at least one uppercase letter.";
+      }
+
+      if (!/[a-z]/.test(password)) {
+        return "Password needs at least one lowercase letter.";
+      }
+
+      if (!/\d/.test(password)) {
+        return "Password needs at least one number.";
+      }
+
+      if (!/[^A-Za-z0-9]/.test(password)) {
+        return "Password needs at least one symbol.";
+      }
+
+      const loweredPassword = password.toLowerCase();
+      const loweredEmail = String(email || "").toLowerCase();
+      const loweredUsername = String(username || "").toLowerCase();
+      const weakTerms = ["password", "123456", "qwerty", "letmein", "welcome", "noctive"];
+
+      if (loweredUsername && loweredPassword.includes(loweredUsername)) {
+        return "Password should not include your username.";
+      }
+
+      if (loweredEmail && loweredPassword.includes(loweredEmail)) {
+        return "Password should not include your email.";
+      }
+
+      if (weakTerms.some((term) => loweredPassword.includes(term))) {
+        return "Password is too easy to guess. Make it more unique.";
+      }
+
+      return "";
+    }
+
+    function isOwnerUid(uid) {
+      return OWNER_UIDS.includes(String(uid || "").trim());
+    }
+
+    function isReservedUsername(username) {
+      return RESERVED_USERNAMES.includes(String(username || "").trim().toLowerCase());
+    }
+
+    async function reserveUsername(user, username, email, authMethod) {
+      const usernameRef = doc(db, "Usernames", username);
+      const profileRef = doc(db, "Profiles", user.uid);
+
+      await runTransaction(db, async (transaction) => {
+        if (isReservedUsername(username) && !isOwnerUid(user.uid)) {
+          throw new Error("That username is reserved.");
+        }
+
+        const usernameDoc = await transaction.get(usernameRef);
+
+        if (usernameDoc.exists()) {
+          throw new Error("That username is already taken.");
+        }
+
+        transaction.set(usernameRef, {
+          uid: user.uid,
+          username,
+          authMethod,
+          createdAt: serverTimestamp()
+        });
+
+        transaction.set(profileRef, {
+          uid: user.uid,
+          username,
+          displayName: username,
+          email,
+          authMethod,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      });
+    }
+
+    function saveLocalProfile(user, username) {
+      if (!user?.uid || !username) return;
+
+      const profileKey = `noctive_profile_${user.uid}`;
+
+      try {
+        const raw = localStorage.getItem(profileKey);
+        const currentProfile = raw ? JSON.parse(raw) : {};
+        const nextProfile = {
+          ...currentProfile,
+          username,
+          displayName: currentProfile.displayName || username
+        };
+        localStorage.setItem(profileKey, JSON.stringify(nextProfile));
+      } catch (error) {
+        console.error("Could not save signup profile locally:", error);
+      }
+    }
+
     window.addEventListener("noctive-recaptcha-ready", loadRecaptcha);
     loadRecaptcha();
 
     signUpActionBtn?.addEventListener("click", async () => {
       const email = emailInput.value.trim();
+      const username = normalizeUsername(usernameInput.value);
       const password = passwordInput.value;
 
-      if (!email || !password) {
-        setStatus("Email and password are required.", "bad");
+      if (!email || !username || !password) {
+        setStatus("Email, username, and password are required.", "bad");
+        return;
+      }
+
+      const usernameError = validateUsername(username);
+      if (usernameError) {
+        setStatus(usernameError, "bad");
+        return;
+      }
+
+      const passwordError = validatePassword(password, username, email);
+      if (passwordError) {
+        setStatus(passwordError, "bad");
         return;
       }
 
@@ -303,9 +535,14 @@
 
       signUpActionBtn.disabled = true;
       setStatus("Creating your account...", "");
+      let createdUser = null;
 
       try {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const result = await createUserWithEmailAndPassword(auth, email, password);
+        createdUser = result.user;
+        await updateProfile(result.user, { displayName: username });
+        await reserveUsername(result.user, username, email, "password");
+        saveLocalProfile(result.user, username);
         sessionStorage.setItem(ACCESS_SESSION_KEY, "granted");
         setStatus("Account created. Entering Noctive...", "good");
         window.setTimeout(() => {
@@ -313,9 +550,60 @@
         }, 500);
       } catch (error) {
         console.error(error);
+        if (createdUser?.uid) {
+          try {
+            await deleteUser(createdUser);
+          } catch (cleanupError) {
+            console.error("Could not clean up incomplete account:", cleanupError);
+          }
+        }
         setStatus(error?.message || "Could not create account.", "bad");
         resetCaptcha();
         signUpActionBtn.disabled = false;
+      }
+    });
+
+    googleSignUpBtn?.addEventListener("click", async () => {
+      if (!getCaptchaToken()) {
+        setStatus("Please complete the captcha first.", "bad");
+        return;
+      }
+
+      googleSignUpBtn.disabled = true;
+      setStatus("Opening Google...", "");
+      let popupUser = null;
+      let popupCreatedNewUser = false;
+
+      try {
+        const result = await signInWithPopup(auth, provider);
+        popupUser = result.user;
+        popupCreatedNewUser = Boolean(getAdditionalUserInfo(result)?.isNewUser);
+
+        if (!popupCreatedNewUser) {
+          await signOut(auth);
+          sessionStorage.removeItem(ACCESS_SESSION_KEY);
+          setStatus("That Google account already has a Noctive login. Use Google login instead.", "bad");
+          googleSignUpBtn.disabled = false;
+          return;
+        }
+
+        sessionStorage.setItem(GOOGLE_SIGNUP_PENDING_KEY, "google");
+        setStatus("Google accepted. One last setup step...", "good");
+        window.setTimeout(() => {
+          window.location.replace("./welcome.html");
+        }, 400);
+      } catch (error) {
+        console.error(error);
+        if (popupCreatedNewUser && popupUser?.uid) {
+          try {
+            await deleteUser(popupUser);
+          } catch (cleanupError) {
+            console.error("Could not clean up incomplete Google signup:", cleanupError);
+          }
+        }
+        setStatus(error?.message || "Google sign-up failed.", "bad");
+        resetCaptcha();
+        googleSignUpBtn.disabled = false;
       }
     });
   </script>

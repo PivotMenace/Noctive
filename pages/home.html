@@ -817,6 +817,42 @@
       text-overflow:ellipsis;
     }
 
+    .author-line{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
+      flex-wrap:wrap;
+    }
+
+    .admin-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,215,115,0.32);
+      background:linear-gradient(135deg, rgba(92,18,22,0.98), rgba(160,26,37,0.92));
+      color:#fff4d7;
+      font-family:var(--fontHead);
+      font-size:0.72rem;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      box-shadow:0 0 18px rgba(220,20,60,0.18);
+    }
+
+    .admin-badge::before{
+      content:"◆";
+      font-size:0.64rem;
+      color:#ffd782;
+    }
+
+    .admin-role-line{
+      color:rgba(255,219,148,0.94);
+      font-size:0.78rem;
+      letter-spacing:0.03em;
+    }
+
     .messenger-subline{
       color:rgba(255,255,255,0.66);
       font-size:0.84rem;
@@ -1104,6 +1140,12 @@
           <a class="link-pill" href="./explore.html">Explore hubs <span>→</span></a>
           <a class="link-pill" href="./profile.html">Edit profile <span>→</span></a>
           <a class="link-pill" href="./faq.html">Rules and FAQ <span>→</span></a>
+        </div>
+      </section>
+      <section class="card quick-links">
+        <div class="rail-title">Session</div>
+        <div class="link-list">
+          <button class="link-pill" type="button" id="homeSignOutBtn" style="width:100%; justify-content:space-between; text-align:left;">Sign out <span>â†’</span></button>
         </div>
       </section>
     </aside>
@@ -1579,6 +1621,15 @@
       const downVotes = Number(post.votes?.down ?? 0);
       const commentsCount = Array.isArray(post.comments) ? post.comments.length : 0;
       const profileHref = buildProfileHref(post.uid || post.author);
+      const adminBadge = post.roleLabel
+        ? `<span class="admin-badge">${escapeHtml(post.roleLabel)}</span>`
+        : '';
+      const roleLine = post.officialLabel
+        ? `<div class="admin-role-line">${escapeHtml(post.officialLabel)}</div>`
+        : '';
+      const deleteAction = post.canDelete
+        ? `<button class="action" type="button" data-admin-delete="true" style="color:rgba(255,120,140,0.98);">Delete</button>`
+        : '';
       return `
         <article class="post" data-post-id="${escapeHtml(post.id)}">
           <div class="post-head">
@@ -1587,7 +1638,11 @@
                 ${buildAvatarMarkup({ name: post.author, theme: post.theme, avatar: post.avatar }, 'mini-avatar', false)}
               </a>
               <a class="meta-stack" href="${profileHref}" style="min-width:0;">
-                <div class="pname">${escapeHtml(post.author)}</div>
+                <div class="author-line">
+                  <div class="pname">${escapeHtml(post.author)}</div>
+                  ${adminBadge}
+                </div>
+                ${roleLine}
                 <div class="ptime">${escapeHtml(post.time)}</div>
               </a>
             </div>
@@ -1602,6 +1657,7 @@
             <button class="action" type="button" data-reply-toggle="true" aria-expanded="false">Reply</button>
             <span class="vote-count" data-comment-count="true">${commentsCount}</span>
             <button class="action" type="button">Share</button>
+            ${deleteAction}
           </div>
           <div class="comments-shell" data-comments-shell="true" hidden>
             <div class="comment-list" data-comment-list="true"></div>
@@ -2230,7 +2286,8 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import {
       getAuth,
-      onAuthStateChanged
+      onAuthStateChanged,
+      signOut
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
     const firebaseConfig = {
@@ -2245,11 +2302,28 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const homeSignOutBtn = document.getElementById('homeSignOutBtn');
+    const LAST_PROFILE_UID_KEY = 'noctive_last_profile_uid';
+
+    homeSignOutBtn?.addEventListener('click', async () => {
+      homeSignOutBtn.disabled = true;
+
+      try {
+        await signOut(auth);
+      } catch (error) {
+        console.error('Could not sign out from home:', error);
+      }
+
+      sessionStorage.removeItem(ACCESS_SESSION_KEY);
+      window.location.replace('../index.html');
+    });
 
     onAuthStateChanged(auth, (user) => {
       const sidebarAvatarBox = document.getElementById('sidebarAvatarBox');
       if (user) {
-        const displayName = user.displayName || user.email?.split('@')[0] || 'User';
+        const emailBase = user.email?.split('@')[0] || 'user';
+        let displayName = user.displayName || emailBase || 'User';
+        let savedUsername = emailBase;
         let savedTheme = 'default';
         let savedAvatar = '';
 
@@ -2257,6 +2331,8 @@
           const raw = localStorage.getItem(`noctive_profile_${user.uid}`);
           if (raw) {
             const profile = JSON.parse(raw);
+            displayName = profile.displayName || profile.username || displayName;
+            savedUsername = profile.username || savedUsername;
             savedTheme = profile.theme || 'default';
             savedAvatar = profile.avatar || '';
           }
@@ -2265,8 +2341,9 @@
         }
 
         setText('userDisplayName', displayName);
-        setText('userDisplaySub', 'Online');
+        setText('userDisplaySub', savedUsername ? `@${savedUsername}` : 'Online');
         window.noctiveViewerKey = user.uid;
+        localStorage.setItem(LAST_PROFILE_UID_KEY, user.uid);
 
         if (sidebarAvatarBox) {
           sidebarAvatarBox.dataset.name = displayName;

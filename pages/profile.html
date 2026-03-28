@@ -461,6 +461,47 @@
       overflow-wrap: anywhere;
     }
 
+    .profile-title.is-admin {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 215, 115, 0.32);
+      background: linear-gradient(135deg, rgba(92, 18, 22, 0.98), rgba(160, 26, 37, 0.92));
+      color: #fff4d7;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 0 18px rgba(220,20,60,0.18);
+    }
+
+    .profile-title.is-admin::before {
+      content: "◆";
+      font-size: 0.68rem;
+      color: #ffd782;
+    }
+
+    .admin-notice {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 215, 115, 0.18);
+      background: rgba(255, 215, 115, 0.08);
+      color: #ffe5a3;
+      font-size: 0.82rem;
+      letter-spacing: 0.03em;
+    }
+
+    .admin-notice::before {
+      content: "✦";
+      color: #ffd782;
+      font-size: 0.78rem;
+    }
+
     .sub-row,
     .profile-subline {
       color: var(--muted);
@@ -891,6 +932,7 @@
       </nav>
       <div class="topbar-right">
         <a class="ghost-btn" href="./edit-profile.html" id="topbarEditBtn">Edit Profile</a>
+        <button class="ghost-btn" type="button" id="profileTopbarSignOutBtn">Sign Out</button>
       </div>
     </div>
   </header>
@@ -976,6 +1018,8 @@
                   <span class="banner-tag" id="profileThemeTag">Default Theme</span>
                 </div>
 
+                <div class="admin-notice" id="profileAdminNotice" hidden>Official Noctive account for support and moderation</div>
+
                 <p class="profile-subline" id="profileBio">No bio added yet.</p>
               </div>
             </div>
@@ -984,6 +1028,7 @@
               <a class="primary-btn" href="./edit-profile.html" id="profileEditBtn">Edit Profile</a>
               <button class="secondary-btn" type="button" id="profileShareBtn">Share</button>
               <button class="secondary-btn" type="button" id="profileMessageBtn" hidden>Message</button>
+              <button class="secondary-btn" type="button" id="profileSignOutBtn">Sign Out</button>
             </div>
           </div>
 
@@ -1122,11 +1167,13 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
+    const LAST_PROFILE_UID_KEY = 'noctive_last_profile_uid';
+    const ADMIN_UIDS = ['TljwjuBuKvd6VG9e0Mz81y7ZRgi1', 'G6RyacKuSUTLXniBWRC1WsAm4Rq2'];
     const requestedProfileUid = new URLSearchParams(window.location.search).get('uid') || '';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('../index.html');
@@ -1147,14 +1194,14 @@
       displayName: 'Guest',
       title: 'Noctive User',
       status: 'Offline',
-      bio: 'Sign in and start shaping this profile.',
+      bio: 'A late-night profile in progress. Shape the vibe, set the look, and make this space feel like yours.',
       theme: 'default',
       avatar: '',
       bannerImage: '',
       bannerTitle: 'Your Noctive profile starts here.',
-      bannerText: 'Once you sign in, this page becomes your personal space for games, hubs, activity, and profile style.',
-      bannerTags: ['Profile Preview', 'Default Theme'],
-      games: [],
+      bannerText: 'This space can become your late-night identity across posts, chats, favorite games, and the people you keep around.',
+      bannerTags: ['Alive After Dark', 'Profile Starter'],
+      games: ['Pick 3 favorite games', 'Show your style', 'Build your corner'],
       stats: {
         posts: 0,
         followers: 0,
@@ -1164,23 +1211,29 @@
         clips: 0
       },
       pinnedPost: {
-        badge: 'Pinned Thought',
-        time: 'Pinned just now',
-        text: 'Drop a short intro, a current obsession, or the vibe you want people to see first.',
+        badge: 'Starter Vibe',
+        time: 'Ready when you are',
+        text: 'Pin the post that tells people who you are, what you are into, or the energy you bring into Noctive.',
         likes: 0,
         comments: 0,
         shares: 0
       },
-      activity: ['No activity yet. Your profile updates will start showing here.'],
-      featuredHub: 'Pick a favorite hub to feature it here.',
-      currentObsession: 'Add what you are currently into.',
+      activity: [
+        'Pick your favorite games so your profile feels instantly more alive.',
+        'Set a banner, avatar, and status to make this page feel unmistakably yours.',
+        'Pin one post that shows your vibe the second someone lands here.'
+      ],
+      featuredHub: 'Choose the hub you want people to notice first.',
+      currentObsession: 'Add the game, fandom, or obsession currently stealing your attention.',
       badges: ['crescent-moon'],
       quickFacts: [
-        { label: 'Favorite Genre', value: 'Add this in your profile setup' },
-        { label: 'Best Active Hours', value: 'Late night by default' },
-        { label: 'Go-To Hub', value: 'Choose a hub to pin it here' }
+        { label: 'Favorite Genre', value: 'Pick the genre that feels most like you' },
+        { label: 'Best Active Hours', value: 'Late nights, by default' },
+        { label: 'Go-To Hub', value: 'Feature the space you want people to enter first' }
       ]
     };
+    const profileSignOutBtn = document.getElementById('profileSignOutBtn');
+    const profileTopbarSignOutBtn = document.getElementById('profileTopbarSignOutBtn');
 
     const BADGE_LIBRARY = {
       'crescent-moon': { label: 'Crescent Moon', icon: '☾', className: 'badge-crescent-moon' },
@@ -1366,6 +1419,23 @@
     const auth = getAuth(app);
     let currentAuthUser = null;
 
+    async function leaveToGate() {
+      profileSignOutBtn?.setAttribute('disabled', 'disabled');
+      profileTopbarSignOutBtn?.setAttribute('disabled', 'disabled');
+
+      try {
+        await signOut(auth);
+      } catch (error) {
+        console.error('Could not sign out from profile:', error);
+      }
+
+      sessionStorage.removeItem(ACCESS_SESSION_KEY);
+      window.location.replace('../index.html');
+    }
+
+    profileSignOutBtn?.addEventListener('click', leaveToGate);
+    profileTopbarSignOutBtn?.addEventListener('click', leaveToGate);
+
     try {
       await setPersistence(auth, browserLocalPersistence);
     } catch (error) {
@@ -1415,31 +1485,39 @@
       const emailBase = user.email?.split('@')[0] || 'guest';
       const displayName = user.displayName || emailBase;
       const safeName = displayName.trim() || 'Guest';
+      const isAdmin = ADMIN_UIDS.includes(String(user.uid || '').trim());
 
       return deepMerge(PROFILE_TEMPLATE, {
         username: emailBase,
         displayName: safeName,
-        title: 'Noctive Member',
+        title: isAdmin ? 'Admin' : 'Noctive Member',
         status: 'Online',
-        bio: `${safeName} has joined Noctive. Edit this section to add a real bio, your vibe, and what you are into right now.`,
+        bio: `${safeName} is officially inside Noctive. Build this profile into your own corner with a strong bio, favorite games, and a pinned vibe.`,
         bannerTitle: `${safeName} is alive after dark.`,
-        bannerText: `This is ${safeName}'s profile space. Personalize it with your banner copy, favorite games, featured hub, and a pinned post.`,
+        bannerText: `This is ${safeName}'s profile space. Turn it into a real identity with your banner copy, favorite games, featured hub, and one pinned post that says everything.`,
         bannerTags: ['Alive After Dark', 'Profile Starter'],
+        games: ['Valorant', 'Minecraft', 'Roblox'],
         stats: {
           ...PROFILE_TEMPLATE.stats,
-          games: 0
+          games: 3
         },
         pinnedPost: {
           ...PROFILE_TEMPLATE.pinnedPost,
-          text: `Hey, I'm ${safeName}. Still setting this up, but this is where my late-night internet identity goes.`
+          badge: 'Starter Vibe',
+          time: 'Pinned for your setup',
+          text: `Start with one pinned thought that tells people what ${safeName} is about.`
         },
-        activity: ['Profile created. Start customizing it to make this page yours.'],
-        featuredHub: 'Choose a hub you want people to notice first.',
-        currentObsession: 'Add your current game, fandom, or obsession.',
+        activity: [
+          'Signed in and claimed a spot inside Noctive.',
+          'Starter profile is ready for customization.',
+          'Next move: make this page feel unmistakably personal.'
+        ],
+        featuredHub: 'Choose the hub you want visitors to notice first.',
+        currentObsession: 'Add the game, fandom, or obsession currently running your nights.',
         quickFacts: [
-          { label: 'Favorite Genre', value: 'Set this in Edit Profile' },
+          { label: 'Favorite Genre', value: 'Set your main genre in Edit Profile' },
           { label: 'Best Active Hours', value: 'Usually online after dark' },
-          { label: 'Go-To Hub', value: 'Pick a favorite hub to show here' }
+          { label: 'Go-To Hub', value: 'Choose the hub that feels most like home' }
         ]
       });
     }
@@ -1515,15 +1593,17 @@
     function resolveProfileView(user) {
       const requestedUid = normalizeUid(requestedProfileUid);
       const ownUid = normalizeUid(user?.uid);
+      const fallbackUid = normalizeUid(getLastSignedInUid());
 
-      if (!requestedUid || (ownUid && requestedUid === ownUid)) {
+      if (!requestedUid || (ownUid && requestedUid === ownUid) || (!ownUid && fallbackUid && requestedUid === fallbackUid)) {
         const ownProfile = getStoredProfile(user);
-        if (ownUid) {
-          syncPublicProfile(ownUid, ownProfile, user);
+        const activeUid = ownUid || fallbackUid;
+        if (activeUid) {
+          syncPublicProfile(activeUid, ownProfile, user);
         }
         return {
           isOwnProfile: true,
-          uid: ownUid || 'guest',
+          uid: activeUid || 'guest',
           user,
           profile: ownProfile
         };
@@ -1539,14 +1619,18 @@
 
     function setProfileMode(view) {
       const topbarEditBtn = document.getElementById('topbarEditBtn');
+      const profileTopbarSignOutBtn = document.getElementById('profileTopbarSignOutBtn');
       const profileEditBtn = document.getElementById('profileEditBtn');
+      const profileSignOutBtn = document.getElementById('profileSignOutBtn');
       const profileMessageBtn = document.getElementById('profileMessageBtn');
       const profileShareBtn = document.getElementById('profileShareBtn');
       const statusControl = document.getElementById('statusControl');
       const statusMenu = document.getElementById('statusMenu');
 
       topbarEditBtn?.toggleAttribute('hidden', !view.isOwnProfile);
+      profileTopbarSignOutBtn?.toggleAttribute('hidden', !view.isOwnProfile);
       profileEditBtn?.toggleAttribute('hidden', !view.isOwnProfile);
+      profileSignOutBtn?.toggleAttribute('hidden', !view.isOwnProfile);
       profileMessageBtn?.toggleAttribute('hidden', view.isOwnProfile);
       if (profileShareBtn) {
         profileShareBtn.textContent = view.isOwnProfile ? 'Share' : 'Copy Link';
@@ -1704,6 +1788,28 @@
       return user?.uid ? `noctive_profile_${user.uid}` : GUEST_PROFILE_KEY;
     }
 
+    function getLastSignedInUid() {
+      try {
+        return localStorage.getItem(LAST_PROFILE_UID_KEY) || '';
+      } catch (error) {
+        console.error('Could not read last signed-in profile uid:', error);
+        return '';
+      }
+    }
+
+    function getStoredProfileByUid(uid) {
+      if (!uid) return null;
+
+      try {
+        const raw = localStorage.getItem(`noctive_profile_${uid}`);
+        if (!raw) return null;
+        return normalizeProfileBadges(deepMerge(PROFILE_TEMPLATE, JSON.parse(raw)));
+      } catch (error) {
+        console.error('Could not parse stored profile by uid:', error);
+        return null;
+      }
+    }
+
     function saveProfilePatch(user, patch) {
       const storageKey = getProfileStorageKey(user);
       const baseProfile = getStoredProfile(user);
@@ -1760,6 +1866,12 @@
     function getStoredProfile(user) {
       if (!user) {
         try {
+          const lastUid = getLastSignedInUid();
+          const lastProfile = getStoredProfileByUid(lastUid);
+          if (lastProfile) {
+            return lastProfile;
+          }
+
           const raw = localStorage.getItem(GUEST_PROFILE_KEY);
           if (!raw) return JSON.parse(JSON.stringify(PROFILE_TEMPLATE));
           return normalizeProfileBadges(deepMerge(PROFILE_TEMPLATE, JSON.parse(raw)));
@@ -1786,6 +1898,7 @@
       const { user, profile, isOwnProfile, uid } = view;
       const displayName = profile.displayName || user?.displayName || profile.username || 'Guest';
       const username = profile.username || user?.email?.split('@')[0] || uid || 'guest';
+      const isAdmin = ADMIN_UIDS.includes(String(user?.uid || uid || '').trim());
 
       const bannerFill = document.getElementById('bannerFill');
       if (bannerFill) {
@@ -1798,7 +1911,9 @@
       setText('bannerTitle', profile.bannerTitle || `${displayName} is alive after dark.`);
       setText('bannerText', profile.bannerText || profile.bio || 'Set up your profile to personalize this space.');
       setText('profileDisplayName', displayName);
-      setText('profileTitle', profile.title || (isOwnProfile && user ? 'Noctive Member' : 'Noctive User'));
+      setText('profileTitle', isAdmin ? 'Admin' : (profile.title || (isOwnProfile && user ? 'Noctive Member' : 'Noctive User')));
+      document.getElementById('profileTitle')?.classList.toggle('is-admin', isAdmin);
+      document.getElementById('profileAdminNotice')?.toggleAttribute('hidden', !isAdmin);
       setText('profileUsername', `@${username}`);
       setText('profileEmail', isOwnProfile ? (user?.email || 'Sign in to personalize your profile') : 'Public profile');
       renderStatus(profile.status || (user ? 'Online' : 'Invisible'));
@@ -1824,7 +1939,10 @@
       setText('featuredHub', profile.featuredHub || 'Choose a featured hub to personalize this card.');
       setText('currentObsession', profile.currentObsession || 'Add your current obsession to make the profile feel lived-in.');
 
-      renderTagList('bannerTags', profile.bannerTags || ['Alive After Dark'], 'banner-tag');
+      const bannerTags = isAdmin
+        ? ['Official Account', ...(profile.bannerTags || ['Alive After Dark'])]
+        : (profile.bannerTags || ['Alive After Dark']);
+      renderTagList('bannerTags', bannerTags, 'banner-tag');
       renderTagList('gamesGrid', profile.games?.length ? profile.games : ['No favorite games yet'], 'game-chip');
       renderTagList('badgeRow', profile.badges?.length ? profile.badges : ['Newcomer'], 'badge');
       renderActivity(profile.activity?.length ? profile.activity : ['No recent activity yet.']);
@@ -1837,6 +1955,13 @@
 
     onAuthStateChanged(auth, (user) => {
       currentAuthUser = user;
+      if (user?.uid) {
+        try {
+          localStorage.setItem(LAST_PROFILE_UID_KEY, user.uid);
+        } catch (error) {
+          console.error('Could not save last signed-in profile uid:', error);
+        }
+      }
       try {
         const view = resolveProfileView(user);
         renderProfile(view);

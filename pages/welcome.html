@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noctive | Welcome</title>
+  <link rel="icon" type="image/png" href="../pngs/Favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --red1: #8b0000;
+      --red2: #b22222;
+      --red3: #dc143c;
+      --panel: rgba(16, 12, 24, 0.86);
+      --line: rgba(255,255,255,0.12);
+      --white: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --good: #19ff9a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(900px 600px at 50% 18%, rgba(220, 20, 60, 0.12), transparent 60%),
+        radial-gradient(900px 600px at 50% 85%, rgba(255, 255, 255, 0.05), transparent 60%),
+        var(--bg);
+      color: var(--white);
+      font-family: 'Rubik', system-ui, sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .shell {
+      width: min(560px, 100%);
+      padding: 30px 24px;
+      border-radius: 26px;
+      border: 1px solid rgba(220,20,60,0.2);
+      background: var(--panel);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.28), 0 0 28px rgba(220,20,60,0.10);
+    }
+
+    .brand {
+      margin-bottom: 8px;
+      text-align: center;
+      font-size: 1.9rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--red1), var(--red2), var(--red3), var(--red2), var(--red1));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    p {
+      margin: 0 0 20px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    label,
+    .section-label {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      font: inherit;
+      outline: none;
+    }
+
+    input[readonly] {
+      opacity: 0.82;
+      cursor: default;
+    }
+
+    .game-copy {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .game-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-chip {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--white);
+      border-radius: 999px;
+      padding: 11px 16px;
+      font: inherit;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+    }
+
+    .game-chip:hover {
+      transform: translateY(-1px);
+      border-color: rgba(220,20,60,0.45);
+    }
+
+    .game-chip.is-active {
+      background: linear-gradient(180deg, rgba(90, 10, 18, 0.94), rgba(116, 14, 28, 0.94));
+      border-color: rgba(220,20,60,0.48);
+    }
+
+    .game-hint {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+
+    .primary,
+    .secondary {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.14s ease, opacity 0.14s ease;
+    }
+
+    .primary {
+      background: linear-gradient(180deg, rgba(90, 10, 18, 0.94), rgba(116, 14, 28, 0.94));
+      color: #fff;
+      border-color: rgba(220,20,60,0.42);
+    }
+
+    .secondary {
+      margin-top: 10px;
+      background: rgba(255,255,255,0.04);
+      color: var(--white);
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .primary:hover,
+    .secondary:hover {
+      transform: translateY(-1px);
+      opacity: 0.92;
+    }
+
+    .status {
+      min-height: 24px;
+      margin-top: 14px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .status.good { color: var(--good); }
+    .status.bad { color: var(--red3); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="brand">NOCTIVE</div>
+    <h1>Welcome</h1>
+    <p>Google is connected. Finish your Noctive setup below.</p>
+
+    <div class="field">
+      <label for="googleEmail">Google Email</label>
+      <input id="googleEmail" type="email" readonly />
+    </div>
+
+    <div class="field">
+      <label for="username">Create a Username</label>
+      <input id="username" type="text" autocomplete="username" placeholder="pick a username" />
+    </div>
+
+    <div class="field">
+      <label for="password">Create a Password</label>
+      <input id="password" type="password" autocomplete="new-password" placeholder="Choose a password" />
+    </div>
+
+    <div class="section-label">Pick 3 games</div>
+    <div class="game-copy">Choose the games you want to see first around Noctive.</div>
+    <div class="game-grid" id="gameGrid"></div>
+    <div class="game-hint" id="gameHint">Choose exactly 3.</div>
+
+    <button class="primary" id="finishSetupBtn" type="button">Finish Setup</button>
+    <a class="secondary" href="./signup.html">Back to sign up</a>
+    <div class="status" id="status" aria-live="polite"></div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      EmailAuthProvider,
+      getAuth,
+      linkWithCredential,
+      onAuthStateChanged,
+      signOut,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      doc,
+      getFirestore,
+      runTransaction,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const ACCESS_SESSION_KEY = "noctive_site_access";
+    const GOOGLE_SIGNUP_PENDING_KEY = "noctive_google_signup_pending";
+    const OWNER_UIDS = ["TljwjuBuKvd6VG9e0Mz81y7ZRgi1"];
+    const RESERVED_USERNAMES = [
+      "noctive",
+      "noctivehq",
+      "noctiveofficial",
+      "noctivestaff",
+      "noctiveadmin",
+      "venus"
+    ];
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
+      authDomain: "noctive-41c22.firebaseapp.com",
+      projectId: "noctive-41c22",
+      storageBucket: "noctive-41c22.firebasestorage.app",
+      messagingSenderId: "617642134193",
+      appId: "1:617642134193:web:ea5f0c93e56c654f66f090",
+      measurementId: "G-8ZFW3MTB3C"
+    };
+
+    const blockedUsernameTerms = [
+      "admin", "administrator", "mod", "moderator", "owner", "support", "staff", "official",
+      "fuck", "shit", "bitch", "asshole", "slut", "whore", "nigger", "nigga", "fag", "faggot", "kike",
+      "tranny", "rape", "rapist", "kill", "suicide", "naz", "hitler"
+    ];
+    const gameOptions = [
+      "Rainbow Six Siege",
+      "Valorant",
+      "Fortnite",
+      "Roblox",
+      "Minecraft",
+      "Helldivers 2",
+      "Counter-Strike 2",
+      "League of Legends"
+    ];
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const googleEmailInput = document.getElementById("googleEmail");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const gameGrid = document.getElementById("gameGrid");
+    const gameHint = document.getElementById("gameHint");
+    const finishSetupBtn = document.getElementById("finishSetupBtn");
+    const status = document.getElementById("status");
+    const selectedGames = new Set();
+    let currentUser = null;
+
+    function setStatus(message, kind = "") {
+      status.textContent = message;
+      status.className = `status ${kind}`.trim();
+    }
+
+    function normalizeUsername(value) {
+      return String(value || "")
+        .trim()
+        .replace(/\s+/g, "")
+        .replace(/[^a-zA-Z0-9._-]/g, "")
+        .toLowerCase();
+    }
+
+    function validateUsername(username) {
+      if (!username) return "Username is required.";
+      if (username.length < 3) return "Username must be at least 3 characters.";
+      if (username.length > 20) return "Username must be 20 characters or fewer.";
+      if (!/^[a-z0-9._-]+$/.test(username)) {
+        return "Username can only use letters, numbers, dots, dashes, or underscores.";
+      }
+      if (/^[._-]/.test(username) || /[._-]$/.test(username)) {
+        return "Username cannot start or end with punctuation.";
+      }
+      if (/[._-]{2,}/.test(username)) {
+        return "Username cannot stack punctuation like .. or __.";
+      }
+      if (blockedUsernameTerms.some((term) => username.includes(term))) {
+        return "Please choose a different username.";
+      }
+      return "";
+    }
+
+    function validatePassword(password, username, email) {
+      if (!password) return "Password is required.";
+      if (password.length < 10) return "Password must be at least 10 characters.";
+      if (!/[A-Z]/.test(password)) return "Password needs at least one uppercase letter.";
+      if (!/[a-z]/.test(password)) return "Password needs at least one lowercase letter.";
+      if (!/\d/.test(password)) return "Password needs at least one number.";
+      if (!/[^A-Za-z0-9]/.test(password)) return "Password needs at least one symbol.";
+
+      const loweredPassword = password.toLowerCase();
+      const loweredEmail = String(email || "").toLowerCase();
+      const loweredUsername = String(username || "").toLowerCase();
+      const weakTerms = ["password", "123456", "qwerty", "letmein", "welcome", "noctive"];
+
+      if (loweredUsername && loweredPassword.includes(loweredUsername)) {
+        return "Password should not include your username.";
+      }
+      if (loweredEmail && loweredPassword.includes(loweredEmail)) {
+        return "Password should not include your email.";
+      }
+      if (weakTerms.some((term) => loweredPassword.includes(term))) {
+        return "Password is too easy to guess. Make it more unique.";
+      }
+      return "";
+    }
+
+    function isOwnerUid(uid) {
+      return OWNER_UIDS.includes(String(uid || "").trim());
+    }
+
+    function isReservedUsername(username) {
+      return RESERVED_USERNAMES.includes(String(username || "").trim().toLowerCase());
+    }
+
+    function saveLocalProfile(user, username, games) {
+      if (!user?.uid || !username) return;
+      const profileKey = `noctive_profile_${user.uid}`;
+
+      try {
+        const raw = localStorage.getItem(profileKey);
+        const currentProfile = raw ? JSON.parse(raw) : {};
+        const nextProfile = {
+          ...currentProfile,
+          username,
+          displayName: currentProfile.displayName || username,
+          games,
+          stats: {
+            ...(currentProfile.stats || {}),
+            games: games.length
+          }
+        };
+        localStorage.setItem(profileKey, JSON.stringify(nextProfile));
+      } catch (error) {
+        console.error("Could not save welcome profile locally:", error);
+      }
+    }
+
+    async function reserveUsernameAndProfile(user, username, games) {
+      const usernameRef = doc(db, "Usernames", username);
+      const profileRef = doc(db, "Profiles", user.uid);
+
+      await runTransaction(db, async (transaction) => {
+        if (isReservedUsername(username) && !isOwnerUid(user.uid)) {
+          throw new Error("That username is reserved.");
+        }
+
+        const usernameDoc = await transaction.get(usernameRef);
+        if (usernameDoc.exists()) {
+          throw new Error("That username is already taken.");
+        }
+
+        transaction.set(usernameRef, {
+          uid: user.uid,
+          username,
+          authMethod: "google+password",
+          createdAt: serverTimestamp()
+        });
+
+        transaction.set(profileRef, {
+          uid: user.uid,
+          username,
+          displayName: username,
+          email: user.email || "",
+          authMethod: "google+password",
+          games,
+          favoriteGames: games,
+          onboardingComplete: true,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          stats: {
+            games: games.length
+          }
+        }, { merge: true });
+      });
+    }
+
+    function renderGames() {
+      gameGrid.innerHTML = "";
+      gameOptions.forEach((game) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "game-chip";
+        button.textContent = game;
+
+        button.addEventListener("click", () => {
+          if (selectedGames.has(game)) {
+            selectedGames.delete(game);
+            button.classList.remove("is-active");
+          } else {
+            if (selectedGames.size >= 3) return;
+            selectedGames.add(game);
+            button.classList.add("is-active");
+          }
+
+          const count = selectedGames.size;
+          gameHint.textContent = count === 3
+            ? "Perfect. You picked 3."
+            : `Choose exactly 3. ${count}/3 selected.`;
+        });
+
+        gameGrid.appendChild(button);
+      });
+    }
+
+    finishSetupBtn?.addEventListener("click", async () => {
+      const username = normalizeUsername(usernameInput.value);
+      const password = passwordInput.value;
+      const games = Array.from(selectedGames);
+
+      if (!currentUser) {
+        setStatus("Your Google sign-up session is missing. Start again from sign up.", "bad");
+        return;
+      }
+
+      const usernameError = validateUsername(username);
+      if (usernameError) {
+        setStatus(usernameError, "bad");
+        return;
+      }
+
+      const passwordError = validatePassword(password, username, currentUser.email || "");
+      if (passwordError) {
+        setStatus(passwordError, "bad");
+        return;
+      }
+
+      if (games.length !== 3) {
+        setStatus("Pick exactly 3 games first.", "bad");
+        return;
+      }
+
+      finishSetupBtn.disabled = true;
+      setStatus("Finishing your setup...", "");
+
+      try {
+        const credential = EmailAuthProvider.credential(currentUser.email || "", password);
+        await linkWithCredential(currentUser, credential);
+        await updateProfile(currentUser, { displayName: username });
+        await reserveUsernameAndProfile(currentUser, username, games);
+        saveLocalProfile(currentUser, username, games);
+        sessionStorage.setItem(ACCESS_SESSION_KEY, "granted");
+        sessionStorage.removeItem(GOOGLE_SIGNUP_PENDING_KEY);
+        setStatus("Welcome to Noctive.", "good");
+        window.setTimeout(() => {
+          window.location.replace("./home.html");
+        }, 500);
+      } catch (error) {
+        console.error(error);
+        setStatus(error?.message || "Could not finish setup.", "bad");
+        finishSetupBtn.disabled = false;
+      }
+    });
+
+    renderGames();
+
+    onAuthStateChanged(auth, async (user) => {
+      const signupPending = sessionStorage.getItem(GOOGLE_SIGNUP_PENDING_KEY) === "google";
+
+      if (!signupPending) {
+        window.location.replace("./signup.html");
+        return;
+      }
+
+      if (!user) {
+        window.location.replace("./signup.html");
+        return;
+      }
+
+      currentUser = user;
+      googleEmailInput.value = user.email || "";
+      setStatus("Finish your Noctive setup to continue.");
+    });
+
+    window.addEventListener("beforeunload", () => {
+      if (!sessionStorage.getItem(ACCESS_SESSION_KEY) && sessionStorage.getItem(GOOGLE_SIGNUP_PENDING_KEY) === "google") {
+        signOut(auth).catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>
