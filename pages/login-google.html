@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noctive | Google Login</title>
+  <link rel="icon" type="image/png" href="../pngs/Favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --red1: #8b0000;
+      --red2: #b22222;
+      --red3: #dc143c;
+      --white: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --line: rgba(255,255,255,0.18);
+      --good: #19ff9a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(900px 600px at 50% 20%, rgba(220, 20, 60, 0.12), transparent 60%),
+        radial-gradient(900px 600px at 50% 85%, rgba(255, 255, 255, 0.06), transparent 60%),
+        var(--bg);
+      color: var(--white);
+      font-family: 'Rubik', system-ui, sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .shell {
+      width: min(480px, 100%);
+      padding: 28px 22px;
+      border-radius: 24px;
+      border: 1px solid rgba(220,20,60,0.20);
+      background: rgba(16, 12, 24, 0.84);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.28), 0 0 28px rgba(220,20,60,0.10);
+      text-align: center;
+    }
+
+    .brand {
+      margin-bottom: 8px;
+      font-size: 1.9rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--red1), var(--red2), var(--red3), var(--red2), var(--red1));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 1.4rem;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .primary,
+    .secondary {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.14s ease, opacity 0.14s ease, border-color 0.14s ease;
+    }
+
+    .primary {
+      background: linear-gradient(180deg, rgba(90, 10, 18, 0.94), rgba(116, 14, 28, 0.94));
+      color: #fff;
+      border-color: rgba(220,20,60,0.42);
+    }
+
+    .secondary {
+      margin-top: 10px;
+      background: rgba(255,255,255,0.04);
+      color: var(--white);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .primary:hover,
+    .secondary:hover {
+      transform: translateY(-1px);
+      opacity: 0.92;
+    }
+
+    .status {
+      min-height: 24px;
+      margin-top: 14px;
+      color: var(--muted);
+    }
+
+    .status.good { color: var(--good); }
+    .status.bad { color: var(--red3); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="brand">NOCTIVE</div>
+    <h1>Login with Google</h1>
+    <p>Use your Google account to step through the private garden gate.</p>
+    <button class="primary" id="googleLoginBtn" type="button">Continue with Google</button>
+    <a class="secondary" href="../index.html">Back to the gate</a>
+    <div class="status" id="status" aria-live="polite"></div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const ACCESS_SESSION_KEY = "noctive_site_access";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
+      authDomain: "noctive-41c22.firebaseapp.com",
+      projectId: "noctive-41c22",
+      storageBucket: "noctive-41c22.firebasestorage.app",
+      messagingSenderId: "617642134193",
+      appId: "1:617642134193:web:ea5f0c93e56c654f66f090",
+      measurementId: "G-8ZFW3MTB3C"
+    };
+
+    const status = document.getElementById("status");
+    const googleLoginBtn = document.getElementById("googleLoginBtn");
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    function setStatus(message, kind = "") {
+      status.textContent = message;
+      status.className = `status ${kind}`.trim();
+    }
+
+    googleLoginBtn?.addEventListener("click", async () => {
+      googleLoginBtn.disabled = true;
+      setStatus("Opening Google...", "");
+
+      try {
+        await signInWithPopup(auth, provider);
+        sessionStorage.setItem(ACCESS_SESSION_KEY, "granted");
+        setStatus("Success. Entering Noctive...", "good");
+        window.setTimeout(() => {
+          window.location.replace("./home.html");
+        }, 500);
+      } catch (error) {
+        console.error(error);
+        setStatus(error?.message || "Google sign-in failed.", "bad");
+        googleLoginBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

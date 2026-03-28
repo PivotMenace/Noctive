@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noctive | Email Login</title>
+  <link rel="icon" type="image/png" href="../pngs/Favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --red1: #8b0000;
+      --red2: #b22222;
+      --red3: #dc143c;
+      --white: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --good: #19ff9a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(900px 600px at 50% 20%, rgba(220, 20, 60, 0.12), transparent 60%),
+        radial-gradient(900px 600px at 50% 85%, rgba(255, 255, 255, 0.06), transparent 60%),
+        var(--bg);
+      color: var(--white);
+      font-family: 'Rubik', system-ui, sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .shell {
+      width: min(480px, 100%);
+      padding: 28px 22px;
+      border-radius: 24px;
+      border: 1px solid rgba(220,20,60,0.20);
+      background: rgba(16, 12, 24, 0.84);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.28), 0 0 28px rgba(220,20,60,0.10);
+    }
+
+    .brand {
+      margin-bottom: 8px;
+      text-align: center;
+      font-size: 1.9rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--red1), var(--red2), var(--red3), var(--red2), var(--red1));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      text-align: center;
+      font-size: 1.4rem;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .captcha-box {
+      margin: 10px 0 4px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+    }
+    .captcha-title {
+      color: var(--white);
+      font-size: 0.98rem;
+      width: 100%;
+    }
+    .captcha-copy {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+      width: 100%;
+    }
+    .captcha-slot {
+      width: 100%;
+      min-height: 78px;
+      display: grid;
+      place-items: center;
+    }
+    .captcha-note {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    label {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      font: inherit;
+      outline: none;
+    }
+
+    .primary,
+    .secondary {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.14s ease, opacity 0.14s ease;
+    }
+
+    .primary {
+      margin-top: 6px;
+      background: linear-gradient(180deg, rgba(90, 10, 18, 0.94), rgba(116, 14, 28, 0.94));
+      color: #fff;
+      border-color: rgba(220,20,60,0.42);
+    }
+
+    .secondary {
+      margin-top: 10px;
+      background: rgba(255,255,255,0.04);
+      color: var(--white);
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .primary:hover,
+    .secondary:hover {
+      transform: translateY(-1px);
+      opacity: 0.92;
+    }
+
+    .status {
+      min-height: 24px;
+      margin-top: 14px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .status.good { color: var(--good); }
+    .status.bad { color: var(--red3); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="brand">NOCTIVE</div>
+    <h1>Login with Email</h1>
+    <p>Sign in with your email to continue into the private garden.</p>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" placeholder="you@example.com" />
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" />
+    </div>
+
+    <div class="captcha-box">
+      <div class="captcha-title">Are you human?</div>
+      <div class="captcha-copy">Complete the captcha challenge before using email login.</div>
+      <div class="captcha-slot">
+        <div id="recaptchaMount"></div>
+      </div>
+      <div class="captcha-note" id="captchaNote">Paste your Google reCAPTCHA v2 site key in this file to activate the real widget.</div>
+    </div>
+
+    <button class="primary" id="emailLoginBtn" type="button">Login with Email</button>
+    <a class="secondary" href="../index.html">Back to the gate</a>
+    <div class="status" id="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+    window.NOCTIVE_RECAPTCHA_SITE_KEY = "6LcnhpssAAAAACQKa5dFboUcMxlJfaTAeR3fZWMV";
+    window.noctiveRecaptchaReady = false;
+    window.noctiveRecaptchaOnload = () => {
+      window.noctiveRecaptchaReady = true;
+      window.dispatchEvent(new CustomEvent("noctive-recaptcha-ready"));
+    };
+  </script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=noctiveRecaptchaOnload&render=explicit" async defer></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const ACCESS_SESSION_KEY = "noctive_site_access";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
+      authDomain: "noctive-41c22.firebaseapp.com",
+      projectId: "noctive-41c22",
+      storageBucket: "noctive-41c22.firebasestorage.app",
+      messagingSenderId: "617642134193",
+      appId: "1:617642134193:web:ea5f0c93e56c654f66f090",
+      measurementId: "G-8ZFW3MTB3C"
+    };
+
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const captchaNote = document.getElementById("captchaNote");
+    const emailLoginBtn = document.getElementById("emailLoginBtn");
+    const status = document.getElementById("status");
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    let recaptchaWidgetId = null;
+    let recaptchaRetryCount = 0;
+
+    function getCaptchaToken() {
+      if (!window.grecaptcha || recaptchaWidgetId === null) return "";
+      return window.grecaptcha.getResponse(recaptchaWidgetId);
+    }
+
+    function resetCaptcha() {
+      if (window.grecaptcha && recaptchaWidgetId !== null) {
+        window.grecaptcha.reset(recaptchaWidgetId);
+      }
+    }
+
+    function loadRecaptcha() {
+      const siteKey = window.NOCTIVE_RECAPTCHA_SITE_KEY;
+      const mount = document.getElementById("recaptchaMount");
+
+      if (!mount) return;
+
+      if (!siteKey || siteKey === "PASTE_RECAPTCHA_V2_SITE_KEY_HERE") {
+        if (captchaNote) {
+          captchaNote.textContent = "reCAPTCHA is waiting for your real Google site key.";
+        }
+        return;
+      }
+
+      if (recaptchaWidgetId !== null) return;
+
+      if (!window.grecaptcha || !window.noctiveRecaptchaReady) {
+        recaptchaRetryCount += 1;
+        if (captchaNote) {
+          captchaNote.textContent = "Loading captcha...";
+        }
+        if (recaptchaRetryCount <= 20) {
+          window.setTimeout(loadRecaptcha, 300);
+        } else if (captchaNote) {
+          captchaNote.textContent = "Captcha could not load yet. Refresh and try again.";
+        }
+        return;
+      }
+
+      recaptchaWidgetId = window.grecaptcha.render(mount, {
+        sitekey: siteKey,
+        theme: "dark"
+      });
+
+      if (captchaNote) {
+        captchaNote.textContent = "Captcha ready.";
+      }
+    }
+
+    function setStatus(message, kind = "") {
+      status.textContent = message;
+      status.className = `status ${kind}`.trim();
+    }
+
+    window.addEventListener("noctive-recaptcha-ready", loadRecaptcha);
+    loadRecaptcha();
+
+    emailLoginBtn?.addEventListener("click", async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        setStatus("Email and password are required.", "bad");
+        return;
+      }
+
+      if (!getCaptchaToken()) {
+        setStatus("Please complete the captcha first.", "bad");
+        return;
+      }
+
+      emailLoginBtn.disabled = true;
+      setStatus("Signing you in...", "");
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        sessionStorage.setItem(ACCESS_SESSION_KEY, "granted");
+        setStatus("Success. Entering Noctive...", "good");
+        window.setTimeout(() => {
+          window.location.replace("./home.html");
+        }, 500);
+      } catch (error) {
+        console.error(error);
+        setStatus(error?.message || "Email sign-in failed.", "bad");
+        resetCaptcha();
+        emailLoginBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

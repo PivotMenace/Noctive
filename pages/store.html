@@ -690,16 +690,16 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <a href="https://www.noctive.us/pages/home.html"><span class="brand-title">Noctive</span></a>
+      <a href="./home.html"><span class="brand-title">Noctive</span></a>
       <nav class="topnav" aria-label="Primary">
-        <a href="https://www.noctive.us/pages/home.html">Home</a>
-        <a href="https://www.noctive.us/pages/explore.html">Explore</a>
-        <a href="https://www.noctive.us/pages/faq.html">FAQ</a>
-        <a href="https://www.noctive.us/pages/messages.html">Messages</a>
-        <a href="https://www.noctive.us/pages/store.html" aria-current="page">Night Market</a>
-        <a href="https://www.noctive.us/pages/profile.html">Profile</a>
+        <a href="./home.html">Home</a>
+        <a href="./explore.html">Explore</a>
+        <a href="./faq.html">FAQ</a>
+        <a href="./messages.html">Messages</a>
+        <a href="./store.html" aria-current="page">Night Market</a>
+        <a href="./profile.html">Profile</a>
       </nav>
-      <a class="ghost-btn" href="https://www.noctive.us/pages/profile.html">View Profile</a>
+      <a class="ghost-btn" href="./profile.html">View Profile</a>
     </div>
   </header>
 
@@ -737,7 +737,7 @@
     const STARTING_MARKET_CURRENCY = 100;
 
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
-      window.location.replace('https://www.noctive.us');
+      window.location.replace('../index.html');
     }
 
     const MARKET_ITEMS = [

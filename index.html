@@ -22,6 +22,73 @@
             text-shadow: 0 0 8px var(--red3), 0 0 16px var(--red2);
             opacity: 1;
         }
+        .alt-access {
+            margin-top: 8px;
+            display: inline-grid;
+            justify-items: center;
+            gap: 12px;
+        }
+        .alt-access-toggle {
+            min-width: 46px;
+            height: 32px;
+            padding: 0 14px 2px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.72);
+            font-size: 0.92rem;
+            letter-spacing: 0.22em;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset;
+            cursor: pointer;
+            transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+        }
+        .alt-access-toggle:hover {
+            transform: translateY(-1px);
+            background: rgba(220,20,60,0.10);
+            border-color: rgba(220,20,60,0.32);
+            color: #fff;
+            box-shadow: 0 0 18px rgba(220,20,60,0.16);
+        }
+        .alt-access-menu {
+            display: grid;
+            gap: 10px;
+            width: min(420px, 100%);
+            padding: 14px;
+            border-radius: 22px;
+            background:
+                radial-gradient(120% 140% at 50% 0%, rgba(220,20,60,0.10), transparent 55%),
+                rgba(18, 14, 24, 0.82);
+            border: 1px solid rgba(220,20,60,0.22);
+            box-shadow:
+                0 18px 38px rgba(0,0,0,0.22),
+                0 0 24px rgba(220,20,60,0.10);
+            backdrop-filter: blur(8px);
+        }
+        .alt-access-menu[hidden] {
+            display: none !important;
+        }
+        .alt-access-link {
+            display: block;
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: linear-gradient(180deg, rgba(30, 22, 34, 0.92), rgba(22, 17, 27, 0.92));
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset;
+            transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+        }
+        .alt-access-link:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(180deg, rgba(90, 10, 18, 0.94), rgba(116, 14, 28, 0.94));
+            border-color: rgba(220,20,60,0.42);
+            box-shadow: 0 0 18px rgba(220,20,60,0.14);
+        }
         :root {
             --bg: #0c0f14;
             --red1: #8b0000;
@@ -353,8 +420,23 @@
 
 
             <button class="btn" id="unlockBtn" type="submit">Enter with your key</button>
-            <div style="text-align:center;margin-top:8px;">
+            <div style="text-align:center;margin-top:8px;display:grid;justify-items:center;gap:12px;">
                 <a class="about-link" href="https://github.com/PivotMenace/Noctive" target="_blank" rel="noopener noreferrer">You're not Venus</a>
+                <div class="alt-access">
+                    <button
+                        class="alt-access-toggle"
+                        id="altAccessToggle"
+                        type="button"
+                        aria-label="More login options"
+                        aria-expanded="false"
+                        aria-controls="altAccessMenu"
+                    >...</button>
+                    <div class="alt-access-menu" id="altAccessMenu" hidden>
+                        <a class="alt-access-link" href="./pages/login-google.html" id="loginGoogleBtn">LOGIN WITH GOOGLE</a>
+                        <a class="alt-access-link" href="./pages/login-email.html" id="loginEmailBtn">LOGIN WITH EMAIL</a>
+                        <a class="alt-access-link" href="./pages/signup.html" id="signUpBtn">Not a user? Sign up</a>
+                    </div>
+                </div>
             </div>
 
             <div class="status" id="status"></div>
@@ -370,6 +452,11 @@
         const status = document.getElementById("status");
         const unlockForm = document.getElementById("unlockForm");
         const codeInputs = document.querySelectorAll("#codeInputs input.code-char");
+        const altAccessToggle = document.getElementById("altAccessToggle");
+        const altAccessMenu = document.getElementById("altAccessMenu");
+        const loginGoogleBtn = document.getElementById("loginGoogleBtn");
+        const loginEmailBtn = document.getElementById("loginEmailBtn");
+        const signUpBtn = document.getElementById("signUpBtn");
 
         function normalize(v) {
             return (v || "").trim().toUpperCase().replace(/\s+/g, "");
@@ -383,6 +470,11 @@
             if (text !== "Access granted.") {
                 status.classList.remove("good");
             }
+        }
+
+        function closeAltAccessMenu() {
+            altAccessMenu?.setAttribute("hidden", "hidden");
+            altAccessToggle?.setAttribute("aria-expanded", "false");
         }
 
         function shake() {
@@ -402,7 +494,7 @@
         }
 
         if (sessionStorage.getItem(ACCESS_SESSION_KEY) === "granted") {
-            window.location.replace("https://www.noctive.us/pages/home.html");
+            window.location.replace("./pages/home.html");
         }
 
         function tryUnlock() {
@@ -420,7 +512,7 @@
                 setStatus("Access granted.", "good");
                 sessionStorage.setItem(ACCESS_SESSION_KEY, "granted");
                 setTimeout(() => {
-                    window.location.replace("https://www.noctive.us/pages/home.html");
+                    window.location.replace("./pages/home.html");
                 }, 900);
             } else {
                 setStatus("Invalid key.", "bad");
@@ -433,6 +525,28 @@
         unlockForm.addEventListener("submit", (e) => {
             e.preventDefault();
             tryUnlock();
+        });
+
+        altAccessToggle?.addEventListener("click", () => {
+            const isHidden = altAccessMenu?.hasAttribute("hidden");
+            if (isHidden) {
+                altAccessMenu?.removeAttribute("hidden");
+                altAccessToggle.setAttribute("aria-expanded", "true");
+            } else {
+                closeAltAccessMenu();
+            }
+        });
+
+        loginGoogleBtn?.addEventListener("click", () => {
+            closeAltAccessMenu();
+        });
+
+        loginEmailBtn?.addEventListener("click", () => {
+            closeAltAccessMenu();
+        });
+
+        signUpBtn?.addEventListener("click", () => {
+            closeAltAccessMenu();
         });
 
         codeInputs.forEach((input, idx) => {

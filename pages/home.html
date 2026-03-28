@@ -1064,22 +1064,20 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <a class="brand-link" href="https://www.noctive.us/pages/home.html">
+      <a class="brand-link" href="./home.html">
         <span class="brand-title">Noctive</span>
       </a>
 
       <nav class="topnav" aria-label="Primary">
-        <a href="https://www.noctive.us/pages/home.html" aria-current="page">Home</a>
-        <a href="https://www.noctive.us/pages/explore.html">Explore</a>
-        <a href="https://www.noctive.us/pages/faq.html">FAQ</a>
-        <a href="https://www.noctive.us/pages/messages.html">Messages</a>
-        <a href="https://www.noctive.us/pages/store.html">Night Market</a>
-        <a href="https://www.noctive.us/pages/profile.html">Profile</a>
+        <a href="./home.html" aria-current="page">Home</a>
+        <a href="./explore.html">Explore</a>
+        <a href="./faq.html">FAQ</a>
+        <a href="./messages.html">Messages</a>
+        <a href="./store.html">Night Market</a>
+        <a href="./profile.html">Profile</a>
       </nav>
 
-      <div class="topbar-right">
-        <button class="ghost-btn" type="button" id="authOpenBtn">Sign in</button>
-      </div>
+      <div class="topbar-right"></div>
     </div>
   </header>
 
@@ -1087,26 +1085,25 @@
     <aside class="rail">
       <section class="card user-card">
         <div class="user-row" id="sidebarUser">
-          <div class="avatar user-avatar" id="sidebarAvatarBox" data-name="Guest" data-theme="default" data-avatar=""></div>
+          <div class="avatar user-avatar" id="sidebarAvatarBox" data-name="Noctive" data-theme="default" data-avatar=""></div>
           <div class="user-meta">
-            <div class="user-name" id="userDisplayName">Guest</div>
-            <div class="user-sub" id="userDisplaySub">Not signed in</div>
+            <div class="user-name" id="userDisplayName">Noctive</div>
+            <div class="user-sub" id="userDisplaySub">Alive after dark</div>
           </div>
         </div>
 
         <div id="userMenuDropdown" class="dropdown" hidden>
-          <a class="link-pill" href="https://www.noctive.us/pages/profile.html">View profile <span>→</span></a>
-          <a class="link-pill" href="https://www.noctive.us/pages/explore.html">Explore hubs <span>→</span></a>
-          <button class="rail-btn" type="button" id="signOutBtn">Sign out</button>
+          <a class="link-pill" href="./profile.html">View profile <span>→</span></a>
+          <a class="link-pill" href="./explore.html">Explore hubs <span>→</span></a>
         </div>
       </section>
 
       <section class="card quick-links">
         <div class="rail-title">Quick Links</div>
         <div class="link-list">
-          <a class="link-pill" href="https://www.noctive.us/pages/explore.html">Explore hubs <span>→</span></a>
-          <a class="link-pill" href="https://www.noctive.us/pages/profile.html">Edit profile <span>→</span></a>
-          <a class="link-pill" href="https://www.noctive.us/pages/faq.html">Rules and FAQ <span>→</span></a>
+          <a class="link-pill" href="./explore.html">Explore hubs <span>→</span></a>
+          <a class="link-pill" href="./profile.html">Edit profile <span>→</span></a>
+          <a class="link-pill" href="./faq.html">Rules and FAQ <span>→</span></a>
         </div>
       </section>
     </aside>
@@ -1276,10 +1273,10 @@
     <div class="bottombar-inner">
       <div style="font-family:var(--fontHead); font-weight:700;">Noctive</div>
       <nav class="footnav" aria-label="Footer">
-        <a href="https://www.noctive.us/pages/home.html">Home</a>
-        <a href="https://www.noctive.us/pages/explore.html">Explore</a>
-        <a href="https://www.noctive.us/pages/faq.html">FAQ</a>
-        <a href="https://www.noctive.us/pages/profile.html">Profile</a>
+        <a href="./home.html">Home</a>
+        <a href="./explore.html">Explore</a>
+        <a href="./faq.html">FAQ</a>
+        <a href="./profile.html">Profile</a>
       </nav>
       <div>© 2026 love venus by venus</div>
     </div>
@@ -1322,7 +1319,7 @@
     const QUICK_CHAT_STORAGE_PREFIX = 'noctive_quick_chat_';
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
-      window.location.replace('https://www.noctive.us');
+      window.location.replace('../index.html');
     }
 
     window.noctiveViewerKey = 'guest';
@@ -1380,7 +1377,7 @@
 
     function buildProfileHref(uid) {
       const normalized = String(uid || '').trim();
-      return normalized ? `https://www.noctive.us/pages/profile.html?uid=${encodeURIComponent(normalized)}` : 'https://www.noctive.us/pages/profile.html';
+      return normalized ? `./profile.html?uid=${encodeURIComponent(normalized)}` : './profile.html';
     }
 
     function getInitials(name) {
@@ -1909,6 +1906,15 @@
       });
     }
 
+    window.noctiveFeedBridge = {
+      buildPostMarkup,
+      syncPostVoteUI,
+      syncPostCommentsUI,
+      postVoteState,
+      postCommentState,
+      applyGeneratedAvatars
+    };
+
     function registerPostVote(postId, direction) {
       const current = postVoteState.get(postId) || { up: 0, down: 0, userVote: null };
 
@@ -2001,32 +2007,29 @@
       const postBtn = document.getElementById('postBtn');
       const feedList = document.getElementById('feedList');
       if (postBtn && feedList && postText && countNum) {
-        postBtn.addEventListener('click', () => {
+        postBtn.addEventListener('click', async () => {
           const text = postText.value.trim();
           if (!text) return;
-          const who = document.getElementById('userDisplayName')?.textContent || 'Guest';
-          const postId = `post-${Date.now()}`;
-          const wrapper = document.createElement('div');
-          wrapper.innerHTML = buildPostMarkup({
-            id: postId,
-            uid: window.noctiveViewerKey || 'guest',
-            author: who,
-            theme: document.getElementById('sidebarAvatarBox')?.dataset.theme || 'default',
-            avatar: document.getElementById('sidebarAvatarBox')?.dataset.avatar || '',
-            time: 'just now',
-            tag: '#Post',
-            body: text,
-            votes: { up: 0, down: 0 },
-            comments: []
-          });
-          feedList.prepend(wrapper.firstElementChild);
-          postVoteState.set(postId, { up: 0, down: 0, userVote: null });
-          postCommentState.set(postId, []);
-          syncPostVoteUI(feedList.firstElementChild);
-          syncPostCommentsUI(feedList.firstElementChild);
-          postText.value = '';
-          countNum.textContent = '0';
-          applyGeneratedAvatars();
+
+          if (typeof window.noctiveCreatePost !== 'function') {
+            console.warn('Post creator is not ready yet.');
+            return;
+          }
+
+          postBtn.disabled = true;
+          postBtn.textContent = 'Posting...';
+
+          try {
+            await window.noctiveCreatePost(text);
+            postText.value = '';
+            countNum.textContent = '0';
+          } catch (error) {
+            console.error('Could not create post:', error);
+            window.alert(error?.message || 'Could not post right now.');
+          } finally {
+            postBtn.disabled = false;
+            postBtn.textContent = 'Post';
+          }
         });
       }
 
@@ -2186,11 +2189,6 @@
             return;
           }
 
-          if (authModal && !authModal.hasAttribute('hidden')) {
-            closeAuthModal();
-            return;
-          }
-
           if (rightDrawer && !rightDrawer.hasAttribute('hidden')) {
             closeDrawer();
             return;
@@ -2232,11 +2230,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import {
       getAuth,
-      signInWithEmailAndPassword,
-      createUserWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged,
-      sendPasswordResetEmail
+      onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
     const firebaseConfig = {
@@ -2251,89 +2245,6 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-
-    const authModal = document.getElementById('authModal');
-    const authOpenBtn = document.getElementById('authOpenBtn');
-    const authCloseBtn = document.getElementById('authCloseBtn');
-    const authTitle = document.getElementById('authTitle');
-    const authEmail = document.getElementById('authEmail');
-    const authPass = document.getElementById('authPass');
-    const authSubmitBtn = document.getElementById('authSubmitBtn');
-    const toggleModeBtn = document.getElementById('toggleModeBtn');
-    const resetPassBtn = document.getElementById('resetPassBtn');
-    const authMsg = document.getElementById('authMsg');
-    const signOutBtn = document.getElementById('signOutBtn');
-
-    let isSignUpMode = true;
-
-    function setAuthMode(signUp) {
-      isSignUpMode = signUp;
-      authTitle.textContent = signUp ? 'Create account' : 'Sign in';
-      authSubmitBtn.textContent = signUp ? 'Sign up' : 'Sign in';
-      toggleModeBtn.textContent = signUp ? 'Already have an account? Sign in' : 'Need an account? Sign up';
-    }
-
-    function openAuthModal() {
-      authMsg.textContent = '';
-      authModal?.removeAttribute('hidden');
-    }
-
-    function closeAuthModal() {
-      authModal?.setAttribute('hidden', 'hidden');
-    }
-
-    authOpenBtn?.addEventListener('click', () => {
-      if (!auth.currentUser) openAuthModal();
-    });
-
-    authCloseBtn?.addEventListener('click', closeAuthModal);
-    authModal?.addEventListener('click', (e) => {
-      if (e.target === authModal) closeAuthModal();
-    });
-    toggleModeBtn?.addEventListener('click', () => setAuthMode(!isSignUpMode));
-
-    resetPassBtn?.addEventListener('click', async () => {
-      authMsg.textContent = '';
-      const email = (authEmail.value || '').trim();
-      if (!email) {
-        authMsg.textContent = 'Type your email first, then hit reset.';
-        return;
-      }
-      try {
-        await sendPasswordResetEmail(auth, email);
-        authMsg.textContent = 'Password reset sent. Check your inbox.';
-      } catch (err) {
-        authMsg.textContent = err?.message || 'Could not send reset email.';
-      }
-    });
-
-    authSubmitBtn?.addEventListener('click', async () => {
-      authMsg.textContent = '';
-      const email = (authEmail.value || '').trim();
-      const pass = authPass.value || '';
-      if (!email || !pass) {
-        authMsg.textContent = 'Email and password are required.';
-        return;
-      }
-      try {
-        if (isSignUpMode) {
-          await createUserWithEmailAndPassword(auth, email, pass);
-        } else {
-          await signInWithEmailAndPassword(auth, email, pass);
-        }
-        closeAuthModal();
-      } catch (err) {
-        authMsg.textContent = err?.message || 'Auth failed.';
-      }
-    });
-
-    signOutBtn?.addEventListener('click', async () => {
-      try {
-        await signOut(auth);
-      } catch (e) {
-        console.error(e);
-      }
-    });
 
     onAuthStateChanged(auth, (user) => {
       const sidebarAvatarBox = document.getElementById('sidebarAvatarBox');
@@ -2355,7 +2266,6 @@
 
         setText('userDisplayName', displayName);
         setText('userDisplaySub', 'Online');
-        if (authOpenBtn) authOpenBtn.textContent = 'Signed in';
         window.noctiveViewerKey = user.uid;
 
         if (sidebarAvatarBox) {
@@ -2364,12 +2274,11 @@
           sidebarAvatarBox.dataset.avatar = savedAvatar;
         }
       } else {
-        setText('userDisplayName', 'Guest');
-        setText('userDisplaySub', 'Not signed in');
-        if (authOpenBtn) authOpenBtn.textContent = 'Sign in';
+        setText('userDisplayName', 'Noctive');
+        setText('userDisplaySub', 'Alive after dark');
         window.noctiveViewerKey = 'guest';
         if (sidebarAvatarBox) {
-          sidebarAvatarBox.dataset.name = 'Guest';
+          sidebarAvatarBox.dataset.name = 'Noctive';
           sidebarAvatarBox.dataset.theme = 'default';
           sidebarAvatarBox.dataset.avatar = '';
         }
@@ -2378,8 +2287,6 @@
       renderNightCrew();
       applyGeneratedAvatars();
     });
-
-    setAuthMode(true);
   </script>
   <script type="module" src="../js/main.js"></script>
 </body>
