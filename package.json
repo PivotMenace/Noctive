@@ -4,7 +4,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node backend/server.js"
+    "start": "node backend/server.js",
+    "firebase:deploy:rules": "firebase deploy --only firestore:rules,storage",
+    "firebase:deploy:firestore": "firebase deploy --only firestore:rules",
+    "firebase:deploy:storage": "firebase deploy --only storage"
   },
   "keywords": ["gaming", "platform", "social", "streaming"],
   "author": "pivotmenace",

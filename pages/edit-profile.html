@@ -158,6 +158,43 @@
       font-size: 0.8rem;
       line-height: 1.35;
     }
+    .picker-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .picker-row input {
+      flex: 1 1 240px;
+    }
+    .selected-games {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 20px;
+    }
+    .selected-game-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font-size: 0.9rem;
+    }
+    .selected-game-chip button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font: inherit;
+      padding: 0;
+      line-height: 1;
+    }
+    .selected-game-chip button:hover {
+      color: #fff;
+    }
     label { font-size: 0.9rem; color: #fff; }
     input, textarea, select {
       width: 100%;
@@ -384,41 +421,25 @@
           <div class="section-title">Showcase</div>
           <div class="section-sub">Favorite games and profile highlights.</div>
           <div class="grid">
-            <div class="field"><label for="featuredHub">Featured Hub</label><input id="featuredHub" type="text" maxlength="80" /></div>
-            <div class="field"><label for="currentObsession">Current Obsession</label><input id="currentObsession" type="text" maxlength="80" /></div>
-            <div class="field full"><label for="games">Favorite Games</label><input id="games" type="text" placeholder="Valorant, Minecraft, Helldivers 2" /></div>
-            <div class="field full"><label for="badges">Badges</label><input id="badges" type="text" placeholder="Newcomer, Night Owl" /></div>
-            <div class="field"><label for="pinnedBadge">Pinned Badge</label><input id="pinnedBadge" type="text" maxlength="40" /></div>
-            <div class="field"><label for="pinnedTime">Pinned Time</label><input id="pinnedTime" type="text" maxlength="40" /></div>
-            <div class="field full"><label for="pinnedText">Pinned Post</label><textarea id="pinnedText"></textarea></div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-title">Quick Facts</div>
-          <div class="section-sub">These game picks only pull from the games you already selected above, so users only see choices that match their own profile.</div>
-          <div class="grid">
             <div class="field">
-              <div class="field-actions">
-                <label for="factMainGame">Main Game</label>
-                <span class="mini-note">Pulled from Favorite Games</span>
-              </div>
-              <select id="factMainGame"></select>
-            </div>
-            <div class="field">
-              <div class="field-actions">
-                <label for="factCurrentGame">Current Grind</label>
-                <span class="mini-note">Pulled from Favorite Games</span>
-              </div>
-              <select id="factCurrentGame"></select>
+              <label for="currentObsession">Current Obsession</label>
+              <input id="currentObsession" type="text" maxlength="80" list="currentObsessionOptions" placeholder="Pick a game from your list" />
+              <datalist id="currentObsessionOptions"></datalist>
             </div>
             <div class="field full">
               <div class="field-actions">
-                <label for="factComfortGame">Comfort Pick</label>
-                <span class="mini-note">Only games you chose show up here</span>
+                <label for="favoriteGamePicker">Favorite Games</label>
+                <span class="mini-note">Only games from your approved list can be added</span>
               </div>
-              <select id="factComfortGame"></select>
+              <div class="picker-row">
+                <input id="favoriteGamePicker" type="text" list="favoriteGameOptions" placeholder="Start typing to pick a game" />
+                <button class="btn-secondary" type="button" id="addFavoriteGameBtn">Add Game</button>
+              </div>
+              <datalist id="favoriteGameOptions"></datalist>
+              <div class="selected-games" id="selectedGamesList"></div>
+              <input id="games" type="hidden" />
             </div>
+            <div class="field full"><label for="badges">Badges</label><input id="badges" type="text" placeholder="Newcomer, Night Owl" /></div>
           </div>
         </section>
 
@@ -488,11 +509,14 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
     const MARKET_OWNED_STORAGE_KEY = 'noctive_night_market_owned';
     const GIF_PROFILE_COUPON_ID = 'upgrade-gif-profile';
+    const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('../index.html');
     }
@@ -515,7 +539,9 @@
       bio: 'Sign in and start shaping this profile.',
       theme: 'default',
       avatar: '',
+      avatarStoragePath: '',
       bannerImage: '',
+      bannerStoragePath: '',
       bannerTitle: 'Your Noctive profile starts here.',
       bannerText: 'Once you sign in, this page becomes your personal space for games, hubs, activity, and profile style.',
       bannerTags: ['Profile Preview', 'Default Theme'],
@@ -530,7 +556,7 @@
         shares: 0
       },
       activity: ['No activity yet. Your profile updates will start showing here.'],
-      featuredHub: 'Pick a favorite hub to feature it here.',
+      featuredHub: '',
       currentObsession: 'Add what you are currently into.',
       badges: ['Newcomer'],
       quickFacts: [
@@ -539,13 +565,32 @@
         { label: 'Comfort Pick', value: 'Pick a game from your list' }
       ]
     };
+    const ALLOWED_GAME_OPTIONS = [
+      'Rainbow Six Siege',
+      'Valorant',
+      'Fortnite',
+      'Roblox',
+      'Minecraft',
+      'Helldivers 2',
+      'Counter-Strike 2',
+      'League of Legends'
+    ];
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
     let currentAuthUser = null;
     let activeMediaTarget = 'avatar';
     let pendingMediaValue = '';
+    let pendingMediaStoragePath = '';
+    let pendingMediaUploadState = 'idle';
     let hasUnsavedChanges = false;
+    let selectedFavoriteGames = [];
+    const profileMediaStoragePaths = {
+      avatar: '',
+      bannerImage: ''
+    };
 
     try {
       await setPersistence(auth, browserLocalPersistence);
@@ -571,8 +616,29 @@
       return output;
     }
 
+    function stripLegacyProfileCopy(profile) {
+      const nextProfile = deepMerge(PROFILE_TEMPLATE, profile || {});
+      if (nextProfile.bannerTitle === 'Noctive is alive after dark.') {
+        nextProfile.bannerTitle = '';
+      }
+      if (nextProfile.bannerText === "This is Noctive's profile space. Personalize it with your banner copy, favorite games, featured hub, and a pinned post.") {
+        nextProfile.bannerText = '';
+      }
+      return nextProfile;
+    }
+
     function parseList(value) {
       return String(value || '').split(',').map((item) => item.trim()).filter(Boolean);
+    }
+
+    function normalizeCurrentObsession(value) {
+      const trimmed = String(value || '').trim();
+      return ALLOWED_GAME_OPTIONS.find((game) => game.toLowerCase() === trimmed.toLowerCase()) || '';
+    }
+
+    function normalizeFavoriteGame(value) {
+      const trimmed = String(value || '').trim();
+      return ALLOWED_GAME_OPTIONS.find((game) => game.toLowerCase() === trimmed.toLowerCase()) || '';
     }
 
     function getInitials(name) {
@@ -604,14 +670,14 @@
         status: 'Online',
         bio: `${safeName} has joined Noctive. Edit this section to add a real bio, your vibe, and what you are into right now.`,
         bannerTitle: `${safeName} is alive after dark.`,
-        bannerText: `This is ${safeName}'s profile space. Personalize it with your banner copy, favorite games, featured hub, and a pinned post.`,
+        bannerText: '',
         bannerTags: ['Alive After Dark', 'Profile Starter'],
         pinnedPost: {
           ...PROFILE_TEMPLATE.pinnedPost,
           text: `Hey, I'm ${safeName}. Still setting this up, but this is where my late-night internet identity goes.`
         },
         activity: ['Profile created. Start customizing it to make this page yours.'],
-        featuredHub: 'Choose a hub you want people to notice first.',
+        featuredHub: '',
         currentObsession: 'Add your current game, fandom, or obsession.',
         quickFacts: [
           { label: 'Main Game', value: 'Pick a game from your list' },
@@ -625,20 +691,52 @@
       return user?.uid ? `noctive_profile_${user.uid}` : GUEST_PROFILE_KEY;
     }
 
+    function normalizeUid(uid) {
+      return String(uid || '').trim().toLowerCase();
+    }
+
     function getStoredProfile(user) {
       const starter = createStarterProfile(user);
       try {
         const raw = localStorage.getItem(getProfileStorageKey(user));
         if (!raw) return starter;
-        return deepMerge(starter, JSON.parse(raw));
+        return stripLegacyProfileCopy(deepMerge(starter, JSON.parse(raw)));
       } catch (error) {
         console.error('Could not parse saved edit profile data:', error);
         return starter;
       }
     }
 
-    function saveProfile(profile) {
-      localStorage.setItem(getProfileStorageKey(currentAuthUser), JSON.stringify(profile));
+    function getPublicProfileDirectory() {
+      try {
+        const raw = localStorage.getItem(PUBLIC_PROFILE_DIRECTORY_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      } catch (error) {
+        console.error('Could not load public profile directory:', error);
+        return {};
+      }
+    }
+
+    function savePublicProfileDirectory(directory) {
+      try {
+        localStorage.setItem(PUBLIC_PROFILE_DIRECTORY_KEY, JSON.stringify(directory));
+      } catch (error) {
+        console.error('Could not save public profile directory:', error);
+      }
+    }
+
+    function syncPublicProfile(uid, profile, user) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid || !profile) return;
+      const directory = getPublicProfileDirectory();
+      directory[normalizedUid] = stripLegacyProfileCopy({
+        ...profile,
+        username: profile.username || user?.email?.split('@')[0] || normalizedUid,
+        displayName: profile.displayName || user?.displayName || normalizedUid,
+        profileUid: normalizedUid
+      });
+      savePublicProfileDirectory(directory);
     }
 
     function setSaveMessage(text, kind = '') {
@@ -688,38 +786,71 @@
       return /\.gif(?:$|[?#])/i.test(trimmed);
     }
 
+    function sanitizeStorageSegment(value, fallback = 'file') {
+      const cleaned = String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9._-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      return cleaned || fallback;
+    }
+
+    function getStorageFileExtension(file) {
+      const fileName = String(file?.name || '').trim();
+      const extMatch = fileName.match(/\.([a-z0-9]+)$/i);
+      if (extMatch) return extMatch[1].toLowerCase();
+
+      const type = String(file?.type || '').toLowerCase();
+      if (type.includes('png')) return 'png';
+      if (type.includes('jpeg') || type.includes('jpg')) return 'jpg';
+      if (type.includes('webp')) return 'webp';
+      if (type.includes('gif')) return 'gif';
+      if (type.includes('avif')) return 'avif';
+      return 'bin';
+    }
+
+    function buildProfileMediaStoragePath(target, file, user) {
+      const uid = sanitizeStorageSegment(user?.uid, 'guest');
+      const folder = target === 'bannerImage' ? 'profile-banners' : 'profile-pictures';
+      const extension = getStorageFileExtension(file);
+      const timestamp = Date.now();
+      const originalName = sanitizeStorageSegment(file?.name, target);
+      return `users/${uid}/${folder}/${timestamp}-${originalName}.${extension}`;
+    }
+
+    function readFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+        reader.onerror = () => reject(reader.error || new Error('Could not read file.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function uploadProfileMedia(file, target) {
+      if (!file) return { url: '', storagePath: '' };
+      if (!currentAuthUser?.uid) {
+        return {
+          url: await readFileAsDataUrl(file),
+          storagePath: ''
+        };
+      }
+
+      const path = buildProfileMediaStoragePath(target, file, currentAuthUser);
+      const mediaRef = storageRef(storage, path);
+      await uploadBytes(mediaRef, file, file.type ? { contentType: file.type } : undefined);
+      const url = await getDownloadURL(mediaRef);
+      return { url, storagePath: path };
+    }
+
     function setInput(id, value) {
       const el = document.getElementById(id);
       if (el) el.value = value ?? '';
     }
 
-    function buildGameDropdown(selectId, games, selectedValue, placeholder) {
-      const select = document.getElementById(selectId);
-      if (!select) return;
-
-      const normalizedGames = games.length ? games : [placeholder];
-      select.innerHTML = '';
-
-      normalizedGames.forEach((game) => {
-        const option = document.createElement('option');
-        option.value = game;
-        option.textContent = game;
-        select.appendChild(option);
-      });
-
-      const nextValue = normalizedGames.includes(selectedValue) ? selectedValue : normalizedGames[0];
-      select.value = nextValue;
-      select.disabled = games.length === 0;
-    }
-
-    function syncGameQuickFactDropdowns(profile) {
-      const games = profile.games || [];
-      buildGameDropdown('factMainGame', games, profile.quickFacts?.[0]?.value, 'Add favorite games first');
-      buildGameDropdown('factCurrentGame', games, profile.quickFacts?.[1]?.value, 'Add favorite games first');
-      buildGameDropdown('factComfortGame', games, profile.quickFacts?.[2]?.value, 'Add favorite games first');
-    }
-
     function populateForm(profile) {
+      profileMediaStoragePaths.avatar = profile.avatarStoragePath || '';
+      profileMediaStoragePaths.bannerImage = profile.bannerStoragePath || '';
       setInput('displayName', profile.displayName);
       setInput('username', profile.username);
       const lockedTitle = document.getElementById('lockedTitle');
@@ -728,49 +859,96 @@
       setInput('avatar', profile.avatar || '');
       setInput('bannerImage', profile.bannerImage || '');
       setInput('bio', profile.bio);
-      setInput('featuredHub', profile.featuredHub);
-      setInput('currentObsession', profile.currentObsession);
-      setInput('games', (profile.games || []).join(', '));
+      setInput('currentObsession', normalizeCurrentObsession(profile.currentObsession));
       setInput('badges', (profile.badges || []).join(', '));
-      setInput('pinnedBadge', profile.pinnedPost?.badge);
-      setInput('pinnedTime', profile.pinnedPost?.time);
-      setInput('pinnedText', profile.pinnedPost?.text);
-      syncGameQuickFactDropdowns(profile);
+      setSelectedFavoriteGames(profile.games || []);
+    }
+
+    function populateCurrentObsessionOptions() {
+      const lists = [
+        document.getElementById('currentObsessionOptions'),
+        document.getElementById('favoriteGameOptions')
+      ];
+      lists.forEach((list) => {
+        if (!list) return;
+        list.innerHTML = '';
+        ALLOWED_GAME_OPTIONS.forEach((game) => {
+          const option = document.createElement('option');
+          option.value = game;
+          list.appendChild(option);
+        });
+      });
+    }
+
+    function renderSelectedFavoriteGames() {
+      const hiddenInput = document.getElementById('games');
+      const list = document.getElementById('selectedGamesList');
+      if (hiddenInput) {
+        hiddenInput.value = selectedFavoriteGames.join(', ');
+      }
+      if (!list) return;
+      list.innerHTML = '';
+
+      selectedFavoriteGames.forEach((game) => {
+        const chip = document.createElement('div');
+        chip.className = 'selected-game-chip';
+        chip.innerHTML = `<span>${game}</span><button type="button" data-remove-game="${game.replace(/"/g, '&quot;')}" aria-label="Remove ${game}">×</button>`;
+        list.appendChild(chip);
+      });
+    }
+
+    function setSelectedFavoriteGames(games) {
+      const normalizedGames = games
+        .map((game) => normalizeFavoriteGame(game))
+        .filter(Boolean);
+      selectedFavoriteGames = [...new Set(normalizedGames)];
+      renderSelectedFavoriteGames();
+    }
+
+    function addFavoriteGame(value) {
+      const normalizedGame = normalizeFavoriteGame(value);
+      if (!normalizedGame) {
+        shakeEditor('Favorite Games can only use titles from your approved game list.');
+        return false;
+      }
+      if (selectedFavoriteGames.includes(normalizedGame)) {
+        return true;
+      }
+      selectedFavoriteGames = [...selectedFavoriteGames, normalizedGame];
+      renderSelectedFavoriteGames();
+      markDirty();
+      return true;
+    }
+
+    function removeFavoriteGame(value) {
+      selectedFavoriteGames = selectedFavoriteGames.filter((game) => game !== value);
+      renderSelectedFavoriteGames();
+      markDirty();
     }
 
     function readFormProfile() {
       const starter = createStarterProfile(currentAuthUser);
       const games = parseList(document.getElementById('games').value);
       const badges = parseList(document.getElementById('badges').value);
-      const fallbackGameText = games.length ? games[0] : 'Add favorite games first';
       const avatarValue = document.getElementById('avatar').value.trim();
       const safeAvatarValue = looksLikeGif(avatarValue) && !hasGifProfileUnlock() ? '' : avatarValue;
+      const currentObsession = normalizeCurrentObsession(document.getElementById('currentObsession').value);
 
       return deepMerge(starter, {
         displayName: document.getElementById('displayName').value.trim() || starter.displayName,
         username: document.getElementById('username').value.trim() || starter.username,
         status: document.getElementById('status').value,
         avatar: safeAvatarValue,
+        avatarStoragePath: safeAvatarValue ? profileMediaStoragePaths.avatar : '',
         bannerImage: document.getElementById('bannerImage').value.trim(),
+        bannerStoragePath: document.getElementById('bannerImage').value.trim() ? profileMediaStoragePaths.bannerImage : '',
         bio: document.getElementById('bio').value.trim() || starter.bio,
         bannerTitle: starter.bannerTitle,
         bannerText: starter.bannerText,
         bannerTags: starter.bannerTags,
-        featuredHub: document.getElementById('featuredHub').value.trim() || starter.featuredHub,
-        currentObsession: document.getElementById('currentObsession').value.trim() || starter.currentObsession,
+        currentObsession: currentObsession || starter.currentObsession,
         games,
-        badges: badges.length ? badges : starter.badges,
-        pinnedPost: {
-          ...starter.pinnedPost,
-          badge: document.getElementById('pinnedBadge').value.trim() || starter.pinnedPost.badge,
-          time: document.getElementById('pinnedTime').value.trim() || starter.pinnedPost.time,
-          text: document.getElementById('pinnedText').value.trim() || starter.pinnedPost.text
-        },
-        quickFacts: [
-          { label: 'Main Game', value: document.getElementById('factMainGame').value || fallbackGameText },
-          { label: 'Current Grind', value: document.getElementById('factCurrentGame').value || fallbackGameText },
-          { label: 'Comfort Pick', value: document.getElementById('factComfortGame').value || fallbackGameText }
-        ]
+        badges: badges.length ? badges : starter.badges
       });
     }
 
@@ -779,6 +957,7 @@
       const username = profile.username || 'guest';
       const title = profile.title || 'Noctive Member';
       const bannerImage = profile.bannerImage || '';
+      const previewBannerText = profile.bio || profile.bannerText || PROFILE_TEMPLATE.bannerText;
 
       const previewBanner = document.getElementById('previewBanner');
       previewBanner.className = 'preview-banner theme-default';
@@ -786,7 +965,7 @@
       previewBanner.style.backgroundSize = bannerImage ? 'cover' : '';
       previewBanner.style.backgroundPosition = bannerImage ? 'center' : '';
       document.getElementById('previewBannerTitle').textContent = profile.bannerTitle || PROFILE_TEMPLATE.bannerTitle;
-      document.getElementById('previewBannerText').textContent = profile.bannerText || profile.bio || PROFILE_TEMPLATE.bannerText;
+      document.getElementById('previewBannerText').textContent = previewBannerText;
       document.getElementById('previewName').textContent = displayName;
       document.getElementById('previewTitle').textContent = title;
       document.getElementById('previewMeta').textContent = `@${username} | ${getStatusLabel(profile.status)}`;
@@ -838,6 +1017,8 @@
         }
       }
       pendingMediaValue = currentValue;
+      pendingMediaStoragePath = profileMediaStoragePaths[target] || '';
+      pendingMediaUploadState = 'idle';
       const mediaFile = document.getElementById('mediaFile');
       if (mediaFile) {
         mediaFile.value = '';
@@ -860,6 +1041,7 @@
         return;
       }
       input.value = value || '';
+      profileMediaStoragePaths[fieldId] = value ? pendingMediaStoragePath : '';
       markDirty();
       updatePreview(readFormProfile());
     }
@@ -869,11 +1051,13 @@
     document.getElementById('closeMediaBtn')?.addEventListener('click', closeMediaModal);
     document.getElementById('removeMediaBtn')?.addEventListener('click', () => {
       pendingMediaValue = '';
+      pendingMediaStoragePath = '';
+      pendingMediaUploadState = 'idle';
       applyMediaValue('');
       setMediaPreview('');
       closeMediaModal();
     });
-    document.getElementById('mediaFile')?.addEventListener('change', (event) => {
+    document.getElementById('mediaFile')?.addEventListener('change', async (event) => {
       const file = event.target.files?.[0];
       if (!file) return;
       if (activeMediaTarget === 'avatar' && file.type === 'image/gif' && !hasGifProfileUnlock()) {
@@ -881,15 +1065,28 @@
         shakeEditor('That GIF pfp is locked for now. Grab the GIF coupon in Night Market first.');
         return;
       }
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = typeof reader.result === 'string' ? reader.result : '';
-        pendingMediaValue = result;
-        setMediaPreview(result);
-      };
-      reader.readAsDataURL(file);
+      try {
+        pendingMediaUploadState = 'uploading';
+        setSaveMessage(currentAuthUser?.uid ? 'Uploading image to your profile media folder...' : 'Saving this image locally for guest preview.');
+        const uploadedMedia = await uploadProfileMedia(file, activeMediaTarget);
+        pendingMediaValue = uploadedMedia.url;
+        pendingMediaStoragePath = uploadedMedia.storagePath;
+        pendingMediaUploadState = 'ready';
+        setMediaPreview(uploadedMedia.url);
+        setSaveMessage(currentAuthUser?.uid ? 'Upload finished. Apply Media to use it on your profile.' : 'Image loaded locally. Apply Media to use it on your profile.', 'good');
+      } catch (error) {
+        pendingMediaUploadState = 'error';
+        console.error('Could not upload profile media:', error);
+        setSaveMessage('Could not upload that image. Check your Firebase Storage rules and try again.', 'bad');
+      } finally {
+        event.target.value = '';
+      }
     });
     document.getElementById('applyMediaBtn')?.addEventListener('click', () => {
+      if (pendingMediaUploadState === 'uploading') {
+        shakeEditor('Upload is still in progress. Give it one second before applying.');
+        return;
+      }
       const value = pendingMediaValue.trim();
       applyMediaValue(value);
       const avatarValue = document.getElementById('avatar')?.value.trim() || '';
@@ -902,22 +1099,78 @@
       if (event.target.id === 'mediaModal') closeMediaModal();
     });
 
+    document.getElementById('addFavoriteGameBtn')?.addEventListener('click', () => {
+      const picker = document.getElementById('favoriteGamePicker');
+      if (!picker) return;
+      const added = addFavoriteGame(picker.value);
+      if (added) {
+        picker.value = '';
+        updatePreview(readFormProfile());
+      }
+    });
+
+    document.getElementById('favoriteGamePicker')?.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      event.preventDefault();
+      const picker = event.currentTarget;
+      const added = addFavoriteGame(picker.value);
+      if (added) {
+        picker.value = '';
+        updatePreview(readFormProfile());
+      }
+    });
+
+    document.getElementById('selectedGamesList')?.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-remove-game]');
+      if (!button) return;
+      removeFavoriteGame(button.getAttribute('data-remove-game') || '');
+      updatePreview(readFormProfile());
+    });
+
     document.getElementById('editProfileForm')?.addEventListener('input', () => {
-      const draftProfile = readFormProfile();
-      syncGameQuickFactDropdowns(draftProfile);
       updatePreview(readFormProfile());
       markDirty();
       setSaveMessage('');
     });
 
-    document.getElementById('editProfileForm')?.addEventListener('submit', (event) => {
+    async function syncProfileDocument(profile) {
+      if (!currentAuthUser?.uid) return;
+      const profileRef = doc(db, 'Profiles', currentAuthUser.uid);
+      await setDoc(profileRef, {
+        ...profile,
+        uid: currentAuthUser.uid,
+        email: currentAuthUser.email || '',
+        authMethod: 'profile-editor',
+        onboardingComplete: true,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+
+    async function saveProfile(profile) {
+      localStorage.setItem(getProfileStorageKey(currentAuthUser), JSON.stringify(profile));
+      if (currentAuthUser?.uid) {
+        syncPublicProfile(currentAuthUser.uid, profile, currentAuthUser);
+      }
+      await syncProfileDocument(profile);
+    }
+
+    document.getElementById('editProfileForm')?.addEventListener('submit', async (event) => {
       event.preventDefault();
       try {
+        const currentObsessionInput = document.getElementById('currentObsession');
+        const normalizedCurrentObsession = normalizeCurrentObsession(currentObsessionInput?.value);
+        if (currentObsessionInput && currentObsessionInput.value.trim() && !normalizedCurrentObsession) {
+          shakeEditor('Current Obsession has to be picked from the game list.');
+          return;
+        }
+        if (currentObsessionInput) {
+          currentObsessionInput.value = normalizedCurrentObsession;
+        }
         const profile = readFormProfile();
-        saveProfile(profile);
+        await saveProfile(profile);
         updatePreview(profile);
         clearDirty();
-        setSaveMessage('Saved. Your profile is looking cute and current.', 'good saved-pop');
+        setSaveMessage(currentAuthUser?.uid ? 'Saved. Your profile and media paths are synced.' : 'Saved. Your guest profile is stored in this browser.', 'good saved-pop');
       } catch (error) {
         console.error('Could not save profile:', error);
         setSaveMessage('Could not save profile. Try again.', 'bad');
@@ -926,11 +1179,19 @@
 
     document.getElementById('resetProfileBtn')?.addEventListener('click', () => {
       const starter = createStarterProfile(currentAuthUser);
+      profileMediaStoragePaths.avatar = '';
+      profileMediaStoragePaths.bannerImage = '';
       populateForm(starter);
       updatePreview(starter);
-      saveProfile(starter);
-      clearDirty();
-      setSaveMessage('Starter profile restored. Fresh slate activated.', 'good saved-pop');
+      Promise.resolve(saveProfile(starter))
+        .then(() => {
+          clearDirty();
+          setSaveMessage('Starter profile restored. Fresh slate activated.', 'good saved-pop');
+        })
+        .catch((error) => {
+          console.error('Could not reset profile:', error);
+          setSaveMessage('Starter profile restored locally, but cloud sync failed.', 'bad');
+        });
     });
 
     document.querySelectorAll('[data-leave-link="true"]').forEach((link) => {
@@ -957,6 +1218,7 @@
 
     onAuthStateChanged(auth, (user) => {
       currentAuthUser = user;
+      populateCurrentObsessionOptions();
       const profile = getStoredProfile(user);
       populateForm(profile);
       updatePreview(profile);

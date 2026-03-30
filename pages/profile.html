@@ -508,6 +508,10 @@
       overflow-wrap: anywhere;
     }
 
+    #profileUsername + span {
+      display: none;
+    }
+
     .status-control {
       position: relative;
       display: inline-flex;
@@ -771,6 +775,11 @@
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.16));
     }
 
+    .section-card:has(.pinned-post),
+    .side-card .list-stack > .showcase-card:first-child {
+      display: none;
+    }
+
     .post-top,
     .friend-row {
       display: flex;
@@ -972,7 +981,6 @@
                 <div class="sub-row">
                   <span id="profileUsername">@guest</span>
                   <span>•</span>
-                  <span id="profileEmail">guest@example.com</span>
                 </div>
 
                 <div class="sub-row">
@@ -1084,8 +1092,8 @@
               <section class="section-card">
                 <div class="section-head">
                   <div>
-                    <div class="section-title">Pinned Post</div>
-                    <div class="section-sub">A small showcase that makes the page feel alive.</div>
+                    <div class="section-title">Recent Activity</div>
+                    <div class="section-sub">Simple activity makes the profile feel more platform-like.</div>
                   </div>
                 </div>
                 <div class="pinned-post">
@@ -1149,15 +1157,6 @@
                 <div class="badge-row" id="badgeRow"></div>
               </section>
 
-              <section class="section-card side-card">
-                <div class="section-head">
-                  <div>
-                    <div class="section-title">Quick Facts</div>
-                    <div class="section-sub">Extra details without clutter.</div>
-                  </div>
-                </div>
-                <div class="list-stack" id="quickFactsList"></div>
-              </section>
             </aside>
           </div>
         </div>
@@ -1168,6 +1167,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
@@ -1223,7 +1223,7 @@
         'Set a banner, avatar, and status to make this page feel unmistakably yours.',
         'Pin one post that shows your vibe the second someone lands here.'
       ],
-      featuredHub: 'Choose the hub you want people to notice first.',
+      featuredHub: '',
       currentObsession: 'Add the game, fandom, or obsession currently stealing your attention.',
       badges: ['crescent-moon'],
       quickFacts: [
@@ -1284,7 +1284,7 @@
           shares: 2
         },
         activity: ['Queued into Siege hub after midnight.', 'Dropped a clip in the Night Crew chat.', 'Still online somehow.'],
-        featuredHub: 'Siege Hub',
+        featuredHub: '',
         currentObsession: 'Perfecting the “one more game” lie.',
         badges: ['crescent-moon', 'r6'],
         quickFacts: [
@@ -1314,7 +1314,7 @@
           shares: 7
         },
         activity: ['Sent three clips to friends tonight.', 'Watching everyone embarrass themselves in queue.', 'Hovering in chat with tabs open.'],
-        featuredHub: 'Clips + Highlights',
+        featuredHub: '',
         currentObsession: 'Finding the exact frame that makes a clip legendary.',
         badges: ['roblox', 'star'],
         quickFacts: [
@@ -1344,7 +1344,7 @@
           shares: 1
         },
         activity: ['Holding down Off Topic.', 'Trying not to queue right now.', 'Half AFK, still somehow present.'],
-        featuredHub: 'Off Topic',
+        featuredHub: '',
         currentObsession: 'Keeping the lounge weird but welcoming.',
         badges: ['police-car', 'fortnite'],
         quickFacts: [
@@ -1374,7 +1374,7 @@
           shares: 3
         },
         activity: ['Sketching future hub ideas.', 'Hovering between tabs and notes.', 'Appearing offline, still thinking.'],
-        featuredHub: 'Builder Notes',
+        featuredHub: '',
         currentObsession: 'Turning rough ideas into real pages.',
         badges: ['arc-raiders', 'star'],
         quickFacts: [
@@ -1404,7 +1404,7 @@
           shares: 6
         },
         activity: ['Refining the home feed.', 'Polishing DMs and quick messenger.', 'Still tweaking the vibe.'],
-        featuredHub: 'Noctive Core',
+        featuredHub: '',
         currentObsession: 'Making the UI feel more playful and personal.',
         badges: ['crescent-moon', 'arc-raiders'],
         quickFacts: [
@@ -1417,6 +1417,7 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
     let currentAuthUser = null;
 
     async function leaveToGate() {
@@ -1469,6 +1470,17 @@
       return output;
     }
 
+    function stripLegacyProfileCopy(profile) {
+      const nextProfile = deepMerge(PROFILE_TEMPLATE, profile || {});
+      if (nextProfile.bannerTitle === 'Noctive is alive after dark.') {
+        nextProfile.bannerTitle = '';
+      }
+      if (nextProfile.bannerText === "This is Noctive's profile space. Personalize it with your banner copy, favorite games, featured hub, and a pinned post.") {
+        nextProfile.bannerText = '';
+      }
+      return nextProfile;
+    }
+
     function getInitials(name) {
       if (!name) return 'N';
       const parts = String(name).trim().split(/\s+/).filter(Boolean);
@@ -1494,7 +1506,7 @@
         status: 'Online',
         bio: `${safeName} is officially inside Noctive. Build this profile into your own corner with a strong bio, favorite games, and a pinned vibe.`,
         bannerTitle: `${safeName} is alive after dark.`,
-        bannerText: `This is ${safeName}'s profile space. Turn it into a real identity with your banner copy, favorite games, featured hub, and one pinned post that says everything.`,
+        bannerText: '',
         bannerTags: ['Alive After Dark', 'Profile Starter'],
         games: ['Valorant', 'Minecraft', 'Roblox'],
         stats: {
@@ -1512,7 +1524,7 @@
           'Starter profile is ready for customization.',
           'Next move: make this page feel unmistakably personal.'
         ],
-        featuredHub: 'Choose the hub you want visitors to notice first.',
+        featuredHub: '',
         currentObsession: 'Add the game, fandom, or obsession currently running your nights.',
         quickFacts: [
           { label: 'Favorite Genre', value: 'Set your main genre in Edit Profile' },
@@ -1545,12 +1557,12 @@
       const normalizedUid = normalizeUid(uid);
       if (!normalizedUid || !profile) return;
       const directory = getPublicProfileDirectory();
-      directory[normalizedUid] = normalizeProfileBadges(deepMerge(PROFILE_TEMPLATE, {
+      directory[normalizedUid] = normalizeProfileBadges(stripLegacyProfileCopy(deepMerge(PROFILE_TEMPLATE, {
         ...profile,
         username: profile.username || user?.email?.split('@')[0] || normalizedUid,
         displayName: profile.displayName || user?.displayName || normalizedUid,
         profileUid: normalizedUid
-      }));
+      })));
       savePublicProfileDirectory(directory);
     }
 
@@ -1558,7 +1570,34 @@
       const normalizedUid = normalizeUid(uid);
       if (!normalizedUid) return null;
       const directory = getPublicProfileDirectory();
-      return directory[normalizedUid] ? normalizeProfileBadges(deepMerge(PROFILE_TEMPLATE, directory[normalizedUid])) : null;
+      return directory[normalizedUid] ? normalizeProfileBadges(stripLegacyProfileCopy(deepMerge(PROFILE_TEMPLATE, directory[normalizedUid]))) : null;
+    }
+
+    async function getRemoteProfile(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return null;
+
+      try {
+        const profileSnapshot = await getDoc(doc(db, 'Profiles', normalizedUid));
+        if (!profileSnapshot.exists()) return null;
+
+        const remoteProfile = profileSnapshot.data() || {};
+        const mergedProfile = normalizeProfileBadges(stripLegacyProfileCopy(deepMerge(PROFILE_TEMPLATE, {
+          ...remoteProfile,
+          profileUid: normalizedUid,
+          username: remoteProfile.username || normalizedUid,
+          displayName: remoteProfile.displayName || remoteProfile.username || normalizedUid
+        })));
+
+        const directory = getPublicProfileDirectory();
+        directory[normalizedUid] = mergedProfile;
+        savePublicProfileDirectory(directory);
+
+        return mergedProfile;
+      } catch (error) {
+        console.error('Could not load remote public profile:', error);
+        return null;
+      }
     }
 
     function createUnknownPublicProfile(uid) {
@@ -1578,7 +1617,7 @@
           text: 'Public profile placeholder. This is where their pinned vibe would show up.'
         },
         activity: ['No public activity available yet.'],
-        featuredHub: 'No featured hub yet',
+        featuredHub: '',
         currentObsession: 'No current obsession added yet',
         badges: ['crescent-moon'],
         quickFacts: [
@@ -1590,7 +1629,7 @@
       });
     }
 
-    function resolveProfileView(user) {
+    async function resolveProfileView(user) {
       const requestedUid = normalizeUid(requestedProfileUid);
       const ownUid = normalizeUid(user?.uid);
       const fallbackUid = normalizeUid(getLastSignedInUid());
@@ -1606,6 +1645,16 @@
           uid: activeUid || 'guest',
           user,
           profile: ownProfile
+        };
+      }
+
+      const remoteProfile = await getRemoteProfile(requestedUid);
+      if (remoteProfile) {
+        return {
+          isOwnProfile: false,
+          uid: requestedUid,
+          user: null,
+          profile: remoteProfile
         };
       }
 
@@ -1716,21 +1765,6 @@
       });
     }
 
-    function renderQuickFacts(items) {
-      const list = document.getElementById('quickFactsList');
-      if (!list) return;
-      list.innerHTML = '';
-      items.forEach((item) => {
-        const card = document.createElement('div');
-        card.className = 'friend-card';
-        card.innerHTML = `
-          <div class="section-title" style="font-size:0.92rem; color:#fff;">${item.label}</div>
-          <div class="friend-sub" style="margin-top:6px; white-space:normal;">${item.value}</div>
-        `;
-        list.appendChild(card);
-      });
-    }
-
     function getStatusMeta(rawStatus) {
       const value = String(rawStatus || '').trim().toLowerCase();
 
@@ -1803,7 +1837,7 @@
       try {
         const raw = localStorage.getItem(`noctive_profile_${uid}`);
         if (!raw) return null;
-        return normalizeProfileBadges(deepMerge(PROFILE_TEMPLATE, JSON.parse(raw)));
+        return normalizeProfileBadges(stripLegacyProfileCopy(deepMerge(PROFILE_TEMPLATE, JSON.parse(raw))));
       } catch (error) {
         console.error('Could not parse stored profile by uid:', error);
         return null;
@@ -1874,7 +1908,7 @@
 
           const raw = localStorage.getItem(GUEST_PROFILE_KEY);
           if (!raw) return JSON.parse(JSON.stringify(PROFILE_TEMPLATE));
-          return normalizeProfileBadges(deepMerge(PROFILE_TEMPLATE, JSON.parse(raw)));
+          return normalizeProfileBadges(stripLegacyProfileCopy(deepMerge(PROFILE_TEMPLATE, JSON.parse(raw))));
         } catch (error) {
           console.error('Could not parse saved guest profile:', error);
           return JSON.parse(JSON.stringify(PROFILE_TEMPLATE));
@@ -1887,7 +1921,7 @@
         const raw = localStorage.getItem(`noctive_profile_${user.uid}`);
         if (!raw) return starter;
         const parsed = JSON.parse(raw);
-        return normalizeProfileBadges(deepMerge(starter, parsed));
+        return normalizeProfileBadges(stripLegacyProfileCopy(deepMerge(starter, parsed)));
       } catch (error) {
         console.error('Could not parse saved profile:', error);
         return starter;
@@ -1908,14 +1942,13 @@
         bannerFill.style.backgroundPosition = profile.bannerImage ? 'center' : '';
       }
 
-      setText('bannerTitle', profile.bannerTitle || `${displayName} is alive after dark.`);
+      setText('bannerTitle', profile.bannerTitle || displayName);
       setText('bannerText', profile.bannerText || profile.bio || 'Set up your profile to personalize this space.');
       setText('profileDisplayName', displayName);
       setText('profileTitle', isAdmin ? 'Admin' : (profile.title || (isOwnProfile && user ? 'Noctive Member' : 'Noctive User')));
       document.getElementById('profileTitle')?.classList.toggle('is-admin', isAdmin);
       document.getElementById('profileAdminNotice')?.toggleAttribute('hidden', !isAdmin);
       setText('profileUsername', `@${username}`);
-      setText('profileEmail', isOwnProfile ? (user?.email || 'Sign in to personalize your profile') : 'Public profile');
       renderStatus(profile.status || (user ? 'Online' : 'Invisible'));
       setText('profileThemeTag', `${(profile.theme || 'default').charAt(0).toUpperCase()}${(profile.theme || 'default').slice(1)} Theme`);
       setText('profileBio', profile.bio || 'Add a bio to make this profile feel like yours.');
@@ -1928,15 +1961,7 @@
       setText('statHubs', profile.stats?.hubs ?? 0);
       setText('statClips', profile.stats?.clips ?? 0);
 
-      setText('pinnedName', displayName);
-      setText('pinnedTime', profile.pinnedPost?.time || 'Pinned just now');
-      setText('pinnedBadge', profile.pinnedPost?.badge || 'Pinned Thought');
-      setText('pinnedPostText', profile.pinnedPost?.text || 'Pin a post here so people immediately get your vibe.');
-      setText('pinnedLikes', `❤️ ${profile.pinnedPost?.likes ?? 0}`);
-      setText('pinnedComments', `💬 ${profile.pinnedPost?.comments ?? 0}`);
-      setText('pinnedShares', `🔁 ${profile.pinnedPost?.shares ?? 0}`);
 
-      setText('featuredHub', profile.featuredHub || 'Choose a featured hub to personalize this card.');
       setText('currentObsession', profile.currentObsession || 'Add your current obsession to make the profile feel lived-in.');
 
       const bannerTags = isAdmin
@@ -1946,14 +1971,11 @@
       renderTagList('gamesGrid', profile.games?.length ? profile.games : ['No favorite games yet'], 'game-chip');
       renderTagList('badgeRow', profile.badges?.length ? profile.badges : ['Newcomer'], 'badge');
       renderActivity(profile.activity?.length ? profile.activity : ['No recent activity yet.']);
-      renderQuickFacts(profile.quickFacts?.length ? profile.quickFacts : PROFILE_TEMPLATE.quickFacts);
-
       buildAvatar('profileAvatar', profile, displayName);
-      buildAvatar('pinnedAvatar', profile, displayName);
       setProfileMode(view);
     }
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       currentAuthUser = user;
       if (user?.uid) {
         try {
@@ -1963,7 +1985,7 @@
         }
       }
       try {
-        const view = resolveProfileView(user);
+        const view = await resolveProfileView(user);
         renderProfile(view);
         document.getElementById('loadingState')?.setAttribute('hidden', 'hidden');
         document.getElementById('errorState')?.setAttribute('hidden', 'hidden');
