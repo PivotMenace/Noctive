@@ -94,8 +94,13 @@
       color:#fff;
       transform:translateY(-1px);
     }
-    .ghost-btn{
+    .topbar-right{
       margin-left:auto;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .ghost-btn{
       border-radius:12px;
       padding:10px 12px;
       border:1px solid rgba(255,255,255,0.12);
@@ -699,7 +704,10 @@
         <a href="./store.html" aria-current="page">Night Market</a>
         <a href="./profile.html">Profile</a>
       </nav>
-      <a class="ghost-btn" href="./profile.html">View Profile</a>
+      <div class="topbar-right">
+        <a class="ghost-btn" href="./notifications.html" title="Notifications">&#9993;</a>
+        <a class="ghost-btn" href="./profile.html">View Profile</a>
+      </div>
     </div>
   </header>
 

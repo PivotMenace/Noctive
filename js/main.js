@@ -73,8 +73,23 @@ function getSavedProfile(uid) {
   }
 }
 
+function normalizeUid(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function slugifyProfileName(value, fallback = "noctive_user") {
+  const normalized = String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
+  return normalized || fallback;
+}
+
 function getPublicProfile(uid) {
-  if (!uid) return null;
+  const normalizedUid = normalizeUid(uid);
+  if (!normalizedUid) return null;
 
   try {
     const raw = window.localStorage.getItem(PUBLIC_PROFILE_DIRECTORY_KEY);
@@ -83,10 +98,60 @@ function getPublicProfile(uid) {
     }
 
     const directory = JSON.parse(raw);
-    return directory?.[uid] || null;
+    return directory?.[normalizedUid] || null;
   } catch (error) {
     console.warn("Could not read public profile directory:", error);
     return null;
+  }
+}
+
+function syncPublicProfileFromPost(uid, profile = {}) {
+  const normalizedUid = normalizeUid(uid);
+  if (!normalizedUid) return;
+
+  try {
+    const raw = window.localStorage.getItem(PUBLIC_PROFILE_DIRECTORY_KEY);
+    const directory = raw ? JSON.parse(raw) : {};
+    const existing = directory?.[normalizedUid] || {};
+    const displayName =
+      existing.displayName ||
+      profile.displayName ||
+      profile.username ||
+      "Noctive User";
+    const username =
+      existing.username ||
+      profile.username ||
+      slugifyProfileName(displayName, normalizedUid);
+
+    directory[normalizedUid] = {
+      ...existing,
+      profileUid: normalizedUid,
+      username,
+      displayName,
+      title: existing.title || profile.title || "Noctive User",
+      status: existing.status || profile.status || "Online",
+      bio: existing.bio || profile.bio || `${displayName} is active on Noctive.`,
+      theme: existing.theme || profile.theme || "default",
+      avatar: existing.avatar ?? profile.avatar ?? "",
+      bannerTitle: existing.bannerTitle || profile.bannerTitle || `${displayName} is on Noctive.`,
+      bannerText:
+        existing.bannerText ||
+        profile.bannerText ||
+        `${displayName} has shown up in the feed and can set up a fuller profile later.`,
+      bannerTags: existing.bannerTags || profile.bannerTags || ["Noctive"],
+      stats: existing.stats || {
+        posts: 0,
+        followers: 0,
+        following: 0,
+        games: 0,
+        hubs: 0,
+        clips: 0
+      }
+    };
+
+    window.localStorage.setItem(PUBLIC_PROFILE_DIRECTORY_KEY, JSON.stringify(directory));
+  } catch (error) {
+    console.warn("Could not sync public profile from post:", error);
   }
 }
 
@@ -240,6 +305,25 @@ function buildPostCard(doc) {
     },
     comments: Array.isArray(data.comments) ? data.comments : []
   };
+
+  syncPublicProfileFromPost(post.uid, {
+    username: resolvedProfile.username,
+    displayName: resolvedProfile.displayName,
+    avatar: resolvedProfile.avatar,
+    theme: resolvedProfile.theme,
+    title: postIsAdmin ? "Admin" : "Noctive User",
+    status: "Online",
+    bio: postIsAdmin
+      ? `${resolvedProfile.displayName} is an official Noctive account.`
+      : `${resolvedProfile.displayName} is active on Noctive.`,
+    bannerTitle: postIsAdmin
+      ? `${resolvedProfile.displayName} is part of the official Noctive team.`
+      : `${resolvedProfile.displayName} is on Noctive.`,
+    bannerText: postIsAdmin
+      ? `${resolvedProfile.displayName} posts official updates and community notes on Noctive.`
+      : `${resolvedProfile.displayName} has shown up in the feed and can build out a full profile anytime.`,
+    bannerTags: postIsAdmin ? ["Official", "Noctive"] : ["Noctive"]
+  });
 
   let postCard;
 

@@ -1107,6 +1107,7 @@
         <a href="./profile.html">Profile</a>
       </nav>
       <div class="topbar-right">
+        <a class="ghost-btn" href="./notifications.html" title="Notifications">&#9993;</a>
         <a class="ghost-btn" href="./profile.html">View Profile</a>
       </div>
     </div>
@@ -1298,6 +1299,7 @@
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const requestedThreadId = new URLSearchParams(window.location.search).get('thread') || '';
+    const NOTIFICATION_STORAGE_PREFIX = 'noctive_notifications_';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('../index.html');
     }
@@ -1475,6 +1477,7 @@
       })
     ];
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
+    const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     const GIFS = [
       {
         label: 'Favorites',
@@ -1758,6 +1761,146 @@
     function buildProfileHref(uid) {
       const normalized = normalizeUid(uid);
       return normalized ? `./profile.html?uid=${encodeURIComponent(normalized)}` : './profile.html';
+    }
+
+    function buildNotificationStorageKey(uid) {
+      const normalizedUid = normalizeUid(uid);
+      return `${NOTIFICATION_STORAGE_PREFIX}${normalizedUid || 'guest'}`;
+    }
+
+    function readNotifications(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return [];
+
+      try {
+        const raw = localStorage.getItem(buildNotificationStorageKey(normalizedUid));
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.error('Could not read notifications:', error);
+        return [];
+      }
+    }
+
+    function saveNotifications(uid, notifications) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return;
+
+      try {
+        localStorage.setItem(buildNotificationStorageKey(normalizedUid), JSON.stringify(notifications));
+      } catch (error) {
+        console.error('Could not save notifications:', error);
+      }
+    }
+
+    function getPublicProfileDirectory() {
+      try {
+        const raw = localStorage.getItem(PUBLIC_PROFILE_DIRECTORY_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (error) {
+        console.error('Could not read public profile directory:', error);
+        return {};
+      }
+    }
+
+    function getDisplayProfile(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return null;
+
+      const publicDirectory = getPublicProfileDirectory();
+      const publicProfile = publicDirectory?.[normalizedUid];
+      if (publicProfile) {
+        return publicProfile;
+      }
+
+      try {
+        const raw = localStorage.getItem(`noctive_profile_${normalizedUid}`);
+        return raw ? JSON.parse(raw) : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function formatNotificationTime(timestamp) {
+      const createdAt = Number(timestamp || 0);
+      if (!createdAt) return 'Just now';
+      const diff = Date.now() - createdAt;
+      if (diff < 60000) return 'Just now';
+      if (diff < 3600000) return `${Math.max(1, Math.floor(diff / 60000))}m ago`;
+      if (diff < 86400000) return `${Math.max(1, Math.floor(diff / 3600000))}h ago`;
+      return `${Math.max(1, Math.floor(diff / 86400000))}d ago`;
+    }
+
+    function renderNotificationsInbox() {
+      const list = document.getElementById('notificationsList');
+      const empty = document.getElementById('notificationsEmpty');
+      const badge = document.getElementById('notificationsBadge');
+      const markAllBtn = document.getElementById('markAllNotificationsBtn');
+      if (!list || !empty || !badge || !markAllBtn) return;
+
+      const viewerUid = normalizeUid(currentAuthUser?.uid);
+      if (!viewerUid) {
+        list.innerHTML = '';
+        empty.textContent = 'Sign in to see follow notifications here.';
+        empty.removeAttribute('hidden');
+        badge.setAttribute('hidden', 'hidden');
+        markAllBtn.setAttribute('hidden', 'hidden');
+        return;
+      }
+
+      const notifications = readNotifications(viewerUid);
+      const unreadCount = notifications.filter((item) => !item.read).length;
+      badge.textContent = String(unreadCount);
+      badge.toggleAttribute('hidden', unreadCount === 0);
+      markAllBtn.toggleAttribute('hidden', notifications.length === 0 || unreadCount === 0);
+
+      if (!notifications.length) {
+        list.innerHTML = '';
+        empty.textContent = 'Follow notifications will show up here.';
+        empty.removeAttribute('hidden');
+        return;
+      }
+
+      empty.setAttribute('hidden', 'hidden');
+      list.innerHTML = notifications.map((notification) => {
+        const actorProfile = getDisplayProfile(notification.actorUid) || {};
+        const actorName = notification.actorName || actorProfile.displayName || actorProfile.username || 'Noctive User';
+        const actorAvatar = notification.actorAvatar || actorProfile.avatar || '';
+        const avatarMarkup = actorAvatar
+          ? `<img src="${actorAvatar}" alt="${actorName} avatar">`
+          : `${getInitials(actorName)}`;
+
+        return `
+          <button class="notification-item${notification.read ? '' : ' is-unread'}" type="button" data-notification-id="${notification.id}">
+            <div class="notification-avatar">${avatarMarkup}</div>
+            <div class="notification-copy">
+              <div class="notification-text"><strong>${actorName}</strong> ${notification.body || 'interacted with you'}</div>
+              <div class="notification-meta">
+                ${notification.read ? '' : '<span class="notification-unread-dot" aria-hidden="true"></span>'}
+                <span>${formatNotificationTime(notification.createdAt)}</span>
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function markNotificationAsRead(notificationId) {
+      const viewerUid = normalizeUid(currentAuthUser?.uid);
+      if (!viewerUid || !notificationId) return;
+      const notifications = readNotifications(viewerUid);
+      const next = notifications.map((item) => item.id === notificationId ? { ...item, read: true } : item);
+      saveNotifications(viewerUid, next);
+      renderNotificationsInbox();
+    }
+
+    function markAllNotificationsAsRead() {
+      const viewerUid = normalizeUid(currentAuthUser?.uid);
+      if (!viewerUid) return;
+      const notifications = readNotifications(viewerUid);
+      const next = notifications.map((item) => ({ ...item, read: true }));
+      saveNotifications(viewerUid, next);
+      renderNotificationsInbox();
     }
 
     function appendMessageToThread(threadId, message) {
@@ -2368,6 +2511,12 @@
         closeMediaPicker();
       }
 
+      const notificationButton = event.target.closest('[data-notification-id]');
+      if (notificationButton) {
+        markNotificationAsRead(notificationButton.getAttribute('data-notification-id'));
+        return;
+      }
+
       const threadButton = event.target.closest('[data-thread-id]');
       if (!threadButton) return;
       const threadId = threadButton.getAttribute('data-thread-id');
@@ -2572,6 +2721,10 @@
       document.getElementById('sendMessageBtn')?.click();
     });
 
+    document.getElementById('markAllNotificationsBtn')?.addEventListener('click', () => {
+      markAllNotificationsAsRead();
+    });
+
     document.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
       closeMediaPicker();
@@ -2583,6 +2736,7 @@
     onAuthStateChanged(auth, (user) => {
       currentAuthUser = user;
       renderAllThreadPresence();
+      renderNotificationsInbox();
       setSignedInMessagesView(Boolean(user));
     });
   </script>

@@ -593,6 +593,10 @@
       opacity: 0.94;
     }
 
+    .status-control.is-readonly .status-chevron {
+      display: none;
+    }
+
     .status-option {
       width: 100%;
       display: grid;
@@ -940,6 +944,7 @@
         <a href="./profile.html" aria-current="page">Profile</a>
       </nav>
       <div class="topbar-right">
+        <a class="ghost-btn" href="./notifications.html" title="Notifications">&#9993;</a>
         <a class="ghost-btn" href="./edit-profile.html" id="topbarEditBtn">Edit Profile</a>
         <button class="ghost-btn" type="button" id="profileTopbarSignOutBtn">Sign Out</button>
       </div>
@@ -1034,6 +1039,7 @@
 
             <div class="identity-actions">
               <a class="primary-btn" href="./edit-profile.html" id="profileEditBtn">Edit Profile</a>
+              <button class="secondary-btn" type="button" id="profileFollowBtn" hidden>Follow</button>
               <button class="secondary-btn" type="button" id="profileShareBtn">Share</button>
               <button class="secondary-btn" type="button" id="profileMessageBtn" hidden>Message</button>
               <button class="secondary-btn" type="button" id="profileSignOutBtn">Sign Out</button>
@@ -1053,15 +1059,15 @@
               <div class="stat-number" id="statFollowing">0</div>
               <div class="stat-label">Following</div>
             </div>
-            <div class="stat-box">
+            <div class="stat-box" id="statGamesBox">
               <div class="stat-number" id="statGames">0</div>
               <div class="stat-label">Games</div>
             </div>
-            <div class="stat-box">
+            <div class="stat-box" id="statHubsBox">
               <div class="stat-number" id="statHubs">0</div>
               <div class="stat-label">Hubs</div>
             </div>
-            <div class="stat-box">
+            <div class="stat-box" id="statClipsBox">
               <div class="stat-number" id="statClips">0</div>
               <div class="stat-label">Clips</div>
             </div>
@@ -1069,7 +1075,7 @@
 
           <div class="content-grid">
             <div class="stack">
-              <section class="section-card">
+              <section class="section-card" id="aboutSection">
                 <div class="section-head">
                   <div>
                     <div class="section-title">About Me</div>
@@ -1079,7 +1085,7 @@
                 <p class="bio-text" id="aboutText">No bio added yet.</p>
               </section>
 
-              <section class="section-card">
+              <section class="section-card" id="gamesSection">
                 <div class="section-head">
                   <div>
                     <div class="section-title">Favorite Games</div>
@@ -1089,7 +1095,7 @@
                 <div class="game-chips" id="gamesGrid"></div>
               </section>
 
-              <section class="section-card">
+              <section class="section-card" id="pinnedSection">
                 <div class="section-head">
                   <div>
                     <div class="section-title">Recent Activity</div>
@@ -1116,7 +1122,7 @@
                 </div>
               </section>
 
-              <section class="section-card">
+              <section class="section-card" id="activitySection">
                 <div class="section-head">
                   <div>
                     <div class="section-title">Recent Activity</div>
@@ -1128,7 +1134,7 @@
             </div>
 
             <aside class="sidebar">
-              <section class="section-card side-card">
+              <section class="section-card side-card" id="showcaseSection">
                 <div class="section-head">
                   <div>
                     <div class="section-title">Profile Showcases</div>
@@ -1147,7 +1153,7 @@
                 </div>
               </section>
 
-              <section class="section-card side-card">
+              <section class="section-card side-card" id="badgesSection">
                 <div class="section-head">
                   <div>
                     <div class="section-title">Badges</div>
@@ -1173,6 +1179,8 @@
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     const LAST_PROFILE_UID_KEY = 'noctive_last_profile_uid';
+    const FOLLOWING_STORAGE_PREFIX = 'noctive_following_';
+    const NOTIFICATION_STORAGE_PREFIX = 'noctive_notifications_';
     const ADMIN_UIDS = ['TljwjuBuKvd6VG9e0Mz81y7ZRgi1', 'G6RyacKuSUTLXniBWRC1WsAm4Rq2'];
     const requestedProfileUid = new URLSearchParams(window.location.search).get('uid') || '';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
@@ -1419,6 +1427,7 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     let currentAuthUser = null;
+    let currentProfileView = null;
 
     async function leaveToGate() {
       profileSignOutBtn?.setAttribute('disabled', 'disabled');
@@ -1450,6 +1459,154 @@
 
     function normalizeUid(value) {
       return String(value || '').trim().toLowerCase();
+    }
+
+    function buildFollowingStorageKey(uid) {
+      const normalizedUid = normalizeUid(uid);
+      return `${FOLLOWING_STORAGE_PREFIX}${normalizedUid || 'guest'}`;
+    }
+
+    function buildNotificationStorageKey(uid) {
+      const normalizedUid = normalizeUid(uid);
+      return `${NOTIFICATION_STORAGE_PREFIX}${normalizedUid || 'guest'}`;
+    }
+
+    function readNotifications(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return [];
+
+      try {
+        const raw = localStorage.getItem(buildNotificationStorageKey(normalizedUid));
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.error('Could not load notifications:', error);
+        return [];
+      }
+    }
+
+    function saveNotifications(uid, notifications) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return;
+
+      try {
+        localStorage.setItem(buildNotificationStorageKey(normalizedUid), JSON.stringify(notifications));
+      } catch (error) {
+        console.error('Could not save notifications:', error);
+      }
+    }
+
+    function pushNotification(targetUid, notification) {
+      const normalizedTargetUid = normalizeUid(targetUid);
+      if (!normalizedTargetUid || !notification) return;
+      const current = readNotifications(normalizedTargetUid);
+      const next = [
+        {
+          id: `notif_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+          read: false,
+          createdAt: Date.now(),
+          ...notification
+        },
+        ...current
+      ].slice(0, 50);
+      saveNotifications(normalizedTargetUid, next);
+    }
+
+    function getFollowingSet(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return new Set();
+
+      try {
+        const raw = localStorage.getItem(buildFollowingStorageKey(normalizedUid));
+        const parsed = raw ? JSON.parse(raw) : [];
+        return new Set(Array.isArray(parsed) ? parsed.map(normalizeUid).filter(Boolean) : []);
+      } catch (error) {
+        console.error('Could not load following list:', error);
+        return new Set();
+      }
+    }
+
+    function saveFollowingSet(uid, followingSet) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return;
+
+      try {
+        localStorage.setItem(
+          buildFollowingStorageKey(normalizedUid),
+          JSON.stringify(Array.from(followingSet).map(normalizeUid).filter(Boolean))
+        );
+      } catch (error) {
+        console.error('Could not save following list:', error);
+      }
+    }
+
+    function isFollowingProfile(viewerUid, targetUid) {
+      const normalizedViewerUid = normalizeUid(viewerUid);
+      const normalizedTargetUid = normalizeUid(targetUid);
+      if (!normalizedViewerUid || !normalizedTargetUid || normalizedViewerUid === normalizedTargetUid) return false;
+      return getFollowingSet(normalizedViewerUid).has(normalizedTargetUid);
+    }
+
+    function toggleFollowProfile(viewerUid, targetUid) {
+      const normalizedViewerUid = normalizeUid(viewerUid);
+      const normalizedTargetUid = normalizeUid(targetUid);
+      if (!normalizedViewerUid || !normalizedTargetUid || normalizedViewerUid === normalizedTargetUid) {
+        return false;
+      }
+
+      const followingSet = getFollowingSet(normalizedViewerUid);
+      let isNowFollowing = false;
+      if (followingSet.has(normalizedTargetUid)) {
+        followingSet.delete(normalizedTargetUid);
+      } else {
+        followingSet.add(normalizedTargetUid);
+        isNowFollowing = true;
+      }
+      saveFollowingSet(normalizedViewerUid, followingSet);
+      return isNowFollowing;
+    }
+
+    function getFollowerCount(targetUid) {
+      const normalizedTargetUid = normalizeUid(targetUid);
+      if (!normalizedTargetUid) return 0;
+
+      try {
+        return Object.keys(localStorage)
+          .filter((key) => key.startsWith(FOLLOWING_STORAGE_PREFIX))
+          .reduce((count, key) => {
+            try {
+              const raw = localStorage.getItem(key);
+              const parsed = raw ? JSON.parse(raw) : [];
+              const follows = Array.isArray(parsed) ? parsed.map(normalizeUid) : [];
+              return count + (follows.includes(normalizedTargetUid) ? 1 : 0);
+            } catch (error) {
+              return count;
+            }
+          }, 0);
+      } catch (error) {
+        console.error('Could not count followers:', error);
+        return 0;
+      }
+    }
+
+    function getFollowingCount(uid) {
+      return getFollowingSet(uid).size;
+    }
+
+    function syncFollowButton(view) {
+      const followBtn = document.getElementById('profileFollowBtn');
+      if (!followBtn) return;
+
+      const viewerUid = normalizeUid(currentAuthUser?.uid);
+      const targetUid = normalizeUid(view?.uid);
+      const shouldShow = !view?.isOwnProfile && !!targetUid;
+      followBtn.toggleAttribute('hidden', !shouldShow);
+      if (!shouldShow) return;
+
+      const following = isFollowingProfile(viewerUid, targetUid);
+      followBtn.textContent = following ? 'Unfollow' : 'Follow';
+      followBtn.classList.toggle('primary-btn', following);
+      followBtn.classList.toggle('secondary-btn', !following);
     }
 
     function deepMerge(base, override) {
@@ -1602,9 +1759,10 @@
 
     function createUnknownPublicProfile(uid) {
       const safeUid = normalizeUid(uid) || 'unknown';
-      const displayName = safeUid.replace(/[-_]+/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+      const shortUid = safeUid.length > 8 ? safeUid.slice(0, 8).toUpperCase() : safeUid.toUpperCase();
+      const displayName = 'Noctive User';
       return deepMerge(PROFILE_TEMPLATE, {
-        username: safeUid,
+        username: `user_${shortUid.toLowerCase()}`,
         displayName,
         title: 'Noctive User',
         status: 'Invisible',
@@ -1670,17 +1828,25 @@
       const topbarEditBtn = document.getElementById('topbarEditBtn');
       const profileTopbarSignOutBtn = document.getElementById('profileTopbarSignOutBtn');
       const profileEditBtn = document.getElementById('profileEditBtn');
+      const profileFollowBtn = document.getElementById('profileFollowBtn');
       const profileSignOutBtn = document.getElementById('profileSignOutBtn');
       const profileMessageBtn = document.getElementById('profileMessageBtn');
       const profileShareBtn = document.getElementById('profileShareBtn');
       const statusControl = document.getElementById('statusControl');
       const statusMenu = document.getElementById('statusMenu');
+      const statGamesBox = document.getElementById('statGamesBox');
+      const statHubsBox = document.getElementById('statHubsBox');
+      const statClipsBox = document.getElementById('statClipsBox');
 
       topbarEditBtn?.toggleAttribute('hidden', !view.isOwnProfile);
       profileTopbarSignOutBtn?.toggleAttribute('hidden', !view.isOwnProfile);
       profileEditBtn?.toggleAttribute('hidden', !view.isOwnProfile);
+      profileFollowBtn?.toggleAttribute('hidden', view.isOwnProfile);
       profileSignOutBtn?.toggleAttribute('hidden', !view.isOwnProfile);
       profileMessageBtn?.toggleAttribute('hidden', view.isOwnProfile);
+      statGamesBox?.toggleAttribute('hidden', !view.isOwnProfile);
+      statHubsBox?.toggleAttribute('hidden', !view.isOwnProfile);
+      statClipsBox?.toggleAttribute('hidden', !view.isOwnProfile);
       if (profileShareBtn) {
         profileShareBtn.textContent = view.isOwnProfile ? 'Share' : 'Copy Link';
       }
@@ -1690,6 +1856,7 @@
       if (!view.isOwnProfile) {
         statusMenu?.setAttribute('hidden', 'hidden');
       }
+      syncFollowButton(view);
     }
 
     function buildAvatar(containerId, profile, fallbackName) {
@@ -1763,6 +1930,51 @@
         div.innerHTML = `<div class="activity-copy">${item}</div>`;
         list.appendChild(div);
       });
+    }
+
+    function isMeaningfulText(value, blockedValues = []) {
+      const normalized = String(value || '').trim();
+      if (!normalized) return false;
+      return !blockedValues.map((item) => String(item || '').trim()).includes(normalized);
+    }
+
+    function hasVisibleProfileContent(profile, isOwnProfile) {
+      if (isOwnProfile) {
+        return {
+          about: true,
+          games: true,
+          pinned: true,
+          activity: true,
+          showcases: true,
+          badges: true
+        };
+      }
+
+      const about = isMeaningfulText(profile.bio, [
+        PROFILE_TEMPLATE.bio,
+        'This profile has not been fully set up yet, but the route is ready for it.'
+      ]);
+      const games = Array.isArray(profile.games)
+        && profile.games.length > 0
+        && JSON.stringify(profile.games) !== JSON.stringify(PROFILE_TEMPLATE.games);
+      const pinned = isMeaningfulText(profile.pinnedPost?.text, [
+        PROFILE_TEMPLATE.pinnedPost.text,
+        'Public profile placeholder. This is where their pinned vibe would show up.'
+      ]);
+      const activity = Array.isArray(profile.activity)
+        && profile.activity.length > 0
+        && JSON.stringify(profile.activity) !== JSON.stringify(PROFILE_TEMPLATE.activity)
+        && !(profile.activity.length === 1 && profile.activity[0] === 'No public activity available yet.');
+      const showcases = isMeaningfulText(profile.featuredHub, [''])
+        || isMeaningfulText(profile.currentObsession, [
+          PROFILE_TEMPLATE.currentObsession,
+          'No current obsession added yet'
+        ]);
+      const badges = Array.isArray(profile.badges)
+        && profile.badges.length > 0
+        && JSON.stringify(profile.badges) !== JSON.stringify(PROFILE_TEMPLATE.badges);
+
+      return { about, games, pinned, activity, showcases, badges };
     }
 
     function getStatusMeta(rawStatus) {
@@ -1929,10 +2141,16 @@
     }
 
     function renderProfile(view) {
+      currentProfileView = view;
       const { user, profile, isOwnProfile, uid } = view;
       const displayName = profile.displayName || user?.displayName || profile.username || 'Guest';
       const username = profile.username || user?.email?.split('@')[0] || uid || 'guest';
       const isAdmin = ADMIN_UIDS.includes(String(user?.uid || uid || '').trim());
+      const normalizedProfileUid = normalizeUid(uid);
+      const followerCount = getFollowerCount(normalizedProfileUid);
+      const followingCount = isOwnProfile
+        ? getFollowingCount(normalizedProfileUid)
+        : Number(profile.stats?.following ?? 0);
 
       const bannerFill = document.getElementById('bannerFill');
       if (bannerFill) {
@@ -1955,8 +2173,8 @@
       setText('aboutText', profile.bio || 'Add a bio to make this profile feel like yours.');
 
       setText('statPosts', profile.stats?.posts ?? 0);
-      setText('statFollowers', profile.stats?.followers ?? 0);
-      setText('statFollowing', profile.stats?.following ?? 0);
+      setText('statFollowers', followerCount);
+      setText('statFollowing', followingCount);
       setText('statGames', profile.stats?.games ?? (profile.games?.length || 0));
       setText('statHubs', profile.stats?.hubs ?? 0);
       setText('statClips', profile.stats?.clips ?? 0);
@@ -1972,6 +2190,13 @@
       renderTagList('badgeRow', profile.badges?.length ? profile.badges : ['Newcomer'], 'badge');
       renderActivity(profile.activity?.length ? profile.activity : ['No recent activity yet.']);
       buildAvatar('profileAvatar', profile, displayName);
+      const visibleSections = hasVisibleProfileContent(profile, isOwnProfile);
+      document.getElementById('aboutSection')?.toggleAttribute('hidden', !visibleSections.about);
+      document.getElementById('gamesSection')?.toggleAttribute('hidden', !visibleSections.games);
+      document.getElementById('pinnedSection')?.toggleAttribute('hidden', !visibleSections.pinned);
+      document.getElementById('activitySection')?.toggleAttribute('hidden', !visibleSections.activity);
+      document.getElementById('showcaseSection')?.toggleAttribute('hidden', !visibleSections.showcases);
+      document.getElementById('badgesSection')?.toggleAttribute('hidden', !visibleSections.badges);
       setProfileMode(view);
     }
 
@@ -2002,6 +2227,27 @@
       const uid = normalizeUid(requestedProfileUid);
       if (!uid) return;
       window.location.href = `./messages.html?thread=${encodeURIComponent(uid)}`;
+    });
+    document.getElementById('profileFollowBtn')?.addEventListener('click', () => {
+      const viewerUid = normalizeUid(currentAuthUser?.uid);
+      const targetUid = normalizeUid(currentProfileView?.uid);
+      if (!viewerUid) {
+        window.alert('Sign in before following someone.');
+        return;
+      }
+      if (!targetUid || currentProfileView?.isOwnProfile) return;
+      const actorProfile = getStoredProfile(currentAuthUser);
+      const isNowFollowing = toggleFollowProfile(viewerUid, targetUid);
+      pushNotification(targetUid, {
+        type: isNowFollowing ? 'follow' : 'unfollow',
+        actorUid: viewerUid,
+        actorName: actorProfile?.displayName || actorProfile?.username || currentAuthUser?.displayName || currentAuthUser?.email?.split('@')[0] || 'Noctive User',
+        actorAvatar: actorProfile?.avatar || '',
+        body: isNowFollowing ? 'followed you' : 'unfollowed you'
+      });
+      if (currentProfileView) {
+        renderProfile(currentProfileView);
+      }
     });
     document.getElementById('profileShareBtn')?.addEventListener('click', async () => {
       const link = window.location.href;

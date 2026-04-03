@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noctive Notifications</title>
+  <link rel="icon" type="image/png" href="pngs/Favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;900&family=Roboto+Condensed:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #facc15;
+      --bg-1: #151225;
+      --bg-2: #1b1730;
+      --bg-3: #23244a;
+      --panel: rgba(255,255,255,0.055);
+      --panel-soft: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.10);
+      --text: rgba(255,255,255,0.94);
+      --muted: rgba(255,255,255,0.66);
+      --shadow: 0 22px 75px rgba(0,0,0,0.44);
+      --radius: 20px;
+      --font-main: 'Nunito', sans-serif;
+      --font-head: 'Rubik', 'Roboto Condensed', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: var(--font-main);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255,155,122,0.17), transparent 22%),
+        radial-gradient(circle at 88% 14%, rgba(125,211,252,0.16), transparent 20%),
+        radial-gradient(circle at 72% 80%, rgba(159,140,255,0.14), transparent 24%),
+        linear-gradient(180deg, #13131d, #121521 40%, #0e1119 100%);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 220% 220%;
+      background-attachment: fixed;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+    [hidden] { display: none !important; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: rgba(10,10,14,0.60);
+    }
+    .topbar-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-title {
+      display: inline-block;
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--font-head);
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+    .topnav {
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .topnav::-webkit-scrollbar { display: none; }
+    .topnav a {
+      font-family: var(--font-head);
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.80);
+      padding: 10px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: 0.16s ease;
+    }
+    .topnav a:hover,
+    .topnav a[aria-current="page"] {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ghost-btn,
+    .icon-btn,
+    .tab-btn,
+    .mark-btn {
+      transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+    }
+    .ghost-btn,
+    .icon-btn,
+    .mark-btn {
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font-family: var(--font-head);
+    }
+    .icon-btn {
+      min-width: 44px;
+      text-align: center;
+      padding-inline: 12px;
+    }
+    .icon-btn[aria-current="page"] {
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.18);
+    }
+    .ghost-btn:hover,
+    .icon-btn:hover,
+    .mark-btn:hover,
+    .tab-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .page-wrap {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 24px 18px 40px;
+      display: grid;
+      gap: 18px;
+    }
+    .hero,
+    .shell {
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(30,28,46,0.92), rgba(19,20,31,0.96));
+    }
+    .hero {
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .eyebrow {
+      font-family: var(--font-head);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+      color: rgba(255,255,255,0.52);
+      margin-bottom: 10px;
+    }
+    h1, .section-title {
+      font-family: var(--font-head);
+      color: var(--gold);
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      line-height: 1.04;
+      margin-bottom: 12px;
+    }
+    .hero p {
+      color: var(--muted);
+      max-width: 700px;
+      line-height: 1.55;
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.88);
+      font-family: var(--font-head);
+    }
+    .shell {
+      display: grid;
+      gap: 0;
+    }
+    .shell-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      flex-wrap: wrap;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .tab-btn {
+      border: 0;
+      background: transparent;
+      color: rgba(255,255,255,0.72);
+      font-family: var(--font-head);
+      padding: 10px 14px;
+      border-radius: 999px;
+    }
+    .tab-btn.is-active {
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+    }
+    .mark-btn {
+      font-size: 0.82rem;
+    }
+    .notification-list {
+      display: grid;
+      gap: 10px;
+      padding: 18px;
+    }
+    .notification-item {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.035);
+      color: inherit;
+      text-align: left;
+    }
+    .notification-item.is-unread {
+      background: linear-gradient(90deg, rgba(159,140,255,0.12), rgba(255,255,255,0.035));
+      border-color: rgba(159,140,255,0.24);
+    }
+    .notification-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    .notification-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .notification-copy {
+      display: grid;
+      gap: 6px;
+    }
+    .notification-text {
+      color: rgba(245,247,255,0.94);
+      line-height: 1.45;
+    }
+    .notification-text strong {
+      color: #fff;
+    }
+    .notification-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.48);
+      font-size: 0.78rem;
+      font-family: var(--font-head);
+    }
+    .notification-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #8f7cff;
+      box-shadow: 0 0 10px rgba(143,124,255,0.5);
+      flex: 0 0 auto;
+    }
+    .empty-state {
+      padding: 28px 18px 34px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner {
+        flex-wrap: wrap;
+      }
+      .topbar-right {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      .shell-head {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .tabs {
+        width: fit-content;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="./home.html"><span class="brand-title">Noctive</span></a>
+      <nav class="topnav" aria-label="Primary">
+        <a href="./home.html">Home</a>
+        <a href="./explore.html">Explore</a>
+        <a href="./faq.html">FAQ</a>
+        <a href="./messages.html">Messages</a>
+        <a href="./store.html">Night Market</a>
+        <a href="./profile.html">Profile</a>
+      </nav>
+      <div class="topbar-right">
+        <a class="icon-btn" href="./notifications.html" aria-current="page" title="Notifications">&#9993;</a>
+        <a class="ghost-btn" href="./profile.html">View Profile</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Inbox</div>
+        <h1>Keep your notifications separate from your chats.</h1>
+        <p>`For You` holds follow activity and account updates, while `Mentions` stays ready for tagged posts or replies once those land.</p>
+      </div>
+      <div class="hero-pill" id="unreadSummary">0 unread</div>
+    </section>
+
+    <section class="shell">
+      <div class="shell-head">
+        <div class="tabs" role="tablist" aria-label="Notification tabs">
+          <button class="tab-btn is-active" type="button" data-notification-tab="for-you">For You</button>
+          <button class="tab-btn" type="button" data-notification-tab="mentions">Mentions</button>
+        </div>
+        <button class="mark-btn" type="button" id="markVisibleReadBtn" hidden>Mark visible as read</button>
+      </div>
+      <div class="notification-list" id="notificationList"></div>
+      <div class="empty-state" id="notificationEmpty">Nothing has shown up here yet.</div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const ACCESS_SESSION_KEY = 'noctive_site_access';
+    const NOTIFICATION_STORAGE_PREFIX = 'noctive_notifications_';
+    const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
+    if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
+      window.location.replace('../index.html');
+    }
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
+      authDomain: "noctive-41c22.firebaseapp.com",
+      projectId: "noctive-41c22",
+      storageBucket: "noctive-41c22.firebasestorage.app",
+      messagingSenderId: "617642134193",
+      appId: "1:617642134193:web:ea5f0c93e56c654f66f090",
+      measurementId: "G-8ZFW3MTB3C"
+    };
+
+    initializeApp(firebaseConfig);
+    const auth = getAuth();
+    let currentAuthUser = null;
+    let activeTab = 'for-you';
+
+    function normalizeUid(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function getInitials(name) {
+      if (!name) return 'N';
+      const parts = String(name).trim().split(/\s+/).filter(Boolean);
+      if (!parts.length) return 'N';
+      if (parts.length === 1) return parts[0].slice(0, 1).toUpperCase();
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+
+    function buildNotificationStorageKey(uid) {
+      const normalizedUid = normalizeUid(uid);
+      return `${NOTIFICATION_STORAGE_PREFIX}${normalizedUid || 'guest'}`;
+    }
+
+    function readNotifications(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return [];
+
+      try {
+        const raw = localStorage.getItem(buildNotificationStorageKey(normalizedUid));
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.error('Could not read notifications:', error);
+        return [];
+      }
+    }
+
+    function saveNotifications(uid, notifications) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return;
+
+      try {
+        localStorage.setItem(buildNotificationStorageKey(normalizedUid), JSON.stringify(notifications));
+      } catch (error) {
+        console.error('Could not save notifications:', error);
+      }
+    }
+
+    function getPublicProfileDirectory() {
+      try {
+        const raw = localStorage.getItem(PUBLIC_PROFILE_DIRECTORY_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (error) {
+        console.error('Could not read public profile directory:', error);
+        return {};
+      }
+    }
+
+    function getDisplayProfile(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return null;
+      return getPublicProfileDirectory()?.[normalizedUid] || null;
+    }
+
+    function formatNotificationTime(timestamp) {
+      const createdAt = Number(timestamp || 0);
+      if (!createdAt) return 'Just now';
+      const diff = Date.now() - createdAt;
+      if (diff < 60000) return 'Just now';
+      if (diff < 3600000) return `${Math.max(1, Math.floor(diff / 60000))}m ago`;
+      if (diff < 86400000) return `${Math.max(1, Math.floor(diff / 3600000))}h ago`;
+      return `${Math.max(1, Math.floor(diff / 86400000))}d ago`;
+    }
+
+    function filterNotifications(notifications, tab) {
+      if (tab === 'mentions') {
+        return notifications.filter((item) => String(item.type || '').startsWith('mention'));
+      }
+      return notifications.filter((item) => !String(item.type || '').startsWith('mention'));
+    }
+
+    function renderNotifications() {
+      const list = document.getElementById('notificationList');
+      const empty = document.getElementById('notificationEmpty');
+      const summary = document.getElementById('unreadSummary');
+      const markBtn = document.getElementById('markVisibleReadBtn');
+      if (!list || !empty || !summary || !markBtn) return;
+
+      const viewerUid = normalizeUid(currentAuthUser?.uid);
+      if (!viewerUid) {
+        list.innerHTML = '';
+        empty.textContent = 'Sign in to see your notifications.';
+        empty.removeAttribute('hidden');
+        summary.textContent = '0 unread';
+        markBtn.setAttribute('hidden', 'hidden');
+        return;
+      }
+
+      const allNotifications = readNotifications(viewerUid);
+      const unreadCount = allNotifications.filter((item) => !item.read).length;
+      const visibleNotifications = filterNotifications(allNotifications, activeTab);
+
+      summary.textContent = `${unreadCount} unread`;
+      markBtn.toggleAttribute('hidden', !visibleNotifications.some((item) => !item.read));
+
+      if (!visibleNotifications.length) {
+        list.innerHTML = '';
+        empty.textContent = activeTab === 'mentions'
+          ? 'No mentions yet. When someone tags you, they will land here.'
+          : 'No notifications yet. Follows and account activity will land here.';
+        empty.removeAttribute('hidden');
+        return;
+      }
+
+      empty.setAttribute('hidden', 'hidden');
+      list.innerHTML = visibleNotifications.map((notification) => {
+        const actorProfile = getDisplayProfile(notification.actorUid) || {};
+        const actorName = notification.actorName || actorProfile.displayName || actorProfile.username || 'Noctive User';
+        const actorAvatar = notification.actorAvatar || actorProfile.avatar || '';
+        const avatarMarkup = actorAvatar
+          ? `<img src="${actorAvatar}" alt="${actorName} avatar">`
+          : `${getInitials(actorName)}`;
+
+        return `
+          <button class="notification-item${notification.read ? '' : ' is-unread'}" type="button" data-notification-id="${notification.id}">
+            <div class="notification-avatar">${avatarMarkup}</div>
+            <div class="notification-copy">
+              <div class="notification-text"><strong>${actorName}</strong> ${notification.body || 'interacted with you'}</div>
+              <div class="notification-meta">
+                ${notification.read ? '' : '<span class="notification-dot" aria-hidden="true"></span>'}
+                <span>${formatNotificationTime(notification.createdAt)}</span>
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function markNotificationAsRead(notificationId) {
+      const viewerUid = normalizeUid(currentAuthUser?.uid);
+      if (!viewerUid || !notificationId) return;
+      const notifications = readNotifications(viewerUid);
+      const next = notifications.map((item) => item.id === notificationId ? { ...item, read: true } : item);
+      saveNotifications(viewerUid, next);
+      renderNotifications();
+    }
+
+    function markVisibleNotificationsAsRead() {
+      const viewerUid = normalizeUid(currentAuthUser?.uid);
+      if (!viewerUid) return;
+      const notifications = readNotifications(viewerUid);
+      const next = notifications.map((item) => {
+        const isVisible = activeTab === 'mentions'
+          ? String(item.type || '').startsWith('mention')
+          : !String(item.type || '').startsWith('mention');
+        return isVisible ? { ...item, read: true } : item;
+      });
+      saveNotifications(viewerUid, next);
+      renderNotifications();
+    }
+
+    document.addEventListener('click', (event) => {
+      const notificationButton = event.target.closest('[data-notification-id]');
+      if (notificationButton) {
+        markNotificationAsRead(notificationButton.getAttribute('data-notification-id'));
+      }
+    });
+
+    document.getElementById('markVisibleReadBtn')?.addEventListener('click', () => {
+      markVisibleNotificationsAsRead();
+    });
+
+    document.querySelectorAll('[data-notification-tab]').forEach((button) => {
+      button.addEventListener('click', () => {
+        activeTab = button.getAttribute('data-notification-tab') || 'for-you';
+        document.querySelectorAll('[data-notification-tab]').forEach((node) => {
+          node.classList.toggle('is-active', node === button);
+        });
+        renderNotifications();
+      });
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      currentAuthUser = user;
+      renderNotifications();
+    });
+  </script>
+</body>
+</html>
