@@ -5,8 +5,10 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  increment,
   onSnapshot,
   orderBy,
+  updateDoc,
   query,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -22,6 +24,7 @@ let latestSnapshot = null;
 let currentViewer = null;
 let currentViewerIsAdmin = false;
 const PUBLIC_PROFILE_DIRECTORY_KEY = "noctive_public_profile_directory";
+const POST_VOTE_STORAGE_PREFIX = "noctive_post_votes_";
 
 const ADMIN_CONFIG = {
   uids: [
@@ -127,6 +130,54 @@ function getViewerAdminIdentity(user) {
   };
 }
 
+function buildPostVoteStorageKey() {
+  return `${POST_VOTE_STORAGE_PREFIX}${currentViewer?.uid || window.noctiveViewerKey || "guest"}`;
+}
+
+function readStoredPostVotes() {
+  try {
+    const raw = window.localStorage.getItem(buildPostVoteStorageKey());
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch (error) {
+    console.warn("Could not read stored post votes:", error);
+    return {};
+  }
+}
+
+function getStoredPostVote(postId) {
+  const votes = readStoredPostVotes();
+  const vote = votes?.[postId];
+  return vote === "up" || vote === "down" ? vote : null;
+}
+
+function saveStoredPostVote(postId, vote) {
+  try {
+    const votes = readStoredPostVotes();
+    if (vote === "up" || vote === "down") {
+      votes[postId] = vote;
+    } else {
+      delete votes[postId];
+    }
+    window.localStorage.setItem(buildPostVoteStorageKey(), JSON.stringify(votes));
+  } catch (error) {
+    console.warn("Could not save stored post vote:", error);
+  }
+}
+
+function getVoteDeltas(previousVote, nextVote) {
+  let upDelta = 0;
+  let downDelta = 0;
+
+  if (previousVote === "up") upDelta -= 1;
+  if (previousVote === "down") downDelta -= 1;
+  if (nextVote === "up") upDelta += 1;
+  if (nextVote === "down") downDelta += 1;
+
+  return { upDelta, downDelta };
+}
+
 function getFeedContainer() {
   const container = document.getElementById("feedList");
   console.log(container);
@@ -198,10 +249,11 @@ function buildPostCard(doc) {
     postCard = wrapper.firstElementChild;
 
     if (postCard && bridge.postVoteState && bridge.postCommentState) {
+      const storedVote = getStoredPostVote(post.id);
       bridge.postVoteState.set(post.id, {
         up: Number(post.votes.up),
         down: Number(post.votes.down),
-        userVote: null
+        userVote: storedVote
       });
       bridge.postCommentState.set(post.id, post.comments);
       bridge.syncPostVoteUI?.(postCard);
@@ -393,6 +445,55 @@ async function createPost(text) {
 }
 
 window.noctiveCreatePost = createPost;
+
+async function voteOnPost(postId, direction) {
+  const normalizedDirection = direction === "down" ? "down" : "up";
+
+  if (!currentViewer?.uid) {
+    throw new Error("Sign in before voting.");
+  }
+
+  const previousVote = getStoredPostVote(postId);
+  const bridge = window.noctiveFeedBridge;
+  const currentState = bridge?.postVoteState?.get(postId) || {
+    up: 0,
+    down: 0,
+    userVote: previousVote
+  };
+
+  if (previousVote === normalizedDirection) {
+    return {
+      ...currentState,
+      userVote: normalizedDirection
+    };
+  }
+
+  const { upDelta, downDelta } = getVoteDeltas(previousVote, normalizedDirection);
+  const updates = {};
+
+  if (upDelta) {
+    updates["votes.up"] = increment(upDelta);
+    updates.likesCount = increment(upDelta);
+  }
+
+  if (downDelta) {
+    updates["votes.down"] = increment(downDelta);
+  }
+
+  if (Object.keys(updates).length) {
+    await updateDoc(docRef("Posts", postId), updates);
+  }
+
+  saveStoredPostVote(postId, normalizedDirection);
+
+  return {
+    up: Math.max(0, Number(currentState.up || 0) + upDelta),
+    down: Math.max(0, Number(currentState.down || 0) + downDelta),
+    userVote: normalizedDirection
+  };
+}
+
+window.noctiveVotePost = voteOnPost;
 
 onAuthStateChanged(getAuth(), (user) => {
   currentViewer = user;

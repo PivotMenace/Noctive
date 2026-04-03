@@ -340,6 +340,10 @@
       text-overflow:ellipsis;
     }
 
+    .pname{
+      line-height:1.1;
+    }
+
     .user-sub,.ptime,.active-sub,.friend-status{
       color:var(--muted);
       font-size:0.9rem;
@@ -362,6 +366,24 @@
       border:1px solid var(--border);
       color:rgba(255,255,255,0.86);
       font-weight:400;
+    }
+
+    #userMenuDropdown{
+      gap:8px;
+      margin-top:12px;
+    }
+
+    #userMenuDropdown .link-pill{
+      padding:12px 16px;
+      min-height:56px;
+      border-radius:22px;
+    }
+
+    #userMenuDropdown .link-pill span{
+      margin-left:18px;
+      flex:0 0 auto;
+      font-size:1.2rem;
+      line-height:1;
     }
 
     .link-pill:hover,
@@ -761,12 +783,16 @@
     .messenger-dock{
       position:fixed;
       right:18px;
-      bottom:18px;
+      bottom:88px;
       z-index:6800;
       display:flex;
       align-items:flex-end;
       gap:14px;
       pointer-events:none;
+    }
+
+    .messenger-dock.is-dragging{
+      user-select:none;
     }
 
     .messenger-popup,
@@ -799,6 +825,7 @@
       padding:12px 14px;
       background:linear-gradient(135deg,rgba(236,72,153,0.18),rgba(96,165,250,0.14),rgba(139,92,246,0.16));
       border-bottom:1px solid rgba(255,255,255,0.08);
+      cursor:grab;
     }
 
     .messenger-head-main{
@@ -820,23 +847,24 @@
     .author-line{
       display:flex;
       align-items:center;
-      gap:8px;
+      gap:10px;
       min-width:0;
       flex-wrap:wrap;
+      margin-bottom:4px;
     }
 
     .admin-badge{
       display:inline-flex;
       align-items:center;
       gap:6px;
-      padding:4px 10px;
+      padding:3px 10px;
       border-radius:999px;
       border:1px solid rgba(255,215,115,0.32);
       background:linear-gradient(135deg, rgba(92,18,22,0.98), rgba(160,26,37,0.92));
       color:#fff4d7;
       font-family:var(--fontHead);
-      font-size:0.72rem;
-      letter-spacing:0.08em;
+      font-size:0.69rem;
+      letter-spacing:0.07em;
       text-transform:uppercase;
       box-shadow:0 0 18px rgba(220,20,60,0.18);
     }
@@ -851,6 +879,18 @@
       color:rgba(255,219,148,0.94);
       font-size:0.78rem;
       letter-spacing:0.03em;
+      line-height:1.2;
+    }
+
+    .post-user .meta-stack{
+      display:grid;
+      gap:4px;
+      align-content:start;
+    }
+
+    .post-user .ptime{
+      margin-top:0;
+      line-height:1.2;
     }
 
     .messenger-subline{
@@ -878,6 +918,10 @@
       cursor:pointer;
       font-family:var(--fontHead);
       transition:transform 140ms ease,background 140ms ease,border-color 140ms ease;
+    }
+
+    .messenger-head button{
+      cursor:pointer;
     }
 
     .messenger-mini-btn:hover{
@@ -984,6 +1028,16 @@
       border:1px solid rgba(255,255,255,0.08);
       box-shadow:0 18px 40px rgba(0,0,0,0.32);
       backdrop-filter:blur(10px);
+      cursor:grab;
+    }
+
+    .messenger-tray button{
+      cursor:pointer;
+    }
+
+    .messenger-dock.is-dragging .messenger-head,
+    .messenger-dock.is-dragging .messenger-tray{
+      cursor:grabbing;
     }
 
     .messenger-chip{
@@ -1145,7 +1199,7 @@
       <section class="card quick-links">
         <div class="rail-title">Session</div>
         <div class="link-list">
-          <button class="link-pill" type="button" id="homeSignOutBtn" style="width:100%; justify-content:space-between; text-align:left;">Sign out <span>â†’</span></button>
+          <button class="link-pill" type="button" id="homeSignOutBtn" style="width:100%; justify-content:space-between; text-align:left;">Sign out <span>&rarr;</span></button>
         </div>
       </section>
     </aside>
@@ -1359,6 +1413,7 @@
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const NIGHT_CREW_STORAGE_PREFIX = 'noctive_night_crew_';
     const QUICK_CHAT_STORAGE_PREFIX = 'noctive_quick_chat_';
+    const MESSENGER_DOCK_POSITION_KEY = 'noctive_messenger_dock_position';
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('../index.html');
@@ -1385,15 +1440,7 @@
           comments: []
         }
       ],
-      friends: [
-        { id: "friend-1", name: "Hijinxx", theme: "green", avatar: "", presence: "online", activity: "In Off Topic, lurking" },
-        { id: "friend-2", name: "Belt181", theme: "orange", avatar: "", presence: "dnd", activity: "Queueing ranked" },
-        { id: "friend-3", name: "cardboard box", theme: "purple", avatar: "", presence: "idle", activity: "Watching clips" },
-        { id: "friend-4", name: "Hypurly", theme: "orange", avatar: "", presence: "online", activity: "Grinding challenges" },
-        { id: "friend-5", name: "WakeBakeWes", theme: "blue", avatar: "", presence: "invisible", activity: "AFK, still online" },
-        { id: "friend-6", name: "LoriPie", theme: "pink", avatar: "", presence: "online", activity: "Sharing clips in chat" },
-        { id: "friend-7", name: "UnDiscoverableTalent", theme: "violet", avatar: "", presence: "idle", activity: "Hovering between hubs" }
-      ]
+      friends: []
     };
 
     const PRESENCE_META = {
@@ -1402,10 +1449,30 @@
       dnd: { label: 'Do Not Disturb', className: 'presence-dnd', activityFallback: 'Locked in' },
       invisible: { label: 'Invisible', className: 'presence-invisible', activityFallback: 'Appearing offline' }
     };
+    const LEGACY_PLACEHOLDER_FRIEND_IDS = new Set([
+      'friend-1',
+      'friend-2',
+      'friend-3',
+      'friend-4',
+      'friend-5',
+      'friend-6',
+      'friend-7'
+    ]);
+    const LEGACY_PLACEHOLDER_FRIEND_NAMES = new Set([
+      'hijinxx',
+      'belt181',
+      'cardboard box',
+      'hypurly',
+      'wakebakewes',
+      'loripie',
+      'undiscoverabletalent'
+    ]);
 
     let nightCrewFriends = [];
     let activeQuickChatId = '';
     let isMessengerTrayExpanded = true;
+    let messengerDockPosition = null;
+    let messengerDockDragState = null;
 
     function escapeHtml(value) {
       return String(value).replace(/[&<>"']/g, (char) => ({
@@ -1451,12 +1518,135 @@
       return `${QUICK_CHAT_STORAGE_PREFIX}${window.noctiveViewerKey || 'guest'}_${friendId}`;
     }
 
+    function buildMessengerDockStorageKey() {
+      return `${MESSENGER_DOCK_POSITION_KEY}_${window.noctiveViewerKey || 'guest'}`;
+    }
+
+    function isDesktopMessengerDock() {
+      return window.matchMedia('(min-width: 761px)').matches;
+    }
+
+    function clampMessengerDockPosition(position, dock) {
+      if (!position || !dock) return null;
+      const rect = dock.getBoundingClientRect();
+      const width = rect.width || dock.offsetWidth || 0;
+      const height = rect.height || dock.offsetHeight || 0;
+      const maxX = Math.max(12, window.innerWidth - width - 12);
+      const maxY = Math.max(12, window.innerHeight - height - 12);
+      return {
+        x: Math.min(Math.max(12, position.x), maxX),
+        y: Math.min(Math.max(12, position.y), maxY)
+      };
+    }
+
+    function applyMessengerDockPosition() {
+      const dock = document.getElementById('messengerDock');
+      if (!dock) return;
+
+      if (!isDesktopMessengerDock()) {
+        dock.style.left = '';
+        dock.style.top = '';
+        dock.style.right = '';
+        dock.style.bottom = '';
+        return;
+      }
+
+      if (!messengerDockPosition) {
+        dock.style.left = '';
+        dock.style.top = '';
+        dock.style.right = '18px';
+        dock.style.bottom = '88px';
+        return;
+      }
+
+      const clamped = clampMessengerDockPosition(messengerDockPosition, dock);
+      if (!clamped) return;
+      messengerDockPosition = clamped;
+      dock.style.left = `${clamped.x}px`;
+      dock.style.top = `${clamped.y}px`;
+      dock.style.right = 'auto';
+      dock.style.bottom = 'auto';
+    }
+
+    function loadMessengerDockPosition() {
+      try {
+        const raw = localStorage.getItem(buildMessengerDockStorageKey());
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed.x !== 'number' || typeof parsed.y !== 'number') return null;
+        return parsed;
+      } catch (error) {
+        console.error('Could not load messenger dock position:', error);
+        return null;
+      }
+    }
+
+    function saveMessengerDockPosition() {
+      try {
+        if (!messengerDockPosition) {
+          localStorage.removeItem(buildMessengerDockStorageKey());
+          return;
+        }
+        localStorage.setItem(buildMessengerDockStorageKey(), JSON.stringify(messengerDockPosition));
+      } catch (error) {
+        console.error('Could not save messenger dock position:', error);
+      }
+    }
+
+    function beginMessengerDockDrag(event) {
+      if (!isDesktopMessengerDock()) return;
+      if (typeof event.button === 'number' && event.button !== 0) return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (target?.closest('button, textarea, input, a')) return;
+
+      const dock = document.getElementById('messengerDock');
+      if (!dock) return;
+
+      const rect = dock.getBoundingClientRect();
+      messengerDockDragState = {
+        pointerId: event.pointerId,
+        offsetX: event.clientX - rect.left,
+        offsetY: event.clientY - rect.top
+      };
+      messengerDockPosition = { x: rect.left, y: rect.top };
+      dock.classList.add('is-dragging');
+      applyMessengerDockPosition();
+      event.preventDefault();
+    }
+
+    function handleMessengerDockDrag(event) {
+      if (!messengerDockDragState) return;
+      if (typeof event.pointerId === 'number' && event.pointerId !== messengerDockDragState.pointerId) return;
+      const dock = document.getElementById('messengerDock');
+      if (!dock) return;
+
+      messengerDockPosition = clampMessengerDockPosition({
+        x: event.clientX - messengerDockDragState.offsetX,
+        y: event.clientY - messengerDockDragState.offsetY
+      }, dock);
+      applyMessengerDockPosition();
+    }
+
+    function endMessengerDockDrag(event) {
+      if (!messengerDockDragState) return;
+      if (event && typeof event.pointerId === 'number' && event.pointerId !== messengerDockDragState.pointerId) return;
+      document.getElementById('messengerDock')?.classList.remove('is-dragging');
+      messengerDockDragState = null;
+      saveMessengerDockPosition();
+    }
+
     function getDefaultNightCrew() {
       return HOME_TEMPLATE.friends.map((friend) => ({
         ...friend,
         presence: normalizePresence(friend.presence),
         activity: friend.activity || ''
       }));
+    }
+
+    function isLegacyPlaceholderFriend(friend) {
+      const id = String(friend?.id || '').trim().toLowerCase();
+      const name = String(friend?.name || '').trim().toLowerCase();
+      return LEGACY_PLACEHOLDER_FRIEND_IDS.has(id) || LEGACY_PLACEHOLDER_FRIEND_NAMES.has(name);
     }
 
     function findNightCrewFriend(friendId) {
@@ -1577,14 +1767,20 @@
         if (!raw) return getDefaultNightCrew();
         const parsed = JSON.parse(raw);
         if (!Array.isArray(parsed) || !parsed.length) return getDefaultNightCrew();
-        return parsed.map((friend, index) => ({
-          id: friend.id || `friend-custom-${index + 1}`,
-          name: friend.name || `Night Crew ${index + 1}`,
-          theme: friend.theme || 'default',
-          avatar: friend.avatar || '',
-          presence: normalizePresence(friend.presence),
-          activity: friend.activity || ''
-        }));
+        const cleanedFriends = parsed
+          .filter((friend) => !isLegacyPlaceholderFriend(friend))
+          .map((friend, index) => ({
+            id: friend.id || `friend-custom-${index + 1}`,
+            name: friend.name || `Night Crew ${index + 1}`,
+            theme: friend.theme || 'default',
+            avatar: friend.avatar || '',
+            presence: normalizePresence(friend.presence),
+            activity: friend.activity || ''
+          }));
+        if (cleanedFriends.length !== parsed.length) {
+          localStorage.setItem(buildNightCrewStorageKey(), JSON.stringify(cleanedFriends));
+        }
+        return cleanedFriends;
       } catch (error) {
         console.error('Could not load Night Crew:', error);
         return getDefaultNightCrew();
@@ -1621,6 +1817,7 @@
       const downVotes = Number(post.votes?.down ?? 0);
       const commentsCount = Array.isArray(post.comments) ? post.comments.length : 0;
       const profileHref = buildProfileHref(post.uid || post.author);
+      const postTag = (post.roleLabel || post.officialLabel) ? '#Official' : (post.tag || '#Noctive');
       const adminBadge = post.roleLabel
         ? `<span class="admin-badge">${escapeHtml(post.roleLabel)}</span>`
         : '';
@@ -1646,7 +1843,7 @@
                 <div class="ptime">${escapeHtml(post.time)}</div>
               </a>
             </div>
-            <div class="tag">${escapeHtml(post.tag)}</div>
+            <div class="tag">${escapeHtml(postTag)}</div>
           </div>
           <div class="post-body">${escapeHtml(post.body)}</div>
           <div class="post-actions">
@@ -1749,6 +1946,7 @@
           `).join('')
         : '<div class="messenger-empty">Add Night Crew friends to pop chats here.</div>';
       applyGeneratedAvatars();
+      applyMessengerDockPosition();
     }
 
     function renderQuickMessenger() {
@@ -1780,6 +1978,7 @@
         </div>
       `).join('');
       applyGeneratedAvatars();
+      applyMessengerDockPosition();
       body.scrollTop = body.scrollHeight;
       if (input) input.placeholder = `Message ${friend.name}...`;
     }
@@ -1798,6 +1997,7 @@
     function closeQuickMessenger() {
       activeQuickChatId = '';
       document.getElementById('messengerPopup')?.setAttribute('hidden', 'hidden');
+      applyMessengerDockPosition();
     }
 
     function sendQuickMessengerMessage() {
@@ -2021,6 +2221,11 @@
       const messengerInput = document.getElementById('messengerInput');
       const messengerCloseBtn = document.getElementById('messengerCloseBtn');
       const messengerMinimizeBtn = document.getElementById('messengerMinimizeBtn');
+      const messengerTray = document.getElementById('messengerTray');
+      const messengerHead = document.querySelector('.messenger-head');
+
+      messengerDockPosition = loadMessengerDockPosition();
+      applyMessengerDockPosition();
 
       messengerLauncher?.addEventListener('click', () => {
         isMessengerTrayExpanded = !isMessengerTrayExpanded;
@@ -2033,6 +2238,12 @@
       messengerSendBtn?.addEventListener('click', sendQuickMessengerMessage);
       messengerCloseBtn?.addEventListener('click', closeQuickMessenger);
       messengerMinimizeBtn?.addEventListener('click', closeQuickMessenger);
+      messengerTray?.addEventListener('pointerdown', beginMessengerDockDrag);
+      messengerHead?.addEventListener('pointerdown', beginMessengerDockDrag);
+      window.addEventListener('pointermove', handleMessengerDockDrag);
+      window.addEventListener('pointerup', endMessengerDockDrag);
+      window.addEventListener('pointercancel', endMessengerDockDrag);
+      window.addEventListener('resize', applyMessengerDockPosition);
       messengerInput?.addEventListener('keydown', (event) => {
         if (event.key !== 'Enter' || event.shiftKey) return;
         event.preventDefault();
@@ -2172,15 +2383,36 @@
           userMenuDropdown?.setAttribute('hidden', 'hidden');
         }
       });
-      document.addEventListener('click', (e) => {
+      document.addEventListener('click', async (e) => {
         const voteBtn = e.target.closest('[data-vote]');
         if (voteBtn) {
           const postEl = voteBtn.closest('.post');
           const postId = postEl?.dataset.postId;
           const direction = voteBtn.getAttribute('data-vote');
           if (postEl && postId && direction) {
-            registerPostVote(postId, direction);
-            syncPostVoteUI(postEl);
+            const voteButtons = postEl.querySelectorAll('[data-vote]');
+            voteButtons.forEach((button) => {
+              button.disabled = true;
+            });
+
+            try {
+              if (typeof window.noctiveVotePost === 'function') {
+                const nextState = await window.noctiveVotePost(postId, direction);
+                if (nextState) {
+                  postVoteState.set(postId, nextState);
+                }
+              } else {
+                registerPostVote(postId, direction);
+              }
+              syncPostVoteUI(postEl);
+            } catch (error) {
+              console.error('Could not save vote:', error);
+              window.alert(error?.message || 'Could not save your vote right now.');
+            } finally {
+              voteButtons.forEach((button) => {
+                button.disabled = false;
+              });
+            }
           }
           return;
         }

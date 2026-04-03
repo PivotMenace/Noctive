@@ -29,6 +29,15 @@ service cloud.firestore {
       ];
     }
 
+    function isVoteOnlyPostUpdate() {
+      return isSignedIn()
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          "votes",
+          "likesCount"
+        ]);
+    }
+
     match /Posts/{postId} {
       allow read: if true;
       allow create: if isSignedIn()
@@ -36,8 +45,13 @@ service cloud.firestore {
         && request.resource.data.text is string
         && request.resource.data.text.size() > 0;
       allow update: if isSignedIn()
-        && request.auth.uid == resource.data.uid
-        && request.resource.data.uid == resource.data.uid;
+        && (
+          (
+            request.auth.uid == resource.data.uid
+            && request.resource.data.uid == resource.data.uid
+          )
+          || isVoteOnlyPostUpdate()
+        );
       allow delete: if isAdmin()
         || (isSignedIn() && request.auth.uid == resource.data.uid);
     }
