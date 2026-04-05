@@ -25,6 +25,7 @@ let currentViewer = null;
 let currentViewerIsAdmin = false;
 const PUBLIC_PROFILE_DIRECTORY_KEY = "noctive_public_profile_directory";
 const POST_VOTE_STORAGE_PREFIX = "noctive_post_votes_";
+const BIO_MAX_LENGTH = 180;
 
 const ADMIN_CONFIG = {
   uids: [
@@ -105,6 +106,10 @@ function getPublicProfile(uid) {
   }
 }
 
+function clampBio(value) {
+  return String(value || "").trim().slice(0, BIO_MAX_LENGTH);
+}
+
 function syncPublicProfileFromPost(uid, profile = {}) {
   const normalizedUid = normalizeUid(uid);
   if (!normalizedUid) return;
@@ -130,14 +135,14 @@ function syncPublicProfileFromPost(uid, profile = {}) {
       displayName,
       title: existing.title || profile.title || "Noctive User",
       status: existing.status || profile.status || "Online",
-      bio: existing.bio || profile.bio || `${displayName} is active on Noctive.`,
+      bio: clampBio(existing.bio || profile.bio || `${displayName} is active on Noctive.`),
       theme: existing.theme || profile.theme || "default",
       avatar: existing.avatar ?? profile.avatar ?? "",
       bannerTitle: existing.bannerTitle || profile.bannerTitle || `${displayName} is on Noctive.`,
       bannerText:
         existing.bannerText ||
         profile.bannerText ||
-        `${displayName} has shown up in the feed and can set up a fuller profile later.`,
+        "",
       bannerTags: existing.bannerTags || profile.bannerTags || ["Noctive"],
       stats: existing.stats || {
         posts: 0,
@@ -313,15 +318,15 @@ function buildPostCard(doc) {
     theme: resolvedProfile.theme,
     title: postIsAdmin ? "Admin" : "Noctive User",
     status: "Online",
-    bio: postIsAdmin
+    bio: clampBio(postIsAdmin
       ? `${resolvedProfile.displayName} is an official Noctive account.`
-      : `${resolvedProfile.displayName} is active on Noctive.`,
+      : `${resolvedProfile.displayName} is active on Noctive.`),
     bannerTitle: postIsAdmin
       ? `${resolvedProfile.displayName} is part of the official Noctive team.`
       : `${resolvedProfile.displayName} is on Noctive.`,
     bannerText: postIsAdmin
       ? `${resolvedProfile.displayName} posts official updates and community notes on Noctive.`
-      : `${resolvedProfile.displayName} has shown up in the feed and can build out a full profile anytime.`,
+      : "",
     bannerTags: postIsAdmin ? ["Official", "Noctive"] : ["Noctive"]
   });
 

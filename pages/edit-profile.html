@@ -206,6 +206,16 @@
       outline: none;
     }
     textarea { min-height: 104px; resize: vertical; }
+    .admin-access-note {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(116, 229, 154, 0.28);
+      background: rgba(24, 58, 42, 0.55);
+      color: #c9f7d9;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
     .actions { display: flex; gap: 10px; flex-wrap: wrap; }
     .save-msg { min-height: 22px; font-family: var(--font-head); }
     .save-msg.good { color: #74e59a; }
@@ -411,8 +421,9 @@
             <div class="field"><label for="username">Username</label><input id="username" type="text" maxlength="30" /></div>
             <div class="field"><label for="status">Status</label><select id="status"><option value="online">Online</option><option value="idle">Idle</option><option value="dnd">Do Not Disturb</option><option value="invisible">Invisible</option></select></div>
             <div class="field"><label>Title</label><div class="locked-field"><div class="locked-value" id="lockedTitle">Noctive Member</div><div class="locked-help">Titles will come from the Noctive store so players can unlock or purchase them through the platform.</div></div></div>
-            <div class="field full"><label for="bio">Bio</label><textarea id="bio"></textarea></div>
+            <div class="field full"><label for="bio">Bio</label><textarea id="bio" maxlength="180"></textarea></div>
           </div>
+          <div class="admin-access-note" id="adminGifAccessNote" hidden>Admin access is active on this account. GIF profile pictures are available here without buying the Night Market unlock.</div>
           <input id="avatar" type="hidden" />
           <input id="bannerImage" type="hidden" />
         </section>
@@ -464,7 +475,7 @@
         <div class="preview-overlay"></div>
         <div class="preview-copy">
           <h2 id="previewBannerTitle">Your Noctive profile starts here.</h2>
-          <p id="previewBannerText">Once you sign in, this page becomes your personal space for games, hubs, activity, and profile style.</p>
+          <p id="previewBannerText"></p>
         </div>
       </div>
       <div class="preview-profile">
@@ -517,6 +528,8 @@
     const MARKET_OWNED_STORAGE_KEY = 'noctive_night_market_owned';
     const GIF_PROFILE_COUPON_ID = 'upgrade-gif-profile';
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
+    const BIO_MAX_LENGTH = 180;
+    const ADMIN_UIDS = ['TljwjuBuKvd6VG9e0Mz81y7ZRgi1', 'G6RyacKuSUTLXniBWRC1WsAm4Rq2'];
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('../index.html');
     }
@@ -543,7 +556,7 @@
       bannerImage: '',
       bannerStoragePath: '',
       bannerTitle: 'Your Noctive profile starts here.',
-      bannerText: 'Once you sign in, this page becomes your personal space for games, hubs, activity, and profile style.',
+      bannerText: '',
       bannerTags: ['Profile Preview', 'Default Theme'],
       games: [],
       stats: { posts: 0, followers: 0, following: 0, games: 0, hubs: 0, clips: 0 },
@@ -585,6 +598,8 @@
     let pendingMediaValue = '';
     let pendingMediaStoragePath = '';
     let pendingMediaUploadState = 'idle';
+    let pendingMediaUploadPromise = null;
+    let pendingMediaRequestId = 0;
     let hasUnsavedChanges = false;
     let selectedFavoriteGames = [];
     const profileMediaStoragePaths = {
@@ -621,10 +636,20 @@
       if (nextProfile.bannerTitle === 'Noctive is alive after dark.') {
         nextProfile.bannerTitle = '';
       }
-      if (nextProfile.bannerText === "This is Noctive's profile space. Personalize it with your banner copy, favorite games, featured hub, and a pinned post.") {
+      if (
+        [
+          "This is Noctive's profile space. Personalize it with your banner copy, favorite games, featured hub, and a pinned post.",
+          'Once you sign in, this page becomes your personal space for games, hubs, activity, and profile style.'
+        ].includes(nextProfile.bannerText)
+        || String(nextProfile.bannerText || '').includes('profile space. Personalize it with your banner copy, favorite games, featured hub, and a pinned post.')
+      ) {
         nextProfile.bannerText = '';
       }
       return nextProfile;
+    }
+
+    function clampBio(value) {
+      return String(value || '').trim().slice(0, BIO_MAX_LENGTH);
     }
 
     function parseList(value) {
@@ -779,6 +804,20 @@
       return getOwnedMarketItems().includes(GIF_PROFILE_COUPON_ID);
     }
 
+    function isAdminUser(user = currentAuthUser) {
+      return ADMIN_UIDS.includes(String(user?.uid || '').trim());
+    }
+
+    function canUseGifProfilePictures(user = currentAuthUser) {
+      return isAdminUser(user) || hasGifProfileUnlock();
+    }
+
+    function updateAdminAccessNote(user = currentAuthUser) {
+      const note = document.getElementById('adminGifAccessNote');
+      if (!note) return;
+      note.toggleAttribute('hidden', !isAdminUser(user));
+    }
+
     function looksLikeGif(value) {
       const trimmed = String(value || '').trim();
       if (!trimmed) return false;
@@ -858,7 +897,7 @@
       setInput('status', String(profile.status || 'offline').toLowerCase());
       setInput('avatar', profile.avatar || '');
       setInput('bannerImage', profile.bannerImage || '');
-      setInput('bio', profile.bio);
+      setInput('bio', clampBio(profile.bio));
       setInput('currentObsession', normalizeCurrentObsession(profile.currentObsession));
       setInput('badges', (profile.badges || []).join(', '));
       setSelectedFavoriteGames(profile.games || []);
@@ -931,7 +970,7 @@
       const games = parseList(document.getElementById('games').value);
       const badges = parseList(document.getElementById('badges').value);
       const avatarValue = document.getElementById('avatar').value.trim();
-      const safeAvatarValue = looksLikeGif(avatarValue) && !hasGifProfileUnlock() ? '' : avatarValue;
+      const safeAvatarValue = looksLikeGif(avatarValue) && !canUseGifProfilePictures() ? '' : avatarValue;
       const currentObsession = normalizeCurrentObsession(document.getElementById('currentObsession').value);
 
       return deepMerge(starter, {
@@ -942,7 +981,7 @@
         avatarStoragePath: safeAvatarValue ? profileMediaStoragePaths.avatar : '',
         bannerImage: document.getElementById('bannerImage').value.trim(),
         bannerStoragePath: document.getElementById('bannerImage').value.trim() ? profileMediaStoragePaths.bannerImage : '',
-        bio: document.getElementById('bio').value.trim() || starter.bio,
+        bio: clampBio(document.getElementById('bio').value) || clampBio(starter.bio),
         bannerTitle: starter.bannerTitle,
         bannerText: starter.bannerText,
         bannerTags: starter.bannerTags,
@@ -957,7 +996,7 @@
       const username = profile.username || 'guest';
       const title = profile.title || 'Noctive Member';
       const bannerImage = profile.bannerImage || '';
-      const previewBannerText = profile.bio || profile.bannerText || PROFILE_TEMPLATE.bannerText;
+      const previewBannerText = profile.bannerText || '';
 
       const previewBanner = document.getElementById('previewBanner');
       previewBanner.className = 'preview-banner theme-default';
@@ -997,7 +1036,28 @@
       box.innerHTML = `<img src="${value}" alt="Selected media preview">`;
     }
 
+    function isMediaModalOpen() {
+      const modal = document.getElementById('mediaModal');
+      return !!modal && !modal.hasAttribute('hidden');
+    }
+
+    function updateMediaActionState() {
+      const applyBtn = document.getElementById('applyMediaBtn');
+      const removeBtn = document.getElementById('removeMediaBtn');
+      const hasValue = !!String(pendingMediaValue || '').trim();
+
+      if (applyBtn) {
+        applyBtn.disabled = pendingMediaUploadState === 'error' || (!hasValue && pendingMediaUploadState !== 'uploading');
+        applyBtn.textContent = pendingMediaUploadState === 'uploading' ? 'Applying After Upload...' : 'Apply Media';
+      }
+
+      if (removeBtn) {
+        removeBtn.disabled = pendingMediaUploadState === 'uploading' && !hasValue;
+      }
+    }
+
     function openMediaModal(target) {
+      pendingMediaRequestId += 1;
       activeMediaTarget = target;
       const modal = document.getElementById('mediaModal');
       const title = document.getElementById('mediaModalTitle');
@@ -1010,7 +1070,9 @@
       if (sub) {
         if (target === 'bannerImage') {
           sub.textContent = 'Upload a banner image file. Banners can still be static or GIF.';
-        } else if (hasGifProfileUnlock()) {
+        } else if (isAdminUser()) {
+          sub.textContent = 'Upload a profile image file. Admin access lets this account use still images and GIFs without the shop unlock.';
+        } else if (canUseGifProfilePictures()) {
           sub.textContent = 'Upload a profile image file. You unlocked GIF profile pictures, so still images and GIFs both work here.';
         } else {
           sub.textContent = 'Upload a profile image file. Profile pictures stay still-image only until you unlock the GIF coupon in Night Market.';
@@ -1019,12 +1081,14 @@
       pendingMediaValue = currentValue;
       pendingMediaStoragePath = profileMediaStoragePaths[target] || '';
       pendingMediaUploadState = 'idle';
+      pendingMediaUploadPromise = null;
       const mediaFile = document.getElementById('mediaFile');
       if (mediaFile) {
         mediaFile.value = '';
-        mediaFile.accept = target === 'bannerImage' || hasGifProfileUnlock() ? 'image/*,image/gif' : 'image/png,image/jpeg,image/jpg,image/webp,image/avif';
+        mediaFile.accept = target === 'bannerImage' || canUseGifProfilePictures() ? 'image/*,image/gif' : 'image/png,image/jpeg,image/jpg,image/webp,image/avif';
       }
       setMediaPreview(currentValue);
+      updateMediaActionState();
       modal?.removeAttribute('hidden');
     }
 
@@ -1036,13 +1100,14 @@
       const fieldId = activeMediaTarget === 'bannerImage' ? 'bannerImage' : 'avatar';
       const input = document.getElementById(fieldId);
       if (!input) return;
-      if (fieldId === 'avatar' && looksLikeGif(value) && !hasGifProfileUnlock()) {
+      if (fieldId === 'avatar' && looksLikeGif(value) && !canUseGifProfilePictures()) {
         shakeEditor('GIF profile pictures unlock after you buy the GIF coupon in Night Market first.');
         return;
       }
       input.value = value || '';
       profileMediaStoragePaths[fieldId] = value ? pendingMediaStoragePath : '';
       markDirty();
+      setSaveMessage('Media applied to the preview. Save Profile to keep it.', 'good');
       updatePreview(readFormProfile());
     }
 
@@ -1050,42 +1115,64 @@
     document.getElementById('changeBannerBtn')?.addEventListener('click', () => openMediaModal('bannerImage'));
     document.getElementById('closeMediaBtn')?.addEventListener('click', closeMediaModal);
     document.getElementById('removeMediaBtn')?.addEventListener('click', () => {
+      pendingMediaRequestId += 1;
       pendingMediaValue = '';
       pendingMediaStoragePath = '';
       pendingMediaUploadState = 'idle';
+      pendingMediaUploadPromise = null;
       applyMediaValue('');
       setMediaPreview('');
+      updateMediaActionState();
       closeMediaModal();
     });
     document.getElementById('mediaFile')?.addEventListener('change', async (event) => {
       const file = event.target.files?.[0];
       if (!file) return;
-      if (activeMediaTarget === 'avatar' && file.type === 'image/gif' && !hasGifProfileUnlock()) {
+      if (activeMediaTarget === 'avatar' && file.type === 'image/gif' && !canUseGifProfilePictures()) {
         event.target.value = '';
         shakeEditor('That GIF pfp is locked for now. Grab the GIF coupon in Night Market first.');
         return;
       }
+      const requestId = ++pendingMediaRequestId;
+      const uploadTarget = activeMediaTarget;
       try {
         pendingMediaUploadState = 'uploading';
+        updateMediaActionState();
         setSaveMessage(currentAuthUser?.uid ? 'Uploading image to your profile media folder...' : 'Saving this image locally for guest preview.');
-        const uploadedMedia = await uploadProfileMedia(file, activeMediaTarget);
+        pendingMediaUploadPromise = uploadProfileMedia(file, uploadTarget);
+        const uploadedMedia = await pendingMediaUploadPromise;
+        if (requestId !== pendingMediaRequestId || uploadTarget !== activeMediaTarget) {
+          return;
+        }
         pendingMediaValue = uploadedMedia.url;
         pendingMediaStoragePath = uploadedMedia.storagePath;
         pendingMediaUploadState = 'ready';
         setMediaPreview(uploadedMedia.url);
-        setSaveMessage(currentAuthUser?.uid ? 'Upload finished. Apply Media to use it on your profile.' : 'Image loaded locally. Apply Media to use it on your profile.', 'good');
+        applyMediaValue(uploadedMedia.url);
+        setSaveMessage(currentAuthUser?.uid ? 'Upload finished and media is applied to the preview. Save Profile to keep it.' : 'Image loaded and applied to the preview. Save Profile to keep it.', 'good');
       } catch (error) {
+        if (requestId !== pendingMediaRequestId) {
+          return;
+        }
         pendingMediaUploadState = 'error';
         console.error('Could not upload profile media:', error);
         setSaveMessage('Could not upload that image. Check your Firebase Storage rules and try again.', 'bad');
       } finally {
+        if (requestId === pendingMediaRequestId) {
+          pendingMediaUploadPromise = null;
+          updateMediaActionState();
+        }
         event.target.value = '';
       }
     });
-    document.getElementById('applyMediaBtn')?.addEventListener('click', () => {
+    document.getElementById('applyMediaBtn')?.addEventListener('click', async () => {
       if (pendingMediaUploadState === 'uploading') {
-        shakeEditor('Upload is still in progress. Give it one second before applying.');
-        return;
+        setSaveMessage('Upload is still finishing. Applying as soon as it completes...', 'remind');
+        try {
+          await pendingMediaUploadPromise;
+        } catch (error) {
+          return;
+        }
       }
       const value = pendingMediaValue.trim();
       applyMediaValue(value);
@@ -1218,6 +1305,7 @@
 
     onAuthStateChanged(auth, (user) => {
       currentAuthUser = user;
+      updateAdminAccessNote(user);
       populateCurrentObsessionOptions();
       const profile = getStoredProfile(user);
       populateForm(profile);

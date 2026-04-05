@@ -963,7 +963,7 @@
           <div class="banner-copy">
             <div>
               <h1 id="bannerTitle">Late-night builder and certified night crew regular.</h1>
-              <p id="bannerText">This profile is built to show who you are, what you like, and how you move through Noctive.</p>
+              <p id="bannerText"></p>
             </div>
             <div class="banner-tags" id="bannerTags"></div>
           </div>
@@ -1179,6 +1179,7 @@
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     const LAST_PROFILE_UID_KEY = 'noctive_last_profile_uid';
+    const BIO_MAX_LENGTH = 180;
     const FOLLOWING_STORAGE_PREFIX = 'noctive_following_';
     const NOTIFICATION_STORAGE_PREFIX = 'noctive_notifications_';
     const ADMIN_UIDS = ['TljwjuBuKvd6VG9e0Mz81y7ZRgi1', 'G6RyacKuSUTLXniBWRC1WsAm4Rq2'];
@@ -1207,7 +1208,7 @@
       avatar: '',
       bannerImage: '',
       bannerTitle: 'Your Noctive profile starts here.',
-      bannerText: 'This space can become your late-night identity across posts, chats, favorite games, and the people you keep around.',
+      bannerText: '',
       bannerTags: ['Alive After Dark', 'Profile Starter'],
       games: ['Pick 3 favorite games', 'Show your style', 'Build your corner'],
       stats: {
@@ -1629,10 +1630,21 @@
 
     function stripLegacyProfileCopy(profile) {
       const nextProfile = deepMerge(PROFILE_TEMPLATE, profile || {});
+      const bannerText = String(nextProfile.bannerText || '').trim();
       if (nextProfile.bannerTitle === 'Noctive is alive after dark.') {
         nextProfile.bannerTitle = '';
       }
-      if (nextProfile.bannerText === "This is Noctive's profile space. Personalize it with your banner copy, favorite games, featured hub, and a pinned post.") {
+      if (
+        [
+          "This is Noctive's profile space. Personalize it with your banner copy, favorite games, featured hub, and a pinned post.",
+          'This space can become your late-night identity across posts, chats, favorite games, and the people you keep around.',
+          'Once this user creates or saves a profile, their public view can render here.'
+        ].includes(bannerText)
+        || bannerText.includes('profile space. Personalize it with your banner copy, favorite games, featured hub, and a pinned post.')
+        || bannerText.includes('has shown up in the feed and can set up a fuller profile later.')
+        || bannerText.includes('has shown up in the feed and can build out a full profile anytime.')
+        || bannerText.includes('shows up in your Night Crew and quick messenger flow.')
+      ) {
         nextProfile.bannerText = '';
       }
       return nextProfile;
@@ -1768,7 +1780,7 @@
         status: 'Invisible',
         bio: 'This profile has not been fully set up yet, but the route is ready for it.',
         bannerTitle: `${displayName} has not finished setting up their profile yet.`,
-        bannerText: 'Once this user creates or saves a profile, their public view can render here.',
+        bannerText: '',
         bannerTags: ['Profile Pending'],
         pinnedPost: {
           ...PROFILE_TEMPLATE.pinnedPost,
@@ -1889,8 +1901,13 @@
       return BADGE_ALIASES[normalized] || String(badgeValue || '').trim();
     }
 
+    function clampBio(value) {
+      return String(value || '').trim().slice(0, BIO_MAX_LENGTH);
+    }
+
     function normalizeProfileBadges(profile) {
       const nextProfile = deepMerge(PROFILE_TEMPLATE, profile || {});
+      nextProfile.bio = clampBio(nextProfile.bio);
       const badgeList = Array.isArray(nextProfile.badges) ? nextProfile.badges : PROFILE_TEMPLATE.badges;
       nextProfile.badges = badgeList.map(normalizeBadgeValue);
       return nextProfile;
@@ -2161,7 +2178,7 @@
       }
 
       setText('bannerTitle', profile.bannerTitle || displayName);
-      setText('bannerText', profile.bannerText || profile.bio || 'Set up your profile to personalize this space.');
+      setText('bannerText', profile.bannerText || '');
       setText('profileDisplayName', displayName);
       setText('profileTitle', isAdmin ? 'Admin' : (profile.title || (isOwnProfile && user ? 'Noctive Member' : 'Noctive User')));
       document.getElementById('profileTitle')?.classList.toggle('is-admin', isAdmin);
