@@ -596,6 +596,7 @@
     let currentAuthUser = null;
     let activeMediaTarget = 'avatar';
     let pendingMediaValue = '';
+    let pendingMediaPreviewValue = '';
     let pendingMediaStoragePath = '';
     let pendingMediaUploadState = 'idle';
     let pendingMediaUploadPromise = null;
@@ -603,6 +604,10 @@
     let hasUnsavedChanges = false;
     let selectedFavoriteGames = [];
     const profileMediaStoragePaths = {
+      avatar: '',
+      bannerImage: ''
+    };
+    const previewMediaOverrides = {
       avatar: '',
       bannerImage: ''
     };
@@ -995,7 +1000,7 @@
       const displayName = profile.displayName || 'Guest';
       const username = profile.username || 'guest';
       const title = profile.title || 'Noctive Member';
-      const bannerImage = profile.bannerImage || '';
+      const bannerImage = previewMediaOverrides.bannerImage || profile.bannerImage || '';
       const previewBannerText = profile.bannerText || '';
 
       const previewBanner = document.getElementById('previewBanner');
@@ -1010,8 +1015,9 @@
       document.getElementById('previewMeta').textContent = `@${username} | ${getStatusLabel(profile.status)}`;
 
       const avatar = document.getElementById('previewAvatar');
-      if (profile.avatar && profile.avatar.trim()) {
-        avatar.innerHTML = `<img src="${profile.avatar}" alt="${displayName} avatar">`;
+      const avatarValue = previewMediaOverrides.avatar || profile.avatar || '';
+      if (avatarValue && avatarValue.trim()) {
+        avatar.innerHTML = `<img src="${avatarValue}" alt="${displayName} avatar">`;
       } else {
         avatar.textContent = getInitials(displayName);
       }
@@ -1034,6 +1040,10 @@
         return;
       }
       box.innerHTML = `<img src="${value}" alt="Selected media preview">`;
+    }
+
+    function setPreviewMediaOverride(target, value) {
+      previewMediaOverrides[target === 'bannerImage' ? 'bannerImage' : 'avatar'] = value || '';
     }
 
     function isMediaModalOpen() {
@@ -1079,6 +1089,7 @@
         }
       }
       pendingMediaValue = currentValue;
+      pendingMediaPreviewValue = currentValue;
       pendingMediaStoragePath = profileMediaStoragePaths[target] || '';
       pendingMediaUploadState = 'idle';
       pendingMediaUploadPromise = null;
@@ -1096,18 +1107,22 @@
       document.getElementById('mediaModal')?.setAttribute('hidden', 'hidden');
     }
 
-    function applyMediaValue(value) {
+    function applyMediaValue(value, options = {}) {
       const fieldId = activeMediaTarget === 'bannerImage' ? 'bannerImage' : 'avatar';
+      const { previewValue = value, persist = true } = options;
       const input = document.getElementById(fieldId);
       if (!input) return;
-      if (fieldId === 'avatar' && looksLikeGif(value) && !canUseGifProfilePictures()) {
+      if (fieldId === 'avatar' && looksLikeGif(previewValue) && !canUseGifProfilePictures()) {
         shakeEditor('GIF profile pictures unlock after you buy the GIF coupon in Night Market first.');
         return;
       }
-      input.value = value || '';
-      profileMediaStoragePaths[fieldId] = value ? pendingMediaStoragePath : '';
+      if (persist) {
+        input.value = value || '';
+        profileMediaStoragePaths[fieldId] = value ? pendingMediaStoragePath : '';
+      }
+      setPreviewMediaOverride(fieldId, previewValue || '');
       markDirty();
-      setSaveMessage('Media applied to the preview. Save Profile to keep it.', 'good');
+      setSaveMessage(persist ? 'Media applied to the preview. Save Profile to keep it.' : 'Media preview updated. Upload is still finishing in the background.', 'good');
       updatePreview(readFormProfile());
     }
 
@@ -1117,9 +1132,11 @@
     document.getElementById('removeMediaBtn')?.addEventListener('click', () => {
       pendingMediaRequestId += 1;
       pendingMediaValue = '';
+      pendingMediaPreviewValue = '';
       pendingMediaStoragePath = '';
       pendingMediaUploadState = 'idle';
       pendingMediaUploadPromise = null;
+      setPreviewMediaOverride(activeMediaTarget, '');
       applyMediaValue('');
       setMediaPreview('');
       updateMediaActionState();
@@ -1138,17 +1155,25 @@
       try {
         pendingMediaUploadState = 'uploading';
         updateMediaActionState();
-        setSaveMessage(currentAuthUser?.uid ? 'Uploading image to your profile media folder...' : 'Saving this image locally for guest preview.');
+        const previewValue = await readFileAsDataUrl(file);
+        if (requestId !== pendingMediaRequestId || uploadTarget !== activeMediaTarget) {
+          return;
+        }
+        pendingMediaPreviewValue = previewValue;
+        setMediaPreview(previewValue);
+        applyMediaValue('', { previewValue, persist: false });
+        setSaveMessage(currentAuthUser?.uid ? 'Preview updated. Uploading image to your profile media folder...' : 'Saving this image locally for guest preview.');
         pendingMediaUploadPromise = uploadProfileMedia(file, uploadTarget);
         const uploadedMedia = await pendingMediaUploadPromise;
         if (requestId !== pendingMediaRequestId || uploadTarget !== activeMediaTarget) {
           return;
         }
         pendingMediaValue = uploadedMedia.url;
+        pendingMediaPreviewValue = uploadedMedia.url;
         pendingMediaStoragePath = uploadedMedia.storagePath;
         pendingMediaUploadState = 'ready';
         setMediaPreview(uploadedMedia.url);
-        applyMediaValue(uploadedMedia.url);
+        applyMediaValue(uploadedMedia.url, { previewValue: uploadedMedia.url, persist: true });
         setSaveMessage(currentAuthUser?.uid ? 'Upload finished and media is applied to the preview. Save Profile to keep it.' : 'Image loaded and applied to the preview. Save Profile to keep it.', 'good');
       } catch (error) {
         if (requestId !== pendingMediaRequestId) {
@@ -1175,7 +1200,11 @@
         }
       }
       const value = pendingMediaValue.trim();
-      applyMediaValue(value);
+      if (!value && pendingMediaPreviewValue) {
+        setSaveMessage('Preview is updated, but the upload has not finished yet. Give it another moment before saving.', 'remind');
+        return;
+      }
+      applyMediaValue(value, { previewValue: pendingMediaPreviewValue || value, persist: true });
       const avatarValue = document.getElementById('avatar')?.value.trim() || '';
       const bannerValue = document.getElementById('bannerImage')?.value.trim() || '';
       if ((activeMediaTarget === 'avatar' && avatarValue === value) || (activeMediaTarget === 'bannerImage' && bannerValue === value) || !value) {
