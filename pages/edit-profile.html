@@ -549,7 +549,7 @@
       displayName: 'Guest',
       title: 'Noctive User',
       status: 'Offline',
-      bio: 'Sign in and start shaping this profile.',
+      bio: '',
       theme: 'default',
       avatar: '',
       avatarStoragePath: '',
@@ -638,8 +638,17 @@
 
     function stripLegacyProfileCopy(profile) {
       const nextProfile = deepMerge(PROFILE_TEMPLATE, profile || {});
+      const bio = String(nextProfile.bio || '').trim();
       if (nextProfile.bannerTitle === 'Noctive is alive after dark.') {
         nextProfile.bannerTitle = '';
+      }
+      if (
+        [
+          'Sign in and start shaping this profile.'
+        ].includes(bio)
+        || bio.includes('has joined Noctive. Edit this section to add a real bio')
+      ) {
+        nextProfile.bio = '';
       }
       if (
         [
@@ -698,7 +707,7 @@
         displayName: safeName,
         title: 'Noctive Member',
         status: 'Online',
-        bio: `${safeName} has joined Noctive. Edit this section to add a real bio, your vibe, and what you are into right now.`,
+        bio: '',
         bannerTitle: `${safeName} is alive after dark.`,
         bannerText: '',
         bannerTags: ['Alive After Dark', 'Profile Starter'],
@@ -986,7 +995,7 @@
         avatarStoragePath: safeAvatarValue ? profileMediaStoragePaths.avatar : '',
         bannerImage: document.getElementById('bannerImage').value.trim(),
         bannerStoragePath: document.getElementById('bannerImage').value.trim() ? profileMediaStoragePaths.bannerImage : '',
-        bio: clampBio(document.getElementById('bio').value) || clampBio(starter.bio),
+        bio: clampBio(document.getElementById('bio').value),
         bannerTitle: starter.bannerTitle,
         bannerText: starter.bannerText,
         bannerTags: starter.bannerTags,

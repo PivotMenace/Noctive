@@ -120,6 +120,24 @@ function clampBio(value) {
   return String(value || "").trim().slice(0, BIO_MAX_LENGTH);
 }
 
+function stripLegacyBio(value) {
+  const bio = clampBio(value);
+
+  if (
+    [
+      "Add a bio to make this profile feel like yours.",
+      "A late-night profile in progress. Shape the vibe, set the look, and make this space feel like yours.",
+      "Sign in and start shaping this profile."
+    ].includes(bio)
+    || bio.includes("is officially inside Noctive. Build this profile into your own corner with a strong bio")
+    || bio.includes("has joined Noctive. Edit this section to add a real bio")
+  ) {
+    return "";
+  }
+
+  return bio;
+}
+
 function syncPublicProfileFromPost(uid, profile = {}) {
   const normalizedUid = normalizeUid(uid);
   if (!normalizedUid) return;
@@ -145,7 +163,7 @@ function syncPublicProfileFromPost(uid, profile = {}) {
       displayName,
       title: existing.title || profile.title || "Noctive User",
       status: existing.status || profile.status || "Online",
-      bio: clampBio(existing.bio || profile.bio || `${displayName} is active on Noctive.`),
+      bio: stripLegacyBio(existing.bio || profile.bio || ""),
       theme: existing.theme || profile.theme || "default",
       avatar: existing.avatar ?? profile.avatar ?? "",
       bannerTitle: existing.bannerTitle || profile.bannerTitle || `${displayName} is on Noctive.`,
@@ -193,6 +211,10 @@ function getResolvedPostProfile(uid, fallback = {}) {
       profile.theme ||
       fallback.theme ||
       "default",
+    status:
+      profile.status ||
+      fallback.status ||
+      "Online",
     email:
       profile.email ||
       fallback.email ||
@@ -291,6 +313,7 @@ function buildPostCard(doc) {
     username: data.username,
     avatar: data.avatar,
     theme: data.theme,
+    status: data.status,
     email: data.email
   });
   const postIsAdmin = isAdminIdentity({
@@ -308,6 +331,7 @@ function buildPostCard(doc) {
     author: resolvedProfile.displayName,
     theme: resolvedProfile.theme,
     avatar: resolvedProfile.avatar,
+    status: resolvedProfile.status,
     time: formatCreatedAt(data.createdAt),
     tag: data.tag || "#Post",
     body: data.text || "",
@@ -327,7 +351,7 @@ function buildPostCard(doc) {
     avatar: resolvedProfile.avatar,
     theme: resolvedProfile.theme,
     title: postIsAdmin ? "Admin" : "Noctive User",
-    status: "Online",
+    status: resolvedProfile.status,
     bio: clampBio(postIsAdmin
       ? `${resolvedProfile.displayName} is an official Noctive account.`
       : `${resolvedProfile.displayName} is active on Noctive.`),

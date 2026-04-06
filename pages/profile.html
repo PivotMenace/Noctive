@@ -473,6 +473,7 @@
     }
 
     .display-row,
+    .member-row,
     .sub-row {
       display: flex;
       align-items: center;
@@ -494,6 +495,11 @@
       font-family: var(--font-head);
       font-size: 0.95rem;
       overflow-wrap: anywhere;
+    }
+
+    .member-row {
+      align-items: center;
+      gap: 12px;
     }
 
     .profile-title.is-admin {
@@ -992,7 +998,7 @@
     <div class="modal-backdrop" id="guestProfileGate" role="dialog" aria-modal="true" aria-labelledby="guestProfileGateTitle" hidden>
       <div class="modal">
         <div class="modal-head">
-          <div class="modal-title" id="guestProfileGateTitle">This could be your page, sign up!</div>
+          <div class="modal-title" id="guestProfileGateTitle">DUDE NO!</div>
         </div>
         <div class="modal-body">
           <p style="color:var(--muted); line-height:1.6; margin-bottom:16px;">You are browsing in guest preview mode, so profile pages stay locked until you make an account.</p>
@@ -1000,6 +1006,21 @@
             <a class="primary-btn" href="./signup.html">Sign Up</a>
             <a class="secondary-btn" href="./login-email.html">Log In</a>
             <a class="secondary-btn" href="./home.html" id="guestProfileBackBtn">Back Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop" id="blockedActionModal" role="dialog" aria-modal="true" aria-labelledby="blockedActionTitle" hidden>
+      <div class="modal">
+        <div class="modal-head">
+          <div class="modal-title" id="blockedActionTitle">DUDE NO!</div>
+        </div>
+        <div class="modal-body">
+          <p id="blockedActionCopy" style="color:var(--muted); line-height:1.6; margin-bottom:16px;">That action is locked right now.</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="primary-btn" href="./login-email.html">Log In</a>
+            <a class="secondary-btn" href="./signup.html">Sign Up</a>
+            <button class="secondary-btn" type="button" id="blockedActionCloseBtn">Okay</button>
           </div>
         </div>
       </div>
@@ -1030,20 +1051,15 @@
               <div class="identity-copy">
                 <div class="display-row">
                   <h2 id="profileDisplayName">Guest</h2>
+                </div>
+
+                <div class="member-row">
                   <span class="profile-title" id="profileTitle">Noctive User</span>
-                </div>
-
-                <div class="sub-row">
-                  <span id="profileUsername">@guest</span>
-                  <span>•</span>
-                </div>
-
-                <div class="sub-row">
                   <div class="status-control" id="statusControl">
                     <button class="status-pill status-offline" id="statusPill" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="statusMenu">
                       <span class="status-dot"></span>
                       <span id="profileStatus">Offline</span>
-                      <span class="status-chevron" aria-hidden="true">▾</span>
+                      <span class="status-chevron" aria-hidden="true">&#9662;</span>
                     </button>
                     <div class="status-menu" id="statusMenu" role="menu" hidden>
                       <button class="status-option" type="button" data-status="online" role="menuitemradio" aria-checked="false">
@@ -1051,14 +1067,14 @@
                         <span class="status-option-copy">
                           <span class="status-option-title">Online</span>
                         </span>
-                        <span class="status-option-check" aria-hidden="true">✓</span>
+                        <span class="status-option-check" aria-hidden="true">&#10003;</span>
                       </button>
                       <button class="status-option" type="button" data-status="idle" role="menuitemradio" aria-checked="false">
                         <span class="status-option-dot status-idle" aria-hidden="true"></span>
                         <span class="status-option-copy">
                           <span class="status-option-title">Idle</span>
                         </span>
-                        <span class="status-option-check" aria-hidden="true">✓</span>
+                        <span class="status-option-check" aria-hidden="true">&#10003;</span>
                       </button>
                       <button class="status-option" type="button" data-status="dnd" role="menuitemradio" aria-checked="false">
                         <span class="status-option-dot status-dnd" aria-hidden="true"></span>
@@ -1066,7 +1082,7 @@
                           <span class="status-option-title">Do Not Disturb</span>
                           <span class="status-option-sub">You will not receive desktop notifications</span>
                         </span>
-                        <span class="status-option-check" aria-hidden="true">✓</span>
+                        <span class="status-option-check" aria-hidden="true">&#10003;</span>
                       </button>
                       <button class="status-option" type="button" data-status="invisible" role="menuitemradio" aria-checked="false">
                         <span class="status-option-dot status-invisible" aria-hidden="true"></span>
@@ -1074,12 +1090,17 @@
                           <span class="status-option-title">Invisible</span>
                           <span class="status-option-sub">You will appear offline</span>
                         </span>
-                        <span class="status-option-check" aria-hidden="true">✓</span>
+                        <span class="status-option-check" aria-hidden="true">&#10003;</span>
                       </button>
                     </div>
                   </div>
-                  <span class="banner-tag" id="profileThemeTag">Default Theme</span>
                 </div>
+
+                <div class="sub-row">
+                  <span id="profileUsername">@guest</span>
+                  <span>•</span>
+                </div>
+
 
                 <div class="admin-notice" id="profileAdminNotice" hidden>Official Noctive account for support and moderation</div>
 
@@ -1223,7 +1244,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const ACCESS_MODE_SESSION_KEY = 'noctive_access_mode';
@@ -1259,7 +1280,7 @@
       displayName: 'Guest',
       title: 'Noctive User',
       status: 'Offline',
-      bio: 'A late-night profile in progress. Shape the vibe, set the look, and make this space feel like yours.',
+      bio: '',
       theme: 'default',
       avatar: '',
       bannerImage: '',
@@ -1493,6 +1514,19 @@
       document.getElementById('guestProfileGate')?.removeAttribute('hidden');
     }
 
+    function openBlockedActionModal(message, title = 'DUDE NO!') {
+      const modal = document.getElementById('blockedActionModal');
+      const heading = document.getElementById('blockedActionTitle');
+      const copy = document.getElementById('blockedActionCopy');
+      if (heading) heading.textContent = title || 'DUDE NO!';
+      if (copy && message) copy.textContent = message;
+      modal?.removeAttribute('hidden');
+    }
+
+    function closeBlockedActionModal() {
+      document.getElementById('blockedActionModal')?.setAttribute('hidden', 'hidden');
+    }
+
     async function leaveToGate() {
       profileSignOutBtn?.setAttribute('disabled', 'disabled');
       profileTopbarSignOutBtn?.setAttribute('disabled', 'disabled');
@@ -1512,6 +1546,12 @@
     profileTopbarSignOutBtn?.addEventListener('click', leaveToGate);
     document.getElementById('guestProfileBackBtn')?.addEventListener('click', () => {
       document.getElementById('guestProfileGate')?.setAttribute('hidden', 'hidden');
+    });
+    document.getElementById('blockedActionCloseBtn')?.addEventListener('click', closeBlockedActionModal);
+    document.getElementById('blockedActionModal')?.addEventListener('click', (event) => {
+      if (event.target?.id === 'blockedActionModal') {
+        closeBlockedActionModal();
+      }
     });
 
     if (isGuestPreviewSession()) {
@@ -1701,7 +1741,19 @@
 
     function stripLegacyProfileCopy(profile) {
       const nextProfile = deepMerge(PROFILE_TEMPLATE, profile || {});
+      const bio = String(nextProfile.bio || '').trim();
       const bannerText = String(nextProfile.bannerText || '').trim();
+      if (
+        [
+          'A late-night profile in progress. Shape the vibe, set the look, and make this space feel like yours.',
+          'Add a bio to make this profile feel like yours.',
+          'Sign in and start shaping this profile.'
+        ].includes(bio)
+        || bio.includes('is officially inside Noctive. Build this profile into your own corner with a strong bio')
+        || bio.includes('has joined Noctive. Edit this section to add a real bio')
+      ) {
+        nextProfile.bio = '';
+      }
       if (nextProfile.bannerTitle === 'Noctive is alive after dark.') {
         nextProfile.bannerTitle = '';
       }
@@ -1744,7 +1796,7 @@
         displayName: safeName,
         title: isAdmin ? 'Admin' : 'Noctive Member',
         status: 'Online',
-        bio: `${safeName} is officially inside Noctive. Build this profile into your own corner with a strong bio, favorite games, and a pinned vibe.`,
+        bio: '',
         bannerTitle: `${safeName} is alive after dark.`,
         bannerText: '',
         bannerTags: ['Alive After Dark', 'Profile Starter'],
@@ -2152,6 +2204,26 @@
       return nextProfile;
     }
 
+    async function persistProfilePatch(user, patch) {
+      const nextProfile = saveProfilePatch(user, patch);
+
+      if (user?.uid) {
+        syncPublicProfile(user.uid, nextProfile, user);
+        await setDoc(doc(db, 'Profiles', user.uid), {
+          ...patch,
+          uid: user.uid,
+          email: user.email || '',
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      }
+
+      if (currentProfileView?.uid && normalizeUid(currentProfileView.uid) === normalizeUid(user?.uid)) {
+        currentProfileView = deepMerge(currentProfileView, patch);
+      }
+
+      return nextProfile;
+    }
+
     function setStatusMenuOpen(isOpen) {
       const pill = document.getElementById('statusPill');
       const menu = document.getElementById('statusMenu');
@@ -2176,11 +2248,16 @@
       });
 
       options.forEach((option) => {
-        option.addEventListener('click', () => {
+        option.addEventListener('click', async () => {
           const status = option.dataset.status || 'offline';
-          const nextProfile = saveProfilePatch(currentAuthUser, { status });
-          renderStatus(nextProfile.status);
-          setStatusMenuOpen(false);
+          try {
+            const nextProfile = await persistProfilePatch(currentAuthUser, { status });
+            renderStatus(nextProfile.status);
+          } catch (error) {
+            console.error('Could not save status change:', error);
+          } finally {
+            setStatusMenuOpen(false);
+          }
         });
       });
 
@@ -2256,9 +2333,8 @@
       document.getElementById('profileAdminNotice')?.toggleAttribute('hidden', !isAdmin);
       setText('profileUsername', `@${username}`);
       renderStatus(profile.status || (user ? 'Online' : 'Invisible'));
-      setText('profileThemeTag', `${(profile.theme || 'default').charAt(0).toUpperCase()}${(profile.theme || 'default').slice(1)} Theme`);
-      setText('profileBio', profile.bio || 'Add a bio to make this profile feel like yours.');
-      setText('aboutText', profile.bio || 'Add a bio to make this profile feel like yours.');
+      setText('profileBio', profile.bio || '');
+      setText('aboutText', profile.bio || '');
 
       setText('statPosts', profile.stats?.posts ?? 0);
       setText('statFollowers', followerCount);
@@ -2327,7 +2403,7 @@
       const viewerUid = normalizeUid(currentAuthUser?.uid);
       const targetUid = normalizeUid(currentProfileView?.uid);
       if (!viewerUid) {
-        window.alert('Sign in before following someone.');
+        openBlockedActionModal('Sign in before following someone.');
         return;
       }
       if (!targetUid || currentProfileView?.isOwnProfile) return;
@@ -2363,3 +2439,4 @@
   </script>
 </body>
 </html>
+

@@ -275,6 +275,15 @@
       z-index:3;
     }
 
+    #sidebarPresenceDot{
+      right:2px;
+      bottom:3px;
+      width:16px;
+      height:16px;
+      border-width:3px;
+      box-shadow:0 0 14px rgba(10,10,14,0.35);
+    }
+
     .dot.presence-online{background:#43c581;}
     .dot.presence-idle{background:#f0b232;}
     .dot.presence-dnd{background:#f23f43;}
@@ -1055,6 +1064,26 @@
       align-content:start;
     }
 
+    .post-user > a{
+      display:inline-flex;
+      align-items:center;
+      flex-shrink:0;
+    }
+
+    .post-user .avatar-status-wrap{
+      padding:0;
+      overflow:visible;
+    }
+
+    .post-user .dot{
+      right:1px;
+      bottom:2px;
+      width:14px;
+      height:14px;
+      border:3px solid rgba(10,10,14,0.96);
+      box-shadow:0 0 12px rgba(10,10,14,0.3);
+    }
+
     .post-user .ptime{
       margin-top:0;
       line-height:1.2;
@@ -1373,7 +1402,10 @@
     <aside class="rail">
       <section class="card user-card">
         <div class="user-row" id="sidebarUser">
-          <div class="avatar user-avatar" id="sidebarAvatarBox" data-name="Noctive" data-theme="default" data-avatar=""></div>
+          <div class="avatar-status-wrap">
+            <div class="avatar user-avatar" id="sidebarAvatarBox" data-name="Noctive" data-theme="default" data-avatar=""></div>
+            <span class="dot presence-online" id="sidebarPresenceDot" aria-hidden="true"></span>
+          </div>
           <div class="user-meta">
             <div class="user-name" id="userDisplayName">Noctive</div>
             <div class="user-sub" id="userDisplaySub">Alive after dark</div>
@@ -1611,12 +1643,12 @@
   <div class="modal-backdrop" id="guestPromptModal" role="dialog" aria-modal="true" aria-labelledby="guestPromptTitle" hidden>
     <div class="modal guest-prompt">
       <div class="guest-prompt-head">
-        <h2 class="guest-prompt-title" id="guestPromptTitle">This could be your page, sign up!</h2>
+        <h2 class="guest-prompt-title" id="guestPromptTitle">DUDE NO!</h2>
         <button class="xbtn guest-prompt-close" type="button" id="guestPromptCloseBtn" aria-label="Close guest preview prompt">✕</button>
       </div>
 
       <div class="guest-prompt-body">
-        <p class="guest-prompt-copy" id="guestPromptCopy">Guest preview lets you explore Noctive first. Create an account when you want your profile, posts, and activity to actually stick.</p>
+        <p class="guest-prompt-copy" id="guestPromptCopy">That action is locked right now. Sign up when you want your profile, posts, and activity to actually stick.</p>
         <div class="guest-prompt-access">
           <a class="guest-prompt-google" href="./login-google.html" id="guestPromptGoogleBtn">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1717,9 +1749,13 @@
       notice.toggleAttribute('hidden', !text);
     }
 
-    function openGuestPrompt(message) {
+    function openGuestPrompt(message, title = 'DUDE NO!') {
       const modal = document.getElementById('guestPromptModal');
       const copy = document.getElementById('guestPromptCopy');
+      const heading = document.getElementById('guestPromptTitle');
+      if (heading) {
+        heading.textContent = title || 'DUDE NO!';
+      }
       if (copy && message) {
         copy.textContent = message;
       }
@@ -1768,6 +1804,14 @@
 
     function getPresenceMeta(value) {
       return PRESENCE_META[normalizePresence(value)] || PRESENCE_META.online;
+    }
+
+    function updateSidebarPresence(value) {
+      const dot = document.getElementById('sidebarPresenceDot');
+      if (!dot) return;
+      const presenceKey = normalizePresence(value);
+      dot.classList.remove('presence-online', 'presence-idle', 'presence-dnd', 'presence-invisible');
+      dot.classList.add(`presence-${presenceKey}`);
     }
 
     function buildNightCrewStorageKey() {
@@ -2092,7 +2136,7 @@
           <div class="post-head">
             <div class="post-user">
               <a href="${profileHref}" aria-label="Open ${escapeHtml(post.author)}'s profile">
-                ${buildAvatarMarkup({ name: post.author, theme: post.theme, avatar: post.avatar }, 'mini-avatar', false)}
+                ${buildAvatarMarkup({ name: post.author, theme: post.theme, avatar: post.avatar, presence: post.status || 'online' }, 'mini-avatar', true)}
               </a>
               <a class="meta-stack" href="${profileHref}" style="min-width:0;">
                 <div class="author-line">
@@ -2891,6 +2935,7 @@
         setText('userDisplayName', 'GUEST');
         setText('userDisplaySub', 'Guest preview');
         window.noctiveViewerKey = 'guest';
+        updateSidebarPresence('online');
 
         if (sidebarAvatarBox) {
           sidebarAvatarBox.dataset.name = 'GUEST';
@@ -2917,6 +2962,7 @@
         let savedUsername = emailBase;
         let savedTheme = 'default';
         let savedAvatar = '';
+        let savedStatus = 'online';
 
         try {
           const raw = localStorage.getItem(`noctive_profile_${user.uid}`);
@@ -2926,6 +2972,7 @@
             savedUsername = profile.username || savedUsername;
             savedTheme = profile.theme || 'default';
             savedAvatar = profile.avatar || '';
+            savedStatus = profile.status || savedStatus;
           }
         } catch (e) {
           console.error('Could not load saved profile theme/avatar:', e);
@@ -2935,6 +2982,7 @@
         setText('userDisplaySub', savedUsername ? `@${savedUsername}` : 'Online');
         window.noctiveViewerKey = user.uid;
         localStorage.setItem(LAST_PROFILE_UID_KEY, user.uid);
+        updateSidebarPresence(savedStatus);
 
         if (sidebarAvatarBox) {
           sidebarAvatarBox.dataset.name = displayName;
@@ -2951,6 +2999,7 @@
         setText('userDisplayName', 'Noctive');
         setText('userDisplaySub', 'Alive after dark');
         window.noctiveViewerKey = 'guest';
+        updateSidebarPresence('online');
         if (sidebarAvatarBox) {
           sidebarAvatarBox.dataset.name = 'Noctive';
           sidebarAvatarBox.dataset.theme = 'default';
