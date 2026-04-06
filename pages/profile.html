@@ -179,6 +179,41 @@
       font-weight: 700;
     }
 
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1400;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background: rgba(5, 6, 12, 0.74);
+      backdrop-filter: blur(10px);
+    }
+
+    .modal {
+      width: min(100%, 460px);
+      background: rgba(20, 18, 32, 0.96);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .modal-head {
+      padding: 18px 20px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .modal-title {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      color: var(--gold);
+    }
+
+    .modal-body {
+      padding: 18px 20px 20px;
+    }
+
     .page-wrap {
       max-width: 1200px;
       margin: 0 auto;
@@ -954,6 +989,21 @@
   <main class="page-wrap">
     <div id="loadingState" class="loading-state">Loading profile...</div>
     <div id="errorState" class="error-state" hidden>Could not load profile.</div>
+    <div class="modal-backdrop" id="guestProfileGate" role="dialog" aria-modal="true" aria-labelledby="guestProfileGateTitle" hidden>
+      <div class="modal">
+        <div class="modal-head">
+          <div class="modal-title" id="guestProfileGateTitle">This could be your page, sign up!</div>
+        </div>
+        <div class="modal-body">
+          <p style="color:var(--muted); line-height:1.6; margin-bottom:16px;">You are browsing in guest preview mode, so profile pages stay locked until you make an account.</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="primary-btn" href="./signup.html">Sign Up</a>
+            <a class="secondary-btn" href="./login-email.html">Log In</a>
+            <a class="secondary-btn" href="./home.html" id="guestProfileBackBtn">Back Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="profile-shell" id="profileShell" hidden>
       <section class="card profile-main">
@@ -1176,6 +1226,8 @@
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
+    const ACCESS_MODE_SESSION_KEY = 'noctive_access_mode';
+    const GUEST_PREVIEW_MODE = 'guest';
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     const LAST_PROFILE_UID_KEY = 'noctive_last_profile_uid';
@@ -1186,6 +1238,10 @@
     const requestedProfileUid = new URLSearchParams(window.location.search).get('uid') || '';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('../index.html');
+    }
+
+    function isGuestPreviewSession() {
+      return sessionStorage.getItem(ACCESS_MODE_SESSION_KEY) === GUEST_PREVIEW_MODE;
     }
 
     const firebaseConfig = {
@@ -1430,6 +1486,13 @@
     let currentAuthUser = null;
     let currentProfileView = null;
 
+    function showGuestProfileGate() {
+      document.getElementById('loadingState')?.setAttribute('hidden', 'hidden');
+      document.getElementById('errorState')?.setAttribute('hidden', 'hidden');
+      document.getElementById('profileShell')?.setAttribute('hidden', 'hidden');
+      document.getElementById('guestProfileGate')?.removeAttribute('hidden');
+    }
+
     async function leaveToGate() {
       profileSignOutBtn?.setAttribute('disabled', 'disabled');
       profileTopbarSignOutBtn?.setAttribute('disabled', 'disabled');
@@ -1441,11 +1504,19 @@
       }
 
       sessionStorage.removeItem(ACCESS_SESSION_KEY);
+      sessionStorage.removeItem(ACCESS_MODE_SESSION_KEY);
       window.location.replace('../index.html');
     }
 
     profileSignOutBtn?.addEventListener('click', leaveToGate);
     profileTopbarSignOutBtn?.addEventListener('click', leaveToGate);
+    document.getElementById('guestProfileBackBtn')?.addEventListener('click', () => {
+      document.getElementById('guestProfileGate')?.setAttribute('hidden', 'hidden');
+    });
+
+    if (isGuestPreviewSession()) {
+      showGuestProfileGate();
+    }
 
     try {
       await setPersistence(auth, browserLocalPersistence);
@@ -2218,6 +2289,13 @@
     }
 
     onAuthStateChanged(auth, async (user) => {
+      if (isGuestPreviewSession()) {
+        currentAuthUser = null;
+        currentProfileView = null;
+        showGuestProfileGate();
+        return;
+      }
+
       currentAuthUser = user;
       if (user?.uid) {
         try {

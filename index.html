@@ -500,8 +500,10 @@
     </main>
 
     <script>
-        const VALID_KEY = "CIVET-908N-227O";
+        const VALID_KEY = "CIVET-908O-227N";
         const ACCESS_SESSION_KEY = "noctive_site_access";
+        const ACCESS_MODE_SESSION_KEY = "noctive_access_mode";
+        const GUEST_PREVIEW_MODE = "guest";
 
         const pill = document.getElementById("pill");
         const status = document.getElementById("status");
@@ -581,6 +583,7 @@
             if (normalize(entered) === normalize(VALID_KEY)) {
                 setStatus("Access granted.", "good");
                 sessionStorage.setItem(ACCESS_SESSION_KEY, "granted");
+                sessionStorage.setItem(ACCESS_MODE_SESSION_KEY, GUEST_PREVIEW_MODE);
                 setTimeout(() => {
                     window.location.replace("./pages/home.html");
                 }, 900);

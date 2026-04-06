@@ -210,6 +210,8 @@
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const ACCESS_SESSION_KEY = "noctive_site_access";
+    const ACCESS_MODE_SESSION_KEY = "noctive_access_mode";
+    const MEMBER_ACCESS_MODE = "member";
     const firebaseConfig = {
       apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
       authDomain: "noctive-41c22.firebaseapp.com",
@@ -307,6 +309,7 @@
       try {
         await signInWithEmailAndPassword(auth, email, password);
         sessionStorage.setItem(ACCESS_SESSION_KEY, "granted");
+        sessionStorage.setItem(ACCESS_MODE_SESSION_KEY, MEMBER_ACCESS_MODE);
         setStatus("Success. Entering Noctive...", "good");
         window.setTimeout(() => {
           window.location.replace("./home.html");

@@ -735,6 +735,111 @@
     .modal-body{padding:14px;display:grid;gap:12px;}
     .field{display:grid;gap:6px;}
 
+    .guest-prompt{
+      width:min(640px,100%);
+      border-radius:22px;
+      background:linear-gradient(180deg,rgba(11,11,16,0.98),rgba(8,8,12,0.96));
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 24px 70px rgba(0,0,0,0.46);
+    }
+
+    .guest-prompt-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      padding:24px 24px 0;
+    }
+
+    .guest-prompt-title{
+      margin:0;
+      font-family:var(--fontHead);
+      font-size:1.5rem;
+      line-height:1.15;
+      font-weight:700;
+      color:var(--gold);
+      letter-spacing:0.01em;
+    }
+
+    .guest-prompt-close{
+      width:44px;
+      height:44px;
+      padding:0;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      color:rgba(255,255,255,0.92);
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.10);
+    }
+
+    .guest-prompt-close:hover{
+      background:rgba(255,255,255,0.08);
+      border-color:rgba(255,255,255,0.16);
+      color:#fff;
+    }
+
+    .guest-prompt-body{
+      padding:18px 24px 24px;
+      display:grid;
+      gap:22px;
+    }
+
+    .guest-prompt-copy{
+      margin:0;
+      max-width:560px;
+      color:rgba(255,255,255,0.74);
+      font-size:1.02rem;
+      line-height:1.55;
+    }
+
+    .guest-prompt-actions{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .guest-prompt-primary,
+    .guest-prompt-secondary{
+      min-width:138px;
+      min-height:48px;
+      padding:12px 18px;
+      border-radius:14px;
+      font-family:var(--fontHead);
+      font-size:1rem;
+      font-weight:600;
+      text-align:center;
+      justify-content:center;
+    }
+
+    .guest-prompt-primary{
+      background:linear-gradient(180deg,rgba(122,20,38,0.94),rgba(86,13,28,0.96));
+      border:1px solid rgba(220,20,60,0.44);
+      color:#fff;
+      box-shadow:0 10px 24px rgba(124,18,40,0.22);
+    }
+
+    .guest-prompt-primary:hover{
+      background:linear-gradient(180deg,rgba(138,24,45,0.96),rgba(98,15,32,0.98));
+      border-color:rgba(220,20,60,0.56);
+      box-shadow:0 14px 30px rgba(124,18,40,0.28);
+    }
+
+    .guest-prompt-secondary{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.11);
+      color:rgba(255,255,255,0.9);
+    }
+
+    .guest-prompt-secondary:hover{
+      background:rgba(255,255,255,0.08);
+      border-color:rgba(255,255,255,0.18);
+      color:#fff;
+    }
+
     .field label{
       font-family:var(--fontHead);
       font-weight:700;
@@ -1148,6 +1253,30 @@
         justify-content:center;
         flex-wrap:wrap;
       }
+
+      .guest-prompt-head{
+        padding:20px 20px 0;
+        gap:14px;
+      }
+
+      .guest-prompt-title{
+        font-size:1.28rem;
+      }
+
+      .guest-prompt-body{
+        padding:16px 20px 20px;
+        gap:18px;
+      }
+
+      .guest-prompt-actions{
+        display:grid;
+        grid-template-columns:1fr;
+      }
+
+      .guest-prompt-primary,
+      .guest-prompt-secondary{
+        width:100%;
+      }
     }
   </style>
 </head>
@@ -1220,6 +1349,7 @@
             <div class="count"><span id="countNum">0</span>/240</div>
             <button class="post-btn" type="button" id="postBtn">Post</button>
           </div>
+          <div class="small" id="composerGuestHint" hidden></div>
         </div>
 
         <div id="feedList"></div>
@@ -1411,8 +1541,28 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="guestPromptModal" role="dialog" aria-modal="true" aria-labelledby="guestPromptTitle" hidden>
+    <div class="modal guest-prompt">
+      <div class="guest-prompt-head">
+        <h2 class="guest-prompt-title" id="guestPromptTitle">This could be your page, sign up!</h2>
+        <button class="xbtn guest-prompt-close" type="button" id="guestPromptCloseBtn" aria-label="Close guest preview prompt">✕</button>
+      </div>
+
+      <div class="guest-prompt-body">
+        <p class="guest-prompt-copy" id="guestPromptCopy">Guest preview lets you explore Noctive first. Create an account when you want your profile, posts, and activity to actually stick.</p>
+        <div class="guest-prompt-actions">
+          <a class="primary guest-prompt-primary" href="./signup.html" id="guestPromptSignupBtn">Sign up</a>
+          <a class="textlink guest-prompt-secondary" href="./login-email.html">Log in</a>
+          <button class="textlink guest-prompt-secondary" type="button" id="guestPromptMaybeLaterBtn">Maybe later</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const ACCESS_SESSION_KEY = 'noctive_site_access';
+    const ACCESS_MODE_SESSION_KEY = 'noctive_access_mode';
+    const GUEST_PREVIEW_MODE = 'guest';
     const NIGHT_CREW_STORAGE_PREFIX = 'noctive_night_crew_';
     const QUICK_CHAT_STORAGE_PREFIX = 'noctive_quick_chat_';
     const MESSENGER_DOCK_POSITION_KEY = 'noctive_messenger_dock_position';
@@ -1422,6 +1572,7 @@
     }
 
     window.noctiveViewerKey = 'guest';
+    window.noctiveGuestPreviewPosts = [];
 
     const HOME_TEMPLATE = {
       hotGames: ["Minecraft", "Valorant", "Roblox", "Helldivers 2", "Fortnite"],
@@ -1476,6 +1627,30 @@
     let messengerDockPosition = null;
     let messengerDockDragState = null;
 
+    function isGuestPreviewSession() {
+      return sessionStorage.getItem(ACCESS_MODE_SESSION_KEY) === GUEST_PREVIEW_MODE;
+    }
+
+    function setComposerNotice(text) {
+      const notice = document.getElementById('composerGuestHint');
+      if (!notice) return;
+      notice.textContent = text || '';
+      notice.toggleAttribute('hidden', !text);
+    }
+
+    function openGuestPrompt(message) {
+      const modal = document.getElementById('guestPromptModal');
+      const copy = document.getElementById('guestPromptCopy');
+      if (copy && message) {
+        copy.textContent = message;
+      }
+      modal?.removeAttribute('hidden');
+    }
+
+    function closeGuestPrompt() {
+      document.getElementById('guestPromptModal')?.setAttribute('hidden', 'hidden');
+    }
+
     function escapeHtml(value) {
       return String(value).replace(/[&<>"']/g, (char) => ({
         '&': '&amp;',
@@ -1489,6 +1664,10 @@
     function buildProfileHref(uid) {
       const normalized = String(uid || '').trim();
       return normalized ? `./profile.html?uid=${encodeURIComponent(normalized)}` : './profile.html';
+    }
+
+    function getGuestPreviewPosts() {
+      return Array.isArray(window.noctiveGuestPreviewPosts) ? window.noctiveGuestPreviewPosts : [];
     }
 
     function getInitials(name) {
@@ -2049,11 +2228,53 @@
       seedPostComments();
       if (!nightCrewFriends.length) nightCrewFriends = loadNightCrewFriends();
       if (feedList) feedList.innerHTML = HOME_TEMPLATE.posts.map(buildPostMarkup).join('');
+      renderGuestPreviewPosts(feedList);
       if (feedList) feedList.querySelectorAll('.post').forEach(syncPostVoteUI);
       if (feedList) feedList.querySelectorAll('.post').forEach(syncPostCommentsUI);
       if (hotGamesList) hotGamesList.innerHTML = HOME_TEMPLATE.hotGames.map((game) => `<button class="hot-item" type="button">${escapeHtml(game)}</button>`).join('');
       if (drawerHotGamesList) drawerHotGamesList.innerHTML = HOME_TEMPLATE.hotGames.map((game) => `<button class="hot-item" type="button">${escapeHtml(game)}</button>`).join('');
       renderNightCrew();
+    }
+
+    function renderGuestPreviewPosts(feedList) {
+      const container = feedList || document.getElementById('feedList');
+      if (!container) return;
+      const previews = getGuestPreviewPosts();
+      previews.forEach((post) => {
+        if (container.querySelector(`[data-post-id="${post.id}"]`)) return;
+        container.insertAdjacentHTML('afterbegin', buildPostMarkup(post));
+      });
+      container.querySelectorAll('.post').forEach(syncPostVoteUI);
+      container.querySelectorAll('.post').forEach(syncPostCommentsUI);
+      applyGeneratedAvatars();
+    }
+
+    function addGuestPreviewPost(text) {
+      const trimmedText = String(text || '').trim();
+      if (!trimmedText) return null;
+
+      const sidebarAvatarBox = document.getElementById('sidebarAvatarBox');
+      const previewPost = {
+        id: `guest-preview-${Date.now()}`,
+        uid: 'guest-preview',
+        author: 'GUEST',
+        theme: sidebarAvatarBox?.dataset.theme || 'default',
+        avatar: sidebarAvatarBox?.dataset.avatar || '',
+        time: 'Preview only',
+        tag: '#Preview',
+        body: trimmedText,
+        votes: {
+          up: 0,
+          down: 0
+        },
+        comments: []
+      };
+
+      window.noctiveGuestPreviewPosts = [previewPost, ...getGuestPreviewPosts()].slice(0, 6);
+      postVoteState.set(previewPost.id, { up: 0, down: 0, userVote: null });
+      postCommentState.set(previewPost.id, []);
+      renderGuestPreviewPosts();
+      return previewPost;
     }
 
     function insertInitials(element, name, theme, existingDot) {
@@ -2170,7 +2391,8 @@
       syncPostCommentsUI,
       postVoteState,
       postCommentState,
-      applyGeneratedAvatars
+      applyGeneratedAvatars,
+      renderGuestPreviewPosts
     };
 
     function registerPostVote(postId, direction) {
@@ -2275,10 +2497,27 @@
 
       const postBtn = document.getElementById('postBtn');
       const feedList = document.getElementById('feedList');
+      const guestPromptCloseBtn = document.getElementById('guestPromptCloseBtn');
+      const guestPromptMaybeLaterBtn = document.getElementById('guestPromptMaybeLaterBtn');
+      guestPromptCloseBtn?.addEventListener('click', closeGuestPrompt);
+      guestPromptMaybeLaterBtn?.addEventListener('click', closeGuestPrompt);
+      document.getElementById('guestPromptModal')?.addEventListener('click', (event) => {
+        if (event.target?.id === 'guestPromptModal') {
+          closeGuestPrompt();
+        }
+      });
       if (postBtn && feedList && postText && countNum) {
         postBtn.addEventListener('click', async () => {
           const text = postText.value.trim();
           if (!text) return;
+
+          if (isGuestPreviewSession()) {
+            addGuestPreviewPost(text);
+            postText.value = '';
+            countNum.textContent = '0';
+            setComposerNotice('Preview only. Your post stays local until you sign up.');
+            return;
+          }
 
           if (typeof window.noctiveCreatePost !== 'function') {
             console.warn('Post creator is not ready yet.');
@@ -2386,6 +2625,13 @@
         }
       });
       document.addEventListener('click', async (e) => {
+        const profileLink = e.target.closest('a[href^="./profile.html"], a[href="./edit-profile.html"]');
+        if (profileLink && isGuestPreviewSession()) {
+          e.preventDefault();
+          openGuestPrompt('Guest preview keeps profile space locked. Sign up when you want your own page, edits, and posts to go live.');
+          return;
+        }
+
         const voteBtn = e.target.closest('[data-vote]');
         if (voteBtn) {
           const postEl = voteBtn.closest('.post');
@@ -2474,6 +2720,11 @@
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+          if (!document.getElementById('guestPromptModal')?.hasAttribute('hidden')) {
+            closeGuestPrompt();
+            return;
+          }
+
           if (friendModal && !friendModal.hasAttribute('hidden')) {
             closeFriendModal();
             return;
@@ -2549,11 +2800,38 @@
       }
 
       sessionStorage.removeItem(ACCESS_SESSION_KEY);
+      sessionStorage.removeItem(ACCESS_MODE_SESSION_KEY);
       window.location.replace('../index.html');
     });
 
     onAuthStateChanged(auth, (user) => {
       const sidebarAvatarBox = document.getElementById('sidebarAvatarBox');
+      const postText = document.getElementById('postText');
+      const postBtn = document.getElementById('postBtn');
+      if (isGuestPreviewSession()) {
+        setText('userDisplayName', 'GUEST');
+        setText('userDisplaySub', 'Guest preview');
+        window.noctiveViewerKey = 'guest';
+
+        if (sidebarAvatarBox) {
+          sidebarAvatarBox.dataset.name = 'GUEST';
+          sidebarAvatarBox.dataset.theme = 'default';
+          sidebarAvatarBox.dataset.avatar = '';
+        }
+
+        if (postText) {
+          postText.placeholder = 'Try a post preview. It will look real here, but it will not publish.';
+        }
+        if (postBtn) {
+          postBtn.textContent = 'Preview Post';
+        }
+        setComposerNotice('Guest preview is active. Posts stay local, and profile pages stay locked.');
+        nightCrewFriends = loadNightCrewFriends();
+        renderNightCrew();
+        applyGeneratedAvatars();
+        return;
+      }
+
       if (user) {
         const emailBase = user.email?.split('@')[0] || 'user';
         let displayName = user.displayName || emailBase || 'User';
@@ -2584,6 +2862,12 @@
           sidebarAvatarBox.dataset.theme = savedTheme;
           sidebarAvatarBox.dataset.avatar = savedAvatar;
         }
+        if (postText) {
+          postText.placeholder = 'Say something, keep it chill...';
+        }
+        if (postBtn) {
+          postBtn.textContent = 'Post';
+        }
       } else {
         setText('userDisplayName', 'Noctive');
         setText('userDisplaySub', 'Alive after dark');
@@ -2593,6 +2877,13 @@
           sidebarAvatarBox.dataset.theme = 'default';
           sidebarAvatarBox.dataset.avatar = '';
         }
+        if (postText) {
+          postText.placeholder = 'Say something, keep it chill...';
+        }
+        if (postBtn) {
+          postBtn.textContent = 'Post';
+        }
+        setComposerNotice('');
       }
       nightCrewFriends = loadNightCrewFriends();
       renderNightCrew();

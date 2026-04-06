@@ -4,7 +4,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDocs,
   increment,
   onSnapshot,
   orderBy,
@@ -26,6 +25,8 @@ let currentViewerIsAdmin = false;
 const PUBLIC_PROFILE_DIRECTORY_KEY = "noctive_public_profile_directory";
 const POST_VOTE_STORAGE_PREFIX = "noctive_post_votes_";
 const BIO_MAX_LENGTH = 180;
+const ACCESS_MODE_SESSION_KEY = "noctive_access_mode";
+const GUEST_PREVIEW_MODE = "guest";
 
 const ADMIN_CONFIG = {
   uids: [
@@ -39,6 +40,15 @@ const ADMIN_CONFIG = {
     "venus"
   ]
 };
+
+function isGuestPreviewSession() {
+  try {
+    return window.sessionStorage.getItem(ACCESS_MODE_SESSION_KEY) === GUEST_PREVIEW_MODE;
+  } catch (error) {
+    console.warn("Could not read guest preview session:", error);
+    return false;
+  }
+}
 
 function normalizeAdminValue(value) {
   return String(value || "").trim().toLowerCase();
@@ -442,6 +452,7 @@ function renderPosts(snapshot) {
 
   if (snapshot.empty) {
     container.innerHTML = "<p>No posts yet.</p>";
+    window.noctiveFeedBridge?.renderGuestPreviewPosts?.(container);
     return;
   }
 
@@ -449,6 +460,7 @@ function renderPosts(snapshot) {
     container.appendChild(buildPostCard(doc));
   });
 
+  window.noctiveFeedBridge?.renderGuestPreviewPosts?.(container);
   window.noctiveFeedBridge?.applyGeneratedAvatars?.();
 }
 
@@ -461,7 +473,7 @@ function renderPostsError(error) {
   container.innerHTML = "<p>Could not load posts.</p>";
 }
 
-function subscribeToPosts(postsSource) {
+function subscribeToPosts(postsSource, fallbackSource = null) {
   if (stopPostsSubscription) {
     stopPostsSubscription();
   }
@@ -472,12 +484,18 @@ function subscribeToPosts(postsSource) {
       renderPosts(snapshot);
     },
     (error) => {
+      if (fallbackSource && fallbackSource !== postsSource) {
+        console.warn("Falling back to alternate posts source:", error);
+        subscribeToPosts(fallbackSource, null);
+        return;
+      }
+
       renderPostsError(error);
     }
   );
 }
 
-async function loadPosts() {
+function loadPosts() {
   const container = getFeedContainer();
 
   if (!container) return;
@@ -486,21 +504,8 @@ async function loadPosts() {
   container.innerHTML = "<p>Loading posts...</p>";
 
   const postsCollection = collection(db, "Posts");
-
-  try {
-    const orderedPostsQuery = query(postsCollection, orderBy("createdAt", "desc"));
-    await getDocs(orderedPostsQuery);
-    subscribeToPosts(orderedPostsQuery);
-  } catch (orderError) {
-    console.warn("Falling back to unordered posts:", orderError);
-
-    try {
-      await getDocs(postsCollection);
-      subscribeToPosts(postsCollection);
-    } catch (error) {
-      renderPostsError(error);
-    }
-  }
+  const orderedPostsQuery = query(postsCollection, orderBy("createdAt", "desc"));
+  subscribeToPosts(orderedPostsQuery, postsCollection);
 }
 
 async function createPost(text) {
@@ -512,8 +517,8 @@ async function createPost(text) {
 
   const uid = window.noctiveViewerKey;
 
-  if (!uid || uid === "guest") {
-    throw new Error("Sign in before posting.");
+  if (isGuestPreviewSession() || !uid || uid === "guest") {
+    throw new Error("Guest preview posts do not publish. Sign up to post for real.");
   }
 
   const displayName =
@@ -538,7 +543,7 @@ window.noctiveCreatePost = createPost;
 async function voteOnPost(postId, direction) {
   const normalizedDirection = direction === "down" ? "down" : "up";
 
-  if (!currentViewer?.uid) {
+  if (isGuestPreviewSession() || !currentViewer?.uid) {
     throw new Error("Sign in before voting.");
   }
 
@@ -585,6 +590,16 @@ async function voteOnPost(postId, direction) {
 window.noctiveVotePost = voteOnPost;
 
 onAuthStateChanged(getAuth(), (user) => {
+  if (isGuestPreviewSession()) {
+    currentViewer = null;
+    currentViewerIsAdmin = false;
+
+    if (latestSnapshot) {
+      renderPosts(latestSnapshot);
+    }
+    return;
+  }
+
   currentViewer = user;
   currentViewerIsAdmin = isAdminIdentity(getViewerAdminIdentity(user));
 

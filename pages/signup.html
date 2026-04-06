@@ -241,6 +241,8 @@
 
     const ACCESS_SESSION_KEY = "noctive_site_access";
     const GOOGLE_SIGNUP_PENDING_KEY = "noctive_google_signup_pending";
+    const ACCESS_MODE_SESSION_KEY = "noctive_access_mode";
+    const MEMBER_ACCESS_MODE = "member";
     const OWNER_UIDS = ["TljwjuBuKvd6VG9e0Mz81y7ZRgi1"];
     const RESERVED_USERNAMES = [
       "noctive",
@@ -544,6 +546,7 @@
         await reserveUsername(result.user, username, email, "password");
         saveLocalProfile(result.user, username);
         sessionStorage.setItem(ACCESS_SESSION_KEY, "granted");
+        sessionStorage.setItem(ACCESS_MODE_SESSION_KEY, MEMBER_ACCESS_MODE);
         setStatus("Account created. Entering Noctive...", "good");
         window.setTimeout(() => {
           window.location.replace("./home.html");
