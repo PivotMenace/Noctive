@@ -470,6 +470,9 @@
       min-width: 0;
       padding-top: 18px;
       flex: 1 1 320px;
+      display: grid;
+      align-content: start;
+      gap: 8px;
     }
 
     .display-row,
@@ -479,7 +482,7 @@
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 6px;
+      margin-bottom: 0;
     }
 
     .display-row h2 {
@@ -500,6 +503,11 @@
     .member-row {
       align-items: center;
       gap: 12px;
+    }
+
+    .sub-row {
+      font-size: 0.92rem;
+      line-height: 1.2;
     }
 
     .profile-title.is-admin {
@@ -527,7 +535,6 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 10px;
       padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid rgba(255, 215, 115, 0.18);
@@ -535,6 +542,9 @@
       color: #ffe5a3;
       font-size: 0.82rem;
       letter-spacing: 0.03em;
+      line-height: 1.35;
+      width: fit-content;
+      max-width: 100%;
     }
 
     .admin-notice::before {
@@ -547,6 +557,10 @@
     .profile-subline {
       color: var(--muted);
       overflow-wrap: anywhere;
+    }
+
+    .profile-subline {
+      margin-top: 2px;
     }
 
     #profileUsername + span {
@@ -973,6 +987,7 @@
   </style>
 </head>
 <body>
+  <script src="/js/page-loader.js"></script>
   <header class="topbar">
     <div class="topbar-inner">
       <a href="./home.html"><span class="brand-title">Noctive</span></a>
@@ -1053,6 +1068,12 @@
                   <h2 id="profileDisplayName">Guest</h2>
                 </div>
 
+                <div class="sub-row">
+                  <span id="profileUsername">@guest</span>
+                  <span>â€¢</span>
+                </div>
+
+
                 <div class="member-row">
                   <span class="profile-title" id="profileTitle">Noctive User</span>
                   <div class="status-control" id="statusControl">
@@ -1096,8 +1117,8 @@
                   </div>
                 </div>
 
-                <div class="sub-row">
-                  <span id="profileUsername">@guest</span>
+                <div class="sub-row" hidden>
+                  <span>@guest</span>
                   <span>•</span>
                 </div>
 
@@ -1205,7 +1226,7 @@
             </div>
 
             <aside class="sidebar">
-              <section class="section-card side-card" id="showcaseSection">
+              <section class="section-card side-card" id="showcaseSection" hidden>
                 <div class="section-head">
                   <div>
                     <div class="section-title">Profile Showcases</div>
@@ -1245,6 +1266,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { isAdminIdentity } from "../js/admin-config.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const ACCESS_MODE_SESSION_KEY = 'noctive_access_mode';
@@ -1255,7 +1277,6 @@
     const BIO_MAX_LENGTH = 180;
     const FOLLOWING_STORAGE_PREFIX = 'noctive_following_';
     const NOTIFICATION_STORAGE_PREFIX = 'noctive_notifications_';
-    const ADMIN_UIDS = ['TljwjuBuKvd6VG9e0Mz81y7ZRgi1', 'G6RyacKuSUTLXniBWRC1WsAm4Rq2'];
     const requestedProfileUid = new URLSearchParams(window.location.search).get('uid') || '';
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('../index.html');
@@ -1284,9 +1305,9 @@
       theme: 'default',
       avatar: '',
       bannerImage: '',
-      bannerTitle: 'Your Noctive profile starts here.',
+      bannerTitle: 'Guest is Alive After Dark',
       bannerText: '',
-      bannerTags: ['Alive After Dark', 'Profile Starter'],
+      bannerTags: ['Alive After Dark'],
       games: ['Pick 3 favorite games', 'Show your style', 'Build your corner'],
       stats: {
         posts: 0,
@@ -1500,6 +1521,11 @@
         ]
       }
     };
+
+    function getBannerHeadline(username, displayName = 'Guest') {
+      const safeDisplayName = String(displayName || '').trim() || 'Guest';
+      return `${safeDisplayName} is Alive After Dark`;
+    }
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -1743,6 +1769,7 @@
       const nextProfile = deepMerge(PROFILE_TEMPLATE, profile || {});
       const bio = String(nextProfile.bio || '').trim();
       const bannerText = String(nextProfile.bannerText || '').trim();
+      const currentObsession = String(nextProfile.currentObsession || '').trim();
       if (
         [
           'A late-night profile in progress. Shape the vibe, set the look, and make this space feel like yours.',
@@ -1754,7 +1781,12 @@
       ) {
         nextProfile.bio = '';
       }
-      if (nextProfile.bannerTitle === 'Noctive is alive after dark.') {
+      if (
+        nextProfile.bannerTitle === 'Noctive is alive after dark.'
+        || nextProfile.bannerTitle === 'Your Noctive profile starts here.'
+        || String(nextProfile.bannerTitle || '').includes('is on Noctive.')
+        || String(nextProfile.bannerTitle || '').includes('has not finished setting up their profile yet.')
+      ) {
         nextProfile.bannerTitle = '';
       }
       if (
@@ -1770,6 +1802,19 @@
       ) {
         nextProfile.bannerText = '';
       }
+      if (
+        [
+          PROFILE_TEMPLATE.currentObsession,
+          'No current obsession added yet',
+          'Add the game, fandom, or obsession currently running your nights.',
+          'Add what you are currently into.',
+          'Add your current game, fandom, or obsession.'
+        ].includes(currentObsession)
+      ) {
+        nextProfile.currentObsession = '';
+      }
+      nextProfile.bannerTags = (Array.isArray(nextProfile.bannerTags) ? nextProfile.bannerTags : [])
+        .filter((tag) => String(tag || '').trim().toLowerCase() !== 'profile starter');
       return nextProfile;
     }
 
@@ -1789,7 +1834,12 @@
       const emailBase = user.email?.split('@')[0] || 'guest';
       const displayName = user.displayName || emailBase;
       const safeName = displayName.trim() || 'Guest';
-      const isAdmin = ADMIN_UIDS.includes(String(user.uid || '').trim());
+      const isAdmin = isAdminIdentity({
+        uid: user.uid,
+        email: user.email,
+        username: emailBase,
+        displayName: safeName
+      });
 
       return deepMerge(PROFILE_TEMPLATE, {
         username: emailBase,
@@ -1797,9 +1847,9 @@
         title: isAdmin ? 'Admin' : 'Noctive Member',
         status: 'Online',
         bio: '',
-        bannerTitle: `${safeName} is alive after dark.`,
+        bannerTitle: getBannerHeadline(emailBase, safeName),
         bannerText: '',
-        bannerTags: ['Alive After Dark', 'Profile Starter'],
+        bannerTags: ['Alive After Dark'],
         games: ['Valorant', 'Minecraft', 'Roblox'],
         stats: {
           ...PROFILE_TEMPLATE.stats,
@@ -1902,7 +1952,7 @@
         title: 'Noctive User',
         status: 'Invisible',
         bio: 'This profile has not been fully set up yet, but the route is ready for it.',
-        bannerTitle: `${displayName} has not finished setting up their profile yet.`,
+        bannerTitle: getBannerHeadline(safeUid, displayName),
         bannerText: '',
         bannerTags: ['Profile Pending'],
         pinnedPost: {
@@ -2078,14 +2128,28 @@
       return !blockedValues.map((item) => String(item || '').trim()).includes(normalized);
     }
 
+    function hasShowcaseContent(profile) {
+      return isMeaningfulText(profile.featuredHub, [''])
+        || isMeaningfulText(profile.currentObsession, [
+          PROFILE_TEMPLATE.currentObsession,
+          'No current obsession added yet',
+          'Add the game, fandom, or obsession currently running your nights.',
+          'Add what you are currently into.',
+          'Add your current game, fandom, or obsession.',
+          'Add your current obsession to make the profile feel lived-in.'
+        ]);
+    }
+
     function hasVisibleProfileContent(profile, isOwnProfile) {
+      const showcases = hasShowcaseContent(profile);
+
       if (isOwnProfile) {
         return {
           about: true,
           games: true,
           pinned: true,
           activity: true,
-          showcases: true,
+          showcases,
           badges: true
         };
       }
@@ -2105,11 +2169,6 @@
         && profile.activity.length > 0
         && JSON.stringify(profile.activity) !== JSON.stringify(PROFILE_TEMPLATE.activity)
         && !(profile.activity.length === 1 && profile.activity[0] === 'No public activity available yet.');
-      const showcases = isMeaningfulText(profile.featuredHub, [''])
-        || isMeaningfulText(profile.currentObsession, [
-          PROFILE_TEMPLATE.currentObsession,
-          'No current obsession added yet'
-        ]);
       const badges = Array.isArray(profile.badges)
         && profile.badges.length > 0
         && JSON.stringify(profile.badges) !== JSON.stringify(PROFILE_TEMPLATE.badges);
@@ -2310,7 +2369,12 @@
       const { user, profile, isOwnProfile, uid } = view;
       const displayName = profile.displayName || user?.displayName || profile.username || 'Guest';
       const username = profile.username || user?.email?.split('@')[0] || uid || 'guest';
-      const isAdmin = ADMIN_UIDS.includes(String(user?.uid || uid || '').trim());
+      const isAdmin = isAdminIdentity({
+        uid: user?.uid || uid,
+        email: user?.email || profile.email,
+        username,
+        displayName
+      });
       const normalizedProfileUid = normalizeUid(uid);
       const followerCount = getFollowerCount(normalizedProfileUid);
       const followingCount = isOwnProfile
@@ -2325,11 +2389,12 @@
         bannerFill.style.backgroundPosition = profile.bannerImage ? 'center' : '';
       }
 
-      setText('bannerTitle', profile.bannerTitle || displayName);
+      setText('bannerTitle', getBannerHeadline(username, displayName));
       setText('bannerText', profile.bannerText || '');
       setText('profileDisplayName', displayName);
-      setText('profileTitle', isAdmin ? 'Admin' : (profile.title || (isOwnProfile && user ? 'Noctive Member' : 'Noctive User')));
+      setText('profileTitle', isAdmin ? 'Official Account' : (profile.title || (isOwnProfile && user ? 'Noctive Member' : 'Noctive User')));
       document.getElementById('profileTitle')?.classList.toggle('is-admin', isAdmin);
+      setText('profileAdminNotice', `${displayName} is an official Noctive account for support and moderation.`);
       document.getElementById('profileAdminNotice')?.toggleAttribute('hidden', !isAdmin);
       setText('profileUsername', `@${username}`);
       renderStatus(profile.status || (user ? 'Online' : 'Invisible'));
@@ -2343,11 +2408,12 @@
       setText('statHubs', profile.stats?.hubs ?? 0);
       setText('statClips', profile.stats?.clips ?? 0);
 
-
-      setText('currentObsession', profile.currentObsession || 'Add your current obsession to make the profile feel lived-in.');
+      const showcasesVisible = hasShowcaseContent(profile);
+      setText('featuredHub', showcasesVisible ? (profile.featuredHub || '') : '');
+      setText('currentObsession', showcasesVisible ? (profile.currentObsession || '') : '');
 
       const bannerTags = isAdmin
-        ? ['Official Account', ...(profile.bannerTags || ['Alive After Dark'])]
+        ? ['Official Account', ...(profile.bannerTags || ['Alive After Dark']).filter((tag) => String(tag || '').trim().toLowerCase() !== 'official account')]
         : (profile.bannerTags || ['Alive After Dark']);
       renderTagList('bannerTags', bannerTags, 'banner-tag');
       renderTagList('gamesGrid', profile.games?.length ? profile.games : ['No favorite games yet'], 'game-chip');

@@ -15,6 +15,7 @@ import {
   getAuth,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { isAdminIdentity } from "./admin-config.js";
 
 console.log("main.js loaded");
 
@@ -28,19 +29,6 @@ const BIO_MAX_LENGTH = 180;
 const ACCESS_MODE_SESSION_KEY = "noctive_access_mode";
 const GUEST_PREVIEW_MODE = "guest";
 
-const ADMIN_CONFIG = {
-  uids: [
-    "TljwjuBuKvd6VG9e0Mz81y7ZRgi1",
-    "G6RyacKuSUTLXniBWRC1WsAm4Rq2"
-  ],
-  emails: [
-    "noctivehq@gmail.com"
-  ],
-  usernames: [
-    "venus"
-  ]
-};
-
 function isGuestPreviewSession() {
   try {
     return window.sessionStorage.getItem(ACCESS_MODE_SESSION_KEY) === GUEST_PREVIEW_MODE;
@@ -48,28 +36,6 @@ function isGuestPreviewSession() {
     console.warn("Could not read guest preview session:", error);
     return false;
   }
-}
-
-function normalizeAdminValue(value) {
-  return String(value || "").trim().toLowerCase();
-}
-
-function isAdminIdentity(identity = {}) {
-  const uid = String(identity.uid || "").trim();
-  const email = normalizeAdminValue(identity.email);
-  const username = normalizeAdminValue(identity.username);
-  const displayName = normalizeAdminValue(identity.displayName);
-
-  if (uid && ADMIN_CONFIG.uids.includes(uid)) {
-    return true;
-  }
-
-  if (email && ADMIN_CONFIG.emails.map(normalizeAdminValue).includes(email)) {
-    return true;
-  }
-
-  const adminUsernames = ADMIN_CONFIG.usernames.map(normalizeAdminValue);
-  return adminUsernames.includes(username) || adminUsernames.includes(displayName);
 }
 
 function getSavedProfile(uid) {
@@ -138,6 +104,11 @@ function stripLegacyBio(value) {
   return bio;
 }
 
+function getBannerHeadline(username, displayName = "Noctive User") {
+  const safeDisplayName = String(displayName || "").trim() || "Noctive User";
+  return `${safeDisplayName} is Alive After Dark`;
+}
+
 function syncPublicProfileFromPost(uid, profile = {}) {
   const normalizedUid = normalizeUid(uid);
   if (!normalizedUid) return;
@@ -166,7 +137,7 @@ function syncPublicProfileFromPost(uid, profile = {}) {
       bio: stripLegacyBio(existing.bio || profile.bio || ""),
       theme: existing.theme || profile.theme || "default",
       avatar: existing.avatar ?? profile.avatar ?? "",
-      bannerTitle: existing.bannerTitle || profile.bannerTitle || `${displayName} is on Noctive.`,
+      bannerTitle: existing.bannerTitle || profile.bannerTitle || getBannerHeadline(username, displayName),
       bannerText:
         existing.bannerText ||
         profile.bannerText ||
@@ -355,9 +326,7 @@ function buildPostCard(doc) {
     bio: clampBio(postIsAdmin
       ? `${resolvedProfile.displayName} is an official Noctive account.`
       : `${resolvedProfile.displayName} is active on Noctive.`),
-    bannerTitle: postIsAdmin
-      ? `${resolvedProfile.displayName} is part of the official Noctive team.`
-      : `${resolvedProfile.displayName} is on Noctive.`,
+    bannerTitle: getBannerHeadline(resolvedProfile.username, resolvedProfile.displayName),
     bannerText: postIsAdmin
       ? `${resolvedProfile.displayName} posts official updates and community notes on Noctive.`
       : "",

@@ -394,6 +394,7 @@
   </style>
 </head>
 <body>
+  <script src="/js/page-loader.js"></script>
   <header class="topbar">
     <div class="topbar-inner">
       <a href="./home.html"><span class="brand-title">Noctive</span></a>
@@ -522,6 +523,7 @@
     import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+    import { isAdminIdentity } from "../js/admin-config.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
@@ -529,7 +531,6 @@
     const GIF_PROFILE_COUPON_ID = 'upgrade-gif-profile';
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
     const BIO_MAX_LENGTH = 180;
-    const ADMIN_UIDS = ['TljwjuBuKvd6VG9e0Mz81y7ZRgi1', 'G6RyacKuSUTLXniBWRC1WsAm4Rq2'];
     if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
       window.location.replace('../index.html');
     }
@@ -555,7 +556,7 @@
       avatarStoragePath: '',
       bannerImage: '',
       bannerStoragePath: '',
-      bannerTitle: 'Your Noctive profile starts here.',
+      bannerTitle: 'Guest is Alive After Dark',
       bannerText: '',
       bannerTags: ['Profile Preview', 'Default Theme'],
       games: [],
@@ -639,7 +640,12 @@
     function stripLegacyProfileCopy(profile) {
       const nextProfile = deepMerge(PROFILE_TEMPLATE, profile || {});
       const bio = String(nextProfile.bio || '').trim();
-      if (nextProfile.bannerTitle === 'Noctive is alive after dark.') {
+      if (
+        nextProfile.bannerTitle === 'Noctive is alive after dark.'
+        || nextProfile.bannerTitle === 'Your Noctive profile starts here.'
+        || String(nextProfile.bannerTitle || '').includes('is on Noctive.')
+        || String(nextProfile.bannerTitle || '').includes('has not finished setting up their profile yet.')
+      ) {
         nextProfile.bannerTitle = '';
       }
       if (
@@ -697,6 +703,11 @@
       return 'Offline';
     }
 
+    function getBannerHeadline(username, displayName = 'Guest') {
+      const safeDisplayName = String(displayName || '').trim() || 'Guest';
+      return `${safeDisplayName} is Alive After Dark`;
+    }
+
     function createStarterProfile(user) {
       if (!user) return JSON.parse(JSON.stringify(PROFILE_TEMPLATE));
       const emailBase = user.email?.split('@')[0] || 'guest';
@@ -708,9 +719,9 @@
         title: 'Noctive Member',
         status: 'Online',
         bio: '',
-        bannerTitle: `${safeName} is alive after dark.`,
+        bannerTitle: getBannerHeadline(emailBase, safeName),
         bannerText: '',
-        bannerTags: ['Alive After Dark', 'Profile Starter'],
+        bannerTags: ['Alive After Dark'],
         pinnedPost: {
           ...PROFILE_TEMPLATE.pinnedPost,
           text: `Hey, I'm ${safeName}. Still setting this up, but this is where my late-night internet identity goes.`
@@ -819,7 +830,12 @@
     }
 
     function isAdminUser(user = currentAuthUser) {
-      return ADMIN_UIDS.includes(String(user?.uid || '').trim());
+      return isAdminIdentity({
+        uid: user?.uid,
+        email: user?.email,
+        username: user?.email?.split('@')[0],
+        displayName: user?.displayName
+      });
     }
 
     function canUseGifProfilePictures(user = currentAuthUser) {
@@ -1017,7 +1033,7 @@
       previewBanner.style.backgroundImage = bannerImage ? `url("${bannerImage.replace(/"/g, '&quot;')}")` : '';
       previewBanner.style.backgroundSize = bannerImage ? 'cover' : '';
       previewBanner.style.backgroundPosition = bannerImage ? 'center' : '';
-      document.getElementById('previewBannerTitle').textContent = profile.bannerTitle || PROFILE_TEMPLATE.bannerTitle;
+      document.getElementById('previewBannerTitle').textContent = getBannerHeadline(username, displayName);
       document.getElementById('previewBannerText').textContent = previewBannerText;
       document.getElementById('previewName').textContent = displayName;
       document.getElementById('previewTitle').textContent = title;
