@@ -256,10 +256,10 @@
       inset: 0;
       z-index: 2;
       display: flex;
-      align-items: flex-start;
-      justify-content: flex-end;
-      padding: 14px;
-      background: rgba(10,10,14,0.10);
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      background: rgba(10,10,14,0.18);
       opacity: 0;
       transition: opacity 0.18s ease;
       pointer-events: none;
@@ -273,13 +273,20 @@
     }
     .media-btn {
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(12,13,20,0.82);
+      border: 2px solid rgba(255,255,255,0.78);
+      background: rgba(12,13,20,0.88);
       color: #fff;
-      padding: 8px 12px;
+      padding: 10px 16px;
       font-family: var(--font-head);
-      font-size: 0.84rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.05;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.28);
       cursor: pointer;
+    }
+    .preview-avatar-shell .media-hover {
+      border-radius: 50%;
     }
     .preview-copy {
       position: absolute;
@@ -1083,7 +1090,9 @@
 
       if (applyBtn) {
         applyBtn.disabled = pendingMediaUploadState === 'error' || (!hasValue && pendingMediaUploadState !== 'uploading');
-        applyBtn.textContent = pendingMediaUploadState === 'uploading' ? 'Applying After Upload...' : 'Apply Media';
+        applyBtn.textContent = pendingMediaUploadState === 'uploading'
+          ? 'Uploading...'
+          : (hasValue ? 'Done' : 'Apply Media');
       }
 
       if (removeBtn) {
@@ -1132,6 +1141,21 @@
       document.getElementById('mediaModal')?.setAttribute('hidden', 'hidden');
     }
 
+    async function persistMediaFields(patch, successMessage = 'Profile media updated.') {
+      if (!patch || typeof patch !== 'object') return;
+
+      const nextProfile = deepMerge(getStoredProfile(currentAuthUser), patch);
+      localStorage.setItem(getProfileStorageKey(currentAuthUser), JSON.stringify(nextProfile));
+
+      if (currentAuthUser?.uid) {
+        syncPublicProfile(currentAuthUser.uid, nextProfile, currentAuthUser);
+      }
+
+      await syncProfileDocument(nextProfile);
+      updatePreview(readFormProfile());
+      setSaveMessage(successMessage, 'good saved-pop');
+    }
+
     function applyMediaValue(value, options = {}) {
       const fieldId = activeMediaTarget === 'bannerImage' ? 'bannerImage' : 'avatar';
       const { previewValue = value, persist = true } = options;
@@ -1144,9 +1168,9 @@
       if (persist) {
         input.value = value || '';
         profileMediaStoragePaths[fieldId] = value ? pendingMediaStoragePath : '';
+        markDirty();
       }
       setPreviewMediaOverride(fieldId, previewValue || '');
-      markDirty();
       setSaveMessage(persist ? 'Media applied to the preview. Save Profile to keep it.' : 'Media preview updated. Upload is still finishing in the background.', 'good');
       updatePreview(readFormProfile());
     }
@@ -1165,7 +1189,17 @@
       applyMediaValue('');
       setMediaPreview('');
       updateMediaActionState();
-      closeMediaModal();
+      const patch = activeMediaTarget === 'bannerImage'
+        ? { bannerImage: '', bannerStoragePath: '' }
+        : { avatar: '', avatarStoragePath: '' };
+      Promise.resolve(persistMediaFields(patch, activeMediaTarget === 'bannerImage' ? 'Banner removed and saved.' : 'Profile picture removed and saved.'))
+        .catch((error) => {
+          console.error('Could not save removed media:', error);
+          setSaveMessage('Could not save that media change. Try again.', 'bad');
+        })
+        .finally(() => {
+          closeMediaModal();
+        });
     });
     document.getElementById('mediaFile')?.addEventListener('change', async (event) => {
       const file = event.target.files?.[0];
@@ -1199,7 +1233,18 @@
         pendingMediaUploadState = 'ready';
         setMediaPreview(uploadedMedia.url);
         applyMediaValue(uploadedMedia.url, { previewValue: uploadedMedia.url, persist: true });
-        setSaveMessage(currentAuthUser?.uid ? 'Upload finished and media is applied to the preview. Save Profile to keep it.' : 'Image loaded and applied to the preview. Save Profile to keep it.', 'good');
+        if (uploadTarget === 'bannerImage') {
+          await persistMediaFields({
+            bannerImage: uploadedMedia.url,
+            bannerStoragePath: uploadedMedia.storagePath
+          }, currentAuthUser?.uid ? 'Banner uploaded and published.' : 'Banner updated for this browser preview.');
+        } else {
+          await persistMediaFields({
+            avatar: uploadedMedia.url,
+            avatarStoragePath: uploadedMedia.storagePath
+          }, currentAuthUser?.uid ? 'Profile picture uploaded and published.' : 'Profile picture updated for this browser preview.');
+        }
+        closeMediaModal();
       } catch (error) {
         if (requestId !== pendingMediaRequestId) {
           return;
@@ -1217,7 +1262,7 @@
     });
     document.getElementById('applyMediaBtn')?.addEventListener('click', async () => {
       if (pendingMediaUploadState === 'uploading') {
-        setSaveMessage('Upload is still finishing. Applying as soon as it completes...', 'remind');
+        setSaveMessage('Upload is still finishing. Hang tight for one sec.', 'remind');
         try {
           await pendingMediaUploadPromise;
         } catch (error) {
@@ -1229,12 +1274,7 @@
         setSaveMessage('Preview is updated, but the upload has not finished yet. Give it another moment before saving.', 'remind');
         return;
       }
-      applyMediaValue(value, { previewValue: pendingMediaPreviewValue || value, persist: true });
-      const avatarValue = document.getElementById('avatar')?.value.trim() || '';
-      const bannerValue = document.getElementById('bannerImage')?.value.trim() || '';
-      if ((activeMediaTarget === 'avatar' && avatarValue === value) || (activeMediaTarget === 'bannerImage' && bannerValue === value) || !value) {
-        closeMediaModal();
-      }
+      closeMediaModal();
     });
     document.getElementById('mediaModal')?.addEventListener('click', (event) => {
       if (event.target.id === 'mediaModal') closeMediaModal();

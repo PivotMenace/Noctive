@@ -132,17 +132,17 @@ function syncPublicProfileFromPost(uid, profile = {}) {
       profileUid: normalizedUid,
       username,
       displayName,
-      title: existing.title || profile.title || "Noctive User",
-      status: existing.status || profile.status || "Online",
-      bio: stripLegacyBio(existing.bio || profile.bio || ""),
-      theme: existing.theme || profile.theme || "default",
-      avatar: existing.avatar ?? profile.avatar ?? "",
-      bannerTitle: existing.bannerTitle || profile.bannerTitle || getBannerHeadline(username, displayName),
+      title: profile.title || existing.title || "Noctive User",
+      status: profile.status || existing.status || "Online",
+      bio: stripLegacyBio(profile.bio || existing.bio || ""),
+      theme: profile.theme || existing.theme || "default",
+      avatar: profile.avatar ?? existing.avatar ?? "",
+      bannerTitle: profile.bannerTitle || existing.bannerTitle || getBannerHeadline(username, displayName),
       bannerText:
-        existing.bannerText ||
         profile.bannerText ||
+        existing.bannerText ||
         "",
-      bannerTags: existing.bannerTags || profile.bannerTags || ["Noctive"],
+      bannerTags: profile.bannerTags || existing.bannerTags || ["Noctive"],
       stats: existing.stats || {
         posts: 0,
         followers: 0,

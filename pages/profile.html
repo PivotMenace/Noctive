@@ -1731,6 +1731,27 @@
       return getFollowingSet(uid).size;
     }
 
+    function hasStoredFollowingSet(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return false;
+
+      try {
+        return localStorage.getItem(buildFollowingStorageKey(normalizedUid)) !== null;
+      } catch (error) {
+        console.error('Could not check following storage:', error);
+        return false;
+      }
+    }
+
+    function getResolvedFollowingCount(uid, fallbackCount = 0) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return Number(fallbackCount ?? 0);
+      if (hasStoredFollowingSet(normalizedUid)) {
+        return getFollowingCount(normalizedUid);
+      }
+      return Number(fallbackCount ?? 0);
+    }
+
     function syncFollowButton(view) {
       const followBtn = document.getElementById('profileFollowBtn');
       if (!followBtn) return;
@@ -1901,6 +1922,12 @@
       const directory = getPublicProfileDirectory();
       directory[normalizedUid] = normalizeProfileBadges(stripLegacyProfileCopy(deepMerge(PROFILE_TEMPLATE, {
         ...profile,
+        stats: {
+          ...PROFILE_TEMPLATE.stats,
+          ...(profile.stats || {}),
+          followers: getFollowerCount(normalizedUid),
+          following: getResolvedFollowingCount(normalizedUid, profile.stats?.following ?? PROFILE_TEMPLATE.stats.following)
+        },
         username: profile.username || user?.email?.split('@')[0] || normalizedUid,
         displayName: profile.displayName || user?.displayName || normalizedUid,
         profileUid: normalizedUid
@@ -2377,9 +2404,10 @@
       });
       const normalizedProfileUid = normalizeUid(uid);
       const followerCount = getFollowerCount(normalizedProfileUid);
-      const followingCount = isOwnProfile
-        ? getFollowingCount(normalizedProfileUid)
-        : Number(profile.stats?.following ?? 0);
+      const followingCount = getResolvedFollowingCount(
+        normalizedProfileUid,
+        profile.stats?.following ?? 0
+      );
 
       const bannerFill = document.getElementById('bannerFill');
       if (bannerFill) {
