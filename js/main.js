@@ -1,4 +1,4 @@
-import { db } from "./firebase.js";
+import { app, db } from "./firebase.js";
 import {
   addDoc,
   collection,
@@ -470,6 +470,17 @@ function renderPostsError(error) {
   if (!container) return;
 
   console.error("Error loading posts:", error);
+  const message = String(error?.message || "");
+  const isPermissionError =
+    error?.code === "permission-denied"
+    || message.toLowerCase().includes("permission")
+    || message.toLowerCase().includes("insufficient permissions");
+
+  if (isPermissionError) {
+    container.innerHTML = "<p>Posts are blocked by Firestore permissions right now.</p>";
+    return;
+  }
+
   container.innerHTML = "<p>Could not load posts.</p>";
 }
 
@@ -589,7 +600,7 @@ async function voteOnPost(postId, direction) {
 
 window.noctiveVotePost = voteOnPost;
 
-onAuthStateChanged(getAuth(), (user) => {
+onAuthStateChanged(getAuth(app), (user) => {
   if (isGuestPreviewSession()) {
     currentViewer = null;
     currentViewerIsAdmin = false;
