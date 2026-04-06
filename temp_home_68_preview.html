@@ -1046,7 +1046,7 @@
     }
 
     .admin-badge::before{
-      content:"◆";
+      content:"?";
       font-size:0.64rem;
       color:#ffd782;
     }
@@ -1377,7 +1377,6 @@
   </style>
 </head>
 <body>
-  <script src="/js/page-loader.js"></script>
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand-link" href="./home.html">
@@ -1414,17 +1413,17 @@
         </div>
 
         <div id="userMenuDropdown" class="dropdown" hidden>
-          <a class="link-pill" href="./profile.html">View profile <span>→</span></a>
-          <a class="link-pill" href="./explore.html">Explore hubs <span>→</span></a>
+          <a class="link-pill" href="./profile.html">View profile <span>?</span></a>
+          <a class="link-pill" href="./explore.html">Explore hubs <span>?</span></a>
         </div>
       </section>
 
       <section class="card quick-links">
         <div class="rail-title">Quick Links</div>
         <div class="link-list">
-          <a class="link-pill" href="./explore.html">Explore hubs <span>→</span></a>
-          <a class="link-pill" href="./profile.html">Edit profile <span>→</span></a>
-          <a class="link-pill" href="./faq.html">Rules and FAQ <span>→</span></a>
+          <a class="link-pill" href="./explore.html">Explore hubs <span>?</span></a>
+          <a class="link-pill" href="./profile.html">Edit profile <span>?</span></a>
+          <a class="link-pill" href="./faq.html">Rules and FAQ <span>?</span></a>
         </div>
       </section>
       <section class="card quick-links">
@@ -1490,13 +1489,13 @@
     </aside>
   </div>
 
-  <button class="night-fab" id="nightFab" type="button" title="Night Crew">🌙</button>
+  <button class="night-fab" id="nightFab" type="button" title="Night Crew">??</button>
 
   <div class="drawer" id="rightDrawer" role="dialog" aria-modal="true" aria-label="Night Crew Drawer" hidden>
     <div class="drawer-panel">
       <div class="drawer-head">
         <div class="drawer-title">Night Crew</div>
-        <button class="xbtn" type="button" id="closeDrawerBtn">✕</button>
+        <button class="xbtn" type="button" id="closeDrawerBtn">?</button>
       </div>
 
       <section class="card rail-card" style="box-shadow:none;">
@@ -1523,7 +1522,7 @@
     <div class="modal">
       <div class="modal-head">
         <div class="modal-title">Add To Night Crew</div>
-        <button class="xbtn" type="button" id="friendModalCloseBtn">✕</button>
+        <button class="xbtn" type="button" id="friendModalCloseBtn">?</button>
       </div>
 
       <div class="modal-body">
@@ -1572,7 +1571,7 @@
     <div class="modal">
       <div class="modal-head">
         <div class="modal-title" id="authTitle">Create account</div>
-        <button class="xbtn" type="button" id="authCloseBtn">✕</button>
+        <button class="xbtn" type="button" id="authCloseBtn">?</button>
       </div>
 
       <div class="modal-body">
@@ -1583,7 +1582,7 @@
 
         <div class="field">
           <label for="authPass">Password</label>
-          <input id="authPass" type="password" placeholder="••••••••" autocomplete="current-password" />
+          <input id="authPass" type="password" placeholder="��������" autocomplete="current-password" />
         </div>
 
         <div class="modal-actions">
@@ -1606,7 +1605,7 @@
         <a href="./faq.html">FAQ</a>
         <a href="./profile.html">Profile</a>
       </nav>
-      <div>© 2026 love venus by venus</div>
+      <div>� 2026 love venus by venus</div>
     </div>
   </footer>
 
@@ -1622,7 +1621,7 @@
         </div>
         <div class="messenger-actions">
           <button class="messenger-mini-btn" type="button" id="messengerMinimizeBtn" aria-label="Minimize chat">-</button>
-          <button class="messenger-mini-btn" type="button" id="messengerCloseBtn" aria-label="Close chat">✕</button>
+          <button class="messenger-mini-btn" type="button" id="messengerCloseBtn" aria-label="Close chat">?</button>
         </div>
       </div>
       <div class="messenger-body" id="messengerBody"></div>
@@ -1636,7 +1635,7 @@
     </div>
 
     <div class="messenger-tray" id="messengerTray">
-      <button class="messenger-launcher" type="button" id="messengerLauncher" title="Quick Messenger">☾</button>
+      <button class="messenger-launcher" type="button" id="messengerLauncher" title="Quick Messenger">?</button>
       <div id="messengerTrayList" style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;"></div>
     </div>
   </div>
@@ -1645,7 +1644,7 @@
     <div class="modal guest-prompt">
       <div class="guest-prompt-head">
         <h2 class="guest-prompt-title" id="guestPromptTitle">DUDE NO!</h2>
-        <button class="xbtn guest-prompt-close" type="button" id="guestPromptCloseBtn" aria-label="Close guest preview prompt">✕</button>
+        <button class="xbtn guest-prompt-close" type="button" id="guestPromptCloseBtn" aria-label="Close guest preview prompt">?</button>
       </div>
 
       <div class="guest-prompt-body">
@@ -2152,9 +2151,9 @@
           </div>
           <div class="post-body">${escapeHtml(post.body)}</div>
           <div class="post-actions">
-            <button class="action vote-action" type="button" data-vote="up" aria-label="Upvote post">▴</button>
+            <button class="action vote-action" type="button" data-vote="up" aria-label="Upvote post">?</button>
             <span class="vote-count" data-vote-count="up">${upVotes}</span>
-            <button class="action vote-action" type="button" data-vote="down" aria-label="Downvote post">▾</button>
+            <button class="action vote-action" type="button" data-vote="down" aria-label="Downvote post">?</button>
             <span class="vote-count" data-vote-count="down">${downVotes}</span>
             <button class="action" type="button" data-reply-toggle="true" aria-expanded="false">Reply</button>
             <span class="vote-count" data-comment-count="true">${commentsCount}</span>
@@ -2278,7 +2277,7 @@
       avatar.dataset.avatar = friend.avatar || '';
       body.innerHTML = messages.map((message) => `
         <div class="messenger-msg${message.author === getViewerQuickName() ? ' self' : ''}">
-          <div class="messenger-msg-meta">${escapeHtml(message.author)} • ${escapeHtml(message.time)}</div>
+          <div class="messenger-msg-meta">${escapeHtml(message.author)} � ${escapeHtml(message.time)}</div>
           <div class="messenger-msg-copy">${escapeHtml(message.body)}</div>
         </div>
       `).join('');
