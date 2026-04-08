@@ -63,9 +63,15 @@
       max-width:1200px;
       margin:0 auto;
       padding:14px 18px;
-      display:flex;
+      display:grid;
+      grid-template-columns:auto minmax(0,1fr) minmax(240px,320px) auto;
       align-items:center;
-      gap:14px;
+      gap:12px;
+    }
+
+    .brand-link{
+      grid-column:1;
+      flex:0 0 auto;
     }
 
     .brand-title{
@@ -98,12 +104,24 @@
     }
 
     .topnav{
+      grid-column:2;
       display:flex;
+      align-items:center;
+      justify-content:center;
       gap:8px;
       padding:6px;
       border-radius:999px;
       background:rgba(255,255,255,0.06);
       border:1px solid var(--border);
+      width:100%;
+      min-width:0;
+      overflow-x:auto;
+      overflow-y:hidden;
+      scrollbar-width:none;
+    }
+
+    .topnav::-webkit-scrollbar{
+      display:none;
     }
 
     .topnav a,
@@ -127,6 +145,8 @@
       font-size:0.92rem;
       padding:10px 12px;
       border-radius:999px;
+      white-space:nowrap;
+      flex:0 0 auto;
     }
 
     .topnav a:hover,
@@ -137,10 +157,47 @@
     }
 
     .topbar-right{
-      margin-left:auto;
-      display:flex;
+      grid-column:4;
+      display:grid;
+      grid-template-columns:auto;
       align-items:center;
-      gap:10px;
+      gap:8px;
+      justify-items:end;
+    }
+
+    .topbar-search{
+      grid-column:3;
+      min-width:0;
+      width:100%;
+    }
+
+    .user-search-shell{
+      position:relative;
+      width:100%;
+      min-width:0;
+    }
+
+    .user-search-input{
+      width:100%;
+      min-height:44px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.06);
+      color:#fff;
+      padding:0 16px;
+      outline:none;
+      font-family:var(--fontMain);
+      transition:border-color 0.16s ease,box-shadow 0.16s ease,background 0.16s ease;
+    }
+
+    .user-search-input::placeholder{
+      color:rgba(255,255,255,0.52);
+    }
+
+    .user-search-input:focus{
+      border-color:rgba(220,20,60,0.34);
+      box-shadow:0 0 0 4px rgba(220,20,60,0.10);
+      background:rgba(255,255,255,0.08);
     }
 
     .ghost-btn{
@@ -331,6 +388,36 @@
     .friend-remove{
       padding:8px 10px;
       font-size:0.8rem;
+    }
+
+    .crew-stack{
+      display:grid;
+      gap:14px;
+    }
+
+    .crew-section{
+      display:grid;
+      gap:10px;
+    }
+
+    .crew-section-title{
+      font-family:var(--fontHead);
+      font-size:0.84rem;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.66);
+    }
+
+    .crew-quick-chat-list{
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+      flex-wrap:wrap;
+    }
+
+    .crew-quick-chat-list .messenger-empty{
+      width:100%;
+      padding:0;
     }
 
     .crew-actions{
@@ -742,7 +829,7 @@
     }
 
     .modal-body{padding:14px;display:grid;gap:12px;}
-    .field{display:grid;gap:6px;}
+    .field{display:grid;gap:6px;position:relative;}
 
     .guest-prompt{
       width:min(640px,100%);
@@ -1305,6 +1392,84 @@
       font-size:0.84rem;
     }
 
+    .user-search-results{
+      position:absolute;
+      left:0;
+      right:0;
+      top:calc(100% + 10px);
+      z-index:40;
+      display:grid;
+      gap:8px;
+      padding:10px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(10,10,14,0.96);
+      box-shadow:0 22px 48px rgba(0,0,0,0.34);
+      max-height:280px;
+      overflow:auto;
+    }
+
+    .modal-user-search-results{
+      top:calc(100% + 8px);
+    }
+
+    .user-search-results[hidden]{
+      display:none !important;
+    }
+
+    .user-search-result{
+      width:100%;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.04);
+      color:#fff;
+      text-align:left;
+      cursor:pointer;
+      transition:border-color 0.16s ease,background 0.16s ease,transform 0.16s ease;
+    }
+
+    .user-search-result:hover,
+    .user-search-result.is-active{
+      border-color:rgba(220,20,60,0.30);
+      background:rgba(220,20,60,0.10);
+      transform:translateY(-1px);
+    }
+
+    .user-search-meta{
+      min-width:0;
+      display:grid;
+      gap:2px;
+    }
+
+    .user-search-name{
+      font-family:var(--fontHead);
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .user-search-sub{
+      color:var(--muted);
+      font-size:0.86rem;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .user-search-empty{
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.04);
+      color:var(--muted);
+      font-size:0.9rem;
+    }
+
     .bottombar-inner{
       max-width:1200px;
       margin:0 auto;
@@ -1322,11 +1487,44 @@
       .night-fab{display:grid;place-items:center;}
     }
 
+    @media (max-width:1280px){
+      .topbar-inner{
+        grid-template-columns:auto auto;
+        align-items:center;
+        row-gap:12px;
+      }
+
+      .brand-link{
+        grid-column:1;
+      }
+
+      .topbar-right{
+        grid-column:2;
+      }
+
+      .topnav{
+        grid-column:1 / -1;
+        justify-content:flex-start;
+      }
+
+      .topbar-search{
+        grid-column:1 / -1;
+      }
+    }
+
     @media (max-width:760px){
-      .topbar-inner{flex-direction:row;align-items:center;justify-content:space-between;gap:1rem;}
-      .brand-link{order:0;flex-shrink:0;}
-      .topnav{order:1;display:flex;align-items:center;justify-content:center;flex:1 1 auto;gap:1rem;width:auto;min-width:0;overflow:auto;}
-      .topbar-right{order:2;display:flex;align-items:center;justify-content:flex-end;flex-shrink:0;margin-bottom:0;}
+      .topbar-inner{
+        grid-template-columns:auto auto;
+        gap:12px;
+      }
+      .brand-link{grid-column:1;}
+      .topbar-right{grid-column:2;}
+      .topnav{
+        grid-column:1 / -1;
+        justify-content:flex-start;
+      }
+      .topbar-search{grid-column:1 / -1;}
+      .user-search-shell{width:100%;max-width:none;}
       .app-shell{grid-template-columns:1fr;}
       .rail{position:static;}
       .bottombar-inner{flex-direction:column;text-align:center;}
@@ -1393,6 +1591,13 @@
         <a href="./profile.html">Profile</a>
       </nav>
 
+      <div class="topbar-search">
+        <div class="user-search-shell">
+          <input class="user-search-input" id="globalUserSearch" type="search" placeholder="Searching.." autocomplete="off" aria-label="Search people" />
+          <div class="user-search-results" id="globalUserSearchResults" hidden></div>
+        </div>
+      </div>
+
       <div class="topbar-right">
         <a class="ghost-btn" href="./notifications.html" title="Notifications">&#9993;</a>
       </div>
@@ -1456,9 +1661,7 @@
       </section>
 
       <section id="following" class="panel">
-        <article class="post">
-          <div class="post-body">Following feed is empty for now. Once you wire follow logic, this becomes the personal feed.</div>
-        </article>
+        <div class="friends" id="followingList"></div>
       </section>
 
       <section id="lounge" class="panel">
@@ -1475,13 +1678,21 @@
       </section>
 
       <section class="card rail-card">
-        <div class="rail-title">Active Now</div>
-        <div id="activeNowList"></div>
-      </section>
-
-      <section class="card rail-card">
         <div class="rail-title">Night Crew</div>
-        <div class="friends" id="friendsList"></div>
+        <div class="crew-stack">
+          <div class="crew-section">
+            <div class="crew-section-title">Active Now</div>
+            <div id="activeNowList"></div>
+          </div>
+          <div class="crew-section">
+            <div class="crew-section-title">Friends</div>
+            <div class="friends" id="friendsList"></div>
+          </div>
+          <div class="crew-section">
+            <div class="crew-section-title">Quick Chats</div>
+            <div class="crew-quick-chat-list" id="messengerTrayList"></div>
+          </div>
+        </div>
         <div class="crew-actions">
           <button class="rail-btn" type="button" id="openFriendModalBtn">Add Friend</button>
           <button class="rail-btn" type="button" id="openDrawerBtn">Open Night Crew</button>
@@ -1505,13 +1716,21 @@
       </section>
 
       <section class="card rail-card" style="box-shadow:none; margin-top:12px;">
-        <div class="rail-title">Active Now</div>
-        <div id="drawerActiveNowList"></div>
-      </section>
-
-      <section class="card rail-card" style="box-shadow:none; margin-top:12px;">
         <div class="rail-title">Night Crew</div>
-        <div class="friends" id="drawerFriendsList"></div>
+        <div class="crew-stack">
+          <div class="crew-section">
+            <div class="crew-section-title">Active Now</div>
+            <div id="drawerActiveNowList"></div>
+          </div>
+          <div class="crew-section">
+            <div class="crew-section-title">Friends</div>
+            <div class="friends" id="drawerFriendsList"></div>
+          </div>
+          <div class="crew-section">
+            <div class="crew-section-title">Quick Chats</div>
+            <div class="crew-quick-chat-list" id="drawerMessengerTrayList"></div>
+          </div>
+        </div>
         <div class="crew-actions">
           <button class="rail-btn" type="button" id="drawerOpenFriendModalBtn">Add Friend</button>
         </div>
@@ -1530,6 +1749,7 @@
         <div class="field">
           <label for="friendName">Display Name</label>
           <input id="friendName" type="text" maxlength="30" placeholder="Who should show up in Night Crew?" />
+          <div class="user-search-results modal-user-search-results" id="friendNameResults" hidden></div>
         </div>
 
         <div class="field">
@@ -1635,9 +1855,9 @@
       </div>
     </div>
 
-    <div class="messenger-tray" id="messengerTray">
+    <div class="messenger-tray" id="messengerTray" hidden>
       <button class="messenger-launcher" type="button" id="messengerLauncher" title="Quick Messenger">☾</button>
-      <div id="messengerTrayList" style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;"></div>
+      <div id="legacyMessengerTrayList" style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;"></div>
     </div>
   </div>
 
@@ -1676,6 +1896,7 @@
     const ACCESS_MODE_SESSION_KEY = 'noctive_access_mode';
     const GUEST_PREVIEW_MODE = 'guest';
     const NIGHT_CREW_STORAGE_PREFIX = 'noctive_night_crew_';
+    const FOLLOWING_STORAGE_PREFIX = 'noctive_following_';
     const QUICK_CHAT_STORAGE_PREFIX = 'noctive_quick_chat_';
     const MESSENGER_DOCK_POSITION_KEY = 'noctive_messenger_dock_position';
     const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
@@ -1707,6 +1928,22 @@
       ],
       friends: []
     };
+    const SEARCH_DESTINATIONS = [
+      { id: 'dest-minecraft', kind: 'game', name: 'Minecraft', subtitle: 'Game hub', href: './explore.html', keywords: ['minecraft', 'game', 'hub', 'creative', 'survival'] },
+      { id: 'dest-valorant', kind: 'game', name: 'Valorant', subtitle: 'Game hub', href: './explore.html', keywords: ['valorant', 'game', 'hub', 'tactical', 'fps'] },
+      { id: 'dest-roblox', kind: 'game', name: 'Roblox', subtitle: 'Game hub', href: './explore.html', keywords: ['roblox', 'game', 'hub', 'creator', 'lounge'] },
+      { id: 'dest-helldivers-2', kind: 'game', name: 'Helldivers 2', subtitle: 'Game hub', href: './explore.html', keywords: ['helldivers 2', 'helldivers', 'game', 'hub', 'squad'] },
+      { id: 'dest-fortnite', kind: 'game', name: 'Fortnite', subtitle: 'Game hub', href: './explore.html', keywords: ['fortnite', 'game', 'hub', 'battle royale'] },
+      { id: 'dest-siege-after-dark', kind: 'lounge', name: 'Siege After Dark', subtitle: 'Game lounge', href: './explore.html', keywords: ['siege after dark', 'rainbow six siege', 'lounge', 'game lounge', 'night'] },
+      { id: 'dest-rv-midnight-lounge', kind: 'lounge', name: 'RV Midnight Lounge', subtitle: 'Game lounge', href: './explore.html', keywords: ['rv midnight lounge', 'lounge', 'game lounge', 'rv we there yet'] },
+      { id: 'dest-dust-debrief', kind: 'lounge', name: 'Dust & Debrief', subtitle: 'Game lounge', href: './explore.html', keywords: ['dust and debrief', 'dust & debrief', 'counter-strike 2', 'lounge', 'game lounge'] },
+      { id: 'dest-off-topic-lounge', kind: 'lounge', name: 'Off Topic Lounge', subtitle: 'Social lounge', href: './explore.html', keywords: ['off topic lounge', 'off topic', 'lounge', 'night crew'] },
+      { id: 'dest-raid-debrief', kind: 'lounge', name: 'Raid Debrief', subtitle: 'Game lounge', href: './explore.html', keywords: ['raid debrief', 'arc raiders', 'lounge', 'game lounge'] },
+      { id: 'dest-drop-ship-lounge', kind: 'lounge', name: 'Drop Ship Lounge', subtitle: 'Game lounge', href: './explore.html', keywords: ['drop ship lounge', 'apex legends', 'lounge', 'game lounge'] },
+      { id: 'dest-island-night-shift', kind: 'lounge', name: 'Island Night Shift', subtitle: 'Game lounge', href: './explore.html', keywords: ['island night shift', 'fortnite', 'lounge', 'game lounge'] },
+      { id: 'dest-roblox-rooftop', kind: 'lounge', name: 'Roblox Rooftop', subtitle: 'Game lounge', href: './explore.html', keywords: ['roblox rooftop', 'roblox', 'lounge', 'game lounge'] },
+      { id: 'dest-summoner-after-hours', kind: 'lounge', name: 'Summoner After Hours', subtitle: 'Game lounge', href: './explore.html', keywords: ['summoner after hours', 'league of legends', 'lounge', 'game lounge'] }
+    ];
 
     const PRESENCE_META = {
       online: { label: 'Online', className: 'presence-online', activityFallback: 'Hanging in Noctive' },
@@ -1735,7 +1972,6 @@
 
     let nightCrewFriends = [];
     let activeQuickChatId = '';
-    let isMessengerTrayExpanded = true;
     let messengerDockPosition = null;
     let messengerDockDragState = null;
 
@@ -1825,6 +2061,285 @@
 
     function buildMessengerDockStorageKey() {
       return `${MESSENGER_DOCK_POSITION_KEY}_${window.noctiveViewerKey || 'guest'}`;
+    }
+
+    function buildFollowingStorageKey(uid) {
+      return `${FOLLOWING_STORAGE_PREFIX}${uid}`;
+    }
+
+    function normalizeUid(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function getFollowingSet(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid || normalizedUid === 'guest') return new Set();
+
+      try {
+        const raw = localStorage.getItem(buildFollowingStorageKey(normalizedUid));
+        const parsed = raw ? JSON.parse(raw) : [];
+        return new Set(Array.isArray(parsed) ? parsed.map(normalizeUid).filter(Boolean) : []);
+      } catch (error) {
+        console.error('Could not load following list:', error);
+        return new Set();
+      }
+    }
+
+    function getPublicProfileDirectory() {
+      try {
+        const raw = localStorage.getItem(PUBLIC_PROFILE_DIRECTORY_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      } catch (error) {
+        console.error('Could not load public profile directory:', error);
+        return {};
+      }
+    }
+
+    function buildFollowingProfile(uid, directory) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return null;
+      const profile = directory[normalizedUid] || {};
+      const displayName = profile.displayName || profile.username || normalizedUid;
+      return {
+        id: normalizedUid,
+        name: displayName,
+        username: profile.username || normalizedUid,
+        title: profile.title || 'Noctive User',
+        activity: profile.bio || profile.bannerText || 'Part of your following list.',
+        presence: profile.status || 'online',
+        theme: profile.theme || 'default',
+        avatar: profile.avatar || ''
+      };
+    }
+
+    function getCurrentViewerSearchProfile() {
+      const viewerUid = normalizeUid(window.noctiveViewerKey);
+      if (!viewerUid || viewerUid === 'guest') return null;
+
+      try {
+        const raw = localStorage.getItem(`noctive_profile_${window.noctiveViewerKey}`);
+        const profile = raw ? JSON.parse(raw) : {};
+        const displayName = profile.displayName || profile.username || document.getElementById('userDisplayName')?.textContent || viewerUid;
+        return {
+          id: viewerUid,
+          username: profile.username || viewerUid,
+          displayName,
+          title: profile.title || 'Noctive Member',
+          status: profile.status || 'online',
+          bio: profile.bio || '',
+          bannerText: profile.bannerText || '',
+          theme: profile.theme || 'default',
+          avatar: profile.avatar || ''
+        };
+      } catch (error) {
+        console.error('Could not load current viewer search profile:', error);
+        return null;
+      }
+    }
+
+    function getSearchableProfiles() {
+      const directory = getPublicProfileDirectory();
+      const combined = new Map();
+
+      Object.entries(directory).forEach(([uid, profile]) => {
+        const normalizedUid = normalizeUid(uid);
+        if (!normalizedUid) return;
+        combined.set(normalizedUid, {
+          id: normalizedUid,
+          username: profile?.username || normalizedUid,
+          displayName: profile?.displayName || profile?.username || normalizedUid,
+          title: profile?.title || 'Noctive User',
+          status: profile?.status || 'online',
+          bio: profile?.bio || '',
+          bannerText: profile?.bannerText || '',
+          theme: profile?.theme || 'default',
+          avatar: profile?.avatar || ''
+        });
+      });
+
+      const viewerProfile = getCurrentViewerSearchProfile();
+      if (viewerProfile?.id) {
+        combined.set(viewerProfile.id, viewerProfile);
+      }
+
+      return Array.from(combined.values())
+        .filter((profile) => profile.id && profile.displayName)
+        .sort((left, right) => left.displayName.localeCompare(right.displayName));
+    }
+
+    function searchProfiles(query) {
+      const normalizedQuery = String(query || '').trim().toLowerCase();
+      if (!normalizedQuery) return [];
+
+      return getSearchableProfiles()
+        .map((profile) => {
+          const name = String(profile.displayName || '').toLowerCase();
+          const username = String(profile.username || '').toLowerCase();
+          const title = String(profile.title || '').toLowerCase();
+          const uid = String(profile.id || '').toLowerCase();
+          let score = 0;
+
+          if (name.startsWith(normalizedQuery)) score += 120;
+          else if (name.includes(normalizedQuery)) score += 70;
+
+          if (username.startsWith(normalizedQuery)) score += 110;
+          else if (username.includes(normalizedQuery)) score += 60;
+
+          if (title.startsWith(normalizedQuery)) score += 95;
+          else if (title.includes(normalizedQuery)) score += 45;
+
+          if (uid.startsWith(normalizedQuery)) score += 50;
+          else if (uid.includes(normalizedQuery)) score += 25;
+
+          return { profile, score };
+        })
+        .filter((entry) => entry.score > 0)
+        .sort((left, right) => right.score - left.score || left.profile.displayName.localeCompare(right.profile.displayName))
+        .slice(0, 7)
+        .map((entry) => entry.profile);
+    }
+
+    function findSearchableProfile(uid) {
+      const normalizedUid = normalizeUid(uid);
+      if (!normalizedUid) return null;
+      return getSearchableProfiles().find((profile) => profile.id === normalizedUid) || null;
+    }
+
+    function searchGlobalEntries(query) {
+      const normalizedQuery = String(query || '').trim().toLowerCase();
+      if (!normalizedQuery) return [];
+
+      const peopleResults = searchProfiles(normalizedQuery).map((profile) => ({
+        type: 'profile',
+        id: profile.id,
+        name: profile.displayName,
+        subtitle: `@${profile.username} • ${profile.title || 'Noctive User'}`,
+        href: buildProfileHref(profile.id),
+        theme: profile.theme || 'default',
+        avatar: profile.avatar || '',
+        presence: profile.status || 'online'
+      }));
+
+      const destinationResults = SEARCH_DESTINATIONS.map((destination) => {
+        const name = String(destination.name || '').toLowerCase();
+        const subtitle = String(destination.subtitle || '').toLowerCase();
+        const keywords = Array.isArray(destination.keywords) ? destination.keywords.join(' ').toLowerCase() : '';
+        let score = 0;
+
+        if (name.startsWith(normalizedQuery)) score += 115;
+        else if (name.includes(normalizedQuery)) score += 70;
+
+        if (subtitle.includes(normalizedQuery)) score += 40;
+        if (keywords.includes(normalizedQuery)) score += 55;
+
+        return score > 0 ? {
+          type: destination.kind || 'destination',
+          id: destination.id,
+          name: destination.name,
+          subtitle: destination.subtitle,
+          href: destination.href,
+          score
+        } : null;
+      }).filter(Boolean);
+
+      return [
+        ...peopleResults.map((entry, index) => ({ ...entry, score: 1000 - index })),
+        ...destinationResults
+      ]
+        .sort((left, right) => right.score - left.score || left.name.localeCompare(right.name))
+        .slice(0, 8);
+    }
+
+    function buildUserSearchResultMarkup(profile) {
+      const presence = getPresenceMeta(profile.status || profile.presence);
+      return `
+        <button class="user-search-result" type="button" data-search-profile="${escapeHtml(profile.id)}">
+          ${buildAvatarMarkup({ name: profile.displayName, theme: profile.theme, avatar: profile.avatar, presence: profile.status || 'online' }, 'avatar-dot', true)}
+          <div class="user-search-meta">
+            <div class="user-search-name">${escapeHtml(profile.displayName)}</div>
+            <div class="user-search-sub">@${escapeHtml(profile.username)} • ${escapeHtml(profile.title || presence.label)}</div>
+          </div>
+        </button>
+      `;
+    }
+
+    function buildGlobalSearchResultMarkup(result) {
+      if (result.type === 'profile') {
+        return `
+          <button class="user-search-result" type="button" data-search-target="${escapeHtml(result.href)}" data-search-kind="profile">
+            ${buildAvatarMarkup({ name: result.name, theme: result.theme, avatar: result.avatar, presence: result.presence || 'online' }, 'avatar-dot', true)}
+            <div class="user-search-meta">
+              <div class="user-search-name">${escapeHtml(result.name)}</div>
+              <div class="user-search-sub">${escapeHtml(result.subtitle)}</div>
+            </div>
+          </button>
+        `;
+      }
+
+      return `
+        <button class="user-search-result" type="button" data-search-target="${escapeHtml(result.href)}" data-search-kind="${escapeHtml(result.type)}">
+          <div class="avatar-dot user-avatar" data-name="${escapeHtml(result.name)}" data-theme="violet" data-avatar=""></div>
+          <div class="user-search-meta">
+            <div class="user-search-name">${escapeHtml(result.name)}</div>
+            <div class="user-search-sub">${escapeHtml(result.subtitle)}</div>
+          </div>
+        </button>
+      `;
+    }
+
+    function fillNightCrewFormFromProfile(profile) {
+      const friendNameInput = document.getElementById('friendName');
+      const friendStatusInput = document.getElementById('friendStatus');
+      const friendActivityInput = document.getElementById('friendActivity');
+      const friendThemeInput = document.getElementById('friendTheme');
+
+      if (friendNameInput) {
+        friendNameInput.value = profile.displayName || '';
+        friendNameInput.dataset.selectedUid = profile.id || '';
+      }
+      if (friendStatusInput) friendStatusInput.value = normalizePresence(profile.status || 'online');
+      if (friendActivityInput) friendActivityInput.value = profile.bio || profile.bannerText || '';
+      if (friendThemeInput) friendThemeInput.value = profile.theme || 'default';
+    }
+
+    function clearNightCrewSelectedProfile() {
+      const friendNameInput = document.getElementById('friendName');
+      if (friendNameInput) {
+        delete friendNameInput.dataset.selectedUid;
+      }
+    }
+
+    function updateUserSearchResults(container, results, emptyCopy = 'No matching people yet.') {
+      if (!container) return;
+      if (!results.length) {
+        container.innerHTML = `<div class="user-search-empty">${escapeHtml(emptyCopy)}</div>`;
+        container.removeAttribute('hidden');
+        return;
+      }
+
+      container.innerHTML = results.map(buildUserSearchResultMarkup).join('');
+      container.removeAttribute('hidden');
+      applyGeneratedAvatars();
+    }
+
+    function updateGlobalSearchResults(container, results, emptyCopy = 'No matching results yet.') {
+      if (!container) return;
+      if (!results.length) {
+        container.innerHTML = `<div class="user-search-empty">${escapeHtml(emptyCopy)}</div>`;
+        container.removeAttribute('hidden');
+        return;
+      }
+
+      container.innerHTML = results.map(buildGlobalSearchResultMarkup).join('');
+      container.removeAttribute('hidden');
+      applyGeneratedAvatars();
+    }
+
+    function hideUserSearchResults(container) {
+      if (!container) return;
+      container.setAttribute('hidden', 'hidden');
+      container.innerHTML = '';
     }
 
     function isDesktopMessengerDock() {
@@ -2216,6 +2731,47 @@
       `;
     }
 
+    function buildFollowingMarkup(user) {
+      const presence = getPresenceMeta(user.presence);
+      const profileHref = buildProfileHref(user.id);
+      return `
+        <div class="friend-row">
+          <a class="friend-left" href="${profileHref}" style="text-decoration:none;">
+            ${buildAvatarMarkup(user, 'avatar-dot', true)}
+            <div class="friend-meta">
+              <div class="friend-name">${escapeHtml(user.name)}</div>
+              <div class="friend-status">@${escapeHtml(user.username)} • ${escapeHtml(user.title)}</div>
+            </div>
+          </a>
+          <div class="friend-actions">
+            <span class="presence-label ${presence.className}">${presence.label}</span>
+            <a class="action" href="${profileHref}">View Profile</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFollowingList() {
+      const followingList = document.getElementById('followingList');
+      if (!followingList) return;
+
+      const viewerUid = normalizeUid(window.noctiveViewerKey);
+      if (!viewerUid || viewerUid === 'guest') {
+        followingList.innerHTML = '<div class="small">Sign in and follow people to build your actual following list here.</div>';
+        return;
+      }
+
+      const directory = getPublicProfileDirectory();
+      const followingProfiles = Array.from(getFollowingSet(viewerUid))
+        .map((uid) => buildFollowingProfile(uid, directory))
+        .filter(Boolean)
+        .sort((left, right) => left.name.localeCompare(right.name));
+
+      followingList.innerHTML = followingProfiles.length
+        ? followingProfiles.map(buildFollowingMarkup).join('')
+        : '<div class="small">You are not following anyone yet. Open a profile and hit Follow, then they will appear here.</div>';
+    }
+
     function renderNightCrew() {
       const activeNowList = document.getElementById('activeNowList');
       const drawerActiveNowList = document.getElementById('drawerActiveNowList');
@@ -2237,19 +2793,20 @@
     }
 
     function renderMessengerTray() {
-      const trayList = document.getElementById('messengerTrayList');
-      if (!trayList) return;
       const trayFriends = nightCrewFriends
         .filter((friend) => normalizePresence(friend.presence) !== 'invisible')
-        .slice(0, isMessengerTrayExpanded ? 4 : 0);
-
-      trayList.innerHTML = trayFriends.length
+        .slice(0, 4);
+      const trayMarkup = trayFriends.length
         ? trayFriends.map((friend) => `
             <button class="messenger-chip" type="button" data-quick-dock="${escapeHtml(friend.id)}" title="${escapeHtml(friend.name)}">
               ${buildAvatarMarkup(friend, 'avatar-dot', true)}
             </button>
           `).join('')
         : '<div class="messenger-empty">Add Night Crew friends to pop chats here.</div>';
+      const trayLists = document.querySelectorAll('#messengerTrayList, #drawerMessengerTrayList');
+      trayLists.forEach((trayList) => {
+        trayList.innerHTML = trayMarkup;
+      });
       applyGeneratedAvatars();
       applyMessengerDockPosition();
     }
@@ -2357,6 +2914,7 @@
       if (feedList) feedList.querySelectorAll('.post').forEach(syncPostCommentsUI);
       if (hotGamesList) hotGamesList.innerHTML = HOME_TEMPLATE.hotGames.map((game) => `<button class="hot-item" type="button">${escapeHtml(game)}</button>`).join('');
       if (drawerHotGamesList) drawerHotGamesList.innerHTML = HOME_TEMPLATE.hotGames.map((game) => `<button class="hot-item" type="button">${escapeHtml(game)}</button>`).join('');
+      renderFollowingList();
       renderNightCrew();
     }
 
@@ -2564,29 +3122,20 @@
       renderTemplateData();
       applyGeneratedAvatars();
 
-      const messengerLauncher = document.getElementById('messengerLauncher');
       const messengerSendBtn = document.getElementById('messengerSendBtn');
       const messengerInput = document.getElementById('messengerInput');
       const messengerCloseBtn = document.getElementById('messengerCloseBtn');
       const messengerMinimizeBtn = document.getElementById('messengerMinimizeBtn');
-      const messengerTray = document.getElementById('messengerTray');
       const messengerHead = document.querySelector('.messenger-head');
+      const globalUserSearch = document.getElementById('globalUserSearch');
+      const globalUserSearchResults = document.getElementById('globalUserSearchResults');
 
       messengerDockPosition = loadMessengerDockPosition();
       applyMessengerDockPosition();
 
-      messengerLauncher?.addEventListener('click', () => {
-        isMessengerTrayExpanded = !isMessengerTrayExpanded;
-        renderMessengerTray();
-        if (!isMessengerTrayExpanded) {
-          closeQuickMessenger();
-        }
-      });
-
       messengerSendBtn?.addEventListener('click', sendQuickMessengerMessage);
       messengerCloseBtn?.addEventListener('click', closeQuickMessenger);
       messengerMinimizeBtn?.addEventListener('click', closeQuickMessenger);
-      messengerTray?.addEventListener('pointerdown', beginMessengerDockDrag);
       messengerHead?.addEventListener('pointerdown', beginMessengerDockDrag);
       window.addEventListener('pointermove', handleMessengerDockDrag);
       window.addEventListener('pointerup', endMessengerDockDrag);
@@ -2674,6 +3223,7 @@
       const friendModalCloseBtn = document.getElementById('friendModalCloseBtn');
       const friendSaveBtn = document.getElementById('friendSaveBtn');
       const friendNameInput = document.getElementById('friendName');
+      const friendNameResults = document.getElementById('friendNameResults');
       const friendStatusInput = document.getElementById('friendStatus');
       const friendActivityInput = document.getElementById('friendActivity');
       const friendThemeInput = document.getElementById('friendTheme');
@@ -2683,10 +3233,21 @@
       const closeDrawer = () => rightDrawer?.setAttribute('hidden', 'hidden');
       const openFriendModal = () => {
         if (friendMsg) friendMsg.textContent = 'Give your Night Crew a few people that feel like yours.';
+        if (friendNameInput) {
+          friendNameInput.value = '';
+          clearNightCrewSelectedProfile();
+        }
+        if (friendActivityInput) friendActivityInput.value = '';
+        if (friendStatusInput) friendStatusInput.value = 'online';
+        if (friendThemeInput) friendThemeInput.value = 'default';
+        hideUserSearchResults(friendNameResults);
         friendModal?.removeAttribute('hidden');
         friendNameInput?.focus();
       };
-      const closeFriendModal = () => friendModal?.setAttribute('hidden', 'hidden');
+      const closeFriendModal = () => {
+        hideUserSearchResults(friendNameResults);
+        friendModal?.setAttribute('hidden', 'hidden');
+      };
       openDrawerBtn?.addEventListener('click', openDrawer);
       closeDrawerBtn?.addEventListener('click', closeDrawer);
       openFriendModalBtn?.addEventListener('click', openFriendModal);
@@ -2700,11 +3261,52 @@
         if (e.target === rightDrawer) closeDrawer();
       });
 
+      globalUserSearch?.addEventListener('input', () => {
+        const query = globalUserSearch.value.trim();
+        if (!query) {
+          hideUserSearchResults(globalUserSearchResults);
+          return;
+        }
+        updateGlobalSearchResults(globalUserSearchResults, searchGlobalEntries(query), 'No people, titles, usernames, or lounges match that search yet.');
+      });
+
+      globalUserSearch?.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter') return;
+        const firstResult = searchGlobalEntries(globalUserSearch.value)[0];
+        if (!firstResult) return;
+        event.preventDefault();
+        if (isGuestPreviewSession()) {
+          openGuestPrompt('Guest preview keeps profile space locked. Sign up when you want your own page, edits, and posts to go live.');
+          return;
+        }
+        window.location.href = firstResult.href;
+      });
+
+      friendNameInput?.addEventListener('input', () => {
+        clearNightCrewSelectedProfile();
+        const query = friendNameInput.value.trim();
+        if (!query) {
+          hideUserSearchResults(friendNameResults);
+          return;
+        }
+        updateUserSearchResults(friendNameResults, searchProfiles(query), 'No profiles match yet. You can still add a custom name.');
+      });
+
+      friendNameInput?.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter') return;
+        const firstResult = searchProfiles(friendNameInput.value)[0];
+        if (!firstResult) return;
+        event.preventDefault();
+        fillNightCrewFormFromProfile(firstResult);
+        hideUserSearchResults(friendNameResults);
+      });
+
       friendSaveBtn?.addEventListener('click', () => {
         const name = friendNameInput?.value.trim();
         const activity = friendActivityInput?.value.trim() || '';
         const presence = normalizePresence(friendStatusInput?.value);
         const theme = friendThemeInput?.value || 'default';
+        const selectedProfile = findSearchableProfile(friendNameInput?.dataset.selectedUid);
 
         if (!name) {
           if (friendMsg) friendMsg.textContent = 'Give your crew member a name first.';
@@ -2712,13 +3314,20 @@
           return;
         }
 
+        const friendId = selectedProfile?.id || `friend-custom-${Date.now()}`;
+        const duplicateFriend = nightCrewFriends.find((friend) => normalizeUid(friend.id) === normalizeUid(friendId));
+        if (duplicateFriend) {
+          if (friendMsg) friendMsg.textContent = `${name} is already in your Night Crew.`;
+          return;
+        }
+
         nightCrewFriends = [
           ...nightCrewFriends,
           {
-            id: `friend-custom-${Date.now()}`,
+            id: friendId,
             name,
             theme,
-            avatar: '',
+            avatar: selectedProfile?.avatar || '',
             presence,
             activity
           }
@@ -2732,6 +3341,8 @@
         if (friendActivityInput) friendActivityInput.value = '';
         if (friendStatusInput) friendStatusInput.value = 'online';
         if (friendThemeInput) friendThemeInput.value = 'default';
+        clearNightCrewSelectedProfile();
+        hideUserSearchResults(friendNameResults);
 
         window.setTimeout(() => {
           closeFriendModal();
@@ -2749,6 +3360,29 @@
         }
       });
       document.addEventListener('click', async (e) => {
+        const searchResultBtn = e.target.closest('[data-search-profile], [data-search-target]');
+        if (searchResultBtn) {
+          if (friendNameResults && friendNameResults.contains(searchResultBtn)) {
+            const profileId = searchResultBtn.getAttribute('data-search-profile');
+            const selectedProfile = findSearchableProfile(profileId);
+            if (!selectedProfile) return;
+            fillNightCrewFormFromProfile(selectedProfile);
+            hideUserSearchResults(friendNameResults);
+            return;
+          }
+
+          if (globalUserSearchResults && globalUserSearchResults.contains(searchResultBtn)) {
+            const targetHref = searchResultBtn.getAttribute('data-search-target');
+            hideUserSearchResults(globalUserSearchResults);
+            if (isGuestPreviewSession()) {
+              openGuestPrompt('Guest preview keeps profile space locked. Sign up when you want your own page, edits, and posts to go live.');
+              return;
+            }
+            if (targetHref) window.location.href = targetHref;
+            return;
+          }
+        }
+
         const profileLink = e.target.closest('a[href^="./profile.html"], a[href="./edit-profile.html"]');
         if (profileLink && isGuestPreviewSession()) {
           e.preventDefault();
@@ -2834,6 +3468,14 @@
             openQuickMessenger(friendId);
           }
           return;
+        }
+
+        if (globalUserSearchResults && !globalUserSearchResults.contains(e.target) && e.target !== globalUserSearch) {
+          hideUserSearchResults(globalUserSearchResults);
+        }
+
+        if (friendNameResults && !friendNameResults.contains(e.target) && e.target !== friendNameInput) {
+          hideUserSearchResults(friendNameResults);
         }
 
         if (!userMenuDropdown || !sidebarUser) return;
@@ -2952,6 +3594,7 @@
         }
         setComposerNotice('Guest preview is active. Posts stay local, and profile pages stay locked.');
         nightCrewFriends = loadNightCrewFriends();
+        renderFollowingList();
         renderNightCrew();
         applyGeneratedAvatars();
         return;
@@ -3015,6 +3658,7 @@
         setComposerNotice('');
       }
       nightCrewFriends = loadNightCrewFriends();
+      renderFollowingList();
       renderNightCrew();
       applyGeneratedAvatars();
     });

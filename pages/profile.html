@@ -531,6 +531,30 @@
       color: #ffd782;
     }
 
+    .mutual-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(250, 204, 21, 0.18);
+      background: rgba(250, 204, 21, 0.08);
+      color: #ffe08a;
+      font-family: var(--font-head);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .mutual-pill::before {
+      content: "↔";
+      font-size: 0.82rem;
+      line-height: 1;
+      color: #ffd782;
+    }
+
     .admin-notice {
       display: inline-flex;
       align-items: center;
@@ -1076,6 +1100,7 @@
 
                 <div class="member-row">
                   <span class="profile-title" id="profileTitle">Noctive User</span>
+                  <span class="mutual-pill" id="profileMutualTag" hidden>Mutual</span>
                   <div class="status-control" id="statusControl">
                     <button class="status-pill status-offline" id="statusPill" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="statusMenu">
                       <span class="status-dot"></span>
@@ -1683,6 +1708,14 @@
       const normalizedTargetUid = normalizeUid(targetUid);
       if (!normalizedViewerUid || !normalizedTargetUid || normalizedViewerUid === normalizedTargetUid) return false;
       return getFollowingSet(normalizedViewerUid).has(normalizedTargetUid);
+    }
+
+    function isMutualFollow(viewerUid, targetUid) {
+      const normalizedViewerUid = normalizeUid(viewerUid);
+      const normalizedTargetUid = normalizeUid(targetUid);
+      if (!normalizedViewerUid || !normalizedTargetUid || normalizedViewerUid === normalizedTargetUid) return false;
+      return isFollowingProfile(normalizedViewerUid, normalizedTargetUid)
+        && isFollowingProfile(normalizedTargetUid, normalizedViewerUid);
     }
 
     function toggleFollowProfile(viewerUid, targetUid) {
@@ -2402,12 +2435,15 @@
         username,
         displayName
       });
+      const viewerUid = normalizeUid(currentAuthUser?.uid);
       const normalizedProfileUid = normalizeUid(uid);
       const followerCount = getFollowerCount(normalizedProfileUid);
       const followingCount = getResolvedFollowingCount(
         normalizedProfileUid,
         profile.stats?.following ?? 0
       );
+      const viewerIsFollowing = !isOwnProfile && isFollowingProfile(viewerUid, normalizedProfileUid);
+      const showMutualTag = !isOwnProfile && isMutualFollow(viewerUid, normalizedProfileUid);
 
       const bannerFill = document.getElementById('bannerFill');
       if (bannerFill) {
@@ -2422,6 +2458,7 @@
       setText('profileDisplayName', displayName);
       setText('profileTitle', isAdmin ? 'Official Account' : (profile.title || (isOwnProfile && user ? 'Noctive Member' : 'Noctive User')));
       document.getElementById('profileTitle')?.classList.toggle('is-admin', isAdmin);
+      document.getElementById('profileMutualTag')?.toggleAttribute('hidden', !showMutualTag);
       setText('profileAdminNotice', `${displayName} is an official Noctive account for support and moderation.`);
       document.getElementById('profileAdminNotice')?.toggleAttribute('hidden', !isAdmin);
       setText('profileUsername', `@${username}`);
@@ -2440,9 +2477,13 @@
       setText('featuredHub', showcasesVisible ? (profile.featuredHub || '') : '');
       setText('currentObsession', showcasesVisible ? (profile.currentObsession || '') : '');
 
-      const bannerTags = isAdmin
-        ? ['Official Account', ...(profile.bannerTags || ['Alive After Dark']).filter((tag) => String(tag || '').trim().toLowerCase() !== 'official account')]
-        : (profile.bannerTags || ['Alive After Dark']);
+      const bannerTags = [
+        ...(isAdmin
+          ? ['Official Account', ...(profile.bannerTags || ['Alive After Dark']).filter((tag) => String(tag || '').trim().toLowerCase() !== 'official account')]
+          : (profile.bannerTags || ['Alive After Dark'])),
+        ...(viewerIsFollowing ? ['Following'] : []),
+        ...(showMutualTag ? ['Mutual'] : [])
+      ].filter((tag, index, tags) => tags.findIndex((value) => String(value || '').trim().toLowerCase() === String(tag || '').trim().toLowerCase()) === index);
       renderTagList('bannerTags', bannerTags, 'banner-tag');
       renderTagList('gamesGrid', profile.games?.length ? profile.games : ['No favorite games yet'], 'game-chip');
       renderTagList('badgeRow', profile.badges?.length ? profile.badges : ['Newcomer'], 'badge');
