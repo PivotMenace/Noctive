@@ -92,9 +92,10 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 14px 18px;
-      display: flex;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
     .brand-title {
@@ -119,6 +120,10 @@
       border-radius: 999px;
       background: rgba(255,255,255,0.06);
       border: 1px solid var(--border);
+      width: max-content;
+      max-width: 100%;
+      min-width: 0;
+      justify-self: start;
       overflow-x: auto;
       scrollbar-width: none;
     }
@@ -145,10 +150,11 @@
     }
 
     .topbar-right {
-      margin-left: auto;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: flex-end;
+      gap: 8px;
+      min-width: 0;
     }
 
     .ghost-btn,
@@ -162,6 +168,27 @@
       background: rgba(255,255,255,0.06);
       color: #fff;
       transition: 0.16s ease;
+    }
+
+    .topbar-right .ghost-btn {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      font-family: var(--font-head);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .topbar-icon-btn {
+      width: 44px;
+      padding: 0;
+      font-size: 1rem;
+    }
+
+    .topbar-action-btn {
+      padding: 0 14px;
     }
 
     .ghost-btn:hover,
@@ -969,16 +996,15 @@
 
     @media (max-width: 760px) {
       .topbar-inner {
-        flex-direction: column;
-        align-items: flex-start;
+        grid-template-columns: auto minmax(0, 1fr) auto;
       }
 
       .topbar-right {
-        margin-left: 0;
+        grid-column: 3;
       }
 
       .topnav {
-        width: 100%;
+        grid-column: 2;
       }
 
       .profile-core {
@@ -1024,9 +1050,9 @@
         <a href="./profile.html" aria-current="page">Profile</a>
       </nav>
       <div class="topbar-right">
-        <a class="ghost-btn" href="./notifications.html" title="Notifications">&#9993;</a>
-        <a class="ghost-btn" href="./edit-profile.html" id="topbarEditBtn">Edit Profile</a>
-        <button class="ghost-btn" type="button" id="profileTopbarSignOutBtn">Sign Out</button>
+        <a class="ghost-btn topbar-icon-btn" href="./notifications.html" title="Notifications" aria-label="Notifications">&#9790;</a>
+        <a class="ghost-btn topbar-action-btn" href="./edit-profile.html" id="topbarEditBtn">Edit Profile</a>
+        <button class="ghost-btn topbar-icon-btn" type="button" id="profileTopbarSignOutBtn" title="Sign out" aria-label="Sign out">🚪</button>
       </div>
     </div>
   </header>

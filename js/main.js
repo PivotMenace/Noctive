@@ -7,7 +7,7 @@ import {
   increment,
   onSnapshot,
   orderBy,
-  updateDoc,
+  runTransaction,
   query,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -20,9 +20,11 @@ import { isAdminIdentity } from "./admin-config.js";
 console.log("main.js loaded");
 
 let stopPostsSubscription = null;
+let stopProfilesSubscription = null;
 let latestSnapshot = null;
 let currentViewer = null;
 let currentViewerIsAdmin = false;
+const postCommentSubscriptions = new Map();
 const PUBLIC_PROFILE_DIRECTORY_KEY = "noctive_public_profile_directory";
 const POST_VOTE_STORAGE_PREFIX = "noctive_post_votes_";
 const BIO_MAX_LENGTH = 180;
@@ -162,7 +164,7 @@ function syncPublicProfileFromPost(uid, profile = {}) {
 function getResolvedPostProfile(uid, fallback = {}) {
   const savedProfile = getSavedProfile(uid);
   const publicProfile = getPublicProfile(uid);
-  const profile = savedProfile || publicProfile || {};
+  const profile = publicProfile || savedProfile || {};
 
   return {
     displayName:
@@ -191,6 +193,58 @@ function getResolvedPostProfile(uid, fallback = {}) {
       fallback.email ||
       ""
   };
+}
+
+function upsertPublicProfilesFromSnapshot(snapshot) {
+  try {
+    const raw = window.localStorage.getItem(PUBLIC_PROFILE_DIRECTORY_KEY);
+    const directory = raw ? JSON.parse(raw) : {};
+
+    snapshot.forEach((profileDoc) => {
+      const data = profileDoc.data();
+      const normalizedUid = normalizeUid(data.uid || profileDoc.id);
+      if (!normalizedUid) return;
+
+      const displayName =
+        data.displayName ||
+        data.username ||
+        data.email?.split("@")[0] ||
+        "Noctive User";
+      const username =
+        data.username ||
+        slugifyProfileName(displayName, normalizedUid);
+
+      directory[normalizedUid] = {
+        ...directory[normalizedUid],
+        ...data,
+        profileUid: normalizedUid,
+        uid: normalizedUid,
+        username,
+        displayName
+      };
+    });
+
+    window.localStorage.setItem(PUBLIC_PROFILE_DIRECTORY_KEY, JSON.stringify(directory));
+  } catch (error) {
+    console.warn("Could not sync shared profile directory:", error);
+  }
+}
+
+function subscribeToProfiles() {
+  if (stopProfilesSubscription) return;
+
+  stopProfilesSubscription = onSnapshot(
+    collection(db, "Profiles"),
+    (snapshot) => {
+      upsertPublicProfilesFromSnapshot(snapshot);
+      if (latestSnapshot) {
+        renderPosts(latestSnapshot);
+      }
+    },
+    (error) => {
+      console.error("Could not load shared profiles:", error);
+    }
+  );
 }
 
 function getViewerAdminIdentity(user) {
@@ -276,6 +330,54 @@ function formatCreatedAt(createdAt) {
   }
 }
 
+function subscribeToPostComments(postId) {
+  if (!postId || postCommentSubscriptions.has(postId)) return;
+
+  const commentsQuery = query(
+    collection(db, "Posts", postId, "Comments"),
+    orderBy("createdAt", "asc")
+  );
+
+  const unsubscribe = onSnapshot(
+    commentsQuery,
+    (snapshot) => {
+      const comments = snapshot.docs.map((commentDoc) => {
+        const data = commentDoc.data();
+        const resolvedProfile = getResolvedPostProfile(data.uid, {
+          displayName: data.author,
+          username: data.username
+        });
+        return {
+          id: commentDoc.id,
+          uid: data.uid || "",
+          author: resolvedProfile.displayName || data.author || "Noctive User",
+          username: resolvedProfile.username || data.username || "",
+          time: formatCreatedAt(data.createdAt),
+          body: data.body || ""
+        };
+      });
+
+      const bridge = window.noctiveFeedBridge;
+      bridge?.postCommentState?.set(postId, comments);
+
+      const postEl = document.querySelector(`[data-post-id="${CSS.escape(postId)}"]`);
+      if (postEl) {
+        bridge?.syncPostCommentsUI?.(postEl);
+      }
+    },
+    (error) => {
+      console.error("Could not load post comments:", error);
+    }
+  );
+
+  postCommentSubscriptions.set(postId, unsubscribe);
+}
+
+function stopPostCommentSubscriptions() {
+  postCommentSubscriptions.forEach((unsubscribe) => unsubscribe());
+  postCommentSubscriptions.clear();
+}
+
 function buildPostCard(doc) {
   const data = doc.data();
   console.log("Firestore doc:", doc.id, data);
@@ -351,6 +453,7 @@ function buildPostCard(doc) {
       bridge.syncPostVoteUI?.(postCard);
       bridge.syncPostCommentsUI?.(postCard);
       bridge.applyGeneratedAvatars?.();
+      subscribeToPostComments(post.id);
     }
   } else {
     postCard = document.createElement("article");
@@ -441,6 +544,7 @@ function renderPosts(snapshot) {
 
   console.log("querySnapshot size:", snapshot.size);
   latestSnapshot = snapshot;
+  stopPostCommentSubscriptions();
   container.innerHTML = "";
 
   if (snapshot.empty) {
@@ -525,10 +629,17 @@ async function createPost(text) {
     throw new Error("Guest preview posts do not publish. Sign up to post for real.");
   }
 
-  const displayName =
-    document.getElementById("userDisplayName")?.textContent?.trim() || "Noctive User";
+  const resolvedProfile = getResolvedPostProfile(uid, {
+    displayName: document.getElementById("userDisplayName")?.textContent?.trim(),
+    username: currentViewer?.email?.split("@")[0],
+    avatar: document.getElementById("sidebarAvatarBox")?.dataset.avatar,
+    theme: document.getElementById("sidebarAvatarBox")?.dataset.theme,
+    status: "Online",
+    email: currentViewer?.email || ""
+  });
+  const displayName = resolvedProfile.displayName || "Noctive User";
+  const username = resolvedProfile.username || slugifyProfileName(displayName, uid);
   const avatarBox = document.getElementById("sidebarAvatarBox");
-  const username = displayName.toLowerCase().replace(/\s+/g, "");
 
   await addDoc(collection(db, "Posts"), {
     uid,
@@ -536,13 +647,44 @@ async function createPost(text) {
     displayName,
     username,
     text: trimmedText,
-    avatar: avatarBox?.dataset.avatar || "",
-    theme: avatarBox?.dataset.theme || "default",
+    avatar: resolvedProfile.avatar || avatarBox?.dataset.avatar || "",
+    theme: resolvedProfile.theme || avatarBox?.dataset.theme || "default",
+    status: resolvedProfile.status || "Online",
     createdAt: serverTimestamp()
   });
 }
 
 window.noctiveCreatePost = createPost;
+
+async function createComment(postId, body) {
+  const trimmedBody = String(body || "").trim();
+
+  if (!trimmedBody) {
+    throw new Error("Write a reply first.");
+  }
+
+  if (isGuestPreviewSession() || !currentViewer?.uid) {
+    throw new Error("Sign in before replying.");
+  }
+
+  const resolvedProfile = getResolvedPostProfile(currentViewer.uid, {
+    displayName: document.getElementById("userDisplayName")?.textContent?.trim()
+      || currentViewer.displayName,
+    username: currentViewer.email?.split("@")[0],
+    email: currentViewer.email || ""
+  });
+  const displayName = resolvedProfile.displayName || "Noctive User";
+
+  await addDoc(collection(db, "Posts", postId, "Comments"), {
+    uid: currentViewer.uid,
+    author: displayName,
+    username: resolvedProfile.username || slugifyProfileName(displayName, currentViewer.uid),
+    body: trimmedBody,
+    createdAt: serverTimestamp()
+  });
+}
+
+window.noctiveCreateComment = createComment;
 
 async function voteOnPost(postId, direction) {
   const normalizedDirection = direction === "down" ? "down" : "up";
@@ -551,44 +693,87 @@ async function voteOnPost(postId, direction) {
     throw new Error("Sign in before voting.");
   }
 
-  const previousVote = getStoredPostVote(postId);
+  const legacyStoredVote = getStoredPostVote(postId);
   const bridge = window.noctiveFeedBridge;
   const currentState = bridge?.postVoteState?.get(postId) || {
     up: 0,
     down: 0,
-    userVote: previousVote
+    userVote: legacyStoredVote
   };
 
-  if (previousVote === normalizedDirection) {
-    return {
-      ...currentState,
-      userVote: normalizedDirection
-    };
-  }
-
-  const { upDelta, downDelta } = getVoteDeltas(previousVote, normalizedDirection);
-  const updates = {};
-
-  if (upDelta) {
-    updates["votes.up"] = increment(upDelta);
-    updates.likesCount = increment(upDelta);
-  }
-
-  if (downDelta) {
-    updates["votes.down"] = increment(downDelta);
-  }
-
-  if (Object.keys(updates).length) {
-    await updateDoc(docRef("Posts", postId), updates);
-  }
-
-  saveStoredPostVote(postId, normalizedDirection);
-
-  return {
-    up: Math.max(0, Number(currentState.up || 0) + upDelta),
-    down: Math.max(0, Number(currentState.down || 0) + downDelta),
+  const postRef = docRef("Posts", postId);
+  const voteRef = doc(db, "Posts", postId, "Votes", currentViewer.uid);
+  let nextState = {
+    ...currentState,
     userVote: normalizedDirection
   };
+
+  await runTransaction(db, async (transaction) => {
+    const voteSnapshot = await transaction.get(voteRef);
+    const previousVote = voteSnapshot.exists()
+      ? voteSnapshot.data()?.direction
+      : legacyStoredVote;
+    const normalizedPreviousVote = previousVote === "up" || previousVote === "down"
+      ? previousVote
+      : null;
+
+    if (normalizedPreviousVote === normalizedDirection) {
+      const { upDelta, downDelta } = getVoteDeltas(normalizedPreviousVote, null);
+      const updates = {};
+
+      if (upDelta) {
+        updates["votes.up"] = increment(upDelta);
+        updates.likesCount = increment(upDelta);
+      }
+
+      if (downDelta) {
+        updates["votes.down"] = increment(downDelta);
+      }
+
+      transaction.update(postRef, updates);
+
+      if (voteSnapshot.exists()) {
+        transaction.delete(voteRef);
+      }
+
+      nextState = {
+        up: Math.max(0, Number(currentState.up || 0) + upDelta),
+        down: Math.max(0, Number(currentState.down || 0) + downDelta),
+        userVote: null
+      };
+      return;
+    }
+
+    const { upDelta, downDelta } = getVoteDeltas(normalizedPreviousVote, normalizedDirection);
+    const updates = {};
+
+    if (upDelta) {
+      updates["votes.up"] = increment(upDelta);
+      updates.likesCount = increment(upDelta);
+    }
+
+    if (downDelta) {
+      updates["votes.down"] = increment(downDelta);
+    }
+
+    transaction.update(postRef, updates);
+    transaction.set(voteRef, {
+      uid: currentViewer.uid,
+      direction: normalizedDirection,
+      createdAt: voteSnapshot.exists() ? voteSnapshot.data()?.createdAt || serverTimestamp() : serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    nextState = {
+      up: Math.max(0, Number(currentState.up || 0) + upDelta),
+      down: Math.max(0, Number(currentState.down || 0) + downDelta),
+      userVote: normalizedDirection
+    };
+  });
+
+  saveStoredPostVote(postId, nextState.userVote);
+
+  return nextState;
 }
 
 window.noctiveVotePost = voteOnPost;
@@ -606,10 +791,14 @@ onAuthStateChanged(getAuth(app), (user) => {
 
   currentViewer = user;
   currentViewerIsAdmin = isAdminIdentity(getViewerAdminIdentity(user));
+  subscribeToProfiles();
 
   if (latestSnapshot) {
     renderPosts(latestSnapshot);
   }
 });
 
-document.addEventListener("DOMContentLoaded", loadPosts);
+document.addEventListener("DOMContentLoaded", () => {
+  subscribeToProfiles();
+  loadPosts();
+});

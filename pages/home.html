@@ -64,7 +64,7 @@
       margin:0 auto;
       padding:14px 18px;
       display:grid;
-      grid-template-columns:auto minmax(0,1fr) minmax(240px,320px) auto;
+      grid-template-columns:auto minmax(0,1fr) auto auto;
       align-items:center;
       gap:12px;
     }
@@ -113,8 +113,10 @@
       border-radius:999px;
       background:rgba(255,255,255,0.06);
       border:1px solid var(--border);
-      width:100%;
+      width:max-content;
+      max-width:100%;
       min-width:0;
+      justify-self:start;
       overflow-x:auto;
       overflow-y:hidden;
       scrollbar-width:none;
@@ -168,36 +170,90 @@
     .topbar-search{
       grid-column:3;
       min-width:0;
-      width:100%;
+      width:44px;
+      justify-self:end;
+      transition:width 0.18s ease;
+    }
+
+    .topbar-search.is-open,
+    .topbar-search:focus-within{
+      width:min(320px,32vw);
     }
 
     .user-search-shell{
       position:relative;
       width:100%;
       min-width:0;
-    }
-
-    .user-search-input{
-      width:100%;
+      display:flex;
+      align-items:center;
+      gap:8px;
       min-height:44px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.12);
       background:rgba(255,255,255,0.06);
+      overflow:visible;
+      transition:border-color 0.16s ease,box-shadow 0.16s ease,background 0.16s ease;
+    }
+
+    .user-search-shell:focus-within{
+      border-color:rgba(220,20,60,0.34);
+      box-shadow:0 0 0 4px rgba(220,20,60,0.10);
+      background:rgba(255,255,255,0.08);
+    }
+
+    .search-toggle{
+      width:42px;
+      height:42px;
+      flex:0 0 42px;
+      display:grid;
+      place-items:center;
+      border:0;
+      border-radius:999px;
+      background:transparent;
+      color:rgba(255,255,255,0.84);
+      cursor:pointer;
+      transition:color 0.16s ease,background 0.16s ease;
+    }
+
+    .search-toggle:hover,
+    .search-toggle:focus-visible{
       color:#fff;
-      padding:0 16px;
+      background:rgba(255,255,255,0.10);
+      outline:none;
+    }
+
+    .search-toggle svg{
+      width:18px;
+      height:18px;
+      display:block;
+    }
+
+    .user-search-input{
+      width:0;
+      min-width:0;
+      min-height:44px;
+      border-radius:999px;
+      border:0;
+      background:transparent;
+      color:#fff;
+      padding:0;
       outline:none;
       font-family:var(--fontMain);
-      transition:border-color 0.16s ease,box-shadow 0.16s ease,background 0.16s ease;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 0.14s ease;
+    }
+
+    .topbar-search.is-open .user-search-input,
+    .topbar-search:focus-within .user-search-input{
+      width:100%;
+      padding:0 16px 0 0;
+      opacity:1;
+      pointer-events:auto;
     }
 
     .user-search-input::placeholder{
       color:rgba(255,255,255,0.52);
-    }
-
-    .user-search-input:focus{
-      border-color:rgba(220,20,60,0.34);
-      box-shadow:0 0 0 4px rgba(220,20,60,0.10);
-      background:rgba(255,255,255,0.08);
     }
 
     .ghost-btn{
@@ -1489,42 +1545,43 @@
 
     @media (max-width:1280px){
       .topbar-inner{
-        grid-template-columns:auto auto;
+        grid-template-columns:auto minmax(0,1fr) auto auto;
         align-items:center;
-        row-gap:12px;
       }
 
       .brand-link{
         grid-column:1;
       }
 
-      .topbar-right{
-        grid-column:2;
-      }
-
       .topnav{
-        grid-column:1 / -1;
+        grid-column:2;
         justify-content:flex-start;
       }
 
       .topbar-search{
-        grid-column:1 / -1;
+        grid-column:3;
       }
+
+      .topbar-right{
+        grid-column:4;
+      }
+
     }
 
     @media (max-width:760px){
       .topbar-inner{
-        grid-template-columns:auto auto;
+        grid-template-columns:auto minmax(0,1fr) auto auto;
         gap:12px;
       }
       .brand-link{grid-column:1;}
-      .topbar-right{grid-column:2;}
+      .topbar-search{grid-column:3;}
+      .topbar-search.is-open,
+      .topbar-search:focus-within{width:min(220px,44vw);}
+      .topbar-right{grid-column:4;}
       .topnav{
-        grid-column:1 / -1;
+        grid-column:2;
         justify-content:flex-start;
       }
-      .topbar-search{grid-column:1 / -1;}
-      .user-search-shell{width:100%;max-width:none;}
       .app-shell{grid-template-columns:1fr;}
       .rail{position:static;}
       .bottombar-inner{flex-direction:column;text-align:center;}
@@ -1593,13 +1650,19 @@
 
       <div class="topbar-search">
         <div class="user-search-shell">
+          <button class="search-toggle" id="globalSearchToggle" type="button" aria-label="Open search" aria-expanded="false" aria-controls="globalUserSearch">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"></circle>
+              <path d="M16 16l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+          </button>
           <input class="user-search-input" id="globalUserSearch" type="search" placeholder="Searching.." autocomplete="off" aria-label="Search people" />
           <div class="user-search-results" id="globalUserSearchResults" hidden></div>
         </div>
       </div>
 
       <div class="topbar-right">
-        <a class="ghost-btn" href="./notifications.html" title="Notifications">&#9993;</a>
+        <a class="ghost-btn" href="./notifications.html" title="Notifications">&#9790;</a>
       </div>
     </div>
   </header>
@@ -2679,7 +2742,7 @@
           <div class="comments-shell" data-comments-shell="true" hidden>
             <div class="comment-list" data-comment-list="true"></div>
             <div class="comment-form">
-              <textarea class="comment-input" data-comment-input="true" placeholder="Write a reply..."></textarea>
+              <textarea class="comment-input" data-comment-input="true" maxlength="500" placeholder="Write a reply..."></textarea>
               <div class="comment-row">
                 <span class="comment-hint">Keep it chill, keep it noctive.</span>
                 <button class="action" type="button" data-comment-submit="true">Comment</button>
@@ -3118,6 +3181,36 @@
       return next;
     }
 
+    async function submitPostComment(postEl, input) {
+      const postId = postEl?.dataset.postId;
+      const body = input?.value.trim();
+      if (!postEl || !postId || !body) return;
+
+      const submitBtn = postEl.querySelector('[data-comment-submit="true"]');
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        if (typeof window.noctiveCreateComment === 'function' && !postId.startsWith('guest-preview-')) {
+          await window.noctiveCreateComment(postId, body);
+        } else {
+          const author = document.getElementById('userDisplayName')?.textContent || 'Guest';
+          addComment(postId, {
+            author,
+            time: 'just now',
+            body
+          });
+          syncPostCommentsUI(postEl);
+        }
+
+        input.value = '';
+      } catch (error) {
+        console.error('Could not save reply:', error);
+        window.alert(error?.message || 'Could not save your reply right now.');
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       renderTemplateData();
       applyGeneratedAvatars();
@@ -3127,6 +3220,8 @@
       const messengerCloseBtn = document.getElementById('messengerCloseBtn');
       const messengerMinimizeBtn = document.getElementById('messengerMinimizeBtn');
       const messengerHead = document.querySelector('.messenger-head');
+      const globalSearchWrap = document.querySelector('.topbar-search');
+      const globalSearchToggle = document.getElementById('globalSearchToggle');
       const globalUserSearch = document.getElementById('globalUserSearch');
       const globalUserSearchResults = document.getElementById('globalUserSearchResults');
 
@@ -3261,7 +3356,33 @@
         if (e.target === rightDrawer) closeDrawer();
       });
 
+      function openGlobalSearch() {
+        globalSearchWrap?.classList.add('is-open');
+        globalSearchToggle?.setAttribute('aria-expanded', 'true');
+        globalSearchToggle?.setAttribute('aria-label', 'Search people');
+        window.setTimeout(() => globalUserSearch?.focus(), 20);
+      }
+
+      function closeGlobalSearch({ clear = false } = {}) {
+        if (clear && globalUserSearch) {
+          globalUserSearch.value = '';
+        }
+        hideUserSearchResults(globalUserSearchResults);
+        globalSearchWrap?.classList.remove('is-open');
+        globalSearchToggle?.setAttribute('aria-expanded', 'false');
+        globalSearchToggle?.setAttribute('aria-label', 'Open search');
+      }
+
+      globalSearchToggle?.addEventListener('click', () => {
+        if (globalSearchWrap?.classList.contains('is-open')) {
+          globalUserSearch?.focus();
+          return;
+        }
+        openGlobalSearch();
+      });
+
       globalUserSearch?.addEventListener('input', () => {
+        openGlobalSearch();
         const query = globalUserSearch.value.trim();
         if (!query) {
           hideUserSearchResults(globalUserSearchResults);
@@ -3271,6 +3392,12 @@
       });
 
       globalUserSearch?.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          closeGlobalSearch({ clear: true });
+          globalSearchToggle?.focus();
+          return;
+        }
         if (event.key !== 'Enter') return;
         const firstResult = searchGlobalEntries(globalUserSearch.value)[0];
         if (!firstResult) return;
@@ -3433,19 +3560,8 @@
         const commentBtn = e.target.closest('[data-comment-submit="true"]');
         if (commentBtn) {
           const postEl = commentBtn.closest('.post');
-          const postId = postEl?.dataset.postId;
           const input = postEl?.querySelector('[data-comment-input="true"]');
-          const body = input?.value.trim();
-          if (postEl && postId && body) {
-            const author = document.getElementById('userDisplayName')?.textContent || 'Guest';
-            addComment(postId, {
-              author,
-              time: 'just now',
-              body
-            });
-            input.value = '';
-            syncPostCommentsUI(postEl);
-          }
+          await submitPostComment(postEl, input);
           return;
         }
 
@@ -3468,6 +3584,10 @@
             openQuickMessenger(friendId);
           }
           return;
+        }
+
+        if (globalSearchWrap && !globalSearchWrap.contains(e.target) && !globalUserSearch?.value.trim()) {
+          closeGlobalSearch();
         }
 
         if (globalUserSearchResults && !globalUserSearchResults.contains(e.target) && e.target !== globalUserSearch) {
@@ -3516,19 +3636,8 @@
         if (!commentInput || !(e.ctrlKey || e.metaKey) || e.key !== 'Enter') return;
 
         const postEl = commentInput.closest('.post');
-        const postId = postEl?.dataset.postId;
-        const body = commentInput.value.trim();
-        if (!postEl || !postId || !body) return;
-
         e.preventDefault();
-        const author = document.getElementById('userDisplayName')?.textContent || 'Guest';
-        addComment(postId, {
-          author,
-          time: 'just now',
-          body
-        });
-        commentInput.value = '';
-        syncPostCommentsUI(postEl);
+        submitPostComment(postEl, commentInput);
       });
     });
   </script>
@@ -3540,6 +3649,11 @@
       onAuthStateChanged,
       signOut
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      doc,
+      getFirestore,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
@@ -3553,6 +3667,7 @@
 
     const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
     const homeSignOutBtn = document.getElementById('homeSignOutBtn');
     const LAST_PROFILE_UID_KEY = 'noctive_last_profile_uid';
 
@@ -3570,7 +3685,7 @@
       window.location.replace('../index.html');
     });
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       const sidebarAvatarBox = document.getElementById('sidebarAvatarBox');
       const postText = document.getElementById('postText');
       const postBtn = document.getElementById('postBtn');
@@ -3620,6 +3735,20 @@
           }
         } catch (e) {
           console.error('Could not load saved profile theme/avatar:', e);
+        }
+
+        try {
+          const profileSnapshot = await getDoc(doc(db, 'Profiles', user.uid));
+          if (profileSnapshot.exists()) {
+            const profile = profileSnapshot.data();
+            displayName = profile.displayName || profile.username || displayName;
+            savedUsername = profile.username || savedUsername;
+            savedTheme = profile.theme || savedTheme;
+            savedAvatar = profile.avatar || savedAvatar;
+            savedStatus = profile.status || savedStatus;
+          }
+        } catch (error) {
+          console.error('Could not load shared profile for home sidebar:', error);
         }
 
         setText('userDisplayName', displayName);
