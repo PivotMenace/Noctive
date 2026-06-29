@@ -516,9 +516,16 @@
       <div class="field">
         <label for="mediaFile">Upload Image</label>
         <input id="mediaFile" type="file" accept="image/*,image/gif" />
+        <div class="media-progress" id="mediaProgressWrap">
+          <div class="media-progress-bar">
+            <div class="media-progress-fill" id="mediaProgressFill"></div>
+          </div>
+          <div class="media-progress-text" id="mediaProgressText">Waiting to upload…</div>
+        </div>
       </div>
       <div class="actions">
         <button class="btn" type="button" id="applyMediaBtn">Apply Media</button>
+        <button class="btn-secondary" type="button" id="saveMediaProfileBtn">Save Profile</button>
         <button class="btn-secondary" type="button" id="removeMediaBtn">Remove</button>
         <button class="btn-secondary" type="button" id="closeMediaBtn">Close</button>
       </div>
@@ -529,7 +536,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+    import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
     import { isAdminIdentity } from "../js/admin-config.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
@@ -811,6 +818,12 @@
       hasUnsavedChanges = false;
     }
 
+    function markMediaDirty() {
+      if (!hasUnsavedChanges) {
+        hasUnsavedChanges = true;
+      }
+    }
+
     function shakeEditor(message = "Tiny chaos detected. Save your profile first.") {
       const card = document.querySelector('.page > .card');
       if (card) {
@@ -836,30 +849,59 @@
       return getOwnedMarketItems().includes(GIF_PROFILE_COUPON_ID);
     }
 
+    function getAdminIdentityUsername(user = currentAuthUser) {
+      const profile = getStoredProfile(user);
+      const fallbackUsername = String(user?.email || '').split('@')[0] || '';
+      return String(profile?.username || user?.displayName || fallbackUsername).trim().toLowerCase();
+    }
+
     function isAdminUser(user = currentAuthUser) {
       return isAdminIdentity({
         uid: user?.uid,
         email: user?.email,
-        username: user?.email?.split('@')[0],
+        username: getAdminIdentityUsername(user),
         displayName: user?.displayName
       });
     }
 
+    function hasOfficialNoctiveTeamTitle(user = currentAuthUser) {
+      if (!user) return false;
+      const profile = getStoredProfile(user);
+      const title = String(profile?.title || user?.displayName || '').trim().toLowerCase();
+      const username = getAdminIdentityUsername(user);
+      return username === 'venus'
+        || title.includes('noctive team')
+        || title.includes('official noctive');
+    }
+
+    function isOfficialTeamMember(user = currentAuthUser) {
+      return isAdminUser(user) || hasOfficialNoctiveTeamTitle(user);
+    }
+
     function canUseGifProfilePictures(user = currentAuthUser) {
-      return isAdminUser(user) || hasGifProfileUnlock();
+      return isOfficialTeamMember(user) || hasGifProfileUnlock();
     }
 
     function updateAdminAccessNote(user = currentAuthUser) {
       const note = document.getElementById('adminGifAccessNote');
       if (!note) return;
-      note.toggleAttribute('hidden', !isAdminUser(user));
+      note.toggleAttribute('hidden', !isOfficialTeamMember(user));
     }
+
+    const MAX_PROFILE_MEDIA_FILE_SIZE = 5 * 1024 * 1024;
 
     function looksLikeGif(value) {
       const trimmed = String(value || '').trim();
       if (!trimmed) return false;
       if (/^data:image\/gif/i.test(trimmed)) return true;
       return /\.gif(?:$|[?#])/i.test(trimmed);
+    }
+
+    function isGifFile(file) {
+      if (!file) return false;
+      const type = String(file.type || '').toLowerCase();
+      if (type === 'image/gif') return true;
+      return /\.gif$/i.test(String(file.name || ''));
     }
 
     function sanitizeStorageSegment(value, fallback = 'file') {
@@ -873,7 +915,7 @@
 
     function getStorageFileExtension(file) {
       const fileName = String(file?.name || '').trim();
-      const extMatch = fileName.match(/\.([a-z0-9]+)$/i);
+      const extMatch = fileName.match(/\.([a-z0-9]+)(?:[?#]|$)/i);
       if (extMatch) return extMatch[1].toLowerCase();
 
       const type = String(file?.type || '').toLowerCase();
@@ -883,6 +925,21 @@
       if (type.includes('gif')) return 'gif';
       if (type.includes('avif')) return 'avif';
       return 'bin';
+    }
+
+    function getStorageFileContentType(file) {
+      const type = String(file?.type || '').trim();
+      if (type) return type;
+      const extension = getStorageFileExtension(file);
+      switch (extension) {
+        case 'png': return 'image/png';
+        case 'jpg':
+        case 'jpeg': return 'image/jpeg';
+        case 'webp': return 'image/webp';
+        case 'gif': return 'image/gif';
+        case 'avif': return 'image/avif';
+        default: return '';
+      }
     }
 
     function buildProfileMediaStoragePath(target, file, user) {
@@ -903,7 +960,17 @@
       });
     }
 
-    async function uploadProfileMedia(file, target) {
+    function updateMediaProgressUI(percent = 0, text = 'Waiting to upload…') {
+      const wrap = document.getElementById('mediaProgressWrap');
+      const fill = document.getElementById('mediaProgressFill');
+      const label = document.getElementById('mediaProgressText');
+      if (!wrap || !fill || !label) return;
+      wrap.classList.toggle('is-visible', percent > 0 || text !== 'Waiting to upload…');
+      fill.style.width = `${Math.max(0, Math.min(100, percent))}%`;
+      label.textContent = text;
+    }
+
+    async function uploadProfileMedia(file, target, onProgress) {
       if (!file) return { url: '', storagePath: '' };
       if (!currentAuthUser?.uid) {
         return {
@@ -914,9 +981,32 @@
 
       const path = buildProfileMediaStoragePath(target, file, currentAuthUser);
       const mediaRef = storageRef(storage, path);
-      await uploadBytes(mediaRef, file, file.type ? { contentType: file.type } : undefined);
-      const url = await getDownloadURL(mediaRef);
-      return { url, storagePath: path };
+      return new Promise((resolve, reject) => {
+        const contentType = getStorageFileContentType(file);
+        const uploadTask = uploadBytesResumable(mediaRef, file, contentType ? { contentType } : undefined);
+        uploadTask.on('state_changed', (snapshot) => {
+          let percent = 0;
+          if (snapshot.totalBytes) {
+            percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          } else if (snapshot.bytesTransferred) {
+            percent = 1;
+          }
+          if (typeof onProgress === 'function') {
+            onProgress(percent, snapshot.state);
+          }
+        }, (error) => {
+          console.error('Firebase storage upload error:', error);
+          reject(error);
+        }, async () => {
+          try {
+            const url = await getDownloadURL(mediaRef);
+            resolve({ url, storagePath: path });
+          } catch (error) {
+            console.error('Get download URL failed:', error);
+            reject(error);
+          }
+        });
+      });
     }
 
     function setInput(id, value) {
@@ -1086,17 +1176,25 @@
     function updateMediaActionState() {
       const applyBtn = document.getElementById('applyMediaBtn');
       const removeBtn = document.getElementById('removeMediaBtn');
-      const hasValue = !!String(pendingMediaValue || '').trim();
+      const hasValue = !!String(pendingMediaValue || pendingMediaPreviewValue || '').trim();
+      const isUploading = pendingMediaUploadState === 'uploading';
+      const isError = pendingMediaUploadState === 'error';
 
       if (applyBtn) {
-        applyBtn.disabled = pendingMediaUploadState === 'error' || (!hasValue && pendingMediaUploadState !== 'uploading');
-        applyBtn.textContent = pendingMediaUploadState === 'uploading'
-          ? 'Uploading...'
-          : (hasValue ? 'Done' : 'Apply Media');
+        if (isUploading) {
+          applyBtn.disabled = true;
+          applyBtn.textContent = 'Uploading...';
+        } else if (isError && !hasValue) {
+          applyBtn.disabled = false;
+          applyBtn.textContent = 'Try Again';
+        } else {
+          applyBtn.disabled = false;
+          applyBtn.textContent = hasValue ? 'Done' : 'Apply Media';
+        }
       }
 
       if (removeBtn) {
-        removeBtn.disabled = pendingMediaUploadState === 'uploading' && !hasValue;
+        removeBtn.disabled = isUploading && !hasValue;
       }
     }
 
@@ -1127,6 +1225,7 @@
       pendingMediaStoragePath = profileMediaStoragePaths[target] || '';
       pendingMediaUploadState = 'idle';
       pendingMediaUploadPromise = null;
+      updateMediaProgressUI(0, 'Waiting to upload…');
       const mediaFile = document.getElementById('mediaFile');
       if (mediaFile) {
         mediaFile.value = '';
@@ -1138,6 +1237,7 @@
     }
 
     function closeMediaModal() {
+      updateMediaProgressUI(0, 'Waiting to upload…');
       document.getElementById('mediaModal')?.setAttribute('hidden', 'hidden');
     }
 
@@ -1165,46 +1265,51 @@
         shakeEditor('GIF profile pictures unlock after you buy the GIF coupon in Night Market first.');
         return;
       }
+      if (persist || previewValue) {
+        input.value = (persist ? value : previewValue) || '';
+      }
       if (persist) {
-        input.value = value || '';
         profileMediaStoragePaths[fieldId] = value ? pendingMediaStoragePath : '';
-        markDirty();
+        markMediaDirty();
+      } else if (previewValue) {
+        markMediaDirty();
       }
       setPreviewMediaOverride(fieldId, previewValue || '');
-      setSaveMessage(persist ? 'Media applied to the preview. Save Profile to keep it.' : 'Media preview updated. Upload is still finishing in the background.', 'good');
+      setSaveMessage(persist ? 'Media applied to the preview. Save Profile to keep it.' : 'Media preview updated. Save Profile to publish this change.', 'good');
       updatePreview(readFormProfile());
     }
 
     document.getElementById('changeAvatarBtn')?.addEventListener('click', () => openMediaModal('avatar'));
     document.getElementById('changeBannerBtn')?.addEventListener('click', () => openMediaModal('bannerImage'));
     document.getElementById('closeMediaBtn')?.addEventListener('click', closeMediaModal);
+    document.getElementById('saveMediaProfileBtn')?.addEventListener('click', () => {
+      document.getElementById('editProfileForm')?.requestSubmit?.();
+      closeMediaModal();
+    });
     document.getElementById('removeMediaBtn')?.addEventListener('click', () => {
       pendingMediaRequestId += 1;
       pendingMediaValue = '';
       pendingMediaPreviewValue = '';
       pendingMediaStoragePath = '';
-      pendingMediaUploadState = 'idle';
+      pendingMediaUploadState = 'ready';
       pendingMediaUploadPromise = null;
       setPreviewMediaOverride(activeMediaTarget, '');
+      markMediaDirty();
       applyMediaValue('');
       setMediaPreview('');
       updateMediaActionState();
-      const patch = activeMediaTarget === 'bannerImage'
-        ? { bannerImage: '', bannerStoragePath: '' }
-        : { avatar: '', avatarStoragePath: '' };
-      Promise.resolve(persistMediaFields(patch, activeMediaTarget === 'bannerImage' ? 'Banner removed and saved.' : 'Profile picture removed and saved.'))
-        .catch((error) => {
-          console.error('Could not save removed media:', error);
-          setSaveMessage('Could not save that media change. Try again.', 'bad');
-        })
-        .finally(() => {
-          closeMediaModal();
-        });
+      setSaveMessage(activeMediaTarget === 'bannerImage' ? 'Banner removed from preview. Save Profile to publish this change.' : 'Profile picture removed from preview. Save Profile to publish this change.', 'good');
+      closeMediaModal();
     });
     document.getElementById('mediaFile')?.addEventListener('change', async (event) => {
       const file = event.target.files?.[0];
       if (!file) return;
-      if (activeMediaTarget === 'avatar' && file.type === 'image/gif' && !canUseGifProfilePictures()) {
+      if (file.size > MAX_PROFILE_MEDIA_FILE_SIZE) {
+        event.target.value = '';
+        setSaveMessage('That file is too large. Pick a file under 5 MB for profile uploads.', 'bad');
+        return;
+      }
+      if (activeMediaTarget === 'avatar' && isGifFile(file) && !canUseGifProfilePictures()) {
         event.target.value = '';
         shakeEditor('That GIF pfp is locked for now. Grab the GIF coupon in Night Market first.');
         return;
@@ -1213,6 +1318,7 @@
       const uploadTarget = activeMediaTarget;
       try {
         pendingMediaUploadState = 'uploading';
+        updateMediaProgressUI(0, 'Preparing upload…');
         updateMediaActionState();
         const previewValue = await readFileAsDataUrl(file);
         if (requestId !== pendingMediaRequestId || uploadTarget !== activeMediaTarget) {
@@ -1221,37 +1327,56 @@
         pendingMediaPreviewValue = previewValue;
         setMediaPreview(previewValue);
         applyMediaValue('', { previewValue, persist: false });
-        setSaveMessage(currentAuthUser?.uid ? 'Preview updated. Uploading image to your profile media folder...' : 'Saving this image locally for guest preview.');
-        pendingMediaUploadPromise = uploadProfileMedia(file, uploadTarget);
-        const uploadedMedia = await pendingMediaUploadPromise;
+      markMediaDirty();
+
+        pendingMediaUploadPromise = uploadProfileMedia(file, uploadTarget, (percent, state) => {
+          pendingMediaUploadState = 'uploading';
+          const label = percent === 0
+            ? 'Uploading…'
+            : state === 'running' || percent < 100
+              ? `Uploading ${percent}%` : 'Finalizing upload…';
+          updateMediaProgressUI(percent, label);
+          updateMediaActionState();
+        });
+        let uploadedMedia = null;
+        try {
+          uploadedMedia = await pendingMediaUploadPromise;
+        } catch (uploadError) {
+          console.error('Upload promise rejected:', uploadError);
+          const fallbackValue = previewValue;
+          pendingMediaValue = fallbackValue;
+          pendingMediaPreviewValue = fallbackValue;
+          pendingMediaStoragePath = '';
+          pendingMediaUploadState = 'error';
+          updateMediaProgressUI(0, 'Upload failed');
+          setMediaPreview(fallbackValue);
+          applyMediaValue(fallbackValue, { previewValue: fallbackValue, persist: true });
+          setSaveMessage('Upload failed. Try a different file or refresh the page.', 'bad');
+          updateMediaActionState();
+          return;
+        }
+
         if (requestId !== pendingMediaRequestId || uploadTarget !== activeMediaTarget) {
           return;
         }
-        pendingMediaValue = uploadedMedia.url;
-        pendingMediaPreviewValue = uploadedMedia.url;
-        pendingMediaStoragePath = uploadedMedia.storagePath;
+        const finalUrl = uploadedMedia?.url || previewValue;
+        pendingMediaValue = finalUrl;
+        pendingMediaPreviewValue = finalUrl;
+        pendingMediaStoragePath = uploadedMedia?.storagePath || '';
         pendingMediaUploadState = 'ready';
-        setMediaPreview(uploadedMedia.url);
-        applyMediaValue(uploadedMedia.url, { previewValue: uploadedMedia.url, persist: true });
-        if (uploadTarget === 'bannerImage') {
-          await persistMediaFields({
-            bannerImage: uploadedMedia.url,
-            bannerStoragePath: uploadedMedia.storagePath
-          }, currentAuthUser?.uid ? 'Banner uploaded and published.' : 'Banner updated for this browser preview.');
-        } else {
-          await persistMediaFields({
-            avatar: uploadedMedia.url,
-            avatarStoragePath: uploadedMedia.storagePath
-          }, currentAuthUser?.uid ? 'Profile picture uploaded and published.' : 'Profile picture updated for this browser preview.');
-        }
-        closeMediaModal();
+        updateMediaProgressUI(100, 'Upload complete');
+        setMediaPreview(finalUrl);
+        applyMediaValue(finalUrl, { previewValue: finalUrl, persist: true });
+        setSaveMessage('Upload complete. Save Profile to publish this change.', 'good');
+        markMediaDirty();
       } catch (error) {
         if (requestId !== pendingMediaRequestId) {
           return;
         }
         pendingMediaUploadState = 'error';
+        updateMediaProgressUI(0, 'Upload failed');
         console.error('Could not upload profile media:', error);
-        setSaveMessage('Could not upload that image. Check your Firebase Storage rules and try again.', 'bad');
+        setSaveMessage('Upload failed. Try again or choose a different file.', 'bad');
       } finally {
         if (requestId === pendingMediaRequestId) {
           pendingMediaUploadPromise = null;
@@ -1273,6 +1398,9 @@
       if (!value && pendingMediaPreviewValue) {
         setSaveMessage('Preview is updated, but the upload has not finished yet. Give it another moment before saving.', 'remind');
         return;
+      }
+      if (pendingMediaPreviewValue) {
+        applyMediaValue(pendingMediaValue || pendingMediaPreviewValue, { previewValue: pendingMediaPreviewValue, persist: true });
       }
       closeMediaModal();
     });
@@ -1379,7 +1507,7 @@
       link.addEventListener('click', (event) => {
         if (!hasUnsavedChanges) return;
         event.preventDefault();
-        shakeEditor("Save first or your edits might vanish into the night.");
+        shakeEditor('Save Profile before leaving, or your changes will stay unsaved.');
       });
     });
 

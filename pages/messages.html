@@ -3,106 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Noctive Messages</title>
-  <link rel="icon" type="image/png" href="pngs/Favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;900&family=Roboto+Condensed:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <title>Noctive | Messages</title>
+  <link rel="icon" type="image/png" href="../pngs/Favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;900&family=Roboto+Condensed:wght@300;400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --gold: #facc15;
-      --bg-1: #151225;
-      --bg-2: #1b1730;
-      --bg-3: #23244a;
+      --bgTop: #05040a;
+      --bgMid: #060415;
       --panel: rgba(255,255,255,0.055);
-      --panel-dark: rgba(0,0,0,0.22);
-      --panel-soft: rgba(255,255,255,0.04);
-      --border: rgba(255,255,255,0.10);
-      --text: rgba(255,255,255,0.94);
+      --panel2: rgba(0,0,0,0.26);
+      --border: rgba(255,255,255,0.09);
+      --text: rgba(255,255,255,0.93);
       --muted: rgba(255,255,255,0.66);
-      --accent-soft: rgba(220,20,60,0.16);
-      --accent-border: rgba(220,20,60,0.34);
-      --shadow: 0 22px 75px rgba(0,0,0,0.44);
-      --radius: 20px;
-      --font-main: 'Nunito', sans-serif;
-      --font-head: 'Rubik', 'Roboto Condensed', sans-serif;
-      --discord-shell: rgba(17,18,22,0.92);
-      --discord-sidebar: rgba(28,30,34,0.98);
-      --discord-thread: rgba(34,36,41,0.92);
-      --discord-thread-hover: rgba(63,66,73,0.72);
-      --discord-thread-active: rgba(88,101,242,0.22);
-      --discord-chat: rgba(49,51,56,0.88);
-      --discord-chat-soft: rgba(54,57,63,0.65);
-      --discord-composer: rgba(56,58,64,0.92);
-      --discord-line: rgba(255,255,255,0.08);
-      --discord-blue: #5865f2;
-      --fun-shell: rgba(16,18,28,0.88);
-      --fun-sidebar: linear-gradient(180deg, rgba(28,22,43,0.98), rgba(20,23,38,0.98));
-      --fun-chat: linear-gradient(180deg, rgba(28,30,44,0.86), rgba(17,19,29,0.94));
-      --fun-thread-hover: rgba(255,255,255,0.09);
-      --fun-thread-active-a: rgba(255,140,102,0.22);
-      --fun-thread-active-b: rgba(93,92,222,0.22);
-      --fun-self: linear-gradient(135deg, rgba(255,133,122,0.20), rgba(108,99,255,0.22));
+      --accent: #dc143c;
+      --fontMain: 'Nunito', sans-serif;
+      --fontHead: 'Rubik', 'Roboto Condensed', 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
-      min-height: 100vh;
-      font-family: var(--font-main);
+      margin: 0;
+      font-family: var(--fontMain);
       color: var(--text);
-      background:
-        radial-gradient(circle at 12% 18%, rgba(255,155,122,0.17), transparent 22%),
-        radial-gradient(circle at 88% 14%, rgba(125,211,252,0.16), transparent 20%),
-        radial-gradient(circle at 72% 80%, rgba(159,140,255,0.14), transparent 24%),
-        linear-gradient(180deg, #13131d, #121521 40%, #0e1119 100%);
-      background-size: 100% 100%, 100% 100%, 100% 100%, 220% 220%;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #181624, #1e1a2f, #23244a, #23244a, #181624);
+      background-size: 200% 200%;
+      background-repeat: no-repeat;
       background-attachment: fixed;
-      overflow-y: scroll;
-    }
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.04);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.18);
-      border-radius: 999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255,255,255,0.24);
+      background-color: #121524;
     }
     a { color: inherit; text-decoration: none; }
-    button, textarea { font: inherit; }
+    button { font-family: inherit; }
 
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 6000;
       backdrop-filter: blur(10px);
       background: rgba(10,10,14,0.60);
+      border-bottom: 1px solid var(--border);
     }
     .topbar-inner {
-      max-width: 1220px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 14px 18px;
-      display: flex;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto auto;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
+    .brand-link { grid-column: 1; }
     .brand-title {
       display: inline-block;
       font-size: 2rem;
       font-weight: 700;
-      font-family: var(--font-head);
+      font-family: var(--fontHead);
       letter-spacing: 0.5px;
       background: linear-gradient(90deg, #8b0000, #b22222, #dc143c, #b22222, #8b0000);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
       line-height: 1;
+      filter: drop-shadow(0 1px 3px rgba(139,0,0,0.4));
     }
     .topnav {
+      grid-column: 2;
       display: flex;
+      align-items: center;
       gap: 8px;
       padding: 6px;
       border-radius: 999px;
@@ -110,997 +80,148 @@
       border: 1px solid var(--border);
       width: max-content;
       max-width: 100%;
+      justify-self: start;
       overflow-x: auto;
       scrollbar-width: none;
     }
     .topnav::-webkit-scrollbar { display: none; }
     .topnav a {
-      font-family: var(--font-head);
-      font-size: 0.92rem;
+      font-family: var(--fontHead);
       color: rgba(255,255,255,0.80);
+      font-size: 0.92rem;
       padding: 10px 12px;
       border-radius: 999px;
       white-space: nowrap;
-      transition: 0.16s ease;
     }
     .topnav a:hover,
     .topnav a[aria-current="page"] {
       background: rgba(255,255,255,0.12);
       color: #fff;
-      transform: translateY(-1px);
     }
     .topbar-right {
-      margin-left: auto;
-      display: flex;
+      grid-column: 4;
+      display: grid;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      justify-items: end;
     }
-    .ghost-btn,
-    .primary-btn,
-    .pill-btn {
-      border-radius: 12px;
+    .ghost-btn {
+      font-family: var(--fontHead);
+      color: rgba(255,255,255,0.84);
       padding: 10px 12px;
-      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
       background: rgba(255,255,255,0.06);
-      color: #fff;
-      transition: 0.16s ease;
+      border: 1px solid var(--border);
       cursor: pointer;
     }
-    .ghost-btn:hover,
-    .primary-btn:hover,
-    .pill-btn:hover { transform: translateY(-1px); }
-    .primary-btn {
-      background: var(--accent-soft);
-      border-color: var(--accent-border);
-      font-family: var(--font-head);
-      font-weight: 700;
-    }
-
-    .page-wrap {
-      max-width: 1220px;
-      margin: 0 auto;
-      padding: 28px 18px 44px;
-      display: grid;
-      gap: 20px;
-    }
-    .hero,
-    .messages-shell,
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .hero {
-      padding: 24px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
-      gap: 18px;
-    }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 8px 12px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.10);
-      font-family: var(--font-head);
-      color: rgba(255,255,255,0.86);
-      width: fit-content;
-      margin-bottom: 14px;
-    }
-    h1, .section-title, .thread-name {
-      font-family: var(--font-head);
-    }
-    h1 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      line-height: 1.02;
-      color: #fff;
-      margin-bottom: 12px;
-      max-width: 11ch;
-    }
-    .hero p, .panel p, .thread-snippet, .message-copy {
-      color: var(--muted);
-      line-height: 1.55;
-    }
-    .hero-side { display: grid; gap: 12px; }
-    .panel { padding: 16px 18px; }
-    .section-title {
-      color: var(--gold);
-      font-size: 1.04rem;
-      margin-bottom: 8px;
-    }
+    .ghost-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
     .messages-shell {
-      padding: 0;
+      max-width: 1280px;
+      margin: 0 auto;
+      height: calc(100vh - 76px);
       display: grid;
-      grid-template-columns: 320px minmax(0, 1fr);
-      gap: 0;
+      grid-template-columns: 300px 1fr;
       overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)),
-        var(--fun-shell);
-      min-height: 74vh;
-      border-radius: 28px;
-      position: relative;
+      border-top: 1px solid var(--border);
     }
-    .messages-shell::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.05), transparent 26%),
-        radial-gradient(circle at bottom right, rgba(159,140,255,0.08), transparent 28%);
-      pointer-events: none;
+    .sidebar {
+      background: linear-gradient(180deg, rgba(20,16,32,0.95), rgba(15,13,24,0.98));
+      border-right: 1px solid var(--border);
+      padding: 16px 10px;
+      overflow-y: auto;
     }
-    .threads {
-      display: grid;
-      gap: 2px;
-      align-content: start;
-      padding: 14px 10px;
-      background: var(--fun-sidebar);
-      border-right: 1px solid rgba(255,255,255,0.08);
-      position: relative;
-      z-index: 1;
-    }
-    .thread-card {
-      border-radius: 12px;
-      padding: 12px 14px;
-      background: transparent;
-      border: 1px solid transparent;
-      display: grid;
-      gap: 6px;
-      cursor: pointer;
-      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
-    }
-    .thread-card:hover {
-      background: var(--fun-thread-hover);
-      border-color: rgba(255,255,255,0.08);
-      transform: translateX(3px);
-    }
-    .thread-card.is-active {
-      background:
-        linear-gradient(90deg, var(--fun-thread-active-a), var(--fun-thread-active-b)),
-        rgba(255,255,255,0.06);
-      border-color: rgba(159,140,255,0.22);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 10px 18px rgba(0,0,0,0.12);
-    }
-    .thread-main {
-      display: grid;
-      grid-template-columns: 48px minmax(0, 1fr);
-      gap: 12px;
-      align-items: center;
-    }
-    .thread-avatar-shell,
-    .conversation-avatar-shell {
-      position: relative;
-      width: 48px;
-      height: 48px;
-      flex: 0 0 auto;
-    }
-    .thread-avatar,
-    .conversation-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-family: var(--font-head);
+    .sidebar-title {
+      font-size: 0.8rem;
+      font-family: var(--fontHead);
+      color: var(--muted);
       font-weight: 700;
-      font-size: 1rem;
       text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 12px 10px;
     }
-    .thread-avatar img,
-    .conversation-avatar img {
+    .new-message-btn {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .presence-dot {
-      position: absolute;
-      right: -1px;
-      bottom: -1px;
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      border: 3px solid rgba(29,27,44,1);
-      background: #6b7280;
-      box-shadow: 0 0 10px rgba(0,0,0,0.25);
-    }
-    .presence-dot.status-online {
-      background: #2ecc71;
-      box-shadow: 0 0 12px rgba(46,204,113,0.45);
-    }
-    .presence-dot.status-idle {
-      background: #f5b942;
-      box-shadow: 0 0 12px rgba(245,185,66,0.45);
-    }
-    .presence-dot.status-dnd {
-      background: #ef4444;
-      box-shadow: 0 0 12px rgba(239,68,68,0.42);
-    }
-    .presence-dot.status-invisible,
-    .presence-dot.status-offline {
-      background: #7c7f8c;
-      box-shadow: none;
-    }
-    .thread-copy {
-      min-width: 0;
-      display: grid;
-      gap: 4px;
-    }
-    .thread-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-    }
-    .thread-name { color: #fff; font-size: 0.98rem; font-weight: 700; }
-    .thread-time { color: rgba(255,255,255,0.48); font-size: 0.76rem; }
-    .thread-snippet {
-      font-size: 0.88rem;
-      color: rgba(230,232,255,0.62);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .conversation {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr) auto;
-      gap: 0;
-      min-width: 0;
-      background: var(--fun-chat);
-      position: relative;
-      z-index: 1;
-    }
-    .conversation-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      padding: 16px 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background:
-        linear-gradient(90deg, rgba(255,155,122,0.06), rgba(125,211,252,0.05) 38%, rgba(159,140,255,0.07)),
-        rgba(20,22,33,0.84);
-      backdrop-filter: blur(10px);
-    }
-    .conversation-head-main {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-    .message-list {
-      display: grid;
-      gap: 10px;
-      padding: 18px 18px 22px;
-      align-content: start;
-      overflow-y: auto;
-      min-height: 420px;
-    }
-    .message-bubble {
-      max-width: min(680px, 100%);
-      border-radius: 22px 22px 22px 10px;
-      padding: 14px 16px;
-      background: rgba(255,255,255,0.045);
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
-      box-shadow: 0 12px 26px rgba(0,0,0,0.10);
-    }
-    .message-bubble:hover {
-      background: rgba(255,255,255,0.065);
-      border-color: rgba(255,255,255,0.09);
-      transform: translateY(-1px);
-    }
-    .message-bubble.self {
-      margin-left: auto;
-      border-radius: 22px 22px 10px 22px;
-      background: var(--fun-self);
-      border-color: rgba(159,140,255,0.18);
-      box-shadow: 0 14px 30px rgba(39,24,84,0.20);
-    }
-    .message-meta {
-      color: rgba(255,255,255,0.50);
-      font-size: 0.76rem;
-      margin-bottom: 6px;
-      font-family: var(--font-head);
-      letter-spacing: 0.01em;
-    }
-    .message-copy {
-      color: rgba(245,247,255,0.92);
-      font-size: 1rem;
-      line-height: 1.55;
-    }
-    .composer {
-      display: grid;
-      gap: 10px;
-      padding: 14px 16px 16px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      background:
-        linear-gradient(90deg, rgba(255,155,122,0.05), rgba(159,140,255,0.06)),
-        linear-gradient(180deg, rgba(18,19,29,0.98), rgba(16,18,26,0.99));
-    }
-    .composer textarea {
-      width: 100%;
-      min-height: 72px;
-      resize: vertical;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)),
-        rgba(41,44,58,0.88);
-      color: #fff;
-      padding: 14px 16px;
-      outline: none;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.10);
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-    }
-    .composer textarea:focus {
-      border-color: rgba(159,140,255,0.42);
-      box-shadow: 0 0 0 3px rgba(159,140,255,0.12), 0 14px 30px rgba(0,0,0,0.12);
-    }
-    .composer-bar {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .composer-tools {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .icon-btn {
-      min-width: 44px;
-      padding: 10px 12px;
-      font-family: var(--font-head);
-      font-size: 0.84rem;
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.08);
-      border-radius: 14px;
-    }
-    .pill-btn:hover,
-    .icon-btn:hover {
-      background: rgba(255,255,255,0.15);
-      border-color: rgba(255,255,255,0.15);
-    }
-    .primary-btn {
-      background: linear-gradient(135deg, rgba(255,141,110,0.96), rgba(159,140,255,0.96));
-      border-color: rgba(255,255,255,0.14);
-      box-shadow: 0 12px 28px rgba(102,72,178,0.22);
-    }
-    .primary-btn:hover {
-      box-shadow: 0 16px 34px rgba(102,72,178,0.30);
-    }
-    .media-picker {
-      display: grid;
-      gap: 0;
-      padding: 0;
-      border-radius: 18px;
-      background: rgba(12,13,17,0.98);
-      border: 1px solid rgba(255,255,255,0.08);
-      overflow: hidden;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.44);
-      animation: pickerRise 0.18s ease;
-    }
-    .media-picker.is-sticker {
-      background: rgba(16,17,21,0.99);
-    }
-    .media-picker[hidden] {
-      display: none !important;
-    }
-    .media-tabs {
-      display: flex;
-      gap: 10px;
-      padding: 16px 16px 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: rgba(18,19,24,0.98);
-    }
-    .media-tab {
-      border: 0;
-      background: transparent;
-      color: rgba(255,255,255,0.84);
-      font-family: var(--font-head);
-      font-size: 0.92rem;
-      font-weight: 700;
-      padding: 12px 16px;
-      border-radius: 16px;
-      cursor: pointer;
-      transition: 0.16s ease;
-    }
-    .media-tab.is-active {
-      background: linear-gradient(135deg, rgba(255,141,110,0.20), rgba(159,140,255,0.22));
-      color: #fff;
-    }
-    .media-search-wrap {
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      display: grid;
-      gap: 8px;
-    }
-    .media-search-row {
-      display: grid;
-      grid-template-columns: 22px minmax(0, 1fr);
-      gap: 12px;
-      align-items: center;
-      min-height: 54px;
-      padding: 0 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(32,34,37,0.98);
-    }
-    .media-search-icon {
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255,255,255,0.82);
-      border-radius: 50%;
-      position: relative;
-      opacity: 0.9;
-    }
-    .media-search-icon::after {
-      content: '';
-      position: absolute;
-      width: 8px;
-      height: 2px;
-      right: -6px;
-      bottom: -2px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.82);
-      transform: rotate(45deg);
-      transform-origin: center;
-    }
-    .media-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      padding: 16px;
-      max-height: 420px;
-      overflow-y: auto;
-    }
-    .media-search {
-      width: 100%;
-      padding: 14px 0;
-      border: 0;
-      background: transparent;
-      color: #fff;
-      outline: none;
-      font-size: 1rem;
-    }
-    .media-search::placeholder {
-      color: rgba(191,199,214,0.76);
-    }
-    .media-choice {
-      border-radius: 14px;
-      padding: 0;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-      color: #fff;
-      text-align: center;
-      transition: 0.16s ease;
-      overflow: hidden;
-      position: relative;
-      min-height: 120px;
-      display: grid;
-      align-content: end;
-    }
-    .media-choice.is-fallback {
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.54)),
-        var(--media-card-bg, linear-gradient(135deg, #4d4f79, #292941));
-    }
-    .media-choice::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.40));
-      pointer-events: none;
-    }
-    .media-choice:hover {
-      transform: translateY(-1px);
-      border-color: rgba(159,140,255,0.30);
-    }
-    .media-choice img {
-      width: 100%;
-      height: 100%;
-      min-height: 120px;
-      object-fit: cover;
-      display: block;
-      opacity: 0.82;
-    }
-    .media-choice-title {
-      position: absolute;
-      left: 12px;
-      right: 12px;
-      bottom: 12px;
-      z-index: 1;
-      text-align: left;
-      color: #fff;
-      font-family: var(--font-head);
-      font-size: 0.98rem;
-      text-shadow: 0 2px 16px rgba(0,0,0,0.66);
-    }
-    .sticker-browser {
-      display: grid;
-      grid-template-columns: 72px minmax(0, 1fr);
-      min-height: 420px;
-      max-height: 560px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-    }
-    .sticker-browser[hidden] {
-      display: none !important;
-    }
-    .sticker-sidebar {
-      display: grid;
-      gap: 10px;
-      align-content: start;
-      padding: 14px 10px;
-      background: rgba(7,8,11,0.92);
-      border-right: 1px solid rgba(255,255,255,0.07);
-      overflow-y: auto;
-    }
-    .sticker-pack-btn {
-      width: 50px;
-      min-height: 50px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.04);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      padding: 0;
-      cursor: pointer;
-      transition: 0.16s ease;
-      overflow: hidden;
-    }
-    .sticker-pack-btn:hover,
-    .sticker-pack-btn.is-active {
-      background: rgba(255,255,255,0.10);
-      border-color: rgba(255,255,255,0.16);
-      transform: translateY(-1px);
-    }
-    .sticker-pack-btn img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .sticker-pack-fallback {
-      font-family: var(--font-head);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      color: rgba(255,255,255,0.84);
-    }
-    .sticker-main {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-      min-width: 0;
-      background: rgba(18,19,24,0.98);
-    }
-    .sticker-section-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px 10px;
-      color: #fff;
-      font-family: var(--font-head);
-      font-size: 0.94rem;
-      font-weight: 700;
-    }
-    .sticker-section-title {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-    .sticker-section-title::before {
-      content: '';
-      width: 14px;
-      height: 14px;
-      border: 3px solid rgba(255,255,255,0.82);
-      border-top-color: transparent;
-      border-radius: 50%;
-      opacity: 0.9;
-    }
-    .sticker-section-chevron {
-      color: rgba(255,255,255,0.74);
-      font-size: 1rem;
-    }
-    .sticker-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px 16px;
-      align-content: start;
-      padding: 8px 16px 16px;
-      overflow-y: auto;
-    }
-    .sticker-grid[hidden] {
-      display: none !important;
-    }
-    .sticker-choice {
-      border: 0;
-      background: transparent;
-      border-radius: 22px;
-      min-height: 132px;
-      padding: 10px;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      transition: 0.16s ease;
-      position: relative;
-    }
-    .sticker-choice:hover,
-    .sticker-choice.is-selected {
-      background: rgba(255,255,255,0.08);
-      transform: translateY(-2px);
-    }
-    .sticker-choice img {
-      width: 100%;
-      max-width: 158px;
-      aspect-ratio: 1;
-      object-fit: contain;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.24));
-      user-select: none;
-      pointer-events: none;
-    }
-    .sticker-empty {
-      padding: 18px 16px 24px;
-      color: rgba(255,255,255,0.58);
-      font-size: 0.9rem;
-    }
-    .sticker-preview {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 12px 16px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      background: rgba(6,7,10,0.96);
-    }
-    .sticker-preview[hidden] {
-      display: none !important;
-    }
-    .sticker-preview-main {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-    .sticker-preview-thumb {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.08);
-      overflow: hidden;
-      flex: 0 0 auto;
-    }
-    .sticker-preview-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    .sticker-preview-copy {
-      min-width: 0;
-    }
-    .sticker-preview-name {
-      font-family: var(--font-head);
-      color: #fff;
-      font-size: 1rem;
-      line-height: 1.05;
-    }
-    .sticker-preview-pack {
-      color: rgba(255,255,255,0.64);
-      font-size: 0.86rem;
-      margin-top: 4px;
-    }
-    .sticker-preview-badge {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.08);
-      overflow: hidden;
-      flex: 0 0 auto;
-    }
-    .sticker-preview-badge img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .emoji-browser {
-      display: grid;
-      grid-template-columns: 72px minmax(0, 1fr);
-      min-height: 420px;
-      max-height: 560px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-    }
-    .emoji-browser[hidden] {
-      display: none !important;
-    }
-    .emoji-sidebar {
-      display: grid;
-      gap: 10px;
-      align-content: start;
-      padding: 14px 10px;
-      background: rgba(7,8,11,0.92);
-      border-right: 1px solid rgba(255,255,255,0.07);
-      overflow-y: auto;
-    }
-    .emoji-pack-btn {
-      width: 50px;
-      min-height: 50px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.04);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-size: 1.55rem;
-      cursor: pointer;
-      transition: 0.16s ease;
-    }
-    .emoji-pack-btn:hover,
-    .emoji-pack-btn.is-active {
-      background: rgba(255,255,255,0.10);
-      border-color: rgba(255,255,255,0.16);
-      transform: translateY(-1px);
-    }
-    .emoji-main {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-      min-width: 0;
-      background: rgba(18,19,24,0.98);
-    }
-    .emoji-section-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px 10px;
-      color: #fff;
-      font-family: var(--font-head);
-      font-size: 0.94rem;
-      font-weight: 700;
-    }
-    .emoji-section-title {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .emoji-section-title::before {
-      content: '\263A';
-      color: rgba(255,255,255,0.8);
-      font-size: 1rem;
-      line-height: 1;
-    }
-    .emoji-grid {
-      display: grid;
-      grid-template-columns: repeat(8, minmax(0, 1fr));
-      gap: 10px;
-      align-content: start;
-      padding: 8px 16px 16px;
-      overflow-y: auto;
-    }
-    .emoji-grid[hidden] {
-      display: none !important;
-    }
-    .emoji-choice {
-      min-height: 60px;
-      border: 0;
-      border-radius: 18px;
-      background: transparent;
-      display: grid;
-      place-items: center;
-      font-size: 2.45rem;
-      cursor: pointer;
-      transition: 0.16s ease;
-    }
-    .emoji-choice:hover,
-    .emoji-choice.is-selected {
-      background: rgba(255,255,255,0.10);
-      transform: translateY(-1px);
-    }
-    .emoji-empty {
-      padding: 18px 16px 24px;
-      color: rgba(255,255,255,0.58);
-      font-size: 0.9rem;
-    }
-    .emoji-preview {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 12px 16px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      background: rgba(6,7,10,0.96);
-    }
-    .emoji-preview[hidden] {
-      display: none !important;
-    }
-    .emoji-preview-main {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-    .emoji-preview-glyph {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.08);
-      display: grid;
-      place-items: center;
-      font-size: 1.85rem;
-      flex: 0 0 auto;
-    }
-    .emoji-preview-copy {
-      min-width: 0;
-    }
-    .emoji-preview-name {
-      font-family: var(--font-head);
-      color: #fff;
-      font-size: 1rem;
-      line-height: 1.05;
-    }
-    .emoji-preview-code {
-      color: rgba(255,255,255,0.64);
-      font-size: 0.86rem;
-      margin-top: 4px;
-    }
-    .emoji-preview-action {
-      border-radius: 16px;
-      padding: 12px 16px;
+      padding: 12px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255,140,102,0.90), rgba(159,140,255,0.90));
       border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.12);
       color: #fff;
-      font-family: var(--font-head);
+      font-family: var(--fontHead);
       font-weight: 700;
+      font-size: 0.95rem;
       cursor: pointer;
     }
-    .media-label {
-      color: var(--gold);
-      font-family: var(--font-head);
-      font-size: 0.92rem;
-    }
-    .media-note {
-      color: rgba(255,255,255,0.58);
-      font-size: 0.78rem;
-      line-height: 1.4;
-    }
-    .message-copy.media-post {
-      color: #fff;
-      font-family: var(--font-head);
-      font-size: 1.08rem;
-      letter-spacing: 0.01em;
-    }
-    .message-gif {
-      display: grid;
-      gap: 8px;
-    }
-    .message-gif img {
-      width: min(280px, 100%);
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.16);
-    }
-    .message-sticker {
-      display: grid;
-      justify-items: start;
-      gap: 6px;
-    }
-    .message-sticker img {
-      width: min(164px, 100%);
-      object-fit: contain;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.22));
-    }
-    .message-sticker-caption {
-      color: rgba(255,255,255,0.56);
-      font-size: 0.78rem;
-    }
-    .message-emoji {
-      display: inline-flex;
-      align-items: center;
+    .new-message-btn:hover { transform: translateY(-1px); }
+    .conversation-item {
+      padding: 12px 14px;
+      margin-bottom: 6px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
       gap: 10px;
-      font-family: var(--font-head);
-      color: #fff;
-      font-size: 1.05rem;
+      align-items: center;
+      min-width: 0;
     }
-    .message-emoji-glyph {
-      font-size: 2.15rem;
-      line-height: 1;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.14));
-    }
-    .composer-help {
-      color: rgba(222,225,255,0.56);
-      font-size: 0.78rem;
-      line-height: 1.4;
-    }
-    #composerHint {
-      color: rgba(222,225,255,0.46);
-      font-size: 0.8rem;
-    }
-    @keyframes pickerRise {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    .conversation-item:hover { background: rgba(255,255,255,0.08); }
+    .conversation-item.active { background: linear-gradient(90deg, rgba(255,140,102,0.20), rgba(159,140,255,0.20)); border: 1px solid rgba(159,140,255,0.30); }
+    .conversation-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--fontHead); flex-shrink: 0; border: 1px solid rgba(255,255,255,0.12); }
+    .conversation-info { min-width: 0; flex: 1; }
+    .conversation-name { font-size: 0.95rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .conversation-preview { font-size: 0.8rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    @media (max-width: 980px) {
-      .hero,
+    .chat-area { display: grid; grid-template-rows: 64px 1fr auto; background: linear-gradient(135deg, rgba(20,22,33,0.60), rgba(16,18,28,0.70)); min-height: 0; }
+    .chat-header { padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .chat-header-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .chat-header-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--fontHead); border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0; }
+    .chat-header-info h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .chat-header-info p { font-size: 0.8rem; color: var(--muted); }
+    .messages-box { overflow-y: auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; }
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--muted); text-align: center; }
+    .message-group { display: flex; gap: 12px; align-items: flex-start; }
+    .message-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--fontHead); font-size: 0.85rem; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.12); }
+    .message-content { flex: 1; min-width: 0; }
+    .message-header { display: flex; gap: 8px; align-items: baseline; margin-bottom: 4px; }
+    .message-author { font-weight: 700; color: #fff; font-size: 0.95rem; }
+    .message-timestamp { font-size: 0.75rem; color: var(--muted); }
+    .message-bubble { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 14px; max-width: 85%; word-wrap: break-word; line-height: 1.5; color: rgba(245,247,255,0.92); }
+    .message-group.own .message-bubble { background: linear-gradient(135deg, rgba(255,140,102,0.20), rgba(159,140,255,0.20)); border-color: rgba(159,140,255,0.30); margin-left: auto; max-width: 85%; }
+    .message-group.own { flex-direction: row-reverse; }
+    .message-input-area { padding: 16px 24px 20px; border-top: 1px solid var(--border); background: rgba(16,18,26,0.60); }
+    .message-input-wrapper { display: flex; gap: 12px; align-items: flex-end; }
+    .input-field { flex: 1; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: rgba(32,34,38,0.88); border: 1px solid rgba(255,255,255,0.08); }
+    .input-field:focus-within { border-color: rgba(159,140,255,0.40); background: rgba(32,34,38,0.95); }
+    .message-textarea { flex: 1; border: 0; background: transparent; color: #fff; outline: 0; resize: none; max-height: 120px; font-family: var(--fontMain); font-size: 0.95rem; }
+    .message-textarea::placeholder { color: rgba(255,255,255,0.40); }
+    .send-btn { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, rgba(255,140,102,0.90), rgba(159,140,255,0.90)); border: 1px solid rgba(255,255,255,0.12); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .send-btn:hover:not(:disabled) { transform: translateY(-1px); }
+    .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.60); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .modal-box { background: rgba(20,16,32,0.95); border: 1px solid var(--border); border-radius: 16px; padding: 24px; width: 92%; max-width: 440px; }
+    .modal-box h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; color: #fff; }
+    .modal-box input { width: 100%; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: #fff; font-family: var(--fontMain); margin-bottom: 12px; }
+    .modal-box input::placeholder { color: rgba(255,255,255,0.40); }
+    .modal-buttons { display: flex; gap: 10px; }
+    .modal-btn { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: #fff; cursor: pointer; }
+    .modal-btn:hover { background: rgba(255,255,255,0.12); }
+    .modal-btn.primary { background: linear-gradient(135deg, rgba(255,140,102,0.90), rgba(159,140,255,0.90)); border: none; font-weight: 700; }
+    .suggestion-item { display:flex; gap:10px; align-items:center; padding:8px 10px; border-radius:8px; cursor:pointer; }
+    .suggestion-item:hover { background: rgba(255,255,255,0.04); }
+
+    @media (max-width: 900px) {
       .messages-shell { grid-template-columns: 1fr; }
-      .messages-shell {
-        min-height: auto;
-      }
-      .threads {
-        border-right: 0;
-        border-bottom: 1px solid var(--discord-line);
-      }
-    }
-    @media (max-width: 760px) {
-      .topbar-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .topbar-right { margin-left: 0; }
-      .topnav { width: 100%; }
-      .hero, .panel { padding: 16px; }
-      .messages-shell { border-radius: 20px; }
-      .message-bubble { max-width: 100%; }
-      .media-grid { grid-template-columns: 1fr 1fr; }
-      .sticker-browser {
-        grid-template-columns: 1fr;
-        min-height: 0;
-      }
-      .sticker-sidebar {
-        grid-auto-flow: column;
-        grid-auto-columns: 50px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        border-right: 0;
-        border-bottom: 1px solid rgba(255,255,255,0.07);
-      }
-      .sticker-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .emoji-browser {
-        grid-template-columns: 1fr;
-        min-height: 0;
-      }
-      .emoji-sidebar {
-        grid-auto-flow: column;
-        grid-auto-columns: 50px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        border-right: 0;
-        border-bottom: 1px solid rgba(255,255,255,0.07);
-      }
-      .emoji-grid {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-      }
+      .sidebar { display: none; }
     }
   </style>
 </head>
 <body>
-  <script src="/js/page-loader.js"></script>
   <header class="topbar">
     <div class="topbar-inner">
-      <a href="./home.html"><span class="brand-title">Noctive</span></a>
+      <a class="brand-link" href="./home.html">
+        <span class="brand-title">Noctive</span>
+      </a>
       <nav class="topnav" aria-label="Primary">
         <a href="./home.html">Home</a>
         <a href="./explore.html">Explore</a>
@@ -1110,1639 +231,341 @@
         <a href="./profile.html">Profile</a>
       </nav>
       <div class="topbar-right">
-        <a class="ghost-btn" href="./notifications.html" title="Notifications">&#9790;</a>
-        <a class="ghost-btn" href="./profile.html">View Profile</a>
+        <a class="ghost-btn" href="./notifications.html" title="Notifications">☼</a>
       </div>
     </div>
   </header>
 
-  <main class="page-wrap">
-    <section class="hero">
-      <div>
-        <div class="eyebrow">Direct Messages</div>
-        <h1 id="messagesHeroTitle">Keep the late-night conversations close.</h1>
-        <p id="messagesHeroCopy">`messages.html` is now a real page in the site flow. For now it works as a polished placeholder inbox so the navigation feels complete while the deeper messaging system gets built out.</p>
+  <div class="messages-shell">
+    <div class="sidebar">
+      <button class="new-message-btn" type="button">+ New Message</button>
+      <div class="sidebar-title">Direct Messages</div>
+      <div id="conversations-list"></div>
+    </div>
+    <div class="chat-area">
+      <div class="chat-header">
+        <div class="chat-header-left">
+          <div class="chat-header-avatar" id="selectedAvatar">💬</div>
+          <div class="chat-header-info">
+            <h3 id="selectedName">Select a conversation</h3>
+            <p id="selectedStatus">Choose from your direct messages</p>
+          </div>
+        </div>
       </div>
-      <div class="hero-side" id="messagesHeroSide">
-        <div class="panel" id="messagesFuturePanel">
-          <div class="section-title">What this will become</div>
-          <p>One-to-one chat, friend conversations, duo planning, hub follow-ups, and the quieter side of Noctive that sits behind the public feed.</p>
-        </div>
-        <div class="panel" id="messagesStatePanel">
-          <div class="section-title">Current state</div>
-          <p>Front-end placeholder layout only. This page is here so the route exists and the header navigation stays complete.</p>
+      <div class="messages-box" id="messagesBox">
+        <div class="empty-state"><div style="font-size:3rem;margin-bottom:12px">💬</div><p>Select a conversation to start messaging</p></div>
+      </div>
+      <div class="message-input-area">
+        <div class="message-input-wrapper">
+          <div class="input-field">
+            <textarea class="message-textarea" id="messageInput" placeholder="Message..." disabled rows="1"></textarea>
+          </div>
+          <button class="send-btn" id="sendBtn" disabled title="Send">➤</button>
         </div>
       </div>
-    </section>
-
-    <section class="messages-shell">
-      <aside class="threads">
-        <button class="thread-card is-active" type="button" data-thread-id="hijinxx">
-          <div class="thread-main">
-            <div class="thread-avatar-shell">
-              <div class="thread-avatar" data-thread-avatar="hijinxx">H</div>
-              <span class="presence-dot status-online" data-thread-status-dot="hijinxx" aria-hidden="true"></span>
-            </div>
-            <div class="thread-copy">
-              <div class="thread-top">
-                <span class="thread-name">Hijinxx</span>
-                <span class="thread-time">2m</span>
-              </div>
-              <div class="thread-snippet">You still down to queue after we check the Siege hub?</div>
-            </div>
-          </div>
-        </button>
-        <button class="thread-card" type="button" data-thread-id="loripie">
-          <div class="thread-main">
-            <div class="thread-avatar-shell">
-              <div class="thread-avatar" data-thread-avatar="loripie">L</div>
-              <span class="presence-dot status-idle" data-thread-status-dot="loripie" aria-hidden="true"></span>
-            </div>
-            <div class="thread-copy">
-              <div class="thread-top">
-                <span class="thread-name">LoriPie</span>
-                <span class="thread-time">18m</span>
-              </div>
-              <div class="thread-snippet">Sent you the clip I was talking about.</div>
-            </div>
-          </div>
-        </button>
-        <button class="thread-card" type="button" data-thread-id="wakebakewes">
-          <div class="thread-main">
-            <div class="thread-avatar-shell">
-              <div class="thread-avatar" data-thread-avatar="wakebakewes">W</div>
-              <span class="presence-dot status-dnd" data-thread-status-dot="wakebakewes" aria-hidden="true"></span>
-            </div>
-            <div class="thread-copy">
-              <div class="thread-top">
-                <span class="thread-name">WakeBakeWes</span>
-                <span class="thread-time">1h</span>
-              </div>
-              <div class="thread-snippet">Night Crew is drifting into Off Topic again.</div>
-            </div>
-          </div>
-        </button>
-        <button class="thread-card" type="button" data-thread-id="undiscoverabletalent">
-          <div class="thread-main">
-            <div class="thread-avatar-shell">
-              <div class="thread-avatar" data-thread-avatar="undiscoverabletalent">U</div>
-              <span class="presence-dot status-invisible" data-thread-status-dot="undiscoverabletalent" aria-hidden="true"></span>
-            </div>
-            <div class="thread-copy">
-              <div class="thread-top">
-                <span class="thread-name">UnDiscoverableTalent</span>
-                <span class="thread-time">Yesterday</span>
-              </div>
-              <div class="thread-snippet">We should turn that idea into a full hub feature later.</div>
-            </div>
-          </div>
-        </button>
-      </aside>
-
-      <section class="conversation">
-        <div class="conversation-head">
-          <div class="conversation-head-main">
-            <a href="./profile.html?uid=hijinxx" id="conversationProfileLink" style="display:flex; align-items:center; gap:12px; min-width:0; text-decoration:none;">
-              <div class="conversation-avatar-shell">
-                <div class="conversation-avatar" id="conversationAvatar">H</div>
-                <span class="presence-dot status-online" id="conversationStatusDot" aria-hidden="true"></span>
-              </div>
-              <div>
-              <div class="section-title" id="conversationTitle" style="margin-bottom: 4px;">Hijinxx</div>
-              <p id="conversationSubline">Placeholder conversation preview</p>
-              </div>
-            </a>
-          </div>
-          <button class="pill-btn" type="button">New Message</button>
-        </div>
-
-        <div class="message-list" id="messageList"></div>
-
-        <div class="composer">
-          <div class="media-picker" id="mediaPicker" hidden>
-            <div class="media-tabs">
-              <button class="media-tab is-active" type="button" data-media-tab="gif">GIFs</button>
-              <button class="media-tab" type="button" data-media-tab="sticker">Stickers</button>
-              <button class="media-tab" type="button" data-media-tab="emoji">Emoji</button>
-            </div>
-            <div class="media-search-wrap">
-              <div class="media-label" id="mediaPickerLabel">Pick a GIF</div>
-              <div class="media-search-row" id="mediaSearchRow">
-                <span class="media-search-icon" aria-hidden="true"></span>
-                <input class="media-search" id="mediaSearchInput" type="search" placeholder="Search GIFs" />
-              </div>
-              <div class="media-note" id="mediaPickerNote"></div>
-            </div>
-            <div class="sticker-browser" id="stickerBrowser" hidden>
-              <div class="sticker-sidebar" id="stickerSidebar"></div>
-              <div class="sticker-main">
-                <div class="sticker-section-bar">
-                  <div class="sticker-section-title" id="stickerSectionTitle">Frequently Used</div>
-                  <span class="sticker-section-chevron" aria-hidden="true">⌄</span>
-                </div>
-                <div class="sticker-grid" id="stickerPickerGrid"></div>
-              </div>
-            </div>
-            <div class="emoji-browser" id="emojiBrowser" hidden>
-              <div class="emoji-sidebar" id="emojiSidebar"></div>
-              <div class="emoji-main">
-                <div class="emoji-section-bar">
-                  <div class="emoji-section-title" id="emojiSectionTitle">People</div>
-                  <span class="sticker-section-chevron" aria-hidden="true">⌄</span>
-                </div>
-                <div class="emoji-grid" id="emojiPickerGrid"></div>
-              </div>
-            </div>
-            <div class="media-grid" id="mediaPickerGrid"></div>
-            <div class="sticker-preview" id="stickerPreview" hidden>
-              <div class="sticker-preview-main">
-                <div class="sticker-preview-thumb" id="stickerPreviewThumb"></div>
-                <div class="sticker-preview-copy">
-                  <div class="sticker-preview-name" id="stickerPreviewName">Sticker</div>
-                  <div class="sticker-preview-pack" id="stickerPreviewPack">from Pack</div>
-                </div>
-              </div>
-              <div class="sticker-preview-badge" id="stickerPreviewBadge"></div>
-            </div>
-            <div class="emoji-preview" id="emojiPreview" hidden>
-              <div class="emoji-preview-main">
-                <div class="emoji-preview-glyph" id="emojiPreviewGlyph">😀</div>
-                <div class="emoji-preview-copy">
-                  <div class="emoji-preview-name" id="emojiPreviewName">grinning_face</div>
-                  <div class="emoji-preview-code" id="emojiPreviewCode">:grinning_face:</div>
-                </div>
-              </div>
-              <button class="emoji-preview-action" type="button" id="emojiPreviewAction">Add Emoji</button>
-            </div>
-          </div>
-          <textarea id="messageInput" placeholder="Message placeholders live here for now..."></textarea>
-          <p class="composer-help" id="composerHelp">Open GIFs, Stickers, or Emoji right inside the composer and send them without leaving the page.</p>
-          <div class="composer-bar" id="composerBar">
-            <p id="composerHint">Messaging UI placeholder. Backend and real delivery can come later.</p>
-            <div class="composer-tools">
-              <button class="pill-btn icon-btn" type="button" id="stickerBtn">Sticker</button>
-              <button class="pill-btn icon-btn" type="button" id="gifBtn">GIF</button>
-              <button class="pill-btn icon-btn" type="button" id="emojiBtn">Emoji</button>
-              <button class="primary-btn" type="button" id="sendMessageBtn">Send</button>
-            </div>
-          </div>
-        </div>
-      </section>
-    </section>
-  </main>
-
-  <script>
-    window.NOCTIVE_TENOR_API_KEY = window.NOCTIVE_TENOR_API_KEY || '';
-    window.NOCTIVE_TENOR_CLIENT_KEY = window.NOCTIVE_TENOR_CLIENT_KEY || 'noctive_web';
-  </script>
+    </div>
+  </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { db } from "../js/firebase.js";
+    import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, where, updateDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    const ACCESS_SESSION_KEY = 'noctive_site_access';
-    const requestedThreadId = new URLSearchParams(window.location.search).get('thread') || '';
-    const NOTIFICATION_STORAGE_PREFIX = 'noctive_notifications_';
-    if (sessionStorage.getItem(ACCESS_SESSION_KEY) !== 'granted') {
-      window.location.replace('../index.html');
-    }
+    const auth = getAuth();
+    let currentUser = null;
+    let currentConversation = null;
+    let messageUnsubscribe = null;
+    let conversationUnsubscribe = null;
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",
-      authDomain: "noctive-41c22.firebaseapp.com",
-      projectId: "noctive-41c22",
-      storageBucket: "noctive-41c22.firebasestorage.app",
-      messagingSenderId: "617642134193",
-      appId: "1:617642134193:web:ea5f0c93e56c654f66f090",
-      measurementId: "G-8ZFW3MTB3C"
-    };
+    const messageInput = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const messagesBox = document.getElementById("messagesBox");
+    const conversationsList = document.getElementById("conversations-list");
+    const selectedName = document.getElementById("selectedName");
+    const selectedStatus = document.getElementById("selectedStatus");
+    const selectedAvatar = document.getElementById("selectedAvatar");
+    const newMessageBtn = document.querySelector(".new-message-btn");
+    const pendingThreadUid = new URLSearchParams(window.location.search).get("thread");
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const TENOR_API_KEY = window.NOCTIVE_TENOR_API_KEY || '';
-    const TENOR_CLIENT_KEY = window.NOCTIVE_TENOR_CLIENT_KEY || 'noctive_web';
-    function createStickerSvg(options) {
-      const {
-        emoji = ':-)',
-        bg = '#2f3136',
-        accent = '#facc15',
-        text = '',
-        textColor = '#ffffff',
-        shape = 'rounded'
-      } = options || {};
-
-      const baseShape = shape === 'circle'
-        ? `<circle cx="96" cy="96" r="58" fill="${bg}" />
-           <circle cx="78" cy="78" r="8" fill="rgba(255,255,255,0.15)" />
-           <circle cx="116" cy="68" r="6" fill="${accent}" opacity="0.8" />`
-        : `<rect x="26" y="22" width="140" height="140" rx="34" fill="${bg}" />
-           <circle cx="68" cy="64" r="10" fill="rgba(255,255,255,0.12)" />
-           <circle cx="125" cy="56" r="8" fill="${accent}" opacity="0.75" />`;
-
-      const banner = text
-        ? `<rect x="92" y="28" width="44" height="44" rx="12" fill="rgba(255,255,255,0.28)" />
-           <text x="114" y="58" text-anchor="middle" font-family="Rubik, sans-serif" font-size="26" font-weight="700" fill="${textColor}">${text}</text>`
-        : '';
-
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
-          <rect width="192" height="192" fill="transparent"/>
-          ${baseShape}
-          ${banner}
-          <text x="96" y="120" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="72">${emoji}</text>
-        </svg>
-      `;
-      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-    }
-
-    function createStickerPackBadge(label, bg) {
-      const short = String(label || '').trim().slice(0, 2).toUpperCase() || 'ST';
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84">
-          <rect width="84" height="84" rx="24" fill="${bg}" />
-          <text x="42" y="49" text-anchor="middle" font-family="Rubik, sans-serif" font-size="24" font-weight="700" fill="#ffffff">${short}</text>
-        </svg>
-      `;
-      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-    }
-
-    function buildSticker(config) {
-      const pack = config.pack || 'Sticker Pack';
-      return {
-        label: config.label,
-        body: `Sticker: ${config.label}`,
-        alt: config.label,
-        keywords: config.keywords || '',
-        pack,
-        packKey: config.packKey,
-        section: config.section || 'Frequently Used',
-        previewUrl: createStickerSvg(config.art),
-        packPreviewUrl: createStickerPackBadge(config.packKey || pack, config.packColor || '#30323b')
-      };
-    }
-
-    const STICKERS = [
-      buildSticker({
-        label: 'Glare',
-        pack: 'Frequently Used',
-        packKey: 'FR',
-        packColor: '#3a3b42',
-        keywords: 'glare mad annoyed side eye hamster',
-        art: { emoji: '🐹', bg: '#37383f', accent: '#ffcf99' }
-      }),
-      buildSticker({
-        label: 'Bean Count',
-        pack: 'Frequently Used',
-        packKey: 'FR',
-        packColor: '#3a3b42',
-        keywords: 'bean number one meme',
-        art: { emoji: '🫘', bg: '#27292f', accent: '#a5b4fc', text: '1' }
-      }),
-      buildSticker({
-        label: 'Peach Please',
-        pack: 'Fruit Mood',
-        packKey: 'FM',
-        packColor: '#f97316',
-        keywords: 'cute peach blush think',
-        art: { emoji: '🍑', bg: '#2f333a', accent: '#fdba74' }
-      }),
-      buildSticker({
-        label: 'Absolute W',
-        pack: 'Night Hype',
-        packKey: 'NH',
-        packColor: '#0f766e',
-        keywords: 'w win celebrate flex',
-        art: { emoji: '🏆', bg: '#2a3035', accent: '#fde68a', text: 'W' }
-      }),
-      buildSticker({
-        label: 'Skull Mood',
-        pack: 'Meme Vault',
-        packKey: 'MV',
-        packColor: '#52525b',
-        keywords: 'dead skull funny laugh',
-        art: { emoji: '💀', bg: '#31323a', accent: '#d4d4d8', shape: 'circle' }
-      }),
-      buildSticker({
-        label: 'Buff Frog',
-        pack: 'Meme Vault',
-        packKey: 'MV',
-        packColor: '#52525b',
-        keywords: 'frog buff meme flex',
-        art: { emoji: '🐸', bg: '#34363f', accent: '#86efac' }
-      }),
-      buildSticker({
-        label: 'Sleepy Owl',
-        pack: 'Night Owls',
-        packKey: 'NO',
-        packColor: '#4338ca',
-        keywords: 'owl sleepy late night tired',
-        art: { emoji: '🦉', bg: '#2f3152', accent: '#facc15' }
-      }),
-      buildSticker({
-        label: 'Locked In',
-        pack: 'Night Hype',
-        packKey: 'NH',
-        packColor: '#0f766e',
-        keywords: 'focus locked in sweat grind',
-        art: { emoji: '🎯', bg: '#26343a', accent: '#67e8f9' }
-      }),
-      buildSticker({
-        label: 'Crying',
-        pack: 'Reaction Loop',
-        packKey: 'RL',
-        packColor: '#2563eb',
-        keywords: 'crying tears sad reaction',
-        art: { emoji: '😭', bg: '#2f3445', accent: '#93c5fd', shape: 'circle' }
-      }),
-      buildSticker({
-        label: 'Side Eye',
-        pack: 'Reaction Loop',
-        packKey: 'RL',
-        packColor: '#2563eb',
-        keywords: 'side eye suspicious look reaction',
-        art: { emoji: '😒', bg: '#363840', accent: '#c4b5fd' }
-      }),
-      buildSticker({
-        label: 'GG',
-        pack: 'Night Hype',
-        packKey: 'NH',
-        packColor: '#0f766e',
-        keywords: 'gg good game clean round',
-        art: { emoji: '🎮', bg: '#21353a', accent: '#6ee7b7', text: 'GG', textColor: '#f8fafc' }
-      }),
-      buildSticker({
-        label: 'Chaos',
-        pack: 'Glitch Pack',
-        packKey: 'GP',
-        packColor: '#be123c',
-        keywords: 'chaos cursed wild broken',
-        art: { emoji: '🫠', bg: '#3b2630', accent: '#fb7185' }
-      })
-    ];
-    const GUEST_PROFILE_KEY = 'noctive_profile_guest';
-    const PUBLIC_PROFILE_DIRECTORY_KEY = 'noctive_public_profile_directory';
-    const GIFS = [
-      {
-        label: 'Favorites',
-        body: '',
-        keywords: 'favorites favorite reaction mood',
-        background: 'linear-gradient(135deg, rgba(92,103,255,0.94), rgba(60,72,168,0.92))',
-        previewUrl: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDYxNjM4bmRlcG9nNXRhdG5zMW11Z2s0dXVkZzVxbHRnYmFpN2JmZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3orieYvhT5EVfSFyBa/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/3orieYvhT5EVfSFyBa/giphy.gif'
-      },
-      {
-        label: 'Trending GIFs',
-        body: '',
-        keywords: 'trending reaction popular',
-        background: 'linear-gradient(135deg, rgba(98,60,29,0.92), rgba(27,26,18,0.94))',
-        previewUrl: 'https://media.giphy.com/media/l0HlvtIPzPdt2usKs/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/l0HlvtIPzPdt2usKs/giphy.gif'
-      },
-      {
-        label: 'hello',
-        body: '',
-        keywords: 'hello hi wave greeting',
-        background: 'linear-gradient(135deg, rgba(88,88,88,0.88), rgba(24,24,24,0.96))',
-        previewUrl: 'https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.gif'
-      },
-      {
-        label: 'lol',
-        body: '',
-        keywords: 'lol laugh lmao funny',
-        background: 'linear-gradient(135deg, rgba(56,56,56,0.92), rgba(15,15,15,0.98))',
-        previewUrl: 'https://media.giphy.com/media/10JhviFuU2gWD6/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/10JhviFuU2gWD6/giphy.gif'
-      },
-      {
-        label: 'love',
-        body: '',
-        keywords: 'love heart affection cute',
-        background: 'linear-gradient(135deg, rgba(111,78,61,0.90), rgba(52,32,30,0.94))',
-        previewUrl: 'https://media.giphy.com/media/26FLdmIp6wJr91JAI/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/26FLdmIp6wJr91JAI/giphy.gif'
-      },
-      {
-        label: 'happy birthday',
-        body: '',
-        keywords: 'happy birthday celebration party',
-        background: 'linear-gradient(135deg, rgba(72,88,21,0.90), rgba(22,29,27,0.96))',
-        previewUrl: 'https://media.giphy.com/media/g5R9dok94mrIvplmZd/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/g5R9dok94mrIvplmZd/giphy.gif'
-      },
-      {
-        label: 'hi there',
-        body: '',
-        keywords: 'hello hi hey greeting wave',
-        background: 'linear-gradient(135deg, rgba(43,89,153,0.92), rgba(18,33,72,0.96))',
-        previewUrl: 'https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif'
-      },
-      {
-        label: 'big laugh',
-        body: '',
-        keywords: 'lol laugh lmao funny rofl',
-        background: 'linear-gradient(135deg, rgba(153,83,43,0.92), rgba(72,34,18,0.96))',
-        previewUrl: 'https://media.giphy.com/media/Q7ozWVYCR0nyW2rvPW/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/Q7ozWVYCR0nyW2rvPW/giphy.gif'
-      },
-      {
-        label: 'cute love',
-        body: '',
-        keywords: 'love heart affection cute hug',
-        background: 'linear-gradient(135deg, rgba(184,66,106,0.92), rgba(94,25,49,0.96))',
-        previewUrl: 'https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif'
-      },
-      {
-        label: 'party time',
-        body: '',
-        keywords: 'party celebration birthday hype excited',
-        background: 'linear-gradient(135deg, rgba(91,31,171,0.92), rgba(39,14,72,0.96))',
-        previewUrl: 'https://media.giphy.com/media/rumR5iFBxFjdC/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/rumR5iFBxFjdC/giphy.gif'
-      },
-      {
-        label: 'wow',
-        body: '',
-        keywords: 'wow shocked surprised omg',
-        background: 'linear-gradient(135deg, rgba(33,107,122,0.92), rgba(11,52,61,0.96))',
-        previewUrl: 'https://media.giphy.com/media/5VKbvrjxpVJCM/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/5VKbvrjxpVJCM/giphy.gif'
-      },
-      {
-        label: 'angry',
-        body: '',
-        keywords: 'angry mad rage annoyed',
-        background: 'linear-gradient(135deg, rgba(149,36,36,0.92), rgba(74,14,14,0.96))',
-        previewUrl: 'https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif'
-      },
-      {
-        label: 'crying',
-        body: '',
-        keywords: 'cry crying sad emotional tears',
-        background: 'linear-gradient(135deg, rgba(48,89,140,0.92), rgba(18,33,61,0.96))',
-        previewUrl: 'https://media.giphy.com/media/ROF8OQvDmxytW/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/ROF8OQvDmxytW/giphy.gif'
-      },
-      {
-        label: 'clapping',
-        body: '',
-        keywords: 'clap clapping applause yes nice',
-        background: 'linear-gradient(135deg, rgba(47,110,88,0.92), rgba(15,56,43,0.96))',
-        previewUrl: 'https://media.giphy.com/media/nbvFVPiEiJH6JOGIok/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/nbvFVPiEiJH6JOGIok/giphy.gif'
-      },
-      {
-        label: 'facepalm',
-        body: '',
-        keywords: 'facepalm bruh embarrassed disappointed',
-        background: 'linear-gradient(135deg, rgba(95,62,39,0.92), rgba(48,28,16,0.96))',
-        previewUrl: 'https://media.giphy.com/media/TJawtKM6OCKkvwCIqX/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/TJawtKM6OCKkvwCIqX/giphy.gif'
-      },
-      {
-        label: 'mind blown',
-        body: '',
-        keywords: 'mind blown wow shocked omg insane',
-        background: 'linear-gradient(135deg, rgba(67,67,155,0.92), rgba(24,24,70,0.96))',
-        previewUrl: 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'
-      },
-      {
-        label: 'thumbs up',
-        body: '',
-        keywords: 'thumbs up approve good nice okay',
-        background: 'linear-gradient(135deg, rgba(48,95,132,0.92), rgba(20,41,62,0.96))',
-        previewUrl: 'https://media.giphy.com/media/111ebonMs90YLu/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/111ebonMs90YLu/giphy.gif'
-      },
-      {
-        label: 'no way',
-        body: '',
-        keywords: 'no way disbelief shocked what',
-        background: 'linear-gradient(135deg, rgba(111,55,93,0.92), rgba(48,20,38,0.96))',
-        previewUrl: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif'
-      },
-      {
-        label: 'excited',
-        body: '',
-        keywords: 'excited hype yay lets go',
-        background: 'linear-gradient(135deg, rgba(120,88,33,0.92), rgba(59,40,12,0.96))',
-        previewUrl: 'https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif'
-      },
-      {
-        label: 'thanks',
-        body: '',
-        keywords: 'thanks thank you appreciate grateful',
-        background: 'linear-gradient(135deg, rgba(94,70,122,0.92), rgba(40,26,56,0.96))',
-        previewUrl: 'https://media.giphy.com/media/3oEdva9BUHPIs2SkGk/giphy.webp',
-        fullUrl: 'https://media.giphy.com/media/3oEdva9BUHPIs2SkGk/giphy.gif'
-      }
-    ];
-    const EMOJIS = [
-      { glyph: '\uD83D\uDE00', label: 'grinning_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'happy smile grin' },
-      { glyph: '\uD83D\uDE03', label: 'smiley_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'smile happy open mouth' },
-      { glyph: '\uD83D\uDE04', label: 'laughing_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'laugh grin joy' },
-      { glyph: '\uD83D\uDE05', label: 'sweat_smile', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'nervous relief sweat' },
-      { glyph: '\uD83D\uDE02', label: 'face_with_tears_of_joy', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'cry laugh lol lmao' },
-      { glyph: '\uD83E\uDD79', label: 'teary_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'sad emotional soft' },
-      { glyph: '\uD83D\uDE09', label: 'winking_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'wink playful' },
-      { glyph: '\uD83D\uDE0C', label: 'relieved_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'relief calm' },
-      { glyph: '\uD83E\uDD70', label: 'smiling_face_with_hearts', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'love hearts adore' },
-      { glyph: '\uD83D\uDE18', label: 'face_blowing_a_kiss', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'kiss love cute' },
-      { glyph: '\uD83D\uDE1B', label: 'face_with_tongue', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'tongue goofy silly' },
-      { glyph: '\uD83D\uDE1D', label: 'stuck_out_tongue_closed_eyes', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'tongue closed eyes goofy silly' },
-      { glyph: '\uD83E\uDD2A', label: 'zany_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'crazy goofy wild' },
-      { glyph: '\uD83E\uDD2F', label: 'mind_blown', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'wow shocked insane' },
-      { glyph: '\uD83D\uDE10', label: 'neutral_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'neutral blank meh' },
-      { glyph: '\uD83D\uDE12', label: 'unamused_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'side eye annoyed' },
-      { glyph: '\uD83D\uDE2D', label: 'loudly_crying_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'cry sob tears' },
-      { glyph: '\uD83E\uDD2C', label: 'grimacing_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'awkward yikes tense' },
-      { glyph: '\uD83D\uDE24', label: 'face_with_steam_from_nose', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'angry mad huff' },
-      { glyph: '\uD83D\uDE21', label: 'pouting_face', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'angry rage upset' },
-      { glyph: '\uD83D\uDC4B', label: 'waving_hand', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'wave hello hi' },
-      { glyph: '\uD83D\uDC4F', label: 'clapping_hands', category: 'people', categoryLabel: 'People', categoryIcon: '\uD83D\uDE00', keywords: 'clap applause nice' },
-      { glyph: '\uD83D\uDD25', label: 'fire', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'fire hot lit' },
-      { glyph: '\u2728', label: 'sparkles', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'sparkles shine magic' },
-      { glyph: '\u2B50', label: 'star', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'star favorite highlight' },
-      { glyph: '\uD83C\uDF19', label: 'crescent_moon', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'moon night late' },
-      { glyph: '\u26A1', label: 'zap', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'energy electric fast' },
-      { glyph: '\uD83C\uDF3F', label: 'herb', category: 'nature', categoryLabel: 'Nature', categoryIcon: '\uD83D\uDD25', keywords: 'leaf nature chill' },
-      { glyph: '\uD83C\uDF51', label: 'peach', category: 'food', categoryLabel: 'Food', categoryIcon: '\uD83C\uDF51', keywords: 'fruit peach cute' },
-      { glyph: '\uD83C\uDF55', label: 'pizza', category: 'food', categoryLabel: 'Food', categoryIcon: '\uD83C\uDF51', keywords: 'pizza food slice' },
-      { glyph: '\uD83E\uDD64', label: 'cup_with_straw', category: 'food', categoryLabel: 'Food', categoryIcon: '\uD83C\uDF51', keywords: 'drink soda boba' },
-      { glyph: '\u2615', label: 'hot_beverage', category: 'food', categoryLabel: 'Food', categoryIcon: '\uD83C\uDF51', keywords: 'coffee tea late night' },
-      { glyph: '\uD83C\uDF7F', label: 'popcorn', category: 'food', categoryLabel: 'Food', categoryIcon: '\uD83C\uDF51', keywords: 'snack movie' },
-      { glyph: '\uD83C\uDFAE', label: 'video_game', category: 'activity', categoryLabel: 'Activities', categoryIcon: '\uD83C\uDFAE', keywords: 'game gaming controller' },
-      { glyph: '\uD83C\uDFC6', label: 'trophy', category: 'activity', categoryLabel: 'Activities', categoryIcon: '\uD83C\uDFAE', keywords: 'win trophy victory' },
-      { glyph: '\uD83C\uDF89', label: 'party_popper', category: 'activity', categoryLabel: 'Activities', categoryIcon: '\uD83C\uDFAE', keywords: 'party celebration hype' },
-      { glyph: '\uD83C\uDFA7', label: 'headphones', category: 'activity', categoryLabel: 'Activities', categoryIcon: '\uD83C\uDFAE', keywords: 'music headphones audio' },
-      { glyph: '\uD83D\uDE80', label: 'rocket', category: 'travel', categoryLabel: 'Travel', categoryIcon: '\uD83D\uDE80', keywords: 'rocket launch fast' },
-      { glyph: '\uD83D\uDE97', label: 'car', category: 'travel', categoryLabel: 'Travel', categoryIcon: '\uD83D\uDE80', keywords: 'car drive ride' },
-      { glyph: '\u2708\uFE0F', label: 'airplane', category: 'travel', categoryLabel: 'Travel', categoryIcon: '\uD83D\uDE80', keywords: 'flight plane travel' },
-      { glyph: '\uD83D\uDC8E', label: 'gem_stone', category: 'objects', categoryLabel: 'Objects', categoryIcon: '\uD83D\uDC8E', keywords: 'gem shiny rare' },
-      { glyph: '\uD83D\uDC80', label: 'skull', category: 'objects', categoryLabel: 'Objects', categoryIcon: '\uD83D\uDC8E', keywords: 'dead skull funny' },
-      { glyph: '\uD83D\uDCAF', label: 'hundred_points', category: 'objects', categoryLabel: 'Objects', categoryIcon: '\uD83D\uDC8E', keywords: '100 perfect facts' },
-      { glyph: '\u2764\uFE0F', label: 'red_heart', category: 'symbols', categoryLabel: 'Symbols', categoryIcon: '\u2764\uFE0F', keywords: 'heart love red' },
-      { glyph: '\uD83D\uDC9C', label: 'purple_heart', category: 'symbols', categoryLabel: 'Symbols', categoryIcon: '\u2764\uFE0F', keywords: 'heart purple vibe' },
-      { glyph: '\uD83D\uDCAF', label: 'hundred_symbol', category: 'symbols', categoryLabel: 'Symbols', categoryIcon: '\u2764\uFE0F', keywords: '100 score symbol' }
-    ].map((item) => ({
-      ...item,
-      body: `Emoji: ${item.glyph}`,
-      code: `:${item.label}:`
-    }));
-    const THREADS = {
-      hijinxx: {
-        name: 'Hijinxx',
-        status: 'Online',
-        avatar: '',
-        signedInSubline: 'Queue plans and late-night check-ins',
-        guestSubline: 'Placeholder conversation preview',
-        messages: [
-          { author: 'Hijinxx', time: '12:42 AM', body: 'You still down to queue after we check the Siege hub?' },
-          { author: 'You', time: '12:44 AM', body: 'Yeah, I just wanted to make sure the site flow looked right first.', self: true },
-          { author: 'Hijinxx', time: '12:45 AM', body: 'Fair. It already feels way more complete with a messages page in the nav.' }
-        ]
-      },
-      loripie: {
-        name: 'LoriPie',
-        status: 'Idle',
-        avatar: '',
-        signedInSubline: 'Clips, reactions, and quick catch-ups',
-        guestSubline: 'Placeholder conversation preview',
-        messages: [
-          { author: 'LoriPie', time: '11:58 PM', body: 'Sent you the clip I was talking about.' },
-          { author: 'You', time: '12:01 AM', body: 'Just watched it. That ending was wild.', self: true },
-          { author: 'LoriPie', time: '12:03 AM', body: 'Exactly. I knew you were going to say that.' }
-        ]
-      },
-      wakebakewes: {
-        name: 'WakeBakeWes',
-        status: 'Do Not Disturb',
-        avatar: '',
-        signedInSubline: 'Night Crew drift and off-topic updates',
-        guestSubline: 'Placeholder conversation preview',
-        messages: [
-          { author: 'WakeBakeWes', time: '10:14 PM', body: 'Night Crew is drifting into Off Topic again.' },
-          { author: 'You', time: '10:16 PM', body: 'At this point that room is basically the after-hours lounge.', self: true },
-          { author: 'WakeBakeWes', time: '10:17 PM', body: 'Honestly, it kind of fits.' }
-        ]
-      },
-      undiscoverabletalent: {
-        name: 'UnDiscoverableTalent',
-        status: 'Invisible',
-        avatar: '',
-        signedInSubline: 'Feature ideas and future build talk',
-        guestSubline: 'Placeholder conversation preview',
-        messages: [
-          { author: 'UnDiscoverableTalent', time: 'Yesterday', body: 'We should turn that idea into a full hub feature later.' },
-          { author: 'You', time: 'Yesterday', body: 'I agree. It feels bigger than a one-page idea now.', self: true },
-          { author: 'UnDiscoverableTalent', time: 'Yesterday', body: 'That is usually when you know it is worth building.' }
-        ]
-      }
-    };
-    let isSignedInViewer = false;
-    let activeThreadId = 'hijinxx';
-    let activeMediaMode = '';
-    let activeGifQuery = '';
-    let activeStickerQuery = '';
-    let activeStickerPack = 'all';
-    let activeEmojiQuery = '';
-    let activeEmojiCategory = 'people';
-    let activeEmojiSelection = null;
-    let gifSearchTimer = null;
-    let currentAuthUser = null;
-
-    function normalizeUid(value) {
-      return String(value || '').trim().toLowerCase();
-    }
-
-    function buildProfileHref(uid) {
-      const normalized = normalizeUid(uid);
-      return normalized ? `./profile.html?uid=${encodeURIComponent(normalized)}` : './profile.html';
-    }
-
-    function buildNotificationStorageKey(uid) {
-      const normalizedUid = normalizeUid(uid);
-      return `${NOTIFICATION_STORAGE_PREFIX}${normalizedUid || 'guest'}`;
-    }
-
-    function readNotifications(uid) {
-      const normalizedUid = normalizeUid(uid);
-      if (!normalizedUid) return [];
-
-      try {
-        const raw = localStorage.getItem(buildNotificationStorageKey(normalizedUid));
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        console.error('Could not read notifications:', error);
-        return [];
-      }
-    }
-
-    function saveNotifications(uid, notifications) {
-      const normalizedUid = normalizeUid(uid);
-      if (!normalizedUid) return;
-
-      try {
-        localStorage.setItem(buildNotificationStorageKey(normalizedUid), JSON.stringify(notifications));
-      } catch (error) {
-        console.error('Could not save notifications:', error);
-      }
-    }
-
-    function getPublicProfileDirectory() {
-      try {
-        const raw = localStorage.getItem(PUBLIC_PROFILE_DIRECTORY_KEY);
-        return raw ? JSON.parse(raw) : {};
-      } catch (error) {
-        console.error('Could not read public profile directory:', error);
-        return {};
-      }
-    }
-
-    function getDisplayProfile(uid) {
-      const normalizedUid = normalizeUid(uid);
-      if (!normalizedUid) return null;
-
-      const publicDirectory = getPublicProfileDirectory();
-      const publicProfile = publicDirectory?.[normalizedUid];
-      if (publicProfile) {
-        return publicProfile;
-      }
-
-      try {
-        const raw = localStorage.getItem(`noctive_profile_${normalizedUid}`);
-        return raw ? JSON.parse(raw) : null;
-      } catch (error) {
-        return null;
-      }
-    }
-
-    function formatNotificationTime(timestamp) {
-      const createdAt = Number(timestamp || 0);
-      if (!createdAt) return 'Just now';
-      const diff = Date.now() - createdAt;
-      if (diff < 60000) return 'Just now';
-      if (diff < 3600000) return `${Math.max(1, Math.floor(diff / 60000))}m ago`;
-      if (diff < 86400000) return `${Math.max(1, Math.floor(diff / 3600000))}h ago`;
-      return `${Math.max(1, Math.floor(diff / 86400000))}d ago`;
-    }
-
-    function renderNotificationsInbox() {
-      const list = document.getElementById('notificationsList');
-      const empty = document.getElementById('notificationsEmpty');
-      const badge = document.getElementById('notificationsBadge');
-      const markAllBtn = document.getElementById('markAllNotificationsBtn');
-      if (!list || !empty || !badge || !markAllBtn) return;
-
-      const viewerUid = normalizeUid(currentAuthUser?.uid);
-      if (!viewerUid) {
-        list.innerHTML = '';
-        empty.textContent = 'Sign in to see follow notifications here.';
-        empty.removeAttribute('hidden');
-        badge.setAttribute('hidden', 'hidden');
-        markAllBtn.setAttribute('hidden', 'hidden');
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = "login-google.html";
         return;
       }
-
-      const notifications = readNotifications(viewerUid);
-      const unreadCount = notifications.filter((item) => !item.read).length;
-      badge.textContent = String(unreadCount);
-      badge.toggleAttribute('hidden', unreadCount === 0);
-      markAllBtn.toggleAttribute('hidden', notifications.length === 0 || unreadCount === 0);
-
-      if (!notifications.length) {
-        list.innerHTML = '';
-        empty.textContent = 'Follow notifications will show up here.';
-        empty.removeAttribute('hidden');
-        return;
+      currentUser = user;
+      initMessaging();
+      if (pendingThreadUid) {
+        await ensureConversationWithUser(pendingThreadUid);
       }
+    });
 
-      empty.setAttribute('hidden', 'hidden');
-      list.innerHTML = notifications.map((notification) => {
-        const actorProfile = getDisplayProfile(notification.actorUid) || {};
-        const actorName = notification.actorName || actorProfile.displayName || actorProfile.username || 'Noctive User';
-        const actorAvatar = notification.actorAvatar || actorProfile.avatar || '';
-        const avatarMarkup = actorAvatar
-          ? `<img src="${actorAvatar}" alt="${actorName} avatar">`
-          : `${getInitials(actorName)}`;
-
-        return `
-          <button class="notification-item${notification.read ? '' : ' is-unread'}" type="button" data-notification-id="${notification.id}">
-            <div class="notification-avatar">${avatarMarkup}</div>
-            <div class="notification-copy">
-              <div class="notification-text"><strong>${actorName}</strong> ${notification.body || 'interacted with you'}</div>
-              <div class="notification-meta">
-                ${notification.read ? '' : '<span class="notification-unread-dot" aria-hidden="true"></span>'}
-                <span>${formatNotificationTime(notification.createdAt)}</span>
-              </div>
-            </div>
-          </button>
-        `;
-      }).join('');
+    function initMessaging() {
+      messageInput.disabled = false;
+      loadConversations();
+      setupEventListeners();
     }
 
-    function markNotificationAsRead(notificationId) {
-      const viewerUid = normalizeUid(currentAuthUser?.uid);
-      if (!viewerUid || !notificationId) return;
-      const notifications = readNotifications(viewerUid);
-      const next = notifications.map((item) => item.id === notificationId ? { ...item, read: true } : item);
-      saveNotifications(viewerUid, next);
-      renderNotificationsInbox();
-    }
-
-    function markAllNotificationsAsRead() {
-      const viewerUid = normalizeUid(currentAuthUser?.uid);
-      if (!viewerUid) return;
-      const notifications = readNotifications(viewerUid);
-      const next = notifications.map((item) => ({ ...item, read: true }));
-      saveNotifications(viewerUid, next);
-      renderNotificationsInbox();
-    }
-
-    function appendMessageToThread(threadId, message) {
-      const thread = THREADS[threadId];
-      if (!thread) return;
-      thread.messages.push(message);
-      renderConversation(threadId);
-    }
-
-    function getInitials(name) {
-      if (!name) return 'N';
-      const parts = String(name).trim().split(/\s+/).filter(Boolean);
-      if (!parts.length) return 'N';
-      if (parts.length === 1) return parts[0].slice(0, 1).toUpperCase();
-      return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-
-    function getStatusMeta(rawStatus) {
-      const value = String(rawStatus || '').trim().toLowerCase();
-      if (value === 'online') return { key: 'online', label: 'Online' };
-      if (value === 'idle' || value === 'away') return { key: 'idle', label: 'Idle' };
-      if (value === 'do not disturb' || value === 'dnd' || value === 'busy') return { key: 'dnd', label: 'Do Not Disturb' };
-      if (value === 'invisible' || value === 'offline' || value === 'hidden') return { key: 'invisible', label: 'Invisible' };
-      return { key: 'offline', label: 'Offline' };
-    }
-
-    function getProfileStorageKey(user) {
-      return user?.uid ? `noctive_profile_${user.uid}` : GUEST_PROFILE_KEY;
-    }
-
-    function getStoredViewerProfile(user) {
-      try {
-        const raw = localStorage.getItem(getProfileStorageKey(user));
-        return raw ? JSON.parse(raw) : null;
-      } catch (error) {
-        console.error('Could not read saved profile for messages:', error);
-        return null;
-      }
-    }
-
-    function renderAvatarBox(element, name, avatar) {
-      if (!element) return;
-      element.innerHTML = '';
-      if (avatar && avatar.trim()) {
-        const img = document.createElement('img');
-        img.src = avatar;
-        img.alt = `${name} avatar`;
-        img.onerror = () => {
-          element.textContent = getInitials(name);
-        };
-        element.appendChild(img);
-        return;
-      }
-      element.textContent = getInitials(name);
-    }
-
-    function renderThreadPresence(threadId) {
-      const thread = THREADS[threadId];
-      if (!thread) return;
-      const avatarBox = document.querySelector(`[data-thread-avatar="${threadId}"]`);
-      const statusDot = document.querySelector(`[data-thread-status-dot="${threadId}"]`);
-      renderAvatarBox(avatarBox, thread.name, thread.avatar || '');
-      if (statusDot) {
-        statusDot.className = `presence-dot status-${getStatusMeta(thread.status).key}`;
-      }
-    }
-
-    function renderAllThreadPresence() {
-      Object.keys(THREADS).forEach((threadId) => {
-        renderThreadPresence(threadId);
-      });
-    }
-
-    function setActiveMediaTab(mode) {
-      document.querySelectorAll('[data-media-tab]').forEach((tab) => {
-        tab.classList.toggle('is-active', tab.getAttribute('data-media-tab') === mode);
-      });
-    }
-
-    function renderMediaChoices(items, mode) {
-      return items.map((item, index) => {
-        const hasPreview = Boolean(item.previewUrl);
-        const classes = `media-choice${hasPreview ? '' : ' is-fallback'}`;
-        const style = !hasPreview && item.background ? ` style="--media-card-bg:${item.background};"` : '';
-        return `
-          <button class="${classes}" type="button" data-media-mode="${mode}" data-media-index="${index}"${style}>
-            ${hasPreview ? `<img src="${item.previewUrl}" alt="${item.label}">` : ''}
-            <span class="media-choice-title">${item.label}</span>
-          </button>
-        `;
-      }).join('');
-    }
-
-    function getStickerPacks() {
-      const packs = new Map();
-      STICKERS.forEach((item) => {
-        if (!packs.has(item.packKey)) {
-          packs.set(item.packKey, {
-            key: item.packKey,
-            label: item.pack,
-            previewUrl: item.packPreviewUrl
-          });
+    function setupEventListeners() {
+      sendBtn.addEventListener("click", sendMessage);
+      messageInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          sendMessage();
         }
       });
-      return [
-        {
-          key: 'all',
-          label: 'Frequently Used',
-          previewUrl: createStickerPackBadge('FR', '#3a3b42')
-        },
-        ...Array.from(packs.values())
-      ];
-    }
-
-    function searchStickers(query = '', pack = 'all') {
-      const normalized = String(query || '').trim().toLowerCase();
-      const packFiltered = pack === 'all'
-        ? STICKERS
-        : STICKERS.filter((item) => item.packKey === pack);
-
-      if (!normalized) return packFiltered;
-
-      return packFiltered.filter((item) => {
-        const haystack = `${item.label} ${item.pack} ${item.keywords || ''}`.toLowerCase();
-        return haystack.includes(normalized);
+      messageInput.addEventListener("input", () => {
+        sendBtn.disabled = !messageInput.value.trim();
+        autoResize();
       });
+      newMessageBtn.addEventListener("click", showNewMessageModal);
     }
 
-    function renderStickerSidebar(activePack = 'all') {
-      const sidebar = document.getElementById('stickerSidebar');
-      if (!sidebar) return;
-      sidebar.innerHTML = getStickerPacks().map((pack) => `
-        <button
-          class="sticker-pack-btn${pack.key === activePack ? ' is-active' : ''}"
-          type="button"
-          data-sticker-pack="${pack.key}"
-          aria-label="${pack.label}"
-          title="${pack.label}"
-        >
-          ${pack.previewUrl ? `<img src="${pack.previewUrl}" alt="${pack.label}">` : `<span class="sticker-pack-fallback">${pack.label.slice(0, 2)}</span>`}
-        </button>
-      `).join('');
-    }
-
-    function renderStickerPreview(item) {
-      const preview = document.getElementById('stickerPreview');
-      const thumb = document.getElementById('stickerPreviewThumb');
-      const name = document.getElementById('stickerPreviewName');
-      const pack = document.getElementById('stickerPreviewPack');
-      const badge = document.getElementById('stickerPreviewBadge');
-      if (!preview || !thumb || !name || !pack || !badge || !item) return;
-
-      thumb.innerHTML = item.previewUrl ? `<img src="${item.previewUrl}" alt="${item.label}">` : '';
-      badge.innerHTML = item.packPreviewUrl ? `<img src="${item.packPreviewUrl}" alt="${item.pack}">` : '';
-      name.textContent = item.label;
-      pack.textContent = `from ${item.pack}`;
-      preview.removeAttribute('hidden');
-    }
-
-    function renderStickerChoices(items) {
-      return items.map((item, index) => `
-        <button class="sticker-choice${index === 0 ? ' is-selected' : ''}" type="button" data-sticker-index="${index}">
-          <img src="${item.previewUrl}" alt="${item.label}">
-        </button>
-      `).join('');
-    }
-
-    function getEmojiCategories() {
-      const categories = new Map();
-      EMOJIS.forEach((item) => {
-        if (!categories.has(item.category)) {
-          categories.set(item.category, {
-            key: item.category,
-            label: item.categoryLabel,
-            icon: item.categoryIcon
-          });
+    function loadConversations() {
+      if (conversationUnsubscribe) conversationUnsubscribe();
+      const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid));
+      conversationUnsubscribe = onSnapshot(q, (snapshot) => {
+        conversationsList.innerHTML = "";
+        if (snapshot.empty) {
+          conversationsList.innerHTML = '<div style="color: var(--muted); font-size: 0.85rem; padding: 0 12px;">No conversations yet</div>';
+          return;
         }
-      });
-      return Array.from(categories.values());
-    }
-
-    function searchEmojis(query = '', category = 'people') {
-      const normalized = String(query || '').trim().toLowerCase();
-      const categoryFiltered = category === 'all'
-        ? EMOJIS
-        : EMOJIS.filter((item) => item.category === category);
-
-      if (!normalized) return categoryFiltered;
-
-      return categoryFiltered.filter((item) => {
-        const haystack = `${item.label} ${item.keywords || ''} ${item.categoryLabel}`.toLowerCase();
-        return haystack.includes(normalized);
+        snapshot.docs.forEach((docSnapshot) => {
+          const conv = docSnapshot.data();
+          conversationsList.appendChild(createConversationElement(docSnapshot.id, conv));
+        });
       });
     }
 
-    function renderEmojiSidebar(activeCategory = 'people') {
-      const sidebar = document.getElementById('emojiSidebar');
-      if (!sidebar) return;
-      sidebar.innerHTML = getEmojiCategories().map((category) => `
-        <button
-          class="emoji-pack-btn${category.key === activeCategory ? ' is-active' : ''}"
-          type="button"
-          data-emoji-category="${category.key}"
-          aria-label="${category.label}"
-          title="${category.label}"
-        >${category.icon}</button>
-      `).join('');
+    function createConversationElement(convId, convData) {
+      const div = document.createElement("div");
+      div.className = "conversation-item" + (currentConversation === convId ? " active" : "");
+      const otherIds = (convData.participants || []).filter((id) => id !== currentUser.uid);
+      const displayName = convData.name || otherIds.join(", ") || "Conversation";
+      const preview = convData.lastMessage || "No messages yet";
+      div.innerHTML = `
+        <div class="conversation-avatar">${displayName.charAt(0).toUpperCase()}</div>
+        <div class="conversation-info">
+          <div class="conversation-name">${escapeHtml(displayName)}</div>
+          <div class="conversation-preview">${escapeHtml(preview)}</div>
+        </div>`;
+      div.addEventListener("click", () => selectConversation(convId, convData));
+      return div;
     }
 
-    function renderEmojiChoices(items) {
-      return items.map((item, index) => `
-        <button class="emoji-choice${index === 0 ? ' is-selected' : ''}" type="button" data-emoji-index="${index}" aria-label="${item.label}" title="${item.code}">
-          ${item.glyph}
-        </button>
-      `).join('');
+    function selectConversation(convId, convData) {
+      document.querySelectorAll(".conversation-item").forEach((el) => el.classList.remove("active"));
+      const activeEl = Array.from(document.querySelectorAll(".conversation-item")).find((el) => el.textContent.includes(convId));
+      if (activeEl) activeEl.classList.add("active");
+      currentConversation = convId;
+      const otherIds = (convData.participants || []).filter((id) => id !== currentUser.uid);
+      const displayName = convData.name || otherIds.join(", ") || "Conversation";
+      selectedName.textContent = displayName;
+      selectedStatus.textContent = `${(convData.participants || []).length} participant${(convData.participants || []).length > 1 ? "s" : ""}`;
+      selectedAvatar.textContent = displayName.charAt(0).toUpperCase();
+      messagesBox.innerHTML = '<div class="empty-state"><p>Loading messages…</p></div>';
+      messageInput.disabled = false;
+      messageInput.focus();
+      loadMessages(convId);
     }
 
-    function renderEmojiPreview(item) {
-      const preview = document.getElementById('emojiPreview');
-      const glyph = document.getElementById('emojiPreviewGlyph');
-      const name = document.getElementById('emojiPreviewName');
-      const code = document.getElementById('emojiPreviewCode');
-      if (!preview || !glyph || !name || !code || !item) return;
-
-      glyph.textContent = item.glyph;
-      name.textContent = item.label;
-      code.textContent = item.code;
-      activeEmojiSelection = item;
-      preview.removeAttribute('hidden');
-    }
-
-    function sendEmojiSelection(item) {
-      if (!item) return;
-      appendMessageToThread(activeThreadId, {
-        author: 'You',
-        time: 'just now',
-        body: '',
-        glyph: item.glyph,
-        alt: item.label,
-        self: true,
-        kind: 'emoji'
+    function loadMessages(convId) {
+      if (messageUnsubscribe) messageUnsubscribe();
+      const q = query(collection(db, `conversations/${convId}/messages`), orderBy("timestamp", "asc"));
+      messageUnsubscribe = onSnapshot(q, (snapshot) => {
+        messagesBox.innerHTML = "";
+        if (snapshot.empty) {
+          messagesBox.innerHTML = '<div class="empty-state"><p>No messages yet. Start the conversation!</p></div>';
+          return;
+        }
+        snapshot.docs.forEach((messageDoc) => {
+          const msg = messageDoc.data();
+          messagesBox.appendChild(createMessageElement(msg));
+        });
+        messagesBox.scrollTop = messagesBox.scrollHeight;
       });
-      closeMediaPicker();
     }
 
-    function extractGifUrl(value) {
-      const text = String(value || '').trim();
-      if (!text) return '';
-
-      if (/^https?:\/\/.+\.(gif)(\?.*)?$/i.test(text)) {
-        return text;
-      }
-
-      const directTenorMedia =
-        text.match(/https?:\/\/(?:media|c)\.tenor\.com\/[^\s"'<>]+\.gif(?:\?[^\s"'<>]*)?/i)?.[0] ||
-        text.match(/https?:\/\/(?:media|c)\.tenor\.com\/[^\s"'<>]+\.webp(?:\?[^\s"'<>]*)?/i)?.[0];
-      if (directTenorMedia) return directTenorMedia;
-
-      const giphyId =
-        text.match(/giphy\.com\/gifs\/(?:[^\/]+-)*([a-zA-Z0-9]+)(?:[/?#]|$)/)?.[1] ||
-        text.match(/giphy\.com\/media\/([a-zA-Z0-9]+)(?:[/?#]|$)/)?.[1] ||
-        text.match(/i\.giphy\.com\/media\/([a-zA-Z0-9]+)\//)?.[1] ||
-        text.match(/media\d*\.giphy\.com\/media\/([a-zA-Z0-9]+)\//)?.[1];
-      if (giphyId) return `https://i.giphy.com/media/${giphyId}/giphy.gif`;
-
-      return '';
-    }
-
-    function resolveGifMessage(value) {
-      const text = String(value || '').trim();
-      if (!text) return null;
-
-      const gifUrl = extractGifUrl(text);
-      if (gifUrl) {
-        return {
-          body: '',
-          alt: 'GIF',
-          mediaUrl: gifUrl
-        };
-      }
-
-      return null;
-    }
-
-    async function fetchTenorResults(query = '') {
-      if (!TENOR_API_KEY) return [];
-      if (!String(query || '').trim()) return [];
-      const url = new URL('https://tenor.googleapis.com/v2/search');
-      url.searchParams.set('key', TENOR_API_KEY);
-      url.searchParams.set('client_key', TENOR_CLIENT_KEY);
-      url.searchParams.set('q', query);
-      url.searchParams.set('limit', '12');
-      url.searchParams.set('media_filter', 'minimal');
-      url.searchParams.set('contentfilter', 'medium');
-
-      const response = await fetch(url.toString());
-      if (!response.ok) {
-        throw new Error(`Tenor search failed with status ${response.status}`);
-      }
-
-      const payload = await response.json();
-      return (payload.results || []).map((item) => ({
-        label: item.content_description || query,
-        previewUrl: item.media_formats?.tinygif?.url || item.media_formats?.gifpreview?.url || item.media_formats?.nanogif?.url || '',
-        fullUrl: item.media_formats?.gif?.url || item.media_formats?.mediumgif?.url || item.media_formats?.tinygif?.url || '',
-        body: '',
-        alt: item.content_description || query
-      })).filter((item) => item.previewUrl || item.fullUrl);
-    }
-
-    function searchFallbackGifs(query = '') {
-      const normalized = String(query || '').trim().toLowerCase();
-      if (!normalized) return GIFS;
-
-      const matches = GIFS.filter((item) => {
-        const haystack = `${item.label} ${item.keywords || ''}`.toLowerCase();
-        return haystack.includes(normalized);
-      });
-
-      if (!matches.length) return [];
-
-      const extras = GIFS.filter((item) => !matches.includes(item)).slice(0, Math.max(0, 16 - matches.length));
-      return [...matches, ...extras];
-    }
-
-    async function populateGifPicker(query = '') {
-      const picker = document.getElementById('mediaPicker');
-      const label = document.getElementById('mediaPickerLabel');
-      const grid = document.getElementById('mediaPickerGrid');
-      const stickerBrowser = document.getElementById('stickerBrowser');
-      const emojiBrowser = document.getElementById('emojiBrowser');
-      const searchInput = document.getElementById('mediaSearchInput');
-      const searchRow = document.getElementById('mediaSearchRow');
-      const note = document.getElementById('mediaPickerNote');
-      if (!picker || !label || !grid || !stickerBrowser || !emojiBrowser || !searchInput || !searchRow || !note) return;
-
-      const normalizedQuery = String(query || '').trim();
-
-      setActiveMediaTab('gif');
-      picker.classList.remove('is-sticker');
-      label.textContent = normalizedQuery ? 'Search Results' : 'Trending GIFs';
-      searchRow.removeAttribute('hidden');
-      searchInput.value = query;
-      searchInput.placeholder = 'Search GIFs';
-      note.removeAttribute('hidden');
-      stickerBrowser.setAttribute('hidden', 'hidden');
-      emojiBrowser.setAttribute('hidden', 'hidden');
-      document.getElementById('stickerPreview')?.setAttribute('hidden', 'hidden');
-      document.getElementById('emojiPreview')?.setAttribute('hidden', 'hidden');
-      grid.removeAttribute('hidden');
-      note.textContent = TENOR_API_KEY
-        ? 'Powered by Tenor'
-        : 'Live Tenor search needs window.NOCTIVE_TENOR_API_KEY. For now, the built-in GIF set filters as you type.';
-
-      if (!normalizedQuery) {
-        const starterItems = searchFallbackGifs('');
-        grid.innerHTML = renderMediaChoices(starterItems, 'gif');
-        picker.dataset.items = JSON.stringify(starterItems);
-        activeGifQuery = '';
-        return;
-      }
-
-      grid.innerHTML = '<div class="media-note">Loading GIFs...</div>';
-
-      try {
-        const items = TENOR_API_KEY ? await fetchTenorResults(normalizedQuery) : searchFallbackGifs(normalizedQuery);
-
-        grid.innerHTML = items.length
-          ? renderMediaChoices(items, 'gif')
-          : '<div class="media-note">No GIFs matched that search yet.</div>';
-        picker.dataset.items = JSON.stringify(items);
-        activeGifQuery = normalizedQuery;
-      } catch (error) {
-        console.error('Could not load Tenor GIFs:', error);
-        note.textContent = 'Could not load Tenor right now. Showing fallback GIF options.';
-        const fallbackItems = searchFallbackGifs(normalizedQuery);
-        grid.innerHTML = fallbackItems.length
-          ? renderMediaChoices(fallbackItems, 'gif')
-          : '<div class="media-note">No GIFs matched that search yet.</div>';
-        picker.dataset.items = JSON.stringify(fallbackItems);
-      }
-    }
-
-    function populateStickerPicker() {
-      const picker = document.getElementById('mediaPicker');
-      const label = document.getElementById('mediaPickerLabel');
-      const grid = document.getElementById('mediaPickerGrid');
-      const stickerBrowser = document.getElementById('stickerBrowser');
-      const emojiBrowser = document.getElementById('emojiBrowser');
-      const stickerGrid = document.getElementById('stickerPickerGrid');
-      const searchInput = document.getElementById('mediaSearchInput');
-      const searchRow = document.getElementById('mediaSearchRow');
-      const note = document.getElementById('mediaPickerNote');
-      const sectionTitle = document.getElementById('stickerSectionTitle');
-      const results = searchStickers(activeStickerQuery, activeStickerPack);
-      if (!picker || !label || !grid || !stickerBrowser || !emojiBrowser || !stickerGrid || !searchInput || !searchRow || !note || !sectionTitle) return;
-
-      setActiveMediaTab('sticker');
-      picker.classList.add('is-sticker');
-      label.textContent = 'Stickers';
-      searchRow.removeAttribute('hidden');
-      searchInput.value = activeStickerQuery;
-      searchInput.placeholder = 'Search stickers';
-      note.setAttribute('hidden', 'hidden');
-      grid.setAttribute('hidden', 'hidden');
-      stickerBrowser.removeAttribute('hidden');
-      emojiBrowser.setAttribute('hidden', 'hidden');
-      document.getElementById('emojiPreview')?.setAttribute('hidden', 'hidden');
-      renderStickerSidebar(activeStickerPack);
-      sectionTitle.textContent = activeStickerPack === 'all'
-        ? 'Frequently Used'
-        : getStickerPacks().find((pack) => pack.key === activeStickerPack)?.label || 'Sticker Pack';
-      stickerGrid.innerHTML = results.length
-        ? renderStickerChoices(results)
-        : '<div class="sticker-empty">No stickers matched that search yet.</div>';
-      picker.dataset.items = JSON.stringify(results);
-      if (results.length) {
-        renderStickerPreview(results[0]);
-      } else {
-        document.getElementById('stickerPreview')?.setAttribute('hidden', 'hidden');
-      }
-    }
-
-    function populateEmojiPicker() {
-      const picker = document.getElementById('mediaPicker');
-      const label = document.getElementById('mediaPickerLabel');
-      const grid = document.getElementById('mediaPickerGrid');
-      const stickerBrowser = document.getElementById('stickerBrowser');
-      const emojiBrowser = document.getElementById('emojiBrowser');
-      const emojiGrid = document.getElementById('emojiPickerGrid');
-      const searchInput = document.getElementById('mediaSearchInput');
-      const searchRow = document.getElementById('mediaSearchRow');
-      const note = document.getElementById('mediaPickerNote');
-      const sectionTitle = document.getElementById('emojiSectionTitle');
-      const results = searchEmojis(activeEmojiQuery, activeEmojiCategory);
-      if (!picker || !label || !grid || !stickerBrowser || !emojiBrowser || !emojiGrid || !searchInput || !searchRow || !note || !sectionTitle) return;
-
-      setActiveMediaTab('emoji');
-      picker.classList.remove('is-sticker');
-      label.textContent = 'Emoji';
-      searchInput.value = activeEmojiQuery;
-      searchInput.placeholder = 'Search emoji';
-      searchRow.removeAttribute('hidden');
-      note.setAttribute('hidden', 'hidden');
-      stickerBrowser.setAttribute('hidden', 'hidden');
-      emojiBrowser.removeAttribute('hidden');
-      document.getElementById('stickerPreview')?.setAttribute('hidden', 'hidden');
-      document.getElementById('emojiPreview')?.setAttribute('hidden', 'hidden');
-      grid.setAttribute('hidden', 'hidden');
-      renderEmojiSidebar(activeEmojiCategory);
-      sectionTitle.textContent = getEmojiCategories().find((category) => category.key === activeEmojiCategory)?.label || 'Emoji';
-      emojiGrid.innerHTML = results.length
-        ? renderEmojiChoices(results)
-        : '<div class="emoji-empty">No emoji matched that search yet.</div>';
-      picker.dataset.items = JSON.stringify(results);
-      if (results.length) {
-        renderEmojiPreview(results[0]);
-      } else {
-        activeEmojiSelection = null;
-        document.getElementById('emojiPreview')?.setAttribute('hidden', 'hidden');
-      }
-    }
-
-    async function openMediaTab(mode) {
-      const picker = document.getElementById('mediaPicker');
-      if (!picker) return;
-
-      picker.removeAttribute('hidden');
-      activeMediaMode = mode;
-      if (mode === 'gif') {
-        picker.classList.remove('is-sticker');
-        document.getElementById('stickerBrowser')?.setAttribute('hidden', 'hidden');
-        document.getElementById('stickerPreview')?.setAttribute('hidden', 'hidden');
-        document.getElementById('mediaPickerGrid')?.removeAttribute('hidden');
-        await populateGifPicker(activeGifQuery);
-        document.getElementById('mediaSearchInput')?.focus();
-      } else if (mode === 'sticker') {
-        populateStickerPicker();
-        document.getElementById('mediaSearchInput')?.focus();
-      } else {
-        populateEmojiPicker();
-        document.getElementById('mediaSearchInput')?.focus();
-      }
-    }
-
-    async function toggleMediaPicker(mode) {
-      const picker = document.getElementById('mediaPicker');
-      if (!picker) return;
-
-      const isSameModeOpen = activeMediaMode === mode && !picker.hasAttribute('hidden');
-      if (isSameModeOpen) {
-        closeMediaPicker();
-        return;
-      }
-
-      await openMediaTab(mode);
-    }
-
-    function closeMediaPicker() {
-      const picker = document.getElementById('mediaPicker');
-      if (!picker) return;
-      picker.setAttribute('hidden', 'hidden');
-      picker.classList.remove('is-sticker');
-      activeMediaMode = '';
-    }
-
-    function renderConversation(threadId) {
-      const thread = THREADS[threadId] || THREADS.hijinxx;
-      const title = document.getElementById('conversationTitle');
-      const subline = document.getElementById('conversationSubline');
-      const list = document.getElementById('messageList');
-      const conversationAvatar = document.getElementById('conversationAvatar');
-      const conversationStatusDot = document.getElementById('conversationStatusDot');
-      const conversationProfileLink = document.getElementById('conversationProfileLink');
-      activeThreadId = threadId;
-
-      if (title) title.textContent = thread.name;
-      if (subline) subline.textContent = isSignedInViewer ? thread.signedInSubline : thread.guestSubline;
-      if (conversationProfileLink) {
-        conversationProfileLink.href = buildProfileHref(threadId);
-      }
-      renderAvatarBox(conversationAvatar, thread.name, thread.avatar || '');
-      if (conversationStatusDot) {
-        conversationStatusDot.className = `presence-dot status-${getStatusMeta(thread.status).key}`;
-      }
-      if (list) {
-        list.innerHTML = thread.messages.map((message) => `
-          <div class="message-bubble${message.self ? ' self' : ''}">
-            <div class="message-meta"><a href="${message.self ? './profile.html' : buildProfileHref(threadId)}" style="color:inherit; text-decoration:none;">${message.author}</a> &bull; ${message.time}</div>
-            ${
-              message.kind === 'gif' && message.mediaUrl
-                ? `<div class="message-gif"><img src="${message.mediaUrl}" alt="${message.alt || 'GIF'}"></div>`
-                : message.kind === 'sticker' && message.mediaUrl
-                  ? `<div class="message-sticker"><img src="${message.mediaUrl}" alt="${message.alt || 'Sticker'}"><div class="message-sticker-caption">${message.body}</div></div>`
-                : message.kind === 'emoji'
-                  ? `<div class="message-emoji"><span class="message-emoji-glyph">${message.glyph || ''}</span></div>`
-                : `<div class="message-copy${message.kind === 'media' ? ' media-post' : ''}">${message.body}</div>`
-            }
+    function createMessageElement(msg) {
+      const container = document.createElement("div");
+      container.className = `message-group ${msg.senderId === currentUser.uid ? "own" : ""}`;
+      const time = msg.timestamp?.toDate?.() || new Date();
+      const timeString = time.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+      container.innerHTML = `
+        <div class="message-avatar">${(msg.senderName || "U").charAt(0).toUpperCase()}</div>
+        <div class="message-content">
+          <div class="message-header">
+            <span class="message-author">${escapeHtml(msg.senderName || "Unknown")}</span>
+            <span class="message-timestamp">${timeString}</span>
           </div>
-        `).join('');
-      }
-
-      document.querySelectorAll('[data-thread-id]').forEach((button) => {
-        button.classList.toggle('is-active', button.getAttribute('data-thread-id') === threadId);
-      });
-      renderAllThreadPresence();
+          <div class="message-bubble">${escapeHtml(msg.text)}</div>
+        </div>`;
+      return container;
     }
 
-    function setSignedInMessagesView(isSignedIn) {
-      const hero = document.querySelector('.hero');
-      const composerHint = document.getElementById('composerHint');
-      const messageInput = document.getElementById('messageInput');
-      const composerHelp = document.getElementById('composerHelp');
-      const viewerProfile = getStoredViewerProfile(currentAuthUser);
-      const preferredThreadId = THREADS[normalizeUid(requestedThreadId)]
-        ? normalizeUid(requestedThreadId)
-        : (document.querySelector('.thread-card.is-active')?.getAttribute('data-thread-id') || 'hijinxx');
-      isSignedInViewer = isSignedIn;
-
-      if (viewerProfile) {
-        const normalizedStatus = getStatusMeta(viewerProfile.status).label;
-        THREADS.hijinxx.status = THREADS.hijinxx.status || 'Online';
-        THREADS.loripie.status = THREADS.loripie.status || 'Idle';
-        THREADS.wakebakewes.status = THREADS.wakebakewes.status || 'Do Not Disturb';
-        THREADS.undiscoverabletalent.status = THREADS.undiscoverabletalent.status || 'Invisible';
-
-        const selfMessages = document.querySelectorAll('.message-bubble.self');
-        selfMessages.forEach((node) => {
-          node.setAttribute('data-viewer-status', normalizedStatus);
-        });
+    async function sendMessage() {
+      const text = messageInput.value.trim();
+      if (!text || !currentConversation) return;
+      sendBtn.disabled = true;
+      messageInput.disabled = true;
+      try {
+        await addDoc(collection(db, `conversations/${currentConversation}/messages`), { senderId: currentUser.uid, senderName: currentUser.displayName || "User", text, timestamp: serverTimestamp() });
+        await updateDoc(doc(db, "conversations", currentConversation), { lastMessage: text, lastMessageTime: serverTimestamp() });
+        messageInput.value = "";
+      } catch (error) {
+        console.error(error);
+        alert("Failed to send message");
+      } finally {
+        sendBtn.disabled = false;
+        messageInput.disabled = false;
+        messageInput.focus();
       }
-
-      if (isSignedIn) {
-        hero?.setAttribute('hidden', 'hidden');
-        if (composerHint) {
-          composerHint.textContent = '';
-          composerHint.setAttribute('hidden', 'hidden');
-        }
-        if (messageInput) {
-          messageInput.placeholder = 'Message your friends...';
-        }
-        if (composerHelp) {
-          composerHelp.textContent = 'Open GIFs, Stickers, or Emoji right inside the composer and send them without leaving the page.';
-        }
-        renderConversation(preferredThreadId);
-        return;
-      }
-
-      hero?.removeAttribute('hidden');
-      if (composerHint) {
-        composerHint.textContent = 'Messaging UI placeholder. Backend and real delivery can come later.';
-        composerHint.removeAttribute('hidden');
-      }
-      if (messageInput) {
-        messageInput.placeholder = 'Message placeholders live here for now...';
-      }
-      if (composerHelp) {
-        composerHelp.textContent = 'Open GIFs, Stickers, or Emoji right inside the composer and send them without leaving the page.';
-      }
-      renderConversation(preferredThreadId);
     }
 
-    document.addEventListener('click', (event) => {
-      const picker = document.getElementById('mediaPicker');
-      const openedFromPicker = event.target.closest('#mediaPicker');
-      const openedFromTools = event.target.closest('#gifBtn, #stickerBtn, #emojiBtn');
-      if (picker && !picker.hasAttribute('hidden') && !openedFromPicker && !openedFromTools) {
-        closeMediaPicker();
-      }
+    function autoResize() {
+      messageInput.style.height = "auto";
+      messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + "px";
+    }
 
-      const notificationButton = event.target.closest('[data-notification-id]');
-      if (notificationButton) {
-        markNotificationAsRead(notificationButton.getAttribute('data-notification-id'));
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    async function ensureConversationWithUser(targetUid) {
+      if (!currentUser?.uid || !targetUid || targetUid === currentUser.uid) return;
+      const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid));
+      const snapshot = await getDocs(q);
+      const existing = snapshot.docs.find((conversationDoc) => {
+        const participants = conversationDoc.data().participants || [];
+        return participants.includes(targetUid);
+      });
+
+      if (existing) {
+        selectConversation(existing.id, existing.data());
         return;
       }
 
-      const threadButton = event.target.closest('[data-thread-id]');
-      if (!threadButton) return;
-      const threadId = threadButton.getAttribute('data-thread-id');
-      if (threadId) renderConversation(threadId);
-    });
-
-    document.getElementById('stickerBtn')?.addEventListener('click', async () => {
-      await toggleMediaPicker('sticker');
-    });
-
-    document.getElementById('gifBtn')?.addEventListener('click', async () => {
-      await toggleMediaPicker('gif');
-    });
-
-    document.getElementById('emojiBtn')?.addEventListener('click', async () => {
-      await toggleMediaPicker('emoji');
-    });
-
-    document.getElementById('mediaPickerGrid')?.addEventListener('click', (event) => {
-      const mediaButton = event.target.closest('[data-media-mode]');
-      if (!mediaButton) return;
-      const mode = mediaButton.getAttribute('data-media-mode');
-      const index = Number(mediaButton.getAttribute('data-media-index'));
-      const picker = document.getElementById('mediaPicker');
-      const collection = JSON.parse(picker?.dataset.items || '[]');
-      const item = collection[index];
-      if (!item) return;
-
-      appendMessageToThread(activeThreadId, {
-        author: 'You',
-        time: 'just now',
-        body: mode === 'gif' ? '' : item.body,
-        alt: item.alt || item.label || 'GIF',
-        self: true,
-        kind: mode === 'gif' ? 'gif' : 'media',
-        mediaUrl: mode === 'gif' ? (item.fullUrl || item.previewUrl || '') : ''
+      const newDoc = await addDoc(collection(db, "conversations"), {
+        participants: [currentUser.uid, targetUid],
+        name: null,
+        lastMessage: "",
+        lastMessageTime: serverTimestamp()
       });
-      closeMediaPicker();
-    });
+      selectConversation(newDoc.id, { participants: [currentUser.uid, targetUid], name: null, lastMessage: "" });
+    }
 
-    document.getElementById('stickerSidebar')?.addEventListener('click', (event) => {
-      const packButton = event.target.closest('[data-sticker-pack]');
-      if (!packButton) return;
-      activeStickerPack = packButton.getAttribute('data-sticker-pack') || 'all';
-      populateStickerPicker();
-    });
+    function showNewMessageModal() {
+      const overlay = document.createElement("div");
+      overlay.className = "modal-overlay";
+      overlay.innerHTML = `
+        <div class="modal-box">
+          <h2>Start New Conversation</h2>
+          <label style="display:block; font-size:0.9rem; color:var(--muted); margin-bottom:8px;">Suggested following</label>
+          <input id="userSearchInput" placeholder="Search following" />
+          <div id="userSuggestions" style="max-height:240px; overflow:auto; margin-bottom:12px;"></div>
+          <div id="selectedParticipants" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;"></div>
+          <div class="modal-buttons">
+            <button class="modal-btn" id="cancelNewConv" type="button">Cancel</button>
+            <button class="modal-btn primary" id="createConvBtn" type="button">Create Conversation</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
 
-    document.getElementById('stickerPickerGrid')?.addEventListener('mousemove', (event) => {
-      const stickerButton = event.target.closest('[data-sticker-index]');
-      if (!stickerButton) return;
-      const index = Number(stickerButton.getAttribute('data-sticker-index'));
-      const picker = document.getElementById('mediaPicker');
-      const collection = JSON.parse(picker?.dataset.items || '[]');
-      const item = collection[index];
-      if (!item) return;
+      const input = overlay.querySelector("#userSearchInput");
+      const suggestionsEl = overlay.querySelector("#userSuggestions");
+      const selectedEl = overlay.querySelector("#selectedParticipants");
+      const cancelBtn = overlay.querySelector("#cancelNewConv");
+      const createBtn = overlay.querySelector("#createConvBtn");
+      const selected = new Map();
 
-      document.querySelectorAll('.sticker-choice').forEach((node, position) => {
-        node.classList.toggle('is-selected', position === index);
+      cancelBtn.addEventListener("click", () => overlay.remove());
+      input.focus();
+      input.addEventListener("input", async () => {
+        const term = input.value.trim().toLowerCase();
+        const users = await getFollowingSuggestions(term);
+        renderSuggestions(users, suggestionsEl, selected, selectedEl, input);
       });
-      renderStickerPreview(item);
-    });
 
-    document.getElementById('stickerPickerGrid')?.addEventListener('click', (event) => {
-      const stickerButton = event.target.closest('[data-sticker-index]');
-      if (!stickerButton) return;
-      const index = Number(stickerButton.getAttribute('data-sticker-index'));
-      const picker = document.getElementById('mediaPicker');
-      const collection = JSON.parse(picker?.dataset.items || '[]');
-      const item = collection[index];
-      if (!item) return;
-
-      appendMessageToThread(activeThreadId, {
-        author: 'You',
-        time: 'just now',
-        body: item.body,
-        alt: item.alt || item.label || 'Sticker',
-        self: true,
-        kind: 'sticker',
-        mediaUrl: item.previewUrl || ''
+      createBtn.addEventListener("click", async () => {
+        if (!currentUser) return alert("Please sign in");
+        const participantUids = Array.from(selected.keys());
+        if (!participantUids.length) return alert("Select at least one person");
+        if (!participantUids.includes(currentUser.uid)) participantUids.push(currentUser.uid);
+        await addDoc(collection(db, "conversations"), { participants: participantUids, name: null, lastMessage: "", lastMessageTime: serverTimestamp() });
+        overlay.remove();
       });
-      closeMediaPicker();
-    });
 
-    document.getElementById('emojiSidebar')?.addEventListener('click', (event) => {
-      const categoryButton = event.target.closest('[data-emoji-category]');
-      if (!categoryButton) return;
-      activeEmojiCategory = categoryButton.getAttribute('data-emoji-category') || 'people';
-      populateEmojiPicker();
-    });
+      getFollowingSuggestions("").then((users) => renderSuggestions(users, suggestionsEl, selected, selectedEl, input));
+    }
 
-    document.getElementById('emojiPickerGrid')?.addEventListener('mousemove', (event) => {
-      const emojiButton = event.target.closest('[data-emoji-index]');
-      if (!emojiButton) return;
-      const index = Number(emojiButton.getAttribute('data-emoji-index'));
-      const picker = document.getElementById('mediaPicker');
-      const collection = JSON.parse(picker?.dataset.items || '[]');
-      const item = collection[index];
-      if (!item) return;
+    async function getFollowingSuggestions(term = "") {
+      const raw = localStorage.getItem(`noctive_following_${currentUser.uid}`);
+      const ids = raw ? JSON.parse(raw) : [];
+      const uniqueIds = [...new Set(ids.filter(Boolean))];
+      if (!uniqueIds.length) return [];
+      const snapshot = await getDocs(collection(db, "Profiles"));
+      const users = snapshot.docs
+        .map((profileDoc) => ({ uid: profileDoc.id, ...profileDoc.data() }))
+        .filter((profile) => uniqueIds.includes(profile.uid) || uniqueIds.includes(profile.profileUid) || uniqueIds.includes(profile.id))
+        .filter((profile) => {
+          if (!term) return true;
+          const haystack = `${profile.displayName || ""} ${profile.username || ""}`.toLowerCase();
+          return haystack.includes(term);
+        })
+        .map((profile) => ({ uid: profile.uid || profile.id, displayName: profile.displayName || profile.username || "User", username: profile.username || "" }))
+        .slice(0, 30);
+      return users;
+    }
 
-      document.querySelectorAll('.emoji-choice').forEach((node, position) => {
-        node.classList.toggle('is-selected', position === index);
-      });
-      renderEmojiPreview(item);
-    });
-
-    document.getElementById('emojiPickerGrid')?.addEventListener('click', (event) => {
-      const emojiButton = event.target.closest('[data-emoji-index]');
-      if (!emojiButton) return;
-      const index = Number(emojiButton.getAttribute('data-emoji-index'));
-      const picker = document.getElementById('mediaPicker');
-      const collection = JSON.parse(picker?.dataset.items || '[]');
-      const item = collection[index];
-      if (!item) return;
-
-      renderEmojiPreview(item);
-      sendEmojiSelection(item);
-    });
-
-    document.getElementById('emojiPreviewAction')?.addEventListener('click', () => {
-      sendEmojiSelection(activeEmojiSelection);
-    });
-
-    document.querySelectorAll('[data-media-tab]').forEach((tab) => {
-      tab.addEventListener('click', async () => {
-        const mode = tab.getAttribute('data-media-tab');
-        if (!mode) return;
-        await openMediaTab(mode);
-      });
-    });
-
-    document.getElementById('mediaSearchInput')?.addEventListener('keydown', async (event) => {
-      if (event.key !== 'Enter') return;
-      event.preventDefault();
-      const query = event.target.value.trim();
-      if (activeMediaMode === 'gif') {
-        await populateGifPicker(query);
+    function renderSuggestions(users, suggestionsEl, selected, selectedEl, input) {
+      suggestionsEl.innerHTML = "";
+      if (!users.length) {
+        suggestionsEl.innerHTML = '<div style="padding:10px;color:var(--muted)">No following matches yet</div>';
         return;
       }
-      if (activeMediaMode === 'sticker') {
-        activeStickerQuery = query;
-        populateStickerPicker();
-        return;
-      }
-      if (activeMediaMode === 'emoji') {
-        activeEmojiQuery = query;
-        populateEmojiPicker();
-      }
-    });
-
-    document.getElementById('mediaSearchInput')?.addEventListener('input', (event) => {
-      const query = event.target.value.trim();
-      if (activeMediaMode === 'gif') {
-        window.clearTimeout(gifSearchTimer);
-        gifSearchTimer = window.setTimeout(() => {
-          populateGifPicker(query);
-        }, 260);
-        return;
-      }
-      if (activeMediaMode === 'sticker') {
-        activeStickerQuery = query;
-        populateStickerPicker();
-        return;
-      }
-      if (activeMediaMode === 'emoji') {
-        activeEmojiQuery = query;
-        populateEmojiPicker();
-      }
-    });
-
-    document.getElementById('sendMessageBtn')?.addEventListener('click', () => {
-      const input = document.getElementById('messageInput');
-      const body = input?.value.trim();
-      if (!body) return;
-
-      const gifMessage = resolveGifMessage(body);
-      if (gifMessage) {
-        appendMessageToThread(activeThreadId, {
-          author: 'You',
-          time: 'just now',
-          body: gifMessage.body,
-          alt: gifMessage.alt || 'GIF',
-          self: true,
-          kind: 'gif',
-          mediaUrl: gifMessage.mediaUrl
+      users.forEach((user) => {
+        const row = document.createElement("div");
+        row.className = "suggestion-item";
+        row.innerHTML = `
+          <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-weight:700;">${(user.displayName || user.username || "U").charAt(0).toUpperCase()}</div>
+          <div style="flex:1; min-width:0">
+            <div style="font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(user.displayName || user.username || "User")}</div>
+            <div style="font-size:0.85rem;color:var(--muted);">@${escapeHtml(user.username || "")}</div>
+          </div>`;
+        row.addEventListener("click", () => {
+          if (!selected.has(user.uid)) selected.set(user.uid, user);
+          renderSelectedTags(selected, selectedEl);
+          input.value = "";
+          suggestionsEl.innerHTML = "";
         });
-        if (input) input.value = '';
-        return;
-      }
-
-      appendMessageToThread(activeThreadId, {
-        author: 'You',
-        time: 'just now',
-        body,
-        self: true
+        suggestionsEl.appendChild(row);
       });
-      if (input) input.value = '';
-    });
+    }
 
-    document.getElementById('messageInput')?.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter' || event.shiftKey) return;
-      event.preventDefault();
-      document.getElementById('sendMessageBtn')?.click();
-    });
-
-    document.getElementById('markAllNotificationsBtn')?.addEventListener('click', () => {
-      markAllNotificationsAsRead();
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape') return;
-      closeMediaPicker();
-    });
-
-    renderAllThreadPresence();
-    renderConversation(THREADS[normalizeUid(requestedThreadId)] ? normalizeUid(requestedThreadId) : 'hijinxx');
-
-    onAuthStateChanged(auth, (user) => {
-      currentAuthUser = user;
-      renderAllThreadPresence();
-      renderNotificationsInbox();
-      setSignedInMessagesView(Boolean(user));
-    });
+    function renderSelectedTags(selected, selectedEl) {
+      selectedEl.innerHTML = "";
+      selected.forEach((user, uid) => {
+        const tag = document.createElement("div");
+        tag.style.display = "inline-flex";
+        tag.style.alignItems = "center";
+        tag.style.gap = "8px";
+        tag.style.padding = "6px 8px";
+        tag.style.borderRadius = "999px";
+        tag.style.background = "rgba(255,255,255,0.04)";
+        tag.style.border = "1px solid rgba(255,255,255,0.06)";
+        tag.innerHTML = `<span style="font-weight:700">${escapeHtml(user.displayName || user.username || "User")}</span>`;
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "×";
+        removeBtn.style.border = "0";
+        removeBtn.style.background = "transparent";
+        removeBtn.style.color = "#fff";
+        removeBtn.style.cursor = "pointer";
+        removeBtn.addEventListener("click", () => { selected.delete(uid); renderSelectedTags(selected, selectedEl); });
+        tag.appendChild(removeBtn);
+        selectedEl.appendChild(tag);
+      });
+    }
   </script>
 </body>
 </html>
-

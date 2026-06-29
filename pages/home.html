@@ -2909,14 +2909,8 @@
     }
 
     function openQuickMessenger(friendId) {
-      const popup = document.getElementById('messengerPopup');
-      if (!findNightCrewFriend(friendId)) return;
-      if (activeQuickChatId === friendId && popup && !popup.hasAttribute('hidden')) {
-        closeQuickMessenger();
-        return;
-      }
-      activeQuickChatId = friendId;
-      renderQuickMessenger();
+      if (!friendId) return;
+      window.location.assign(`./messages.html?thread=${encodeURIComponent(friendId)}`);
     }
 
     function closeQuickMessenger() {
