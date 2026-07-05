@@ -432,9 +432,11 @@
     }
 
     .profile-avatar img {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: inherit;
     }
 
     .initial-avatar {
@@ -923,9 +925,11 @@
     }
 
     .mini-avatar img {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: inherit;
     }
 
     .post-name,
@@ -2130,14 +2134,25 @@
       syncFollowButton(view);
     }
 
+    function resolveAvatarUrl(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return '';
+      if (raw.startsWith('data:') || raw.startsWith('http://') || raw.startsWith('https://') || raw.startsWith('//') || raw.startsWith('/')) {
+        return raw;
+      }
+      return `/${raw.replace(/^\/+/, '')}`;
+    }
+
     function buildAvatar(containerId, profile, fallbackName) {
       const box = document.getElementById(containerId);
       if (!box) return;
       box.innerHTML = '';
 
-      if (profile.avatar && profile.avatar.trim()) {
+      const avatarSource = profile.avatar?.trim() || currentAuthUser?.photoURL?.trim() || '';
+      const avatarUrl = resolveAvatarUrl(avatarSource);
+      if (avatarUrl) {
         const img = document.createElement('img');
-        img.src = profile.avatar;
+        img.src = avatarUrl;
         img.alt = `${fallbackName} avatar`;
         img.onerror = () => {
           box.innerHTML = `<div class="initial-avatar theme-${profile.theme || 'default'}">${getInitials(fallbackName)}</div>`;
