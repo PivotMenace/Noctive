@@ -239,6 +239,7 @@
       runTransaction,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { normalizeUsername as normalizeSharedUsername } from "../js/username-utils.js";
 
     const ACCESS_SESSION_KEY = "noctive_site_access";
     const GOOGLE_SIGNUP_PENDING_KEY = "noctive_google_signup_pending";
@@ -360,11 +361,7 @@
     }
 
     function normalizeUsername(value) {
-      return String(value || "")
-        .trim()
-        .replace(/\s+/g, "")
-        .replace(/[^a-zA-Z0-9._-]/g, "")
-        .toLowerCase();
+      return normalizeSharedUsername(value, "guest");
     }
 
     function validateUsername(username) {

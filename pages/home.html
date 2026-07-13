@@ -676,9 +676,36 @@
       line-height:1.38;
       white-space:pre-wrap;
       word-break:break-word;
+      margin-bottom:12px;
     }
 
-    .post-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+    .post-footer{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:10px 0;
+      border-top:1px solid rgba(255,255,255,0.06);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      margin-bottom:12px;
+      font-size:0.9rem;
+      color:rgba(255,255,255,0.64);
+    }
+
+    .post-footer a{
+      color:rgba(255,255,255,0.64);
+      text-decoration:none;
+      cursor:pointer;
+    }
+
+    .post-footer a:hover{
+      color:rgba(255,255,255,0.88);
+    }
+
+    .post-footer .dot{
+      color:rgba(255,255,255,0.44);
+    }
+
+    .post-actions{display:flex;gap:10px;flex-wrap:wrap;}
 
     .vote-action{
       min-width:44px;
@@ -2134,6 +2161,10 @@
       return String(value || '').trim().toLowerCase();
     }
 
+    function normalizeUsername(value, fallback = '') {
+      return normalizeSharedUsername(value, fallback || 'guest');
+    }
+
     function getFollowingSet(uid) {
       const normalizedUid = normalizeUid(uid);
       if (!normalizedUid || normalizedUid === 'guest') return new Set();
@@ -2167,7 +2198,7 @@
       return {
         id: normalizedUid,
         name: displayName,
-        username: profile.username || normalizedUid,
+        username: normalizeUsername(profile.username || normalizedUid, normalizedUid),
         title: profile.title || 'Noctive User',
         activity: profile.bio || profile.bannerText || 'Part of your following list.',
         presence: profile.status || 'online',
@@ -2186,7 +2217,7 @@
         const displayName = profile.displayName || profile.username || document.getElementById('userDisplayName')?.textContent || viewerUid;
         return {
           id: viewerUid,
-          username: profile.username || viewerUid,
+          username: normalizeUsername(profile.username || viewerUid, viewerUid),
           displayName,
           title: profile.title || 'Noctive Member',
           status: profile.status || 'online',
@@ -2210,7 +2241,7 @@
         if (!normalizedUid) return;
         combined.set(normalizedUid, {
           id: normalizedUid,
-          username: profile?.username || normalizedUid,
+          username: normalizeUsername(profile?.username || normalizedUid, normalizedUid),
           displayName: profile?.displayName || profile?.username || normalizedUid,
           title: profile?.title || 'Noctive User',
           status: profile?.status || 'online',
@@ -2729,6 +2760,13 @@
             <div class="tag">${escapeHtml(postTag)}</div>
           </div>
           <div class="post-body">${escapeHtml(post.body)}</div>
+          <div class="post-footer">
+            <a href="${profileHref}">${escapeHtml(post.time)}</a>
+            <span class="dot">·</span>
+            <span>${escapeHtml(post.date || 'Recently')}</span>
+            <span class="dot">·</span>
+            <span>${post.views || 0} Views</span>
+          </div>
           <div class="post-actions">
             <button class="action vote-action" type="button" data-vote="up" aria-label="Upvote post">▴</button>
             <span class="vote-count" data-vote-count="up">${upVotes}</span>
@@ -3648,6 +3686,7 @@
       getFirestore,
       getDoc
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { normalizeUsername as normalizeSharedUsername } from "../js/username-utils.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCUHWXemBpfAWOSDqj1_rY6s4oQr27FnKg",

@@ -81,19 +81,34 @@
       margin: 0 auto;
       padding: 28px 18px 40px;
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-      gap: 18px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+      gap: 22px;
+      align-items: start;
     }
     .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
+      background: rgba(10, 12, 18, 0.94);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 16px 46px rgba(0,0,0,0.24);
+    }
+    .editor-card {
+      padding: 20px 20px 22px;
+    }
+    .preview-card {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+      background: rgba(8, 10, 16, 0.96);
     }
     .card.shake-card {
       animation: editorShake 0.42s ease-in-out;
     }
-    .hero { margin-bottom: 18px; }
+    .hero {
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
     .eyebrow, .section-title, label {
       font-family: var(--font-head);
     }
@@ -114,12 +129,13 @@
       color: var(--muted);
       line-height: 1.45;
     }
-    .stack { display: grid; gap: 16px; }
+    .stack { display: grid; gap: 14px; }
     .section {
-      background: var(--panel-soft);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      padding: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 16px 16px 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
     }
     .section-title { color: var(--gold); margin-bottom: 4px; }
     .section-sub { margin-bottom: 12px; font-size: 0.92rem; }
@@ -198,14 +214,14 @@
     label { font-size: 0.9rem; color: #fff; }
     input, textarea, select {
       width: 100%;
-      border-radius: 14px;
+      border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.18);
+      background: rgba(255,255,255,0.04);
       color: #fff;
-      padding: 12px 14px;
+      padding: 11px 13px;
       outline: none;
     }
-    textarea { min-height: 104px; resize: vertical; }
+    textarea { min-height: 102px; resize: vertical; }
     .admin-access-note {
       margin-top: 12px;
       padding: 12px 14px;
@@ -229,16 +245,17 @@
       position: sticky;
       top: 88px;
       display: grid;
-      gap: 16px;
+      gap: 14px;
       align-self: start;
     }
     .preview-banner {
-      min-height: 180px;
+      min-height: 140px;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,0.08);
       background: linear-gradient(135deg, #191727, #231d38, #1f254d, #17142a);
       overflow: hidden;
       position: relative;
+      box-shadow: inset 0 -40px 70px rgba(0,0,0,0.24);
     }
     .preview-banner.theme-green { background: linear-gradient(135deg, #07281f, #0b3b2f, #0c5b46); }
     .preview-banner.theme-blue { background: linear-gradient(135deg, #10203f, #153566, #1f4f99); }
@@ -292,24 +309,32 @@
       position: absolute;
       left: 16px;
       right: 16px;
-      bottom: 16px;
+      bottom: 14px;
       z-index: 1;
     }
-    .preview-copy h2 { font-family: var(--font-head); margin-bottom: 6px; }
+    .preview-copy h2 {
+      font-family: var(--font-head);
+      margin-bottom: 4px;
+      font-size: 1.02rem;
+    }
     .preview-profile {
       display: grid;
       grid-template-columns: auto 1fr;
       gap: 14px;
       align-items: center;
+      padding: 12px 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
     }
     .preview-avatar-shell {
       position: relative;
-      width: 88px;
-      height: 88px;
+      width: 76px;
+      height: 76px;
     }
     .preview-avatar {
-      width: 88px;
-      height: 88px;
+      width: 76px;
+      height: 76px;
       border-radius: 50%;
       border: 3px solid rgba(10,13,31,1);
       overflow: hidden;
@@ -326,11 +351,11 @@
       height: 100%;
       object-fit: cover;
     }
-    .preview-name { font-family: var(--font-head); font-size: 1.35rem; margin-bottom: 4px; }
+    .preview-name { font-family: var(--font-head); font-size: 1.2rem; margin-bottom: 4px; }
     .preview-title {
       color: var(--gold);
       font-family: var(--font-head);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       margin-bottom: 4px;
     }
     .tags { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -413,7 +438,7 @@
   </header>
 
   <main class="page">
-    <section class="card">
+    <section class="card editor-card">
       <div class="hero">
         <div class="eyebrow">Profile Editor</div>
         <h1>Turn the template into your actual profile.</h1>
@@ -471,7 +496,7 @@
       </form>
     </section>
 
-    <aside class="card preview">
+    <aside class="card preview preview-card">
       <div>
         <div class="eyebrow">Live Preview</div>
         <div class="preview-meta">This is a lightweight preview of what your profile will feel like after saving.</div>
@@ -538,6 +563,7 @@
     import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
     import { isAdminIdentity } from "../js/admin-config.js";
+    import { normalizeUsername } from "../js/username-utils.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const GUEST_PROFILE_KEY = 'noctive_profile_guest';
@@ -728,7 +754,7 @@
       const displayName = user.displayName || emailBase;
       const safeName = displayName.trim() || 'Guest';
       return deepMerge(PROFILE_TEMPLATE, {
-        username: emailBase,
+        username: normalizeUsername(emailBase, 'guest'),
         displayName: safeName,
         title: 'Noctive Member',
         status: 'Online',
@@ -796,7 +822,7 @@
       const directory = getPublicProfileDirectory();
       directory[normalizedUid] = stripLegacyProfileCopy({
         ...profile,
-        username: profile.username || user?.email?.split('@')[0] || normalizedUid,
+        username: normalizeUsername(profile.username || user?.email?.split('@')[0] || normalizedUid, normalizedUid),
         displayName: profile.displayName || user?.displayName || normalizedUid,
         profileUid: normalizedUid
       });
@@ -1102,7 +1128,7 @@
 
       return deepMerge(starter, {
         displayName: document.getElementById('displayName').value.trim() || starter.displayName,
-        username: document.getElementById('username').value.trim() || starter.username,
+        username: normalizeUsername(document.getElementById('username').value, starter.username),
         status: document.getElementById('status').value,
         avatar: safeAvatarValue,
         avatarStoragePath: safeAvatarValue ? profileMediaStoragePaths.avatar : '',
@@ -1120,7 +1146,7 @@
 
     function updatePreview(profile) {
       const displayName = profile.displayName || 'Guest';
-      const username = profile.username || 'guest';
+      const username = normalizeUsername(profile.username || 'guest', 'guest');
       const title = profile.title || 'Noctive Member';
       const bannerImage = previewMediaOverrides.bannerImage || profile.bannerImage || '';
       const previewBannerText = profile.bannerText || '';

@@ -1322,6 +1322,7 @@
     import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { isAdminIdentity } from "../js/admin-config.js";
+    import { normalizeUsername } from "../js/username-utils.js";
 
     const ACCESS_SESSION_KEY = 'noctive_site_access';
     const ACCESS_MODE_SESSION_KEY = 'noctive_access_mode';
@@ -1991,7 +1992,7 @@
           followers: getFollowerCount(normalizedUid),
           following: getResolvedFollowingCount(normalizedUid, profile.stats?.following ?? PROFILE_TEMPLATE.stats.following)
         },
-        username: profile.username || user?.email?.split('@')[0] || normalizedUid,
+        username: normalizeUsername(profile.username || user?.email?.split('@')[0] || normalizedUid, normalizedUid),
         displayName: profile.displayName || user?.displayName || normalizedUid,
         profileUid: normalizedUid
       })));
@@ -2017,7 +2018,7 @@
         const mergedProfile = normalizeProfileBadges(stripLegacyProfileCopy(deepMerge(PROFILE_TEMPLATE, {
           ...remoteProfile,
           profileUid: normalizedUid,
-          username: remoteProfile.username || normalizedUid,
+          username: normalizeUsername(remoteProfile.username || remoteProfile.displayName || normalizedUid, normalizedUid),
           displayName: remoteProfile.displayName || remoteProfile.username || normalizedUid
         })));
 
@@ -2469,7 +2470,7 @@
       currentProfileView = view;
       const { user, profile, isOwnProfile, uid } = view;
       const displayName = profile.displayName || user?.displayName || profile.username || 'Guest';
-      const username = profile.username || user?.email?.split('@')[0] || uid || 'guest';
+      const username = normalizeUsername(profile.username || user?.email?.split('@')[0] || uid || 'guest', 'guest');
       const isAdmin = isAdminIdentity({
         uid: user?.uid || uid,
         email: user?.email || profile.email,

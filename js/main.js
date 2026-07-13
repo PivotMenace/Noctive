@@ -16,6 +16,7 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { isAdminIdentity } from "./admin-config.js";
+import { normalizeUsername } from "./username-utils.js";
 
 console.log("main.js loaded");
 
@@ -124,10 +125,10 @@ function syncPublicProfileFromPost(uid, profile = {}) {
       profile.displayName ||
       profile.username ||
       "Noctive User";
-    const username =
-      existing.username ||
-      profile.username ||
-      slugifyProfileName(displayName, normalizedUid);
+    const username = normalizeUsername(
+      existing.username || profile.username || displayName,
+      normalizedUid
+    );
 
     directory[normalizedUid] = {
       ...existing,
@@ -210,9 +211,7 @@ function upsertPublicProfilesFromSnapshot(snapshot) {
         data.username ||
         data.email?.split("@")[0] ||
         "Noctive User";
-      const username =
-        data.username ||
-        slugifyProfileName(displayName, normalizedUid);
+      const username = normalizeUsername(data.username || displayName, normalizedUid);
 
       directory[normalizedUid] = {
         ...directory[normalizedUid],
@@ -330,6 +329,52 @@ function formatCreatedAt(createdAt) {
   }
 }
 
+function formatPostTime(createdAt) {
+  if (!createdAt) return "just now";
+
+  try {
+    let dateObj;
+    if (typeof createdAt.toDate === "function") {
+      dateObj = createdAt.toDate();
+    } else if (createdAt.seconds) {
+      dateObj = new Date(createdAt.seconds * 1000);
+    } else if (createdAt instanceof Date) {
+      dateObj = createdAt;
+    } else {
+      return "just now";
+    }
+
+    const hours = dateObj.getHours();
+    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    return `${displayHours}:${minutes} ${ampm}`;
+  } catch (error) {
+    return "just now";
+  }
+}
+
+function formatPostDate(createdAt) {
+  if (!createdAt) return "Recently";
+
+  try {
+    let dateObj;
+    if (typeof createdAt.toDate === "function") {
+      dateObj = createdAt.toDate();
+    } else if (createdAt.seconds) {
+      dateObj = new Date(createdAt.seconds * 1000);
+    } else if (createdAt instanceof Date) {
+      dateObj = createdAt;
+    } else {
+      return "Recently";
+    }
+
+    return dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch (error) {
+    return "Recently";
+  }
+}
+
 function subscribeToPostComments(postId) {
   if (!postId || postCommentSubscriptions.has(postId)) return;
 
@@ -402,10 +447,13 @@ function buildPostCard(doc) {
     id: doc.id,
     uid: data.uid || doc.id,
     author: resolvedProfile.displayName,
+    username: resolvedProfile.username,
     theme: resolvedProfile.theme,
     avatar: resolvedProfile.avatar,
     status: resolvedProfile.status,
-    time: formatCreatedAt(data.createdAt),
+    time: formatPostTime(data.createdAt),
+    date: formatPostDate(data.createdAt),
+    views: data.views || 0,
     tag: data.tag || "#Post",
     body: data.text || "",
     roleLabel: postIsAdmin ? "Admin" : "",
@@ -638,7 +686,7 @@ async function createPost(text) {
     email: currentViewer?.email || ""
   });
   const displayName = resolvedProfile.displayName || "Noctive User";
-  const username = resolvedProfile.username || slugifyProfileName(displayName, uid);
+  const username = normalizeUsername(resolvedProfile.username || displayName, uid);
   const avatarBox = document.getElementById("sidebarAvatarBox");
 
   await addDoc(collection(db, "Posts"), {
@@ -678,7 +726,7 @@ async function createComment(postId, body) {
   await addDoc(collection(db, "Posts", postId, "Comments"), {
     uid: currentViewer.uid,
     author: displayName,
-    username: resolvedProfile.username || slugifyProfileName(displayName, currentViewer.uid),
+    username: normalizeUsername(resolvedProfile.username || displayName, currentViewer.uid),
     body: trimmedBody,
     createdAt: serverTimestamp()
   });
