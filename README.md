@@ -33,6 +33,8 @@ Alive After Dark.</p>
   <li><strong>Post Feed</strong> – Share clips and ideas with earned visibility.</li>
   <li><strong>Recognition System</strong> – Badges for contribution and consistency.</li>
 
+  </ul>
+
 <h2>
   <a href="https://noctive.us">noctive.us</a>
 </h2> 
