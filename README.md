@@ -33,7 +33,10 @@ Alive After Dark.</p>
   <li><strong>Post Feed</strong> – Share clips and ideas with earned visibility.</li>
   <li><strong>Recognition System</strong> – Badges for contribution and consistency.</li>
 
-<p> Official domain: <strong>noctive.us</strong> </p>
+<h2>
+  <a href="https://noctive.us">noctive.us</a>
+</h2> 
+
 </ul>
 
 <h2>Project Status</h2>
