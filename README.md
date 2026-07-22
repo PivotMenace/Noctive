@@ -3,17 +3,11 @@
 <h2>About Noctive</h2>
 <p>
   Noctive is a private, members-only network built for curated communities and intentional creators. 
-  
-  Access is limited by design.
 </p>
 
 <p>
   Content lives inside focused Hubs that support clear discovery, meaningful interaction, and creative freedom.
   Instead of relying on open algorithms or endless feeds, Noctive centers engagement around shared interests.
-</p>
-
-<p>
-  Growth is deliberate. Visibility is earned. Quality comes before scale.
 </p>
 
 <p><strong>Not bigger. Better.</strong><br>
@@ -39,7 +33,7 @@ Alive After Dark.</p>
   <li><strong>Post Feed</strong> – Share clips and ideas with earned visibility.</li>
   <li><strong>Recognition System</strong> – Badges for contribution and consistency.</li>
 
-<h2>noctive.us</h2>
+<p> Official domain: <strong>noctive.us</strong> </p>
 </ul>
 
 <h2>Project Status</h2>
