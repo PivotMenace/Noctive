@@ -39,7 +39,7 @@ Alive After Dark.</p>
   <li><strong>Post Feed</strong> – Share clips and ideas with earned visibility.</li>
   <li><strong>Recognition System</strong> – Badges for contribution and consistency.</li>
 
-  https://pivotmenace.github.io/Noctive/
+  noctive.us
 </ul>
 
 <h2>Project Status</h2>
